@@ -1,0 +1,883 @@
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+
+
+
+<form [formGroup]="itemMasterForm" (ngSubmit)="itemMaster(itemMasterForm.value)">
+    <table style="width: 100%;background-color: white;" class="center">
+        <tr>
+            <td class="PageHeader">
+                &nbsp;&nbsp; ITEM &nbsp; MASTER
+            </td>
+            <td>
+
+                <select formControlName="typeList" Placeholder="--select--" class="form-control"
+                    style="background-color: rgb(255, 174, 0); height:90%;" (change)="OnSelectTypeList($event)">
+                    <option>--SELECT--</option>
+                    <option value="ItemCode">ITEM CODE</option>
+                    <option value="SerialNo">SERIAL NO</option>
+                    <!-- <option value="productInvoiceNo">INVOICE NO</option> -->
+                </select>
+            </td>
+            <td style="background-color: #FFE4B5;">
+                <input type="text" class="form-control" formControlName="itemCode" [(ngModel)]='itemCode'
+                    value={{itemCode}}>
+            </td>
+            <td style="background-color: #FFE4B5;">
+                <button type="button" class="btn-primary" (click)="itemcodeFindFN(itemCode)"><i class="fa fa-search"
+                        aria-hidden="true"></i></button>
+
+            </td>
+        </tr>
+    </table>
+    <fieldset>
+        <table class="center">
+            <tr>
+                <div *ngIf="closeResetButton; then hList1; else hList2"></div>
+                <ng-template #hList2>
+                    <div class="d-flex justify-content-center">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only" id="loading"></span>
+
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template #hList1> </ng-template>
+
+                <td class="LabelFontStyle" style="color: blue;width: fit-content;" colspan="4">
+                    &nbsp;{{dataDisplay}}&nbsp;
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+    <section class="mx-2 pb-3">
+        <ul class="nav nav-tabs md-tabs" id="myTabMD" role="tablist">
+            <li class="nav-item waves-effect waves-light">
+                <a class="nav-link active" id="home-tab-md" data-toggle="tab" href="#home-md" role="tab"
+                    aria-controls="home-md" aria-selected="true">Location/User Details</a>
+            </li>
+            <li class="nav-item waves-effect waves-light">
+                <a class="nav-link" id="profile-tab-md" data-toggle="tab" href="#profile-md" role="tab"
+                    aria-controls="profile-md" aria-selected="false">Product Details</a>
+            </li>
+            <li class="nav-item waves-effect waves-light">
+                <a class="nav-link" id="profile-tab-md" data-toggle="tab" href="#purchase-md" role="tab"
+                    aria-controls="profile-md" aria-selected="false">Purchase/Other Details</a>
+            </li>
+            <div *ngIf="displayMonitor; then thenMonitor; else elseMonitor"> </div>
+            <ng-template #thenMonitor>
+                <li class="nav-item waves-effect waves-light">
+                    <a class="nav-link" id="profile-tab-md" data-toggle="tab" href="#monitor-md" role="tab"
+                        aria-controls="profile-md" aria-selected="false">Monitor Details</a>
+                </li>
+            </ng-template>
+            <ng-template #elseMonitor>
+            </ng-template>
+        </ul>
+        <div style="border: 0px;" class="tab-content card " id="myTabContentMD">
+
+            <!--//////////////////////////////////////////////////////LOCATION/USER////////////////////////////////////////////////////////////////-->
+            <div class="tab-pane fade show active" id="home-md" role="tabpanel" aria-labelledby="home-tab-md">
+                <fieldset class="RFS">
+                    <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px;color: black;font-weight: bold;">
+                        Item Details </legend>
+                    <table class="center">
+
+                        <tr>
+                            <td style="width: 15%" class="LabelFontStyle"> Item&nbsp;&nbsp;Id: </td>
+                            <td> <input type='number' formControlName="itemId" class="form-control"
+                                    style="background-color: rgb(143, 255, 148);"></td>
+                            <td style="width: 15%" class="LabelFontStyle">Item&nbsp;Code&nbsp;: </td>
+                            <td> <input type='text' formControlName="itemCode" value="itemCode"
+                                    class="form-control" style="background-color:  rgb(143, 255, 148);"></td>
+                            <td style="width: 15%" class="LabelFontStyle1"> Item&nbsp;&nbsp;Type: </td>
+                            <td>
+                                <select type='number' formControlName="itemTypeId" id="itemTypeId" class="form-control"
+                                    style="background-color: yellow;" (change)="onSelectItemType($event)">
+                                    <!-- <option></option> -->
+                                    <option *ngFor="let sc of  AllproducttypeList" [ngValue]="sc.cmntypeId">
+                                        {{sc.codeDesc}}
+                                    </option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 15%" class="LabelFontStyle1"> Item&nbsp;Sub&nbsp;Type: </td>
+                            <td>
+
+                                <select type='text' formControlName="itemsubType" id="itemsubType" class="form-control"
+                                    style="background-color: yellow;">
+                                    <option value="NOT APPLICABLE">NOT APPLICABLE</option>
+                                    <option *ngFor="let subType of onSelectItemTypeFnList"
+                                        [ngValue]="subType.subtypeName">
+                                        {{subType.subtypeName}}
+                                    </option>
+                                </select>
+                            </td>
+                            <td style="width: 15%" class="LabelFontStyle1"> Ownership&nbsp;&nbsp;Name: </td>
+                            <td>
+                                <select type='text' formControlName="ownership" id="ownership" class="form-control"
+                                    style="background-color: yellow;">
+                                    <!-- <option></option> -->
+                                    <option *ngFor="let sc of  AllvendornameList" [ngValue]="sc.vendorName">
+                                        {{sc.vendorName}}
+                                    </option>
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                </fieldset>
+
+                <fieldset class="RFS">
+                    <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px;color: black;font-weight: bold;">
+                        Location/department details </legend>
+                    <table class="center">
+                        <tr>
+                            <td style="width: 15%" class="LabelFontStyle1"> City&nbsp;: </td>
+                            <input  type="text" formControlName="loginArray1" id="loginArray1"
+                                [(ngModel)]="loginArray1" class="form-control"
+                                style="width: 200px; border-color: black;">
+
+                            <input hidden type='number' uppercase formControlName="city" class="form-control">
+
+                            <div *ngIf="isEisableLocationcityInSearch; then actYes; else actNo"></div>
+                            <ng-template #actYes>
+
+                                <select hidden type='number' formControlName="city" id="city" [(ngModel)]="city"
+                                    class="form-control">
+                                    <option *ngFor="let sc of  locIdList" [value]="sc.city">
+                                        {{sc.ouCity}}
+                                    </option>
+                                </select>
+
+                            </ng-template>
+                            <ng-template #actNo>
+
+                                <select hidden type='number'  formControlName="city" id="city"
+                                    [(ngModel)]="city" class="form-control">
+                                    <option *ngFor="let sc of  locIdList" [value]="sc.city">
+                                        {{sc.ouCity}}
+                                    </option>
+                                </select>
+                            </ng-template>
+                            <td style="width: 15%" class="LabelFontStyle1"> Legal&nbsp;&nbsp;Entity: </td>
+                            <td>
+
+                                <select type='text' formControlName="legalEntity" id="legalEntity" class="form-control"
+                                    style="background-color: yellow;">
+                                    <!-- <option></option> -->
+                                    <option *ngFor="let sc of  AllligelentityList" [ngValue]="sc.compCode">
+                                        {{sc.compCode}}
+                                    </option>
+                                </select>
+                            </td>
+                            <td style="width: 15%" class="LabelFontStyle1">Location&nbsp;&nbsp;: </td>
+                            <td>
+                                <select formControlName="location" id="location" class="form-control"
+                                    style="background-color: yellow;">
+                                    <!-- <option></option> -->
+                                    <option *ngFor="let sc of  AllllocationitemList" [ngValue]="sc.locId">
+                                        {{sc.locName}}
+                                    </option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width:15%" class="LabelFontStyle1"> Division&nbsp;&nbsp;: </td>
+                            <td>
+                                <select type='number' formControlName="division" id="division" class="form-control"
+                                    style="background-color: yellow;">
+                                    <option *ngFor="let sc of  AlldivisionitemList" [ngValue]="sc.cmntypeId">
+                                        {{sc.codeDesc}}
+                                    </option>
+                                </select>
+
+
+
+                            </td>
+                            <input hidden type='number' uppercase formControlName="division" class="form-control">
+                            <td style="width: 15%" class="LabelFontStyle1">Department&nbsp;Name&nbsp;: </td>
+                            <td>
+                                <select type='number' formControlName="dept" id="dept" class="form-control"
+                                    style="background-color: yellow;">
+                                    <!-- <option></option> -->
+                                    <option *ngFor="let sc of  AlldepartmentitemList" [ngValue]="sc.cmntypeId">
+                                        {{sc.codeDesc}}
+                                    </option>
+                                </select>
+                            </td>
+                            <td style="width: 15%" class="LabelFontStyle1">Region&nbsp;&nbsp;: </td>
+                            <td>
+                                <select formControlName="region" id="region" class="form-control"
+                                    style="background-color: yellow;">
+
+                                    <option *ngFor="let sc of  AllregionitemList" [ngValue]="sc.codeDesc">
+                                        {{sc.codeDesc}}
+                                    </option>
+                                </select>
+
+                            </td>
+                        </tr>
+                    </table>
+                </fieldset>
+                <fieldset class="RFS">
+                    <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px;color: black;font-weight: bold;">
+                        User Details </legend>
+                    <table class="center">
+                        <tr>
+                            <td style="width: 15%" class="LabelFontStyle"> User&nbsp;Ticket&nbsp;No: </td>
+                            <td> <input type='text' formControlName="usertktNo" class="form-control"
+                                    style="background-color: rgb(255, 255, 255);"
+                                    (keydown.tab)="TicketNoSearch(usertktNo)" [(ngModel)]='usertktNo'
+                                    value={{usertktNo}}></td>
+
+
+                            <td style="width: 15%" class="LabelFontStyle">User&nbsp;Name&nbsp;: </td>
+                            <td> <input type='text' uppercase formControlName="userName" class="form-control"
+                                    style="background-color: rgb(255, 255, 255);"></td>
+                            <td style="width: 15%" class="LabelFontStyle">No&nbsp;Of&nbsp;User: </td>
+                            <td> <input type='number' uppercase formControlName="noofUsers" class="form-control"
+                                    style="background-color: rgb(255, 255, 255);"></td>
+                        </tr>
+                        <tr>
+                            <td style="width: 15%" class="LabelFontStyle">User&nbsp;Designation&nbsp;: </td>
+                            <td>
+                                <select type='text' formControlName="userDesigntn" id="userDesigntn"
+                                    class="form-control">
+                                    <!-- <option></option> -->
+                                    <option *ngFor="let sc of  AlldesignationitemList" [ngValue]="sc.codeDesc">
+                                        {{sc.codeDesc}}
+                                    </option>
+                                </select>
+                            </td>
+                            <td style="width: 15%" class="LabelFontStyle"> User&nbsp;Contact&nbsp;No: </td>
+                            <td> <input type='text' formControlName="usercontactNo" class="form-control"></td>
+                            <td style="width: 15%" class="LabelFontStyle">Email&nbsp;Id&nbsp;: </td>
+                            <td> <input type='text' uppercase formControlName="emailId" class="form-control"></td>
+
+                        </tr>
+                        <tr>
+                            <td style="width: 15%" class="LabelFontStyle">Email&nbsp;Password&nbsp;: </td>
+                            <td> <input type='text' uppercase formControlName="emailPassword" class="form-control"></td>
+
+                            <td style="width: 15%" class="LabelFontStyle"> Email&nbsp;a/c&nbsp;Type: </td>
+                            <td>
+                                <select type='text' formControlName="emailType" id="emailType" class="form-control">
+                                    <!-- <option></option> -->
+                                    <option *ngFor="let sc of  AllemailtypeitemList" [ngValue]="sc.codesubName">
+                                        {{sc.codesubName}}
+                                    </option>
+                                </select>
+                            </td>
+                            <td style="width: 15%" class="LabelFontStyle">Email&nbsp;Packages&nbsp;: </td>
+                            <td>
+                                <select type='text' formControlName="emailPackage" id="emailPackage"
+                                    class="form-control">
+                                    <option *ngFor="let sc of  AllemailpackageiList" [ngValue]="sc.codesubName">
+                                        {{sc.codesubName}}
+                                    </option>
+                                </select>
+                            </td>
+
+                        </tr>
+                    </table>
+                </fieldset>
+
+            </div>
+
+
+            <!-- ///////////////////////////////////////////////////////////////PRODUCT DETAILS//////////////////////////////////////////////////////////////////-->
+
+            <div class="tab-pane fade" id="profile-md" role="tabpanel" aria-labelledby="profile-tab-md">
+                <fieldset class="RFS">
+                    <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px;color: black;font-weight: bold;">
+                        Product Configuration</legend>
+                    <table class="center">
+
+                        <tr>
+                            <td style="width: 15%" class="LabelFontStyle1">Make&nbsp;&nbsp;: </td>
+                            <td>
+                                <select type='text' formControlName="productMake" id="productMake" class="form-control"
+                                    style="background-color: yellow;">
+                                    <!-- <option></option> -->
+                                    <option *ngFor="let sc of  AllmakeitemList" [ngValue]="sc.code">
+                                        {{sc.code}}
+                                    </option>
+                                </select>
+                            </td>
+                            <td style="width: 15%" class="LabelFontStyle1"> Serial&nbsp;No: </td>
+                            <td> <input type='text' formControlName="productserialNo" class="form-control"
+                                    style="background-color:yellow; " [(ngModel)]='productserialNo'
+                                    value={{productserialNo}}></td>
+
+
+                            <td style="width: 15%" class="LabelFontStyle1">Model&nbsp;Details&nbsp;: </td>
+                            <td> <input type='text' uppercase formControlName="productmodelDetails" class="form-control"
+                                    style="background-color: yellow;"></td>
+
+
+                        </tr>
+                        <tr>
+
+                            <td style="width: 15%" class="LabelFontStyle1"> Config-1&nbsp;/&nbsp;CPU: </td>
+                            <td>
+                                <select type='text' formControlName="cpu" id="cpu" class="form-control"
+                                    style="background-color: yellow;">
+                                    <!-- <option></option> -->
+                                    <option *ngFor="let sc of  AllconfigcpuitemList" [ngValue]="sc.codeDesc">
+                                        {{sc.codeDesc}}
+                                    </option>
+                                </select>
+                            </td>
+                            <td style="width: 15%" class="LabelFontStyle1"> Config-2&nbsp;/&nbsp;RAM: </td>
+                            <td>
+                                <select type='text' formControlName="ram" id="ram" class="form-control"
+                                    style="background-color: yellow;">
+                                    <!-- <option></option> -->
+                                    <option *ngFor="let sc of  AllconfigramitemList" [ngValue]="sc.codeDesc">
+                                        {{sc.codeDesc}}
+                                    </option>
+                                </select>
+                            </td>
+                            <td style="width: 15%" class="LabelFontStyle1"> Config-3&nbsp;/&nbsp;HDD: </td>
+                            <td>
+                                <select type='text' formControlName="hdd" id="hdd" class="form-control"
+                                    style="background-color: yellow;">
+                                    <!-- <option></option> -->
+                                    <option *ngFor="let sc of  AllconfighdditemList" [ngValue]="sc.codeDesc">
+                                        {{sc.codeDesc}}
+                                    </option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 15%" class="LabelFontStyle1"> Config-4&nbsp;&nbsp;: </td>
+                            <td> <input type='text' uppercase formControlName="config4" class="form-control"
+                                    style="background-color: rgb(255, 255, 255);"></td>
+
+                            <td style="width: 15%" class="LabelFontStyle1">Manufacturing&nbsp;Year&nbsp;: </td>
+                            <td> <input type='text' uppercase formControlName="myear" class="form-control"
+                                    style="background-color: yellow;" placeholder="YYYY"></td>
+
+                            <td style="width: 15%" class="LabelFontStyle1">MTM&nbsp;No&nbsp;: </td>
+                            <td> <input type='text' uppercase formControlName="mtmNo" class="form-control"
+                                    style="background-color: rgb(255, 255, 255);" placeholder="enter "></td>
+                        </tr>
+                    </table>
+                </fieldset>
+
+                <fieldset class="RFS">
+                    <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px;color: black;font-weight: bold;">
+                        S/W INFORMATION</legend>
+                    <table class="center">
+                        <tr>
+
+                            <td style="width: 15%" class="LabelFontStyle">&nbsp;OS&nbsp;: </td>
+                            <td>
+                                <select type='text' formControlName="os" id="os" class="form-control">
+                                    <!-- <option></option> -->
+                                    <option *ngFor="let sc of  AllopratingsysitemList" [ngValue]="sc.codesubName">
+                                        {{sc.codesubName}}
+                                    </option>
+                                </select>
+                            </td>
+                            <td style="width: 15%" class="LabelFontStyle">OS&nbsp;Lic&nbsp;Mode: </td>
+                            <td>
+                                <select type='text' formControlName="oslicMode" id="oslicMode" class="form-control">
+                                    <!-- <option></option> -->
+                                    <option *ngFor="let sc of  AlloslicmodeitemList" [ngValue]="sc.codesubName">
+                                        {{sc.codesubName}}
+                                    </option>
+                                </select>
+                            </td>
+                            <td style="width: 15%" class="LabelFontStyle"> OS&nbsp;Lice&nbsp;Key: </td>
+                            <td> <input type='text' uppercase formControlName="oslicKey" class="form-control"></td>
+                        </tr>
+                        <tr>
+                            <td style="width: 15%" class="LabelFontStyle">Office&nbsp;S/W&nbsp;: </td>
+                            <td>
+                                <select type='text' formControlName="officeSW" id="officeSW" class="form-control">
+                                    <!-- <option></option> -->
+                                    <option *ngFor="let sc of  AllswpkglicmodeitemList" [ngValue]="sc.codesubName">
+                                        {{sc.codesubName}}
+                                    </option>
+                                </select>
+                            </td>
+                            <td style="width: 15%" class="LabelFontStyle">&nbsp;Lic&nbsp;Mode: </td>
+                            <td>
+                                <select type='text' formControlName="licMode" id="licMode" class="form-control">
+                                    <!-- <option></option> -->
+                                    <option *ngFor="let sc of  AllswlicmodeitemList" [ngValue]="sc.codesubName">
+                                        {{sc.codesubName}}
+                                    </option>
+                                </select>
+                            </td>
+                            <td style="width: 15%" class="LabelFontStyle">&nbsp;Lice&nbsp;Key: </td>
+                            <td> <input type='text' uppercase formControlName="licKey" class="form-control"></td>
+                        </tr>
+
+                        <tr>
+                            <td style="width: 15%" class="LabelFontStyle">AV&nbsp;S/W&nbsp;: </td>
+                            <td>
+                                <select type='text' formControlName="avSW" id="avSW" class="form-control">
+                                    <!-- <option></option> -->
+                                    <option *ngFor="let sc of  AllavantivsysitemList" [ngValue]="sc.codesubName">
+                                        {{sc.codesubName}}
+                                    </option>
+                                </select>
+                            </td>
+                            <td style="width: 15%" class="LabelFontStyle">AV&nbsp;Exp&nbsp;Date: </td>
+                            <td> <input type='date' uppercase formControlName="avexpDate" class="form-control"></td>
+
+
+                            <td style="width: 15%" class="LabelFontStyle"> AV&nbsp;Lice&nbsp;Key: </td>
+                            <td>
+                                <select formControlName="avlicKeyYN" id="avlicKeyYN" class="form-control"
+                                    (change)="AvlicKeyYN($event)">
+                                    <option value="NO">CLIENT</option>
+                                    <option value="YES">CONSOLE</option>
+                                </select>
+                            </td>
+                            <div *ngIf="showAVLiceKeyDetails; then AvlickeyYes; else AvlickeyNo"></div>
+                            <ng-template #AvlickeyYes>
+
+                                <td> <input type='text' uppercase formControlName="avlicKey" class="form-control"
+                                        style="background-color:  rgb(252, 251, 247);"></td>
+                            </ng-template>
+                            <ng-template #AvlickeyNo>
+                            </ng-template>
+
+
+                        </tr>
+
+                        <tr>
+                            <td style="width: 15%" class="LabelFontStyle">DMS&nbsp;&nbsp;: </td>
+                            <td>
+                                <select type='text' formControlName="dmsYn" id="dmsYn" class="form-control">
+                                    <option>Yes/Allow</option>
+                                    <option>No/Not Allow</option>
+                                </select>
+                            </td>
+                            <td style="width: 15%" class="LabelFontStyle">ERP&nbsp;&nbsp;: </td>
+                            <td>
+                                <select type='text' formControlName="erpYn" id="erpYn" class="form-control">
+                                    <option>Yes/Allow</option>
+                                    <option>No/Not Allow</option>
+                                </select>
+                            </td>
+                            <td style="width: 15%" class="LabelFontStyle">BAJAJ&nbsp;Replica&nbsp;: </td>
+                            <td>
+                                <select type='text' formControlName="bajjajRyn" id="avSW" class="form-control">
+                                    <option>Yes/Allow</option>
+                                    <option>No/Not Allow</option>
+                                </select>
+                            </td>
+
+                        </tr><br>
+                    </table>
+
+                </fieldset>
+                <fieldset class="RFS">
+                    <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px;color: black;font-weight: bold;">
+                        Additional Information If Any</legend>
+                    <table class="center">
+                        <tr>
+                            <td style="width: 15%" class="LabelFontStyle"> &nbsp;Remark&nbsp;: </td>
+                            <!-- <td colspan="5" rowspan="10px"> <input uppercase type='text' formControlName="remarks" class="form-control" style="width: 100%;" ></td> -->
+                            <td colspan="3">
+                                <textarea id="remarks" formControlName="remarks" rows="2"
+                                    style="width: 100%;resize: none; font-size: small;"></textarea>
+                            </td>
+
+                        </tr>
+                    </table>
+                </fieldset>
+
+            </div>
+
+
+
+
+            <!--///////////////////////////////////////////////////////////////PURCHASE ORDER DETAILS//////////////////////////////////////////////////////////////////-->
+
+            <div class="tab-pane fade" id="purchase-md" role="tabpanel" aria-labelledby="profile-tab-md">
+                <fieldset class="RFS">
+                    <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px;color: black;font-weight: bold;">
+                        Purchase Details </legend>
+                    <table class="center">
+
+                        <tr>
+                            <td style="width: 15%" class="LabelFontStyle1">Purchase&nbsp;Inv&nbsp;No: </td>
+                            <td> <input type='text' formControlName="purchaseInvNo" class="form-control"
+                                    [(ngModel)]='purchaseInvNo' style="background-color:  yellow"
+                                    (keydown.tab)="purchaseNoSearch(purchaseInvNo)"></td>
+                            <td style="width: 15%" class="LabelFontStyle"> Purchase&nbsp;Ref&nbsp;.Id: </td>
+                            <td>
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <input type='number' uppercase formControlName="purchaserefNo"
+                                                [(ngModel)]='purchaserefNo' value="purchaserefNo" class="form-control"
+                                                (keydown.tab)="purchaseRefNoSearch(purchaserefNo)"
+                                                style="background-color: yellow;">
+                                        </td>
+                                        <td>
+                                            <i class="fa fa-external-link" aria-hidden="true"
+                                                (click)="onNavigatePurchaseForm()"></i>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+
+                            <td style="width: 15%" class="LabelFontStyle1">Purchase&nbsp;&nbsp;Date: </td>
+                            <td> <input type='text' uppercase formControlName="purchaseDt"
+                                    class="form-control"></td>
+
+                        </tr>
+                        <tr>
+                            <td style="width: 15%" class="LabelFontStyle"> Purchase&nbsp;&nbsp;Cost: </td>
+                            <td> <input type='number' formControlName="purchaseCost" class="form-control"
+                                    style="background-color: yellow;"></td>
+                            <td style="width: 15%" class="LabelFontStyle1"> Vendor&nbsp;&nbsp;Name: </td>
+                            <td>
+                                <input type='text' readonly formControlName="vendorName" class="form-control">
+                            </td>
+                            <td style="width: 15%"  class="LabelFontStyle1">Warranty&nbsp;End&nbsp;Date: </td>
+                            <td> <input type='text'   formControlName="warrntyDt" class="form-control">
+                            </td>
+
+                        </tr>
+                    </table>
+                </fieldset>
+
+                <fieldset class="RFS">
+                    <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px;color: black;font-weight: bold;">
+                        Other Details if any </legend>
+                    <table class="center">
+                        <tr>
+                            <td style="width: 15%" class="LabelFontStyle1"> AMC&nbsp;Support: </td>
+                            <td>
+                                <select type='text' formControlName="amcSupport" id="amcSupport" class="form-control"
+                                    style="background-color: yellow;">
+                                    <!-- <option></option> -->
+                                    <option *ngFor="let sc of  AllvendornameList" [ngValue]="sc.vendorName">
+                                        {{sc.vendorName}}
+                                    </option>
+                                </select>
+                            </td>
+                            <td style="width: 15%" class="LabelFontStyle">Dongal&nbsp;Attached: </td>
+                            <td>
+                                <select type='text' formControlName="dongleAttached" id="dongleAttached"
+                                    class="form-control">
+                                    <!-- <option></option> -->
+                                    <option *ngFor="let sc of  AlldongalattachitemList" [ngValue]="sc.codesubName">
+                                        {{sc.codesubName}}
+                                    </option>
+                                </select>
+                            </td>
+                            <td style="width: 15%" class="LabelFontStyle">Internet&nbsp;Status&nbsp;: </td>
+                            <td>
+                                <select type='text' formControlName="internetStatus" id="internetStatus"
+                                    class="form-control">
+                                    <!-- <option></option> -->
+                                    <option *ngFor="let sc of  AllinternetstusitemList" [value]="sc.codesubName">
+                                        {{sc.codesubName}}
+                                    </option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 15%" class="LabelFontStyle"> IP&nbsp;Address&nbsp;: </td>
+                            <td>
+                                <!-- <select type='text' formControlName="ipAddress" id="ipAddress"  class="form-control">
+                                    <option *ngFor="let sc of  ipaddresslist" [ngValue]="sc.codeDesc">
+                                        {{sc.codeDesc}}
+                                    </option>
+                                </select> -->
+                                <!-- <input type='text' uppercase formControlName="ipAddress" class="form-control" > -->
+                                <select formControlName="ipAddressD" id="ipAddressD" class="form-control"
+                                    (change)="IPaddYN($event)" style="background-color: yellow;">
+                                    <option value="DHCP">DHCP</option>
+                                    <option value="IPADDS">IP ADDREESS</option>
+                                    <option value="NOTAPP">NOT APPLICABLE</option>
+                                </select>
+                            </td>
+                            <td></td>
+                            <td>
+                            <div *ngIf="showIPDetails; then IPYes; else IPNo;"></div>
+                            <ng-template #IPYes>
+                             <input type='text' uppercase formControlName="ipAddress" class="form-control"
+                                        style="background-color:  rgb(252, 251, 247);">
+                            </ng-template>
+                            <ng-template #IPNo>
+                            </ng-template>
+                        </td>
+                            <td style="width: 15%" class="LabelFontStyle1">USB&nbsp;Blocked&nbsp;: </td>
+                            <td>
+                            <select type='text' formControlName="usbBlocked" id="usbBlocked" class="form-control"
+                                style="background-color: yellow;">
+                                <option>Yes</option>
+                                <option>No</option>
+                                <option>Not Applicable</option>
+
+                            </select>
+                        </td>
+                            <td></td>
+
+
+
+
+                        </tr>
+                    </table>
+                </fieldset>
+                <fieldset class="RFS">
+                    <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px;color: black;font-weight: bold;">
+                        Item Installation Details </legend>
+                    <table class="center">
+                        <tr>
+                            <td style="width: 15%" class="LabelFontStyle1"> Date&nbsp;Of&nbsp;Installation: </td>
+                            <td> <input type='date' uppercase formControlName="dtofInstall" class="form-control"
+                                    style="background-color: rgb(255, 238, 2);"></td>
+                            <td style="width: 15%" class="LabelFontStyle1">Fixed&nbsp;Asset&nbsp;No: </td>
+                            <td>
+                                <select formControlName="fanoYN" id="fanoYN" class="form-control"
+                                    (change)="FaNoYN($event)" style="background-color: yellow; ">
+                                    <option value="PENDING">PENDING</option>
+                                    <option value="GENRATE">GENRATE</option>
+                                </select>
+                            </td>
+                            <td>
+                            <div *ngIf="showFADetails; then FAYes; else FANo"></div>
+                            <ng-template #FAYes>
+
+                                 <input type='text' uppercase formControlName="faNo" class="form-control"
+                                        style="background-color:  rgb(252, 251, 247);">
+                            </ng-template>
+                            <ng-template #FANo>
+                            </ng-template>
+                        </td>
+                        </tr>
+                    </table>
+                </fieldset>
+
+
+            </div>
+
+
+            <!--//////////////////////////////////////////////////////////////MONITOR DETILS////////////////////////////////////////////////////////////////////////////-->
+
+            <div class="tab-pane fade" id="monitor-md" role="tabpanel" aria-labelledby="profile-tab-md">
+                <fieldset class="RFS">
+                    <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px;color: black;font-weight: bold;">
+                        Monitor Information </legend>
+                    <table class="center">
+                        <tr>
+                            <td style="width: 15%" class="LabelFontStyle">Item&nbsp;Code&nbsp;: </td>
+                            <td> <input type='text'  uppercase formControlName="monitemCode"
+                                    class="form-control" style="background-color: rgb(143, 255, 148);"></td>
+                            <td style="width: 15%" class="LabelFontStyle">&nbsp;Make&nbsp;: </td>
+                            <td>
+                                <select type='text' formControlName="monitorMake" id="monitorMake" class="form-control">
+                                    <option *ngFor="let sc of  AllmakeitemList" [ngValue]="sc.code">
+                                        {{sc.code}}
+                                    </option>
+                                </select>
+                            </td>
+                            <td style="width: 15%" class="LabelFontStyle1">Model&nbsp;&nbsp;Details: </td>
+                            <td> <input type='text' uppercase formControlName="monitorModel" class="form-control"
+                                    style="background-color: yellow"></td>
+
+                        </tr>
+                        <tr>
+                            <td style="width: 15%" class="LabelFontStyle1">Serial&nbsp;No&nbsp;: </td>
+                            <td> <input type='text' uppercase formControlName="monitorserialNo" class="form-control"
+                                    style="background-color: yellow;"></td>
+                            <td style="width: 15%" class="LabelFontStyle">&nbsp;Type&nbsp;: </td>
+                            <td> <input type='text' uppercase formControlName="type" class="form-control"
+                                    style="background-color: yellow"></td>
+                            <td style="width: 15%" class="LabelFontStyle1">WE&nbsp;&nbsp;Date: </td>
+                            <td> <input type='date' uppercase formControlName="weDt" class="form-control"
+                                    style="background-color:   yellow;"></td>
+
+                        </tr>
+                        <tr>
+                            <td style="width: 15%" class="LabelFontStyle1">Monitor&nbsp;Fixed&nbsp;Asset&nbsp;No: </td>
+                            <td> <input uppercase type='text' formControlName="monitorfaNo"
+                                    class="form-control" style=" background-color:  rgb(255, 238, 2);"></td>
+
+                            <td> <input hidden type='text' uppercase formControlName="status" class="form-control"
+                                    style="background-color:   rgb(255, 238, 2);"></td>
+
+                            <td> <input hidden type='text' uppercase formControlName="createdBy" class="form-control">
+                            </td>
+                            <td> <input hidden type='text' uppercase formControlName="lastUpdatedBy"
+                                    class="form-control"></td>
+                        </tr>
+                    </table>
+                </fieldset>
+            </div>
+        </div>
+    </section>
+    <fieldset class="RFS">
+        <table class="center">
+            <tr>
+
+                <div *ngIf="displayButton4; then thenBlock4; else elseBlock4"></div>
+                <ng-template #thenBlock4>
+                   
+                    <td> 
+                       
+                        <button type="submit" class="btn btn-primary" id="register" data-toggle="modal" style="width: fit-content;"
+                            data-target="#confirmAlert" (click)="getMessage('newMast')">Save</button>
+                 </td>
+                   
+                    <td> 
+                        <!-- <button type="submit" class="btn btn-info" id="register" data-toggle="modal"
+                            data-toggle="modal" data-target="#confirmAlert"
+                            (click)="getMessage('resetMast')">Reset</button> -->
+                            <button type="submit" class="btn btn-primary" id="register" data-toggle="modal" style="width: fit-content;"
+                            data-target="#confirmAlert" (click)="getMessage('resetMast')">Reset</button>
+                        </td>
+                    <td>
+                         <!-- <button type="submit" class="btn btn-info" id="register" data-toggle="modal"
+                            data-target="#confirmAlert" (click)="getMessage('closeMast')"
+                            (click)="closeMast()">Close</button> -->
+                            <button type="submit" class="btn btn-primary" id="register" data-toggle="modal" style="width: fit-content;"
+                            data-target="#confirmAlert" (click)="getMessage('closeMast')" >Close</button>
+                        </td>
+
+                    <td><button type="submit" class="btn btn-info" id="register" style="width: fit-content;"
+                            [routerLink]="['/admin/itTransaction/itemMsrchFrm']">Item Master List</button></td>
+                </ng-template>
+                <ng-template #elseBlock4>
+
+                    <td [style.display]="isVisibleupdateBIM ? 'block' : 'none' "> 
+                        <!-- <button type="submit"
+                            class="btn btn-info" id="register" data-toggle="modal" data-target="#confirmAlert"
+                            (click)="getMessage('updateMast')">Update</button> -->
+                            <button type="submit" class="btn btn-primary" id="register" data-toggle="modal" style="width: fit-content;"
+                            data-target="#confirmAlert" (click)="getMessage('updateMast')">Update</button>
+                        </td>
+                   
+                    <td> 
+                        <!-- <button type="submit" class="btn btn-info" id="register" data-toggle="modal"
+                            data-target="#confirmAlert" (click)="getMessage('resetMast')">Reset</button> -->
+                            <button type="submit" class="btn btn-primary" id="register" data-toggle="modal" style="width: fit-content;"
+                            data-target="#confirmAlert" (click)="getMessage('resetMast')">Reset</button>
+                        </td>
+                    <td> 
+                        <button type="submit" class="btn btn-info" id="register" data-toggle="modal"
+                            data-target="#confirmAlert" (click)="getMessage('closeMast')">Close</button>
+                            <!-- <button type="submit" class="btn btn-primary" id="register" data-toggle="modal" style="width: fit-content;"
+                            data-target="#confirmAlert"  (click)="closeMast()" (click)="getMessage('closeMast')">Close</button> -->
+                        </td>
+                    <!-- <td><button type="submit" class="btn btn-info" id="register" style="width: fit-content;" [routerLink]="['/admin/transaction/itemlistf']">Item Master List</button></td> -->
+                    <button type="button" class="btn-primary" style="width: 150px; height: 25px;" data-toggle="modal"
+                        (click)="reportDetails()">
+                        Acknowledgement&nbsp;Form&nbsp;
+                    </button>
+                </ng-template>
+
+            </tr>
+        </table>
+
+
+    </fieldset>
+</form>
+
+
+<div class="modal fade" id="confirmAlert" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="width: 30%;margin-left: 35%;">
+    <div class="modal-dialog modal-sm" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <label
+            style="font-size: small; color: black; font-weight: bold; text-align: center; vertical-align: middle;">
+            {{message}}
+        </label>
+        </div>
+        <div class="modal-footer">
+            <table class="center">
+                <tr>
+                    <td>
+                        <button type="button" class="btn btn-info" data-dismiss="modal" id="register"
+                            (click)="executeAction()">Yes</button>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-info" data-dismiss="modal">No</button>
+                    </td>
+                </tr>
+            </table>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<!-- <div class="modal" id="confirmAlert" tabindex="-1" role="dialog" aria-hidden="true"
+    style="width: 500px; text-align: center;margin-left: 35%;">
+    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirmation!</h5>
+            </div>
+            <div class="modal-body">
+                <label
+                    style="font-size: small; color: black; font-weight: bold; text-align: center; vertical-align: middle;">
+                    {{message}}
+                </label>
+            </div>
+            <div class="modal-footer">
+                <table class="center">
+                    <tr>
+                        <td>
+                            <button type="button" class="btn btn-info" data-dismiss="modal" id="register"
+                                (click)="executeAction()">Yes</button>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-info" data-dismiss="modal">No</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+
+<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <label
+                    style="font-size: small; color: black; font-weight: bold; text-align: center; vertical-align: middle;">
+                    <!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
+                    Want&nbsp;to&nbsp;Close.&nbsp;Confirm&nbsp;(Yes/No)?&nbsp;
+                </label>
+            </div>
+            <div class="modal-footer">
+                <table class="center">
+                    <tr>
+                        <td>
+                            <button type="submit" class="btn btn-info" data-dismiss="modal" id="register"
+                                (click)="executeAction()">Yes</button>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-info" data-dismiss="modal">No</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

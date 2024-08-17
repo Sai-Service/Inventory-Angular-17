@@ -1,0 +1,113 @@
+<form [formGroup]="inventorysubtypeMasterForm" (ngSubmit)="inventorysubtypeMaster(inventorysubtypeMasterForm.value)">
+    <table style="width: 100%;background-color: white;" class="center">
+        <tr>
+            <td class="PageHeader">
+                &nbsp;PRODUCT&nbsp;SUB&nbsp;TYPE&nbsp;MASTER
+            </td>
+            <td colspan="2" align="right" style="background-color: #FFE4B5;text-align: right;width: 100%;">
+                &nbsp;Type&nbsp;&nbsp;Id&nbsp;
+            </td>
+            <td style="background-color: #FFE4B5;">
+                <input class="form-control" formControlName="typeId" value={{typeId}} [(ngModel)]='typeId'>
+                <!-- [style.display]="isVisibleOrderFind ? 'block' : 'none'"> -->
+            </td>
+
+            <td style="background-color: #FFE4B5;">
+                <button type="button" class="btn-primary" (click)="typeIdFind(typeId)"><i class="fa fa-search"
+                        aria-hidden="true"></i></button>
+            </td>
+        </tr>
+    </table>
+    <fieldset class="RFS">
+        <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px;color: black;font-weight: bold;">INVENTORY
+            SUB TYPE </legend>
+        <table class="center">
+            <tr>
+                <td style="width: 15%" class="LabelFontStyle1"> Sub&nbsp;Type&nbsp;Name: </td>
+                <td> <input type='text' uppercase formControlName="subtypeName" class="form-control"
+                        placeholder="Enter Sub Type Name"></td>
+                <td style="width: 15%" class="LabelFontStyle1"> Product&nbsp;&nbsp;Type: </td>
+                <td>
+                    <select type='number' formControlName="prodType" id="prodType" class="form-control"
+                        style="background-color: yellow;">
+                        <!-- <option></option> -->
+                        <option *ngFor="let sc of  AllproducttypeList" [ngValue]="sc.cmntypeId">
+                            {{sc.codeDesc}}
+                        </option>
+                    </select>
+                </td>
+                <td style="width: 15%" class="LabelFontStyle1">Description&nbsp;&nbsp;: </td>
+                <td> <input type='text' uppercase formControlName="description" class="form-control"
+                        placeholder="Enter Description"></td>
+
+            </tr>
+            <tr>
+
+                <td style="width: 15%" class="LabelFontStyle1"> status&nbsp;&nbsp;: </td>
+                <td> <input type='text' readonly uppercase formControlName="status" class="form-control"></td>
+                <td style="width: 15%" class="LabelFontStyle1"> Start&nbsp;Date&nbsp;: </td>
+                <td> <input type='date' uppercase formControlName="startDate" class="form-control"></td>
+                <!-- (keyup)="onKey($event )"-->
+
+            </tr>
+
+            <tr>
+                <td style="width: 15%" class="LabelFontStyle1"> Comments&nbsp;&nbsp;: </td>
+                <td> <input type='text' uppercase formControlName="comments" class="form-control"></td>
+                <!-- (keyup)="onKey($event )"-->
+            </tr>
+
+
+        </table>
+    </fieldset>
+
+    <table class="center">
+        <tr>
+            <div *ngIf="displayButton; then thenBlock1; else elseBlock1"></div>
+            <ng-template #thenBlock1>
+                <td> <button type="submit" class="btn btn-info" id="register" (click)="newMast()">Save</button></td>
+                <td> <button type="submit" class="btn btn-info" id="register" (click)="searchMast()">Search</button>
+                </td>
+                <td> <button type="submit" class="btn btn-info" id="register" (click)="resetMast()">Reset</button></td>
+                <td> <button type="submit" class="btn btn-info" id="register" (click)="closeMast()">Close</button></td>
+
+            </ng-template>
+            <ng-template #elseBlock1>
+                <td> <button type="submit" class="btn btn-info" id="register" (click)="updateMast()">Update</button>
+                </td>
+                <td> <button type="submit" class="btn btn-info" id="register" (click)="searchMast()">Search</button>
+                </td>
+                <td> <button type="submit" class="btn btn-info" id="register" (click)="resetMast()">Reset</button></td>
+                <td> <button type="submit" class="btn btn-info" id="register" (click)="closeMast()">Close</button></td>
+            </ng-template>
+
+        </tr>
+    </table>
+    <table class="GridFont" cellspacing="0" cellpadding="4"
+        style="border-color:#959595;border-collapse:collapse;width: 100%; ">
+        <thead>
+            <tr class="GridHeader">
+                <!-- <th scope="col" style="border: 1px solid black;">Type Id</th> -->
+                <th scope="col" style="border: 1px solid black;">Product Type</th>
+                <th scope="col" style="border: 1px solid black;">Sub Type Name</th>
+                <th scope="col" style="border: 1px solid black;">Status</th>
+                <th scope="col" style="border: 1px solid black;">Select</th>
+
+
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let com of allinvsubtypList" class="ItemStyle" style="text-decoration:none;">
+                <!-- <td style="border: 1px solid black;padding-left: 15px;">{{com.typeId}}</td> -->
+                <td style="border: 1px solid black;padding-left: 15px;">{{com.prodName}}</td>
+                <td style="border: 1px solid black;padding-left: 15px;">{{com.subtypeName}}</td>
+                <td style="border: 1px solid black;padding-left: 15px;">{{com.status}}</td>
+                <td style="border: 1px solid black;padding-left: 15px;"> <button type="button"
+                        style="width: fit-content;" class="btn btn-primary" data-dismiss="modal"
+                        (click)="typeIdFind(com.typeId)">Select</button></td>
+            </tr>
+        </tbody>
+
+    </table>
+
+</form>

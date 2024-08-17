@@ -1,0 +1,127 @@
+<form [formGroup]="suppBillForm" (ngSubmit)="SuppListS(suppBillForm.value)">
+    <table style="width: 100%;background-color: white;">
+    
+        <tr>
+            <td class="PageHeader">
+                Supplier&nbsp;Bill&nbsp;List&nbsp;Form&nbsp;
+            </td>
+        </tr>
+    </table>
+    <fieldset>
+        <table class="center">
+            <tr>
+                <div *ngIf="closeResetButton; then hList1; else hList2"></div>
+                <ng-template #hList2>
+                    <div class="d-flex justify-content-center">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only" id="loading"></span>
+    
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template #hList1> </ng-template>
+    
+                <td class="LabelFontStyle" style="color: blue;width: fit-content;" colspan="4">&nbsp;{{dataDisplay}}&nbsp;
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+    <div class="col-md-12 table-responsive" #epltable>
+        <div style="padding-bottom: 10px;padding-top: 10px;">
+            <div class="row">
+            </div>
+        </div>
+        <table class="center" style="width: 100%;background-color: #FFE4B5;">
+            <tr>
+                <td>
+                    <table class="center">
+
+                        <tr>
+                            <td style="width: 15%" class="LabelFontStyle"> &nbsp;&nbsp;Purchase&nbsp;Ref&nbsp;Id:&nbsp;(Header Id);</td>
+                            <td><input type="number" class="form-control"  formControlName="headerId" style="width: 220px;" ></td>
+                            <td style="width: 15%" class="LabelFontStyle"> &nbsp;&nbsp;Bill&nbsp;No&nbsp;</td>
+                            <td><input type="text" class="form-control"  formControlName="billNo" style="width: 220px;" ></td>
+                            <td style="width: 15%" class="LabelFontStyle"> &nbsp;&nbsp;Company&nbsp;Code&nbsp;</td>
+                            <td><input type="text" class="form-control"  formControlName="compCode" style="width: 220px;" ></td>
+                        </tr> 
+                        <tr>
+                            <td style="width: 15%" class="LabelFontStyle"> &nbsp;&nbsp;Bill&nbsp;Date&nbsp;</td>
+                            <td><input type="date" class="form-control"  formControlName="billDate" style="width: 220px;" ></td>
+                            <td >
+                                <button type="button" class="btn-primary" (click)="searchbillDateW()"><i class="fa fa-search"
+                                        aria-hidden="true"></i></button>
+                            </td>
+                            <td style="width: 15%" class="LabelFontStyle"> &nbsp;&nbsp;Vendor&nbsp;Name&nbsp;:&nbsp;</td>
+                                            
+                            <input type="text" formControlName="vendorName" 
+                    (keyup)="getUserIdsFirstWay($event)" id="userIdFirstWay"
+                    list="dynmicUserIds" class="form-control" placeholder="Supplier details"
+                    (change)="onSelectVendorName($event)" />
+                <datalist id="dynmicUserIds">
+                    <option *ngFor="let sc of AllvendornameList" [value]="sc.vendorName">
+                        {{sc.vendorName}}</option>
+                </datalist>
+                        </tr>
+                        <tr>
+                            <td><input hidden type="number" class="form-control"  formControlName="cityId"  style="width: 220px;" ></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        <fieldset class="RFS">
+            <table class="center">
+                <tr>
+                    <td>
+                        <button type="submit" style="width: fit-content;" class="btn btn-primary" id="register" (click)="dataSearch()">
+                            Current Date Search
+                        </button>
+                    </td>
+
+                    <td>
+                        <button type="submit" style="width: fit-content;" class="btn btn-primary" id="register" (click)="AllsuperdataSearch()">
+                        All Search
+                        </button>
+                    </td>
+                    
+                    <td>
+                        <button type="submit" style="width: fit-content;" class="btn btn-primary" id="register" (click)="refresh()">
+                            Clear
+                        </button>
+                    </td>
+                    <td>
+                        <button type="submit" style="width: fit-content;" (click)="close()" class="btn btn-primary">Close</button>
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+        <br>
+            <table class="GridFont" cellspacing="0" cellpadding="15"
+                style="border-color:#959595;border-collapse:collapse;width: 100%; ">
+                <thead>
+                    <tr class="GridHeader">
+                        <th scope="col" style="border: 1px solid black; width: 80px;">Purchase Id</th>
+                            <th scope="col" style="border: 1px solid black; width:50px;">Bill Id</th>
+                            <th scope="col" style="border: 1px solid black;width:100px;">Company Name</th>
+                            <th scope="col" style="border: 1px solid black; width:90px;">Supplier Name</th>
+                            <th scope="col" style="border: 1px solid black; width:50px;">Bill Amount</th>
+                            <th scope="col" style="border: 1px solid black; width:50px;">Bill Date</th>
+                            <th hidden scope="col" style="border: 1px solid black; width:50px;">Bill Date</th>
+                    </tr>
+                </thead>
+                <tbody style="text-align: center;">
+                    <tr *ngFor="let com of allbillrecordersearch" class="ItemStyle" style="text-decoration:none;">
+                        <td style="padding-left:10px;padding-top: 10px;border: 1px solid black;padding-left: 10px;">
+                            <a [routerLink]="['/admin/itTransaction/BillRecorder',com.headerId]" href="{{headerId}}">{{com.headerId}}</a>
+                        </td>
+                            <td style="border: 1px solid black;padding-left: 10px; width:50px;">{{com.billNo}}</td>
+                            <td style="border: 1px solid black;padding-left: 15px;width:100px;text-align: left;">{{com.compCode}}</td>
+                            <td style="border: 1px solid black;padding-left: 15px;width: 90px;">{{com.vendorName}}</td>
+                            <td style="border: 1px solid black;padding-left: 2px; text-align:center;width: 50px;">{{com.grandTotal}}</td>
+                            <td style="border: 1px solid black;padding-left: 15px; width:50px;">{{com.billDate | date:'dd-MMM-yyyy'}}</td>
+                            <td hidden style="border: 1px solid black;padding-left: 15px; width:50px;">{{com.startDate | date:'yyyy-MM-dd'}}</td>
+                    </tr>
+                </tbody>
+            </table>
+    </div>
+</form>

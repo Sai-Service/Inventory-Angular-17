@@ -1,0 +1,162 @@
+<form [formGroup]="InventoryItemReportForm" (ngSubmit)="invitem(InventoryItemReportForm.value)">
+    <div class="center">
+        <table style="width: 100%;background-color: white;">
+            <tr>
+                <td class="PageHeader">
+                    &nbsp;All&nbsp;Inventory&nbsp;Item&nbsp;Report&nbsp;
+                </td>
+            </tr>
+        </table>
+    </div>
+    <table class="center">
+        <tr>
+            <div *ngIf="closeResetButton; then hList1; else hList2"></div>
+            <ng-template #hList2>
+                <div class="d-flex justify-content-center">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="sr-only" id="loading"></span>
+                    </div>
+                </div>
+            </ng-template>
+            <ng-template #hList1> </ng-template>
+            <td class="LabelFontStyle" style="color: blue;width: fit-content;" colspan="4">
+                &nbsp;{{dataDisplay}}&nbsp; </td>
+        </tr>
+    </table>
+
+  
+            <fieldset class="RFS">
+                <table class="center">
+                    <tr>
+                    <!-- <input type='number' hidden formControlName="ouId" value={{ouId}} class="form-control">-->
+                       <!-- <td class="LabelFontStyle"> 
+                            &nbsp;OU&nbsp;CITY&nbsp;:&nbsp;&nbsp;{{ouCity}}&nbsp;
+                       </td> -->
+                    </tr>
+                    <br>
+                    <tr  [style.display]="isVisibleSuperAdmin ? 'block' : 'none' ">
+                        <!--------------------------------------------------------------------------SUPER ADMIN----------------------------------------------------------------------------------------->
+                       
+                        <td style="width: 15%" class="LabelFontStyle1">TO&nbsp;City&nbsp;&nbsp;: </td>
+                      <td>
+                    <select type='number' formControlName="ouCity" id="ouCity" class="form-control"
+                        (change)="onSelectOuCity($event)" style="background-color: yellow;">
+                       <option value="ALL">ALL</option>
+                        <option *ngFor="let sc of  AlllocationitemList" [ngValue]="sc.ouId">
+                            {{sc.ouName}}
+                        </option>
+                    </select>
+                </td>
+                <td style="width: 15%" class="LabelFontStyle1">TO&nbsp;Location&nbsp;&nbsp;: </td>
+                <td>
+                    <!-- <select  type='number' formControlName="newlocId" id="newlocId" class="form-control" style="background-color: yellow;" > -->
+                    <select formControlName="locId" id="locId" class="form-control"
+                        style="background-color: yellow;">
+                        <option *ngFor="let subType of getAllOuLocationIdFn" [ngValue]="subType.locId">
+                            {{subType.locId}}-{{subType.locName}}
+                        </option>
+                    </select>
+                </td>
+
+                <td style="width: 15%" class="LabelFontStyle">
+                    &nbsp;Department&nbsp;:&nbsp;
+                </td>
+                <td>
+                    <select formControlName="dept" id="dept" class="form-control">
+                        <option>--Select--</option>
+                        <option *ngFor="let sc of  invItmRepDepartmentList" [value]="sc.cmntypeId">
+                            {{sc.codeDesc}}
+                        </option>
+                    </select>
+                </td>
+                <td style="width: 15%" class="LabelFontStyle">
+                    &nbsp;Item&nbsp;Type:&nbsp;
+                </td>
+                <td>
+                    <select formControlName="itemTypeId" id="itemTypeId" class="form-control">
+                        <option>--Select--</option>
+                        <option *ngFor="let sc of  inItmRepItemTypeList" [value]="sc.cmntypeId">
+                            {{sc.codeDesc}}
+                        </option>
+                    </select>
+                </td>
+               
+                    </tr>
+
+
+
+
+
+
+                        <!-------------------------------------------------------------------------ADMIN------------------------------------------------------------------------>
+                       <tr [style.display]="isVisibleAdmin ? 'block' : 'none' ">
+                        <td style="width: 15%" class="LabelFontStyle">
+                            &nbsp;Location&nbsp;Code&nbsp;:&nbsp;
+                        </td>
+                        <td>
+                            <select formControlName="locId" id="locId" class="form-control">
+
+                                <option *ngFor="let sc of invItmRepLocationList" [value]="sc.locId">
+                                    {{sc.locName}}
+                                </option>
+                            </select>
+                        </td>
+                        <td style="width: 15%" class="LabelFontStyle">
+                            &nbsp;Department&nbsp;:&nbsp;
+                        </td>
+                        <td>
+                            <select formControlName="dept" id="dept" class="form-control">
+                                <option>--Select--</option>
+                                <option *ngFor="let sc of  invItmRepDepartmentList" [value]="sc.cmntypeId">
+                                    {{sc.codeDesc}}
+                                </option>
+                            </select>
+                        </td>
+                        <td style="width: 15%" class="LabelFontStyle">
+                            &nbsp;Item&nbsp;Type:&nbsp;
+                        </td>
+                        <td>
+                            <select formControlName="itemTypeId" id="itemTypeId" class="form-control">
+                                <option>--Select--</option>
+                                <option *ngFor="let sc of  inItmRepItemTypeList" [value]="sc.cmntypeId">
+                                    {{sc.codeDesc}}
+                                </option>
+                            </select>
+                        </td>
+                            <input type='number' hidden formControlName="ouId" value={{ouId}} class="form-control">
+                    
+                    </tr>
+                    <br>
+                </table>
+            </fieldset>
+        
+ 
+                    
+                    <br>
+                        <fieldset class="RFS">
+                        <table class="center">
+                            <tr>
+                                <td [style.display]="isVisibleloactionReport ? 'block' : 'none' ">
+                                    <button class="btn-primary1" style="width: 100px; background-color: green;"
+                                        (click)="reportDetails()">View Report</button>
+                                </td>
+                                <td [style.display]="isVisibleOuReport ? 'block' : 'none' ">
+                                    <button class="btn-primary1" style="width: 100px; background-color: green;"
+                                        (click)="SupperAdminreportDetails()">View Reports</button>
+                                </td>
+                                <td>
+                                    <button type="submit" class="btn btn-primary" id="register" (click)="refresh()"
+                                        style="width:90PX">
+                                        Clear
+                                    </button>
+                                </td>
+                                <td>
+                                    <button type="submit" (click)="close()" class="btn btn-primary"
+                                        style="width:90PX">Close</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </fieldset>
+       
+</form>
+

@@ -1,0 +1,176 @@
+<form [formGroup]="ItemListSForm" (ngSubmit)="ItemListS(ItemListSForm.value)">
+    <table style="width: 100%;background-color: white;">
+       
+        <tr>
+            <td class="PageHeader">
+                Item&nbsp;Master&nbsp;List
+            </td>
+        </tr>
+    </table>
+    <fieldset>
+        <table class="center">
+            <tr>
+                <div *ngIf="closeResetButton; then hList1; else hList2"></div>
+                <ng-template #hList2>
+                    <div class="d-flex justify-content-center">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only" id="loading"></span>
+    
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template #hList1> </ng-template>
+    
+                <td class="LabelFontStyle" style="color: blue;width: fit-content;" colspan="4">&nbsp;{{dataDisplay}}&nbsp;
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+    <div class="col-md-12 table-responsive" #epltable>
+        <div style="padding-bottom: 10px;padding-top: 10px;">
+            <div class="row">
+                
+            </div>
+        </div>
+        <table class="center" style="width: 100%;background-color: #FFE4B5;">
+            <tr>
+                <td>
+                    <table class="center">
+
+                        <tr>
+                            <td class="LabelFontStyle">
+                                &nbsp;&nbsp;Location&nbsp;Name&nbsp;:&nbsp;
+                            </td>
+                            <td>
+                                <select formControlName="locName" class="form-control" style="background-color: yellow;">
+                                    <option value="--Select--">--Select--</option>
+                                    <option *ngFor="let sc of  AllllocationitemList" [ngValue]="sc.locName">
+                                        {{sc.locName}}
+                                    </option>
+                                </select>
+                            </td>
+                            <td style="width: 15%" class="LabelFontStyle"> &nbsp;&nbsp;Item&nbsp;Code&nbsp;:&nbsp;</td>
+                            <td><input type="text" class="form-control"  formControlName="itemCode" style="width: 220px;" ></td>
+                            <td style="width: 15%" class="LabelFontStyle"> &nbsp;&nbsp;Item&nbsp;Type&nbsp;:&nbsp;</td>
+                            <td>
+                                <select type='text' formControlName="itemType" id="itemType" class="form-control"
+                                    style="background-color: yellow;">
+                                    <option *ngFor="let sc of  AllproducttypeList" [ngValue]="sc.codeDesc">
+                                        {{sc.codeDesc}}
+                                    </option>
+                                </select>
+                            </td>
+                            <td style="width: 15%" class="LabelFontStyle"> &nbsp;User&nbsp;Ticket&nbsp;No&nbsp;:&nbsp;</td>
+                            <td><input type="text" class="form-control"  formControlName="usertktNo" style="width: 220px;" ></td>
+                        </tr> 
+                        <tr>
+                            <td style="width: 15%" class="LabelFontStyle"> &nbsp;&nbsp;Dep&nbsp;Name&nbsp;:&nbsp;</td>
+                            <td>
+                                <select type='number' formControlName="deptName" id="deptName" class="form-control"
+                                    style="background-color: yellow;">
+                                    <!-- <option></option> -->
+                                    <option *ngFor="let sc of  AlldepartmentitemList" [ngValue]="sc.codeDesc">
+                                        {{sc.codeDesc}}
+                                    </option>
+                                </select>
+                            </td>
+                            <td style="width: 15%" class="LabelFontStyle"> &nbsp;&nbsp;Div&nbsp;Name&nbsp;:&nbsp;</td>
+                            <td>
+                                <select  type='number' formControlName="divName" id="divName" class="form-control" style="background-color: yellow;" >
+                                    <option *ngFor="let sc of  AlldivisionitemList" [ngValue]="sc.codeDesc"  >
+                                        {{sc.codeDesc}}
+                                    </option>
+                                </select> 
+                            </td>
+                            <td style="width: 15%" class="LabelFontStyle"> &nbsp;&nbsp;Purchase&nbsp;Ref&nbsp;Id:&nbsp;</td>
+                            <td><input type="text" class="form-control"  formControlName="purchaseInvNo" style="width: 220px;" ></td>
+
+                            <td style="width: 15%" class="LabelFontStyle"> &nbsp;&nbsp;User&nbsp;Name&nbsp;:&nbsp;</td>
+                            <td><input type="text" class="form-control"  formControlName="userName" style="width: 220px;" ></td>
+                           </tr>
+                        <tr>
+                            <td><input hidden type="number" class="form-control"  formControlName="city"  style="width: 220px;" ></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        <fieldset class="RFS">
+            <table class="center">
+                <tr>
+                    <td [style.display]="isVisibleloactiondata ? 'block' : 'none' ">
+                        <button type="submit" style="width: fit-content;" class="btn btn-primary" id="register" (click)="dataSearch()">
+                           location Search
+                        </button>
+                    </td>
+                    <td [style.display]="isVisibleSupperdata ? 'block' : 'none' ">
+                        <button type="submit" class="btn btn-primary" style="width: 80px;" id="register" (click)="Supperdata()">Search</button>
+                    </td>
+                    <td>
+                        <button type="submit" style="width: fit-content;" class="btn btn-primary" id="register" (click)="refresh()">
+                            Clear
+                        </button>
+                    </td>
+                    <td>
+                        <button type="submit" style="width: fit-content;" (click)="close()" class="btn btn-primary">Close</button>
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+        <br>
+            <table class="GridFont" cellspacing="0" cellpadding="15"
+                style="border-color:#959595;border-collapse:collapse;width: 100%; ">
+                <thead>
+                    <tr class="GridHeader">
+                        <th scope="col" style="border: 1px solid black; width: 30px;"> Item Id</th>
+                        <th scope="col" style="border: 1px solid black;">Item Code</th>
+                        <th scope="col" style="border: 1px solid black;">item Type</th>
+                        <th scope="col" style="border: 1px solid black; width:90px;">Legal Entity</th>
+                        <th scope="col" style="border: 1px solid black;">Location</th>
+                        <th scope="col" style="border: 1px solid black;">Division</th>
+                        <th scope="col" style="border: 1px solid black;">Department Name</th>
+                        <th scope="col" style="border: 1px solid black;"> User Ticket No</th>
+                        <th scope="col" style="border: 1px solid black;">User Name</th>
+                        <th scope="col" style="border: 1px solid black;">User Designation</th>
+                        <th scope="col" style="border: 1px solid black;">Purchase Ref Id</th>
+                        <th hidden scope="col" style="border: 1px solid black;">Email Type</th>
+                        <th hidden scope="col" style="border: 1px solid black;">Email Packages</th>
+                        <th hidden scope="col" style="border: 1px solid black;">Product Make</th>
+                        <th hidden scope="col" style="border: 1px solid black;">Product Model Details</th>
+                        <th hidden scope="col" style="border: 1px solid black;">Product Serial No</th>
+                        <th hidden scope="col" style="border: 1px solid black;">Product Invoice No</th>
+                        <th hidden scope="col" style="border: 1px solid black;">vendor Name</th>
+                        <th hidden scope="col" style="border: 1px solid black;">OuId</th>
+                        <th hidden scope="col" style="border: 1px solid black;">Status</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let com of allitemMasterList" class="ItemStyle" style="text-decoration:none;">
+                        <td style="border: 1px solid black;padding-left: 15px;">{{com.itemId}}</td>
+                        <td style="padding-left: 5px;padding-top: 10px;border: 1px solid black;padding-left: 15px;">
+                            <a [routerLink]="['/admin/itTransaction/Itemmaster',com.itemCode]" href="{{itemCode}}">{{com.itemCode}}</a>
+                        </td>
+                        <td style="border: 1px solid black;padding-left: 15px;">{{com.itemType}}</td>
+                        <td style="border: 1px solid black;padding-left: 15px; width:90px;">{{com.legalEntity}}</td>
+                        <td style="border: 1px solid black;padding-left: 15px;">{{com.locName}}</td>
+                        <td style="border: 1px solid black;padding-left: 15px;">{{com.divName}}</td>
+                        <td style="border: 1px solid black;padding-left: 15px;">{{com.deptName}}</td>
+                        <td style="border: 1px solid black;padding-left: 15px;">{{com.usertktNo}}</td>
+                        <td style="border: 1px solid black;padding-left: 15px;">{{com.userName}}</td>
+                        <td style="border: 1px solid black;padding-left: 15px;">{{com.userDesigntn}}</td>
+                        <td style="border: 1px solid black;padding-left: 15px;">{{com.purchaseInvNo}}</td>
+                        <td hidden style="border: 1px solid black;padding-left: 15px;">{{com.emailType}}</td>
+                        <td hidden style="border: 1px solid black;padding-left: 15px;">{{com.emailPackage}}</td>
+                        <td hidden style="border: 1px solid black;padding-left: 15px;">{{com.productMake}}</td>
+                        <td hidden style="border: 1px solid black;padding-left: 15px;">{{com.productmodelDetails}}</td>
+                        <td hidden style="border: 1px solid black;padding-left: 15px;">{{com.productserialNo}}</td>
+                        <td hidden style="border: 1px solid black;padding-left: 15px;">{{com.purchaseInvNo}}</td>
+                        <td hidden style="border: 1px solid black;padding-left: 15px;">{{com.vendorName}}</td>
+                        <td hidden style="border: 1px solid black;padding-left: 15px;">{{com.ouId}}</td>
+                        <td hidden style="border: 1px solid black;padding-left: 15px;">{{com.status}}</td>
+                    </tr>
+                </tbody>
+            </table>
+    </div>
+</form>

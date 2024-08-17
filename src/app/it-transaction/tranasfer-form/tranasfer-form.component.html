@@ -1,0 +1,257 @@
+<form [formGroup]="TransferForm" (ngSubmit)="transferForm(TransferForm.value)">
+    <table style="width: 100%;background-color: white;" class="center">
+        <tr>
+            <td class="PageHeader">
+                &nbsp;ASSET&nbsp;TRANSFER&nbsp;FORM
+            </td>
+    </table>
+    <fieldset class="RFS">
+        <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px;color: black;font-weight: bold;"> FIND ASSET
+        </legend>
+        <table class="center" style="width: 30%;">
+            <tr>
+                <td style="width: 15%" class="LabelFontStyle1">Find&nbsp;With&nbsp;Item&nbsp;Code: </td>
+                <td style="background-color: #ffffff;">
+                    <input class="form-control" formControlName="itemCode" value={{itemCode}} [(ngModel)]='itemCode'> 
+                   
+                </td>
+                <td><button type="button" class="btn-primary"><i class="fa fa-search" aria-hidden="true" placeholder="search" (click)="transitemcodeFindFN(itemCode)"></i></button>
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset><br>
+
+    <fieldset class="RFS">
+        <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px;color: black;font-weight: bold;">FROM
+            TRANSFER DETAILS </legend>
+        <table class="center">
+            <tr>
+                <td style="width: 15%" class="LabelFontStyle1"> From&nbsp;City&nbsp;: </td>
+                <td> <input type='text' formControlName="oldcity" class="form-control"></td>
+                <td style="width: 15%" class="LabelFontStyle1">From&nbsp;Company&nbsp;: </td>
+                <td> <input type='text'  uppercase formControlName="oldcomp" class="form-control"></td>
+                <td style="width: 15%" class="LabelFontStyle1">&nbsp;From&nbsp;Division: </td>
+                <td> <input type='text'  uppercase formControlName="olddiv" class="form-control"></td>
+            </tr>
+            <tr>
+                <td style="width: 15%" class="LabelFontStyle1">&nbsp;From&nbsp;Location: </td>
+
+                <td> <input type='text' uppercase formControlName="oldloc" class="form-control"></td>
+
+
+                <td style="width: 15%" class="LabelFontStyle1"> Old&nbsp;Department&nbsp;: </td>
+                <td> <input type='text'  formControlName="olddept" class="form-control"></td>
+                <td style="width: 15%" class="LabelFontStyle1">Old&nbsp;User&nbsp;Name: </td>
+
+                <td> <input type='text'  uppercase formControlName="olduserName" class="form-control"></td>
+            </tr>
+
+
+            <tr>
+
+                <td style="width: 15%" class="LabelFontStyle1">Old&nbsp;User&nbsp;Ticket&nbsp;No: </td>
+                <td> <input type='text'  uppercase formControlName="oldusertktNo" class="form-control"></td>
+                <td style="width: 15%" class="LabelFontStyle1">Old&nbsp;User&nbsp;Email&nbsp;Id: </td>
+                <td> <input type='text' uppercase formControlName="olduserEmail" class="form-control"></td>
+            </tr>
+            <tr>
+                <td><input type='number' hidden uppercase formControlName="location" class="form-control"
+                        style="background-color:  rgb(251, 255, 4);"></td>
+
+
+
+                <td> <input type='text' hidden formControlName="itemId" class="form-control"
+                        style="background-color:   rgb(251, 255, 4);"></td>
+            </tr>
+        </table>
+    </fieldset><br>
+
+    <fieldset class="RFS">
+        <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px;color: black;font-weight: bold;">TO TRANSFER
+            DETAILS </legend>
+        <table class="center">
+            <tr>
+                <td style="width: 15%" class="LabelFontStyle1">TO&nbsp;City&nbsp;&nbsp;: </td>
+                <td>
+                    <select type='number' formControlName="newcityId" id="newcityId" class="form-control"
+                        (change)="onSelectOuCity($event)" style="background-color: yellow;">
+                        <!-- <option></option> -->
+                        <option *ngFor="let sc of  AlllocationitemList" [ngValue]="sc.ouId">
+                            {{sc.ouName}}
+                        </option>
+                    </select>
+                </td>
+                <td style="width: 15%" class="LabelFontStyle1">TO&nbsp;Location&nbsp;&nbsp;: </td>
+                <td>
+                    <!-- <select  type='number' formControlName="newlocId" id="newlocId" class="form-control" style="background-color: yellow;" > -->
+                    <select formControlName="newlocId" id="newlocId" class="form-control"
+                        style="background-color: yellow;">
+                        <option *ngFor="let subType of getAllOuLocationIdFn" [ngValue]="subType.locId">
+                            {{subType.locId}}-{{subType.locName}}
+                        </option>
+                    </select>
+                </td>
+
+                <td style="width: 15%" class="LabelFontStyle1"> TO&nbsp;&nbsp;Company: </td>
+                <td>
+
+                    <select type='text' formControlName="newcomp" id="newcomp" class="form-control"
+                        style="background-color: yellow;">
+                        <!-- <option></option> -->
+                        <option *ngFor="let sc of  AllnewCompanyList" [ngValue]="sc.compCode">
+                            {{sc.compCode}}
+                        </option>
+                    </select>
+                </td>
+            </tr>
+
+            <tr>
+                <td style="width: 15%" class="LabelFontStyle1">&nbsp;To&nbsp;Department&nbsp;: </td>
+                <td><select formControlName="newdeptId" id="newdeptId" class="form-control"
+                        style="background-color: yellow;">
+                        <option *ngFor="let sc of transdepartmentitemList" [ngValue]="sc.cmntypeId">
+                            {{sc.codeDesc}}
+                        </option>
+                    </select>
+
+                </td>
+                <td style="width:15%" class="LabelFontStyle1">To&nbsp; Division&nbsp;&nbsp;: </td>
+                
+                <td>
+                                <select  type='number' formControlName="newdivId" id="newdivId" class="form-control" style="background-color: yellow;" >
+                                    <option *ngFor="let sc of  AlldivisionitemList" [ngValue]="sc.cmntypeId"  >
+                                        {{sc.codeDesc}}
+                                    </option>
+                                </select>
+                </td>
+
+                <td style="width: 15%" class="LabelFontStyle1">GatePass&nbsp;No: </td>
+                <td> <input type='text' uppercase formControlName="getpassNo" class="form-control"
+                        style="background-color:   rgb(251, 255, 4);"></td>
+                
+
+            </tr><br>
+            <tr>
+                <td style="width: 15%" class="LabelFontStyle"> &nbsp;Remark&nbsp;: </td>
+                <!-- <td colspan="5" rowspan="10px"> <input uppercase type='text' formControlName="remarks" class="form-control" style="width: 100%;" ></td> -->
+                <td colspan="5">
+                    <textarea id="trnsRemarks" formControlName="trnsRemarks" rows="2"
+                        style="width: 100%;resize: none; font-size: small;"></textarea>
+                </td>
+
+            </tr>
+            <tr>
+                <td style="width: 15%" class="LabelFontStyle1">&nbsp;Transfer&nbsp;By&nbsp;: </td>
+                <td><select type='text' formControlName="transferBy" id="transferBy" class="form-control"
+                        style="background-color: yellow;">
+
+                        <option *ngFor="let sc of transferBymembers" [ngValue]="sc.codeDesc">
+                            {{sc.codeDesc}}
+                        </option>
+                    </select>
+
+                </td>
+                <td style="width: 15%" class="LabelFontStyle">Transfer&nbsp;&nbsp;Date: </td>
+                <td> <input type='date' uppercase formControlName="transferDate" class="form-control"
+                        style="background-color:   rgb(251, 255, 4);"></td>
+            </tr>
+
+            <tr>
+                <td> <input hidden type='text' uppercase formControlName="createdBy"  class="form-control"    ></td>
+        <td> <input hidden type='text' uppercase formControlName="lastupdatedBy"  class="form-control"    ></td>
+              </tr>
+              
+        </table>
+    </fieldset><br>
+
+
+    <fieldset class="RFS">
+        <table class="center">
+            <tr>
+                <div *ngIf="displayButton; then thenBlock1; else elseBlock1"></div>
+                <ng-template #thenBlock1>
+
+                    <td>
+                         <!-- <button type="submit" class="btn btn-info" id="register" (click)="resetMast()">Reset</button> -->
+                  
+                         <button type="submit" class="btn btn-primary" id="resetMastBtn" data-toggle="modal" style="width: fit-content;"
+                         data-target="#confirmAlert" (click)="getMessage('resetMast')">Reset</button>
+                    </td>
+                    <td> 
+                        <!-- <button type="submit" class="btn btn-info" id="register" (click)="closeMast()">Close</button> -->
+                        <button type="submit" class="btn btn-primary" id="closeMastBtn" data-toggle="modal" style="width: fit-content;"
+                        data-target="#confirmAlert" (click)="getMessage('closeMast')">Close</button>
+                    </td>
+
+                </ng-template>
+                <ng-template #elseBlock1>
+                    <td> 
+                        <!-- <button type="submit" class="btn btn-info" id="register" style="width: 100px;"
+                            (click)="newMast()">Asset Transfer</button> -->
+                            <button type="submit" class="btn btn-primary" id="newMastBtn" data-toggle="modal" style="width: fit-content;"
+                            data-target="#confirmAlert" (click)="getMessage('newMast')">Asset Transfer</button>
+                    </td>
+
+                    <td>
+                        <!-- <button type="submit" class="btn btn-info" id="register" (click)="resetMast()">Reset</button> -->
+                 
+                        <button type="submit" class="btn btn-primary" id="resetMastBtn" data-toggle="modal" style="width: fit-content;"
+                        data-target="#confirmAlert" (click)="getMessage('resetMast')">Reset</button>
+                   </td>
+                   <td> 
+                       <!-- <button type="submit" class="btn btn-info" id="register" (click)="closeMast()">Close</button> -->
+                       <button type="submit" class="btn btn-primary" id="closeMastBtn" data-toggle="modal" style="width: fit-content;"
+                       data-target="#confirmAlert" (click)="getMessage('closeMast')">Close</button>
+                   </td>
+
+                </ng-template>
+
+            </tr>
+        </table>
+    </fieldset>
+    <BR>
+
+</form>
+
+
+
+
+
+
+
+
+
+<div class="modal fade" id="confirmAlert" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="width: 30%;margin-left: 35%;">
+    <div class="modal-dialog modal-sm" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <label
+            style="font-size: small; color: black; font-weight: bold; text-align: center; vertical-align: middle;">
+            {{message}}
+        </label>
+        </div>
+        <div class="modal-footer">
+            <table class="center">
+                <tr>
+                    <td>
+                        <button type="button" class="btn btn-info" data-dismiss="modal" id="register"
+                            (click)="executeAction()">Yes</button>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-info" data-dismiss="modal">No</button>
+                    </td>
+                </tr>
+            </table>
+          
+        </div>
+      </div>
+    </div>
+  </div>

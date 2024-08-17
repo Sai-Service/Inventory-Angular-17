@@ -1,0 +1,195 @@
+<form [formGroup]="companyMasterForm"   (ngSubmit)="companyMaster(companyMasterForm.value)">
+    <table style="width: 100%;background-color: white;" class="center">
+        <tr>
+            <td class="PageHeader">
+                &nbsp;&nbsp;COMPANY&nbsp;MASTER
+            </td>
+            <td colspan="2" align="right" style="background-color: #FFE4B5;text-align: right;width: 100%;">
+                &nbsp;Company&nbsp;Id&nbsp;&nbsp;
+            </td>
+            <td style="background-color: #FFE4B5;">
+                <input class="form-control" formControlName="compId"  value={{compId}} [(ngModel)]='compId'>
+                <!--[style.display]="isVisibleOrderFind ? 'block' : 'none'">-->
+            </td>
+            
+            <td style="background-color: #FFE4B5;" >
+                <button type="button" class="btn-primary" (click)="compIdFind(compId)"><i class="fa fa-search"
+                       aria-hidden="true"></i></button>
+            </td>
+        </tr>
+    </table>
+
+    <fieldset class="RFS">
+        <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px;color: black;font-weight: bold;">COMPANY INFORMATION </legend>
+        <table class="center">
+            <tr>
+                <!-- <td style="width: 15%" class="LabelFontStyle1"> Company&nbsp;&nbsp;Id: </td> -->
+               <!-- <td> <input type='number' hidden  uppercase formControlName="compId"  class="form-control"  style="background-color: yellow;"  ></td>  --><!-- (keyup)="onKey($event )"-->
+                <td style="width: 15%" class="LabelFontStyle"> Company&nbsp;Code&nbsp;: </td>
+                <td> <input type='text' uppercase formControlName="compCode"  class="form-control" style="background-color: yellow;" placeholder="Enter Company Code" ></td> <!-- (keyup)="onKey($event )"-->
+                <td style="width: 15%" class="LabelFontStyle1"> Company&nbsp;&nbsp;Name: </td>
+                <td> <input type='text' uppercase formControlName="compName"  class="form-control" style="background-color: yellow;" placeholder="Enter Company Name" ></td>  <!-- (keyup)="onKey($event )"-->
+                <td style="width: 15%" class="LabelFontStyle1"> Address&nbsp;&nbsp;1: </td>
+                <td> <input type='text' uppercase formControlName="address1"  class="form-control" placeholder="Enter Company Address"></td>
+            </tr>
+        <tr>
+               <!-- (keyup)="onKey($event )"-->
+            <td style="width: 15%" class="LabelFontStyle"> Address&nbsp;&nbsp;2: </td>
+            <td> <input type='text' uppercase formControlName="address2"  class="form-control"   ></td> <!-- (keyup)="onKey($event )"-->
+            <td style="width: 15%" class="LabelFontStyle1"> Register&nbsp;&nbsp;Address: </td>
+            <td> <input type='text' uppercase formControlName="horegAddress"  class="form-control"   ></td>  <!-- (keyup)="onKey($event )"-->
+            <td style="width: 15%" class="LabelFontStyle1"> Email&nbsp;&nbsp;Id: </td>
+            <td> <input type='text' uppercase formControlName="emailId"  class="form-control"  placeholder="abcd@saiservice.com"   ></td>
+        </tr>
+
+        <tr>
+            <td style="width: 15%" class="LabelFontStyle1"> WebSite&nbsp;&nbsp;: </td>
+             <td> <input type='text' uppercase formControlName="website"  class="form-control"  placeholder="www.saiservice.com"  ></td> 
+                   <!-- (keyup)="onKey($event )"-->
+            <td style="width: 15%" class="LabelFontStyle1"> Pin&nbsp;Code&nbsp;No: </td>
+            <td> <input type='number' uppercase formControlName="pincd"  class="form-control"  placeholder="six digit no" ></td> <!-- (keyup)="onKey($event )"-->
+            <td style="width: 15%" class="LabelFontStyle1">  Jurisdiction&nbsp;&nbsp;: </td>
+            <td> <input type='text' uppercase formControlName="jurisDict"  class="form-control"   ></td>  <!-- (keyup)="onKey($event )"-->
+            <!-- <input hidden type='text' uppercase formControlName="createdBy" class="form-control">
+            <input hidden type='text' uppercase formControlName="lastUpdatedBy" class="form-control"> -->
+            </tr>
+
+        <tr>
+            <td style="width: 15%" class="LabelFontStyle1">&nbsp;&nbsp;City: </td>
+                <td>
+                    <select type='text' formControlName="city" id="city" [(ngModel)]="city"  class="form-control" style="background-color: yellow;">
+                        <option *ngFor="let sc of  OuCityList"  >
+                            {{sc.codeDesc}}
+                        </option>  
+                    </select>
+                </td>
+            <td style="width: 15%" class="LabelFontStyle1"> State&nbsp;&nbsp;: </td>
+            <td> <input type='text' uppercase formControlName="state"  class="form-control"   ></td> <!-- (keyup)="onKey($event )"-->
+            <td style="width: 15%" class="LabelFontStyle1"> Country&nbsp;&nbsp;: </td>
+            <td> <input type='text' uppercase formControlName="country"  class="form-control"   ></td>  <!-- (keyup)="onKey($event )"-->
+    
+        </tr>
+        <tr>
+            <td style="width: 15%" class="LabelFontStyle1"> GST&nbsp;&nbsp;NO: </td>
+            <td> <input type='text' uppercase formControlName="gstNo" [(ngModel)]='gstNo' value={{gstNo}} class="form-control"  placeholder="Enter GST No" (keydown.tab)="gstNoValidation($event)" ></td>  <!-- (keyup)="onKey($event )"-->
+            <td style="width: 15%" class="LabelFontStyle1"> TAN&nbsp;&nbsp;NO: </td>
+            <td> <input type='text' uppercase formControlName="tanNo" [(ngModel)]='tanNo' value={{tanNo}} class="form-control" placeholder="Enter Tax No"  (keydown.tab)="tanNoValidation($event)"  ></td> <!-- (keyup)="onKey($event )"-->
+            <td style="width: 15%" class="LabelFontStyle1"> PAN&nbsp;&nbsp;NO: </td>
+            <td> <input type='text' uppercase formControlName="panNo" [(ngModel)]='panNo' value={{panNo}} class="form-control"  placeholder="Enter Pan Card No"  (keydown.tab)="panCardValidation($event)" ></td>  <!-- (keyup)="onKey($event )"-->
+    
+        </tr>
+      <tr>
+        <td style="width: 15%" class="LabelFontStyle1"> Start&nbsp;&nbsp;Date: </td>
+        <div *ngIf="displaystartDate; then thenstartDate; else elsestartDate"></div>
+        <ng-template #thenstartDate>            
+        <td > <input type="date" formControlName="startDt" [(ngModel)]='startDt' value={{startDt}} 
+                        class="form-control"  (change)="validateStartDate(startDt)" style="background-color: yellow;"></td>
+        </ng-template>
+        <ng-template #elsestartDate>     
+            <td > <input type="date" formControlName="startDt"  value={{startDt}} 
+                class="form-control"    ></td>
+        </ng-template>
+         
+        <!-- <td style="width: 15%" class="LabelFontStyle1"> Status&nbsp;&nbsp;: </td> -->
+        <td style="width: 15%" class="LabelFontStyle1"> Status&nbsp;&nbsp;: </td>
+            <div *ngIf="displayStatus; then statusLovNo; else statusLovYes"></div>
+            <ng-template #statusLovNo> 
+            <td > <input  type='text' formControlName="status" [(ngModel)]='status' value={{status}} class="form-control" ></td>
+            </ng-template>
+            <ng-template #statusLovYes> 
+                    <td>
+                        <select formControlName="status" id="status" class="form-control"  
+                        [(ngModel)]="status" (change)='onOptionsSelectede($event)'>
+                        <option disabled>--Select--</option>
+                        <option *ngFor="let sc of  statusList" [ngValue] ="sc.codeDesc">
+                            {{sc.codeDesc}}
+                        </option>
+                    </select>
+                    </td>
+            </ng-template>
+                 <!-- <td></td> -->
+                 <td></td>
+
+            <div *ngIf="displayInactive; then thenBlockInactive; else elseBlockInactive"></div>
+            <ng-template #thenBlockInactive>
+            </ng-template>
+            <ng-template #elseBlockInactive>
+                <tr>
+                    <td style="width: 10%" class="LabelFontStyle1">
+                        Inactive&nbsp;Date:&nbsp;
+                    </td>
+                    <td>
+                        <input  type='date' formControlName="endDate" class="form-control"
+                            [ngModel]="endDate | date:'yyyy-MM-dd'">
+                    </td>
+                </tr>
+            </ng-template>
+      </tr>
+      <tr>
+        <td> <input hidden type='text' uppercase formControlName="createdBy"  class="form-control"    ></td>
+        <td> <input hidden type='text' uppercase formControlName="lastUpdatedBy" class="form-control"    ></td> 
+         
+      </tr>
+    </table>    
+    </fieldset> 
+
+
+    <fieldset class="RFS">
+    <table class="center">
+        <tr>
+            <div *ngIf="displayButton; then thenBlock1; else elseBlock1"></div>
+            <ng-template #thenBlock1>
+            <td> <button type="submit" class="btn btn-info" id="register" (click)="newMast()">Save</button></td>
+            <td> <button  type="submit" class="btn btn-info" id="register" (click)="searchMast()">Search</button></td>
+            <td> <button type="submit" class="btn btn-info" id="register" (click)="resetMast()">Reset</button></td>
+            <td> <button type="submit" class="btn btn-info" id="register" (click)="closeMast()">Close</button></td>
+          </ng-template>
+            <ng-template #elseBlock1>
+                <td> <button type="submit" class="btn btn-info" id="register" (click)="updateMast()">Update</button></td>
+                <td> <button  type="submit" class="btn btn-info" id="register" (click)="searchMast()">Search</button></td>
+                <td> <button type="submit" class="btn btn-info" id="register" (click)="resetMast()">Reset</button></td>
+                <td> <button type="submit" class="btn btn-info" id="register" (click)="closeMast()">Close</button></td>
+            </ng-template>
+            
+        </tr>
+    </table>
+    </fieldset>
+
+<fieldset class="RFS">
+  
+    <br>
+    <table  class="GridFont" cellspacing="0" cellpadding="4"   style="border-color:#959595;border-collapse:collapse;width: 100%; ">
+        <thead>
+            <tr class="GridHeader">
+               
+                <th scope="col" style="border: 1px solid black;">Company Id</th>
+                <th scope="col" style="border: 1px solid black;">Company code</th>
+                <th scope="col" style="border: 1px solid black;">Company name</th>
+                <th scope="col" style="border: 1px solid black;">City </th>
+                <th scope="col" style="border: 1px solid black;">State</th>
+                <th scope="col" style="border: 1px solid black;">Country</th>
+                <th scope="col" style="border: 1px solid black;">GST NO</th>
+                <th scope="col" style="border: 1px solid black;">PAN NO</th>
+                <th scope="col" style="border: 1px solid black;">TAN NO</th>
+                <th scope="col" style="border: 1px solid black;">Select</th>
+            </tr>
+        </thead>
+            <tbody>
+                <tr *ngFor="let com of lstcomments" class="ItemStyle" style="text-decoration:none;">
+                    <td style="border: 1px solid black;padding-left: 15px;">{{com.compId}}</td>
+                    <td style="border: 1px solid black;padding-left: 15px;">{{com.compCode}}</td>
+                    <td style="border: 1px solid black;padding-left: 15px;">{{com.compName}}</td>
+                    <td style="border: 1px solid black;padding-left: 15px;">{{com.city}}</td>
+                    <td style="border: 1px solid black;padding-left: 15px;">{{com.state}}</td>
+                    <td style="border: 1px solid black;padding-left: 15px;">{{com.country}}</td>
+                    <td style="border: 1px solid black;padding-left: 15px;">{{com.gstNo}}</td>
+                    <td style="border: 1px solid black;padding-left: 15px;">{{com.panNo}}</td>
+                    <td style="border: 1px solid black;padding-left: 15px;">{{com.tanNo}}</td>
+                    <td style="border: 1px solid black;padding-left: 15px;"> <button type="button" style="width: fit-content;"  class="btn btn-primary" data-dismiss="modal" (click)="compIdFind(com.compId)">Select</button></td>
+                </tr>
+            </tbody>
+        
+    </table>
+</fieldset>
+
+</form>

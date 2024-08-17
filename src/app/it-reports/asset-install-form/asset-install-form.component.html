@@ -1,0 +1,164 @@
+<form [formGroup]="AcknowledgementForm" (ngSubmit)="aknForm(AcknowledgementForm.value)">
+    <div class="center">
+        <table style="width: 100%;background-color: white;">
+            <tr>
+                <td class="PageHeader">
+                    &nbsp;Asset&nbsp;Installation&nbsp;Form&nbsp;
+                </td>
+            </tr>
+        </table>
+    </div>
+    <table class="center">
+        <tr>
+            <div *ngIf="closeResetButton; then hList1; else hList2"></div>
+            <ng-template #hList2>
+                <div class="d-flex justify-content-center">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="sr-only" id="loading"></span>
+                    </div>
+                </div>
+            </ng-template>
+            <ng-template #hList1> </ng-template>
+            <td class="LabelFontStyle" style="color: blue;width: fit-content;" colspan="4">
+                &nbsp;{{dataDisplay}}&nbsp; </td>
+        </tr>
+    </table>
+    <fieldset class="RFS">
+        <table class="center">
+            <tr>
+                <td></td>
+                <td></td>
+                <td style="width: 15%" class="LabelFontStyle">Item&nbsp;Code: </td>
+                <td> <input type='text' uppercase formControlName="itemCode" value={{itemCode}} [(ngModel)]='itemCode'
+                        class="form-control"></td>
+                <td style="background-color: #ffffff;">
+                    <button type="button" class="btn-primary"><i class="fa fa-search" aria-hidden="true"
+                            placeholder="search" (click)="itemcodeAssetinstFind(itemCode)"></i></button>
+
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+
+    <fieldset class="RFS">
+        <table class="center">
+            <tr>
+                <td style="width: 15%" class="LabelFontStyle"> City&nbsp;:</td>
+                <td> <input  type='text' [disabled]="isDisabled"  uppercase formControlName="ouCity"  [(ngModel)]='ouCity'
+                        class="form-control"></td>
+                        <td style="width: 15%" class="LabelFontStyle">Location&nbsp;:</td>
+                <td> <input type='text' uppercase formControlName="locName" value={{locName}} class="form-control"></td>
+                <td style="width: 15%" class="LabelFontStyle">Division&nbsp;: </td>
+                <td> <input type='text' uppercase formControlName="divName" value={{divName}} class="form-control"></td>
+                <td> <input hidden type='number' uppercase formControlName="astId" value={{astId}} class="form-control">
+                </td>
+                <td> <input hidden type='number' uppercase formControlName="city" value={{city}} class="form-control">
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 15%" class="LabelFontStyle">User&nbsp;Name: </td>
+                <td> <input type='text' uppercase formControlName="userName" value={{userName}} class="form-control">
+                </td>
+
+                <td style="width: 15%" class="LabelFontStyle">User&nbsp;Department&nbsp;: </td>
+                <td> <input type='text' uppercase formControlName="deptName" value={{deptName}} class="form-control">
+                </td>
+
+                <td style="width: 15%" class="LabelFontStyle">User&nbsp;Ticket&nbsp;No: </td>
+                <td> <input type='text' uppercase formControlName="usertktNo" value={{usertktNo}} class="form-control">
+                </td>
+
+            </tr>
+            <tr>
+              
+                <td style="width: 15%" class="LabelFontStyle">Asset&nbsp;Name: </td>
+                <td> <input type='text' uppercase formControlName="itemsubType" value={{itemsubType}}
+                        class="form-control"></td>
+
+                <td style="width: 15%" class="LabelFontStyle"> Vendor&nbsp;Name&nbsp;: </td>
+                <td> <input type='text' uppercase formControlName="vendorName" value={{vendorName}}
+                        class="form-control"></td>
+             
+                <td style="width: 15%" class="LabelFontStyle">Asset&nbsp;Make&nbsp;&&nbsp;Model: </td>
+                <td> <input type='text' uppercase formControlName="productMake" value={{productMake}}
+                        class="form-control"></td>
+            </tr>
+            <tr>
+                <td style="width: 15%" class="LabelFontStyle"> Product&nbsp;Serial&nbsp;No: </td>
+                <td> <input type='text' uppercase formControlName="productserialNo" value={{productserialNo}}
+                        class="form-control"></td>
+                <td style="width: 15%" class="LabelFontStyle">Product&nbsp;Manufacturing&nbsp;Year: </td>
+                <td> <input type='text' uppercase formControlName="myear" value={{myear}} class="form-control"></td>
+
+                <td style="width: 15%" class="LabelFontStyle"> Product&nbsp;Invoice&nbsp;No: </td>
+                <td> <input type='text' uppercase formControlName="purchaseInvNo" value={{purchaseInvNo}}
+                        class="form-control"></td>
+           
+                
+            </tr>
+            <tr>
+                <td style="width: 15%" class="LabelFontStyle">Product&nbsp;Invoice&nbsp;Date: </td>
+                <td> <input type='date' uppercase formControlName="purchaseDt" value={{purchaseDt}}
+                        class="form-control"></td>
+
+                <td style="width: 15%" class="LabelFontStyle">Asset&nbsp;Put&nbsp;To&nbsp;User&nbsp;Date: </td>
+                <td> <input type='date' uppercase formControlName="astputDate" value={{astputDate}} class="form-control">   
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+
+    <fieldset class="RFS">
+        <table class="center">
+            <tr>
+
+                <td style="width: 15%" class="LabelFontStyle"> Warranty&nbsp;Period&nbsp;: </td>
+                <td> <input type='text' uppercase formControlName="warntyPeriod" value={{warntyPeriod}}
+                        class="form-control"></td>
+                <td style="width: 15%" class="LabelFontStyle1">Requisition&nbsp;Approved&nbsp;By(HOD): </td>
+                <td colspan="7"> <input type='text' uppercase formControlName="reqapprHod" value={{reqapprHod}}
+                        [(ngModel)]='reqapprHod' class="form-control"></td>
+            </tr>
+            <tr>
+                <td style="width: 15%" class="LabelFontStyle"> Assset&nbsp;Installation&nbsp;By: </td>
+                <td> <input type='text' uppercase formControlName="astinstBy" value={{astinstBy}}
+                        [(ngModel)]='astinstBy' class="form-control"></td>
+
+                        <td style="width: 15%" class="LabelFontStyle"> Company&nbsp;Name&nbsp;: </td>
+                <td> <input type='text' uppercase formControlName="compName" value={{compName}}
+                        [(ngModel)]='compName' class="form-control"></td>
+            </tr>
+            <tr>
+
+                <td> <input hidden type='text' formControlName="itemCode" value={{itemCode}} class="form-control"></td>
+
+            </tr>
+
+        </table>
+    </fieldset>
+    <br>
+    <fieldset class="RFS">
+        <table class="center">
+            <tr>
+                <div *ngIf="displayButton; then thenBlock1; else elseBlock1"></div>
+                <ng-template #thenBlock1>
+                    <td> <button type="submit" class="btn btn-info" id="register" style="width: 200px;height: 0.8cm;"
+                            (click)="newMast()">Asset Installation Form Generated</button></td>
+                    <td><button type="submit" class="btn btn-info" id="register" (click)="refresh()">Reset</button></td>
+                    <td> <button type="submit" class="btn btn-info" id="register" (click)="close()">Close</button></td>
+
+                </ng-template>
+                <ng-template #elseBlock1>
+                    <td>
+                        <button class="btn-primary1" style="width: 100px; background-color: green;"
+                            (click)="reportDetails()">DOWNLOAD</button>
+                    </td>
+                    <td> <button type="submit" class="btn btn-info" id="register" (click)="refresh()">Reset</button>
+                    </td>
+                    <td> <button type="submit" class="btn btn-info" id="register" (click)="close()">Close</button></td>
+                </ng-template>
+
+            </tr>
+        </table>
+    </fieldset>
+</form>

@@ -1,0 +1,206 @@
+<form [formGroup]="AdreqForm"  (ngSubmit)="Adrequisision(AdreqForm.value)">
+    <table style="width: 100%;background-color: white;" class="center">
+        <tr>
+            <td class="PageHeader">
+               Admin&nbsp;Requition&nbsp;Form&nbsp;
+            </td>
+        </tr>
+    </table>
+
+    <fieldset class="RFS">
+ 
+        <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px;color: black;font-weight: bold;">
+            Requisition&nbsp;Details</legend>
+            <table class="center">
+                <tr>
+                    <td style="width: 15%" class="LabelFontStyle">
+                      Requisition&nbsp;Number&nbsp;:&nbsp;
+                    </td>
+                    <td>
+                        <input  type="text" class="form-control" formControlName="reqhdNo" [(ngModel)]="reqhdNo" style="width: 220px;">  
+                    </td>
+                    <td style="width: 15%" class="LabelFontStyle">
+                    Requisition&nbsp;Date&nbsp;:&nbsp;
+                    </td>
+                    <td>
+                    <input   type="text" class="form-control" formControlName="reqDateNew" style="width: 220px;" >
+                    <input hidden  type="text" class="form-control" formControlName="reqDate" style="width: 220px;" >
+                    </td>
+                    <td style="width: 15%" class="LabelFontStyle"> &nbsp;&nbsp;User&nbsp;Name&nbsp;:&nbsp;</td>
+                    <td><input  type="text" class="form-control" formControlName="reqUsername"
+                               style="width: 220px;">
+                   </td>
+                </tr>
+                <tr>
+                    <td style="width: 15%" class="LabelFontStyle"> &nbsp;&nbsp;Department&nbsp;Name&nbsp;:&nbsp;</td>
+         <td><input  type="text" class="form-control" formControlName="dept" 
+                    style="width: 220px;">
+        </td>
+        <td style="width: 15%" class="LabelFontStyle"> &nbsp;&nbsp;Location&nbsp;Name&nbsp;:&nbsp;</td>
+         <td><input  type="text" class="form-control" formControlName="locName" style="width: 220px;">
+            <input  type='number' hidden formControlName="location"  class="form-control">
+        </td> <td style="width: 15%" class="LabelFontStyle"> &nbsp;Asign&nbsp;To&nbsp;Admin&nbsp;:&nbsp;</td>
+        <td><input  type="text" class="form-control" formControlName="admintktNo" style="width: 220px;"> </td>
+        </tr>
+        <td style="width: 15%" class="LabelFontStyle"> &nbsp;Remark&nbsp;: </td>
+            <td colspan="5">
+                <textarea id="reqRemarks" formControlName="reqRemarks" rows="2"
+                    style="width: 100%;resize: none; font-size: small;"></textarea>
+            </td>
+            <input hidden type="text" class="form-control" formControlName="reqUsertktno"
+            style="width: 220px;">
+            </table>
+    </fieldset>
+    <div class="grid_scroll">
+    <fieldset class="RFS">
+        <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px;color: black;font-weight: bold;">
+            Requisition&nbsp;Line&nbsp;Details</legend>
+            <table style="width: 100%; border: solid 1px Gray" class="auto-style4" cellspacing="0" cellpadding="4" rules="all" class="center">
+                <thead>
+                    <tr class="GridHeader">
+                        <th style="width:2rem" scope="col">Srl No.</th>
+                        <th style="width:4rem" scope="col">Item Category</th>
+                        <th style="width:4rem" scope="col">Item Name</th>   
+                        <th style="width:4rem" scope="col">Avl Qty</th>                        
+                        <th style="width:4rem" scope="col">User Quantity</th>
+                        <th style="width:4rem" scope="col">Issue Qunatity</th>
+                        <th style="width:4rem" scope="col">Balance Qunatity</th>
+                        <th style="width:4rem" scope="col">Admin Status</th>
+                        <th style="width:4rem" scope="col">Reject Resoan</th>
+                        <th style="width:4rem" scope="col">Reject Qty</th>
+                        <th style="width:8rem" scope="col">User Status</th>
+                        <!-- <th style="width:8rem" scope="col">View Stock</th> -->
+                        <th hidden style="width:1rem" scope="col">Add+</th>
+                        <th hidden style="width:1rem" scope="col">Del-</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container class="center" formArrayName="reqLines">
+                        <ng-container *ngFor="let group of requestlineDetailsArray().controls; let i= index" [formGroupName]="i">
+                            <tr>
+                                <td>
+                                    <input type='number'  formControlName="srlNo" class="form-control" style="width:2rem;height: 23px;font-size: 10px;" (keyup)="onKey(i,$event)">
+                                </td>
+                                <td>
+                                    <input  type="text" formControlName="itemcat" class="form-control" style="width: 8rem;height: 25px;font-size: 10px;">
+                                </td>
+                                <td>
+                                    <input type='text'  formControlName="itemName" class="form-control" style="width: 8rem;height: 25px;font-size: 10px;">
+                                </td>
+                                <td>
+                                    <input type='number' formControlName="avlQty" class="form-control" style="width: 8rem;height: 25px;font-size: 10px;">
+                                </td>
+                                <td>
+                                    <div *ngIf="displayaqty[i]; then thenaqty; else elseaqty"> </div>
+                                    <ng-template #thenaqty>
+                                    <input type='number'  formControlName="qty" class="form-control"
+                                        style="width: 10rem;height:1.5rem;  font-size: 10px;" name="qty{{i}}"
+                                        (keydown.tab)="onKey(i,$event)" min="0">
+                                    </ng-template>
+                                    <ng-template #elseaqty>
+                                        <input type='number'  formControlName="qty" class="form-control"
+                                        style="width: 10rem;height:1.5rem;  font-size: 10px;" name="qty{{i}}"
+                                        (keydown.tab)="onKeyStockCal(i,$event)">
+                                    </ng-template>
+                                </td>
+                                    <td>
+                                        <div *ngIf="displayissuedQty[i]; then thenissuedQty; else elseissuedQty"> </div>
+                                        <ng-template #thenissuedQty>
+                                        <input type='number' formControlName="issuedQty" class="form-control"
+                                            style="width: 10rem;height:1.5rem;  font-size: 10px;" name="issuedQty{{i}}"
+                                            (keydown.tab)="onKeyStockCal(i,$event)" >
+                                        </ng-template>
+                                        <ng-template #elseissuedQty>
+                                            <input type='number' formControlName="issuedQty" class="form-control"
+                                            style="width: 10rem;height:1.5rem;  font-size: 10px;" name="issuedQty{{i}}"
+                                            (keydown.tab)="onKey(i,$event)" (keydown.tab)="onKeyStockCal(i,$event)" min="0">
+                                        </ng-template>
+                                    </td>
+                                <td>
+                                    <input type='number'  [disabled]="isDisabled(i)" formControlName="balanceQty" class="form-control"
+                                        style="height:1.5rem;  font-size: 10px;"  >
+                                </td>
+                                <td>
+                                    <div *ngIf="displayadminstatus[i]; then thenadminstatus; else elseadminstatus"> </div>
+                                    <ng-template #thenadminstatus>
+                                    <select formControlName="adminstatus" value={{adminstatus}} class="form-control"
+                                    style="width: fit-content;">                
+                                   <option>--Select--</option>
+                                   <!-- <option value="PENDING">PENDING</option> -->
+                                   <option value="REJECT">REJECT</option>
+                                   <option value="ISSUE">ISSUE</option>
+                               </select>
+                                    </ng-template>
+                                    <ng-template #elseadminstatus>
+                                        <input  type="text" formControlName="adminstatus" class="form-control" style="height: 20px;width:100px;" >
+                                    </ng-template>
+                                </td>
+                                <td  style="padding-right: 10px;">
+                                    <!-- <input disabled type="text" formControlName="rejReason" class="form-control" style="height: 20px;width:100px;" > -->
+                                    <select formControlName="rejReason" class="form-control" (change)="onSelectRejectQty($event,i)">
+                                        <option value="--Selecr--">--Select--</option>
+                                        <!-- <option value="Stock Not Available">Stock Not Available</option> -->
+                                        <option *ngFor="let sc of RejectreasonList" [value]="sc.codeDesc">
+                                            {{sc.codeDesc}}
+                                        </option>
+                                    </select>
+                                </td>
+                                <td style="padding-right: 10px;">
+                                    <input  type="number" formControlName="rejQty"  [disabled]="isDisabled(i)" class="form-control" style="height: 20px;width:100px;" >
+                                </td>
+                                <td  style="padding-right: 10px;">
+                                    <input  type="text" formControlName="userstatus" class="form-control" style="height: 20px;width:100px;" >
+                                </td>
+                                <!-- <td>
+                                    <button type="button"  class="btn btn-primary" data-toggle="modal" data-target="#stockAvailability"
+                                    style="width: 7rem;  color: white;" [style.disabled]="isDisableStockViewbutton">
+                                    View&nbsp;Stock
+                                </button>
+                                </td> -->
+                                <input hidden type="text" class="form-control" formControlName="reqhdNo"
+                                style="width: 220px;">
+                                <input hidden type="text" class="form-control" formControlName="deptId"
+                                style="width: 220px;">
+                                <input hidden type="text" class="form-control" formControlName="tktNo"
+                                style="width: 220px;">
+                                <input hidden type="text" class="form-control" formControlName="reqlnNo"
+                                style="width: 220px;">   
+                                <input hidden type="text" class="form-control" formControlName="adminstatus"
+                                style="width: 220px;">       
+                            </tr>
+                        </ng-container>
+                    </ng-container>
+                </tbody>
+                        </table>
+        </fieldset>
+    </div>
+
+        <fieldset class="RFS">
+            <table class="center">
+                <tr>
+                    <div *ngIf="displayButton; then thenBlock1; else elseBlock1"></div>
+                    <ng-template #thenBlock1>
+                        <td> <button type="submit" class="btn btn-info" id="register" (click)="resetMast()">Reset</button>
+                        </td>
+                        <td> <button type="submit" class="btn btn-info" id="register" (click)="closeMast()">Close</button>
+                        </td>
+                    </ng-template>
+                    <ng-template #elseBlock1>
+                        <!-- [style.display]="isVisibleLineupdateMast ? 'block' : 'none'" -->
+                        <td> <button type="submit" class="btn btn-info" id="register" style="width: fit-content;"  [style.display]="isVisibleLineupdateMast ? 'block' : 'none'"       
+                                (click)="LineupdateMast()">Update Requisision</button></td>
+
+                                <td> <button type="submit" class="btn btn-info" id="register" style="width: fit-content;"  [style.display]="isVisiblestatusClose ? 'block' : 'none'"       
+                                    (click)="statusClosed()">Closed Status</button></td>      
+                        <td> <button type="submit" class="btn btn-info" id="register" (click)="resetMast()">Reset</button>
+                        </td>
+                        <td> <button type="submit" class="btn btn-info" id="register" (click)="closeMast()">Close</button>
+                        </td>
+                    </ng-template>
+    
+                </tr>
+            </table><BR>
+    
+        </fieldset>
+
+</form>

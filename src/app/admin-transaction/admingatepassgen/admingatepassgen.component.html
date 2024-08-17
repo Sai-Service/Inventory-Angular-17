@@ -1,0 +1,175 @@
+<form [formGroup]="ManualGatepassform" (ngSubmit)="gatepassForm(ManualGatepassform.value)">
+    <div class="center">
+        <table style="width: 100%;background-color: white;">
+            <tr>
+                <td class="PageHeader">
+                    &nbsp;Manual&nbsp;Gate&nbsp;Pass&nbsp;Form
+                </td>
+            <td colspan="2" align="right" style="background-color: #FFE4B5;text-align: right;width: 100%;">
+                &nbsp;Gatepass&nbsp;Id&nbsp;&nbsp;
+            </td>
+            <td style="background-color: #FFE4B5;">
+                <input class="form-control" formControlName="gatePassId" [(ngModel)]='gatePassId'
+                    value={{gatePassId}}>
+            </td>
+            <td style="background-color: #FFE4B5;">
+                <button type="button" class="btn-primary" (click)="GatepassidFind(gatePassId)"><i class="fa fa-search"
+                 aria-hidden="true"></i></button>
+            </td>
+        </tr>
+        </table>
+    </div>
+    <table class="center">
+        <tr>
+            <div *ngIf="closeResetButton; then hList1; else hList2"></div>
+            <ng-template #hList2>
+                <div class="d-flex justify-content-center">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="sr-only" id="loading"></span>
+                    </div>
+                </div>
+            </ng-template>
+            <ng-template #hList1> </ng-template>
+            <td class="LabelFontStyle" style="color: blue;width: fit-content;" colspan="4">
+                &nbsp;{{dataDisplay}}&nbsp; </td>
+        </tr>
+    </table>
+    <fieldset class="RFS">
+        <table class="center">
+            <tr>
+                <td style="width: 15%" class="LabelFontStyle">User&nbsp;Login: </td>
+                <td> <input type='text'  uppercase formControlName="userLogin" value={{userLogin}} class="form-control">
+                </td>
+                <td style="width: 15%" class="LabelFontStyle">Location&nbsp;: </td>
+                <td> <input type='text'  uppercase formControlName="userLoginLocation" value={{userLoginLocation}} class="form-control">
+                </td>
+                <td style="width: 15%" class="LabelFontStyle">Gatepass&nbsp;No: </td>
+                <td> <input type='text'  uppercase formControlName="gatePassId" value={{gatePassId}} class="form-control">
+                </td>
+                <td style="width: 15%" class="LabelFontStyle">Gatepass&nbsp;Date: </td>
+                <td> <input type='text'  uppercase formControlName="creationDate1"  class="form-control">
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 15%" class="LabelFontStyle">Department&nbsp;: </td>
+                <td> <input type='text'  uppercase formControlName="department" value={{department}} class="form-control">
+                </td>
+                <td style="width: 15%" class="LabelFontStyle">Gatepass&nbsp;Type: </td>
+                <!-- <td> <input type='date' disabled uppercase formControlName="creationDate" value={{userLoginLocation}} class="form-control">
+                </td> -->
+                <td>
+                    <div *ngIf="displaygatePassType; then thengatePassType; else elsegatePassType"></div>
+                <ng-template #thengatePassType>
+                    <select formControlName="gatePassType" id="gatePassType" class="form-control"
+                        style="background-color: yellow;">
+                        <option *ngFor="let sc of  GatepassTypeList" [ngValue]="sc.codeDesc">
+                            {{sc.codeDesc}}
+                        </option>
+                    </select>
+                </ng-template>
+                <ng-template #elsegatePassType>
+                    <td> <input type='text'  formControlName="gatePassType" class="form-control">
+                    </td>
+                </ng-template>
+                </td>
+                <td style="width: 15%" class="LabelFontStyle">Reg&nbsp;No&nbsp;</td>
+                <td> <input type='text'  uppercase formControlName="regNo" value={{regNo}} class="form-control">
+                </td>
+                <td style="width: 15%" class="LabelFontStyle">Vehicle&nbsp;Details: </td>
+                <td> <input type='text' uppercase formControlName="itemorvehicleDetails" value={{itemorvehicleDetails}} class="form-control">
+                </td>
+            </tr>
+             <tr>
+                <div *ngIf="displayItemame; then thenItemame; else elseItemame"></div>
+                <ng-template #thenItemame>
+                <td style="width: 15%" class="LabelFontStyle">Item&nbsp;Category&nbsp;</td>
+                <td>
+                   
+                    <select formControlName="itemcat" id="itemcat" class="form-control"
+                    (change)="onSelectItemType($event)">
+                    <option value="--Select--">--Select--</option>
+                    <option *ngFor="let sc of  AllreqItemCatagList" [value]="sc.category">
+                        {{sc.category}}
+                    </option>
+                </select>
+                  
+                </td>
+                <td style="width: 15%" class="LabelFontStyle">Item&nbsp;Name&nbsp;</td>
+                    <td>
+                      
+                        <select formControlName="itemName" id="itemName" class="form-control">
+                        <option value="--Select--">--Select--</option>
+                        <option *ngFor="let sc of  onSelectItemNameFnList" [value]="sc.item">
+                            {{sc.item}}
+                        </option>
+                    </select>
+                    </td>
+                </ng-template> 
+                <ng-template #elseItemame>
+                    <td style="width: 15%" class="LabelFontStyle">Item&nbsp;Category&nbsp;</td>
+                    <td> <input type='text' formControlName="itemcat"  class="form-control">
+                        <td style="width: 15%" class="LabelFontStyle">Item&nbsp;Name&nbsp;</td>
+                        <td> <input type='text' formControlName="itemName"  class="form-control">
+                </ng-template> 
+                    <td style="width: 15%" class="LabelFontStyle">Serial&nbsp;No&nbsp;: </td>
+                    <td> <input type='text' formControlName="serialNo" value={{serialNo}} class="form-control">
+                    </td>
+
+             </tr>
+             <tr>
+               
+                <td style="width: 15%" class="LabelFontStyle">&nbsp;Name&nbsp;: </td>
+                <td> <input type='text'  uppercase formControlName="name" value={{name}} class="form-control">
+                </td>
+                <td style="width: 15%" class="LabelFontStyle">Contact&nbsp;No: </td>
+                <td> <input type='text' uppercase formControlName="contactNo" value={{contactNo}} class="form-control">
+                </td>
+                <td style="width: 15%" class="LabelFontStyle">Authorised&nbsp;By: </td>
+                <td> <input type='text' uppercase formControlName="authorisedBy" value={{authorisedBy}} class="form-control">
+                </td>
+             </tr>
+             
+             <tr>
+                <td style="width: 15%" class="LabelFontStyle">&nbsp;Address&nbsp;: </td>
+                <td colspan="7"> <input type='text'  uppercase formControlName="address" value={{address}} class="form-control" style="width: 100%;">
+                </td>
+              
+             </tr>
+             <tr>
+                <td style="width: 15%" class="LabelFontStyle"> &nbsp;Remark&nbsp;: </td>
+                <td colspan="5">
+                    <textarea id="remark" formControlName="remark" rows="2"
+                        style="width: 100%;resize: none; font-size: small;"></textarea>
+                </td>
+              
+             </tr>
+        </table>
+    </fieldset>
+
+    <fieldset class="RFS">
+        <table class="center">
+            <tr>
+                <div *ngIf="displayButton; then thenBlock1; else elseBlock1"></div>
+                <ng-template #thenBlock1>
+                    <td> <button type="submit" class="btn btn-info" id="register" style="width: fit-content;"
+                            (click)="newMast()">Gatepass&nbsp;Generated</button></td>
+                    <td><button type="submit" class="btn btn-info" id="register" (click)="refresh()">Reset</button></td>
+                    <td> <button type="submit" class="btn btn-info" id="register" (click)="close()">Close</button></td>
+
+                </ng-template>
+                <ng-template #elseBlock1>
+                    <td>
+                        <button class="btn-primary" style="width: 100px; background-color: green;"
+                            (click)="gatePassView()">DOWNLOAD</button>
+                    </td>
+                    <td> <button type="submit" class="btn btn-info" id="register" (click)="refresh()">Reset</button>
+                    </td>
+                    <td> <button type="submit" class="btn btn-info" id="register" (click)="close()">Close</button></td>
+                </ng-template>
+
+            </tr>
+        </table>
+    </fieldset>
+
+</form>
+

@@ -1,0 +1,173 @@
+
+<form [formGroup]="BudgetMasterForm"  (ngSubmit)="budgetMaster(BudgetMasterForm.value)" >
+    <table style="width: 100%;background-color: white;" class="center">
+        <tr>
+            <td class="PageHeader">
+                &nbsp;&nbsp;BUDGET&nbsp;MASTER
+            </td>
+            <td colspan="2" align="right" style="background-color: #FFE4B5;text-align: right;width: 100%;">
+                Budget&nbsp;Item&nbsp;&nbsp;Id&nbsp;
+            </td>
+            <td style="background-color: #FFE4B5;">
+                <input   class="form-control" formControlName="itemId" value={{itemId}}  [(ngModel)]='itemId'>
+                <!--[style.display]="isVisibleOrderFind ? 'block' : 'none'">-->
+            </td>
+            
+            <td style="background-color: #FFE4B5;" >
+                <button type="button" class="btn-primary" (click)="budgetitemIdFindFN(itemId)" ><i class="fa fa-search"
+                       aria-hidden="true"></i></button><!-- (click)="compIdFind(cmnTypeId)"-->
+            </td>
+        </tr>
+    </table>
+    <fieldset class="RFS">
+        <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px;color: black;font-weight: bold;"> BUDGET MASTER DETAILS </legend>
+        <table class="center">
+            <tr>
+
+                <td style="width: 15%" class="LabelFontStyle1"> Item &nbsp;Name&nbsp;: </td>
+                <td> <input type='text' uppercase formControlName="itemName"  class="form-control" style="background-color: rgb(255, 255, 255);" placeholder="Enter Item Name " ></td>  <!-- (keyup)="onKey($event )"-->
+                <td style="width: 15%" class="LabelFontStyle1"> Item&nbsp;&nbsp;Description: </td>
+                <td> <input type='text' uppercase formControlName="itemDesc"  class="form-control" placeholder="Enter Item Description"   ></td> 
+
+                
+                <td style="width: 15%" class="LabelFontStyle1"> Item&nbsp;&nbsp;Type: </td>
+                <td>
+                    <select  type='number' formControlName="itemTypeId" id="itemTypeId" class="form-control" style="background-color: yellow;" >
+                        <!-- <option></option> -->
+                        <option *ngFor="let sc of  AllbdgetitemtypeList" [ngValue]="sc.cmntypeId"  >
+                           {{sc.codeDesc}}
+                        </option>
+                    </select>
+                </td>
+               
+            </tr>
+        <tr>
+            <td style="width: 15%" class="LabelFontStyle1"> Expense&nbsp;&nbsp;Type: </td>
+                <td>
+                    <select  type='number' formControlName="expenseTypeId" id="expenseTypeId" class="form-control" style="background-color: yellow;" >
+                        <!-- <option></option> -->
+                        <option *ngFor="let sc of AllExpensetypeList" [ngValue]="sc.cmntypeId"  >
+                           {{sc.codeDesc}}
+                        </option>
+                    </select>
+                </td>
+
+                <td style="width: 15%" class="LabelFontStyle1"> Applicable&nbsp;&nbsp;To: </td>
+                <td>
+                    <select  type='number' formControlName="applicableToId" id="applicableToId" class="form-control" style="background-color: yellow;" >
+                        <!-- <option></option> -->
+                        <option *ngFor="let sc of  ApplicableatoList" [ngValue]="sc.cmntypeId"  >
+                           {{sc.codeDesc}}
+                        </option>
+                    </select>
+                </td>   
+        </tr>
+        <tr>
+            <td style="width: 15%" class="LabelFontStyle1">Budget&nbsp;Item&nbsp;(Y/N): </td>
+            <td>
+                <select type='text' formControlName="budgetItem" id="budgetItem" class="form-control" style="background-color: yellow;"  placeholder="---SELECT---" >
+                    <!-- <option>--SELECT--</option> -->
+                    <option>YES</option> 
+                    <option>NO</option>
+                </select>
+            </td>
+            <td style="width: 15%" class="LabelFontStyle1">Enable&nbsp;(Y/N)&nbsp;: </td>
+            <td>
+                <select type='text' formControlName="enableYN" id="enableYN" class="form-control" style="background-color: yellow;"  placeholder="---SELECT---" >
+                    <!-- <option>--SELECT--</option> -->
+                    <option>YES</option> 
+                    <option>NO</option>
+                </select>
+            </td>
+            <td style="width: 15%" class="LabelFontStyle1"> Budget&nbsp;Group&nbsp;Head: </td>
+                <td>
+                    <select  type='number' formControlName="budgetgrphdId" id="budgetgrphdId" class="form-control" style="background-color: yellow;" >
+                        <!-- <option></option> -->
+                        <option *ngFor="let sc of  budgetgrpheadList" [ngValue]="sc.cmntypeId"  >
+                           {{sc.codeDesc}}
+                        </option>
+                    </select>
+                </td> 
+
+
+
+        </tr>
+           <tr>
+            <td style="width: 15%" class="LabelFontStyle1"> Start&nbsp;&nbsp;Date:</td>
+            <td> <input type='date'  formControlName="startDate"  class="form-control"    >
+            
+            </td> 
+
+            <td style="width: 15%" class="LabelFontStyle1"> Status&nbsp;&nbsp;: </td>
+            <td>
+                <select type='text' formControlName="status" class="form-control" style="background-color: yellow;"  placeholder="---SELECT---" >
+                    <!-- <option>--SELECT--</option> -->
+                    <option>Active</option> 
+                    <option>Inactive</option>
+                   
+                    <!-- <option *ngFor="let sc of  OuCityList" [(ngValue)]=sc.cmntypeId  >
+                        {{sc.codeDesc}}
+                    </option>   -->
+                </select>
+            </td>
+        </tr>
+
+       
+    </table>    
+    </fieldset>
+
+<table class="center">
+    <tr>
+        <div *ngIf="displayButton; then thenBlock1; else elseBlock1"></div>
+        <ng-template #thenBlock1>
+        <td> <button type="submit" class="btn btn-info" id="register" (click)="newMast()">Save</button></td>
+        <td [style.display]="isVisibleSearch ? 'block' : 'none' "> <button  type="submit" class="btn btn-info" id="register" (click)="searchMast()">Search</button></td>
+        <td [style.display]="isVisibleSearchSuper ? 'block' : 'none' "> <button  type="submit" class="btn btn-info" id="register" (click)="searchMast()">Search</button></td>
+        <td> <button type="submit" class="btn btn-info" id="register" (click)="resetMast()">Reset</button></td>
+        <td> <button type="submit" class="btn btn-info" id="register" (click)="closeMast()">Close</button></td>
+       
+        </ng-template>
+        <ng-template #elseBlock1>
+            <td> <button type="submit" class="btn btn-info" id="register" (click)="updateMast()">Update</button></td>
+            <td [style.display]="isVisibleSearch ? 'block' : 'none' "> <button  type="submit" class="btn btn-info" id="register" (click)="searchMast()">Search</button></td>
+            <td [style.display]="isVisibleSearchSuper ? 'block' : 'none' "> <button  type="submit" class="btn btn-info" id="register" (click)="searchMast()">Search</button></td>
+            <td> <button type="submit" class="btn btn-info" id="register" (click)="resetMast()">Reset</button></td>
+            <td> <button type="submit" class="btn btn-info" id="register" (click)="closeMast()">Close</button></td>
+        </ng-template>
+        
+    </tr>
+</table>
+<table  class="GridFont" cellspacing="0" cellpadding="4"   style="border-color:#959595;border-collapse:collapse;width: 100%; ">
+    <thead>
+        <tr class="GridHeader">
+            <!-- <th scope="col" style="border: 1px solid black;">Item Id</th> -->
+            <th scope="col" style="border: 1px solid black;">Item Name</th>
+            <th scope="col" style="border: 1px solid black;">Item Type</th>
+            <th scope="col" style="border: 1px solid black;">Expense Type</th>
+            <th scope="col" style="border: 1px solid black;">Application To</th>
+            <th scope="col" style="border: 1px solid black;">Budget Item(Y/N)</th>
+            <th scope="col" style="border: 1px solid black;">Enable(Y/N)</th>
+            <th scope="col" style="border: 1px solid black;">Budget Group Head</th>
+            <th scope="col" style="border: 1px solid black;">Select</th>
+          
+            
+        </tr>
+    </thead>
+        <tbody>
+            <tr *ngFor="let com of allbudgetmstList" class="ItemStyle" style="text-decoration:none;">
+                <!-- <td style="border: 1px solid black;padding-left: 15px;">{{com.itemId}}</td> -->
+                <td style="border: 1px solid black;padding-left: 15px;">{{com.itemName}}</td>
+                <td style="border: 1px solid black;padding-left: 15px;">{{com.itemType}}</td>
+                <td style="border: 1px solid black;padding-left: 15px;">{{com.expenseType}}</td>
+                <td style="border: 1px solid black;padding-left: 15px;">{{com.applicableTo}}</td>
+                <td style="border: 1px solid black;padding-left: 15px;">{{com.budgetItem}}</td>
+                <td style="border: 1px solid black;padding-left: 15px;">{{com.enableYN}}</td>
+                <td style="border: 1px solid black;padding-left: 15px;">{{com.budgetgrphd}}</td>
+                
+                <td style="border: 1px solid black;padding-left: 15px;"> <button type="button" style="width: fit-content;"  class="btn btn-primary" data-dismiss="modal" (click)="budgetitemIdFindFN(com.itemId)">Select</button></td>
+            </tr>
+        </tbody>
+    
+</table>
+
+</form>

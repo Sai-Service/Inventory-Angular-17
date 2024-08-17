@@ -1,0 +1,121 @@
+<form [formGroup]="pendingShipmentListForm" (ngSubmit)="pendingShipmentList(pendingShipmentListForm.value)">
+    <table style="width: 100%;background-color: white;">
+        <tr>
+            <td class="PageHeader">
+                &nbsp;&nbsp;Pending&nbsp;Shipment&nbsp;List&nbsp;
+            </td>
+           
+        </tr>
+    </table>
+    <fieldset class="RFS" style="background-color: white;">
+        <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px;font-weight: bold;color: black;">Item Details</legend>
+        <table>
+            <tr>
+                <td  class="LabelFontStyle1" >&nbsp;Select&nbsp;Location&nbsp;</td>
+                <td>
+                    <select id="Location" class="form-control"  style="background-color: yellow;" formControlName="Location" (change)="onlocationissueselect($event)" >  <!--- "-->
+                        <option>--Select--</option>
+                        <option *ngFor="let sc of  locIdList" [value]="sc.locName" >
+                            {{sc.locName}}
+                        </option>
+                    </select>
+                </td>
+                <input hidden type="text" class="form-control" formControlName="locactionId" >
+                <td>
+                    <button type="submit" class="btn btn-primary" id="saveBtn" data-toggle="modal"  (click)="getlocpendingship()" style="width: fit-content;" >Search</button>
+                </td>
+            </tr>
+
+        </table>
+    </fieldset>
+
+
+    <fieldset class="RFS" style="background-color: white;">
+        <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px;font-weight: bold;color: black;">Requition List</legend>
+        <table class="GridFont" cellspacing="0" cellpadding="4"
+                                    style="border-color:#959595;border-collapse:collapse;width: 100%; ">
+                                    <tr class="GridHeader">
+                                        <th scope="col" style="border: 1px solid black;">Shipment No</th>
+                                        <th scope="col" style="border: 1px solid black;">Shipment Date</th>
+                                        <!-- <th scope="col" style="border: 1px solid black;">Venodr Name</th> -->
+                                        <th scope="col" style="border: 1px solid black;">Requested From</th>
+                                        <!-- <th scope="col" style="border: 1px solid black;">Receipt No</th> -->
+                                        <th scope="col" style="border: 1px solid black;">View Receipt Form</th>
+                                    </tr>
+                                    <tr *ngFor="let com of viewAllReqisision" class="ItemStyle"
+                                        style="text-decoration:none;font-size: 12px;text-align: center;">
+                                        <!-- <td style="border: 1px solid black;color: black;"> {{com.reqhdNo}}</td> -->
+                                        <!-- <td style="border: 1px solid black;color: black;">
+                                            <a [routerLink]="['/admin/admintransaction/ReceiptForm','StockTrans',com.stockTransNo]"
+                                                href="{{stockTransNo}}">{{com.stockTransNo}}</a>
+                                        </td> -->
+                                        <td style="border: 1px solid black;color: black;"> {{com.stockTransNo}}</td>
+                                        <td style="border: 1px solid black;color: black;"> {{com.stockTransDate | date:'dd-MM-yyyy hh:mm:ss'}}</td>
+                                        <!-- <td style="border: 1px solid black;color: black;"> {{com.vendorName}}</td> -->
+                                        <td style="border: 1px solid black;color: black;"> {{com.adBuyer}}</td>
+                                        <!-- <td style="border: 1px solid black;color: black;"> {{com.receiptNo}}</td> -->
+
+                                            <td class="center" style="border: 1px solid black;padding-left: 5px;">
+                                                <button type="button" class="btn-primary" style="width: fit-content;"
+                                                    (click)="viewShipDetails(com.stockTransNo)">View</button>
+                                            </td>
+                                    </tr>
+                                </table>
+    </fieldset>
+
+    <fieldset class="RFS" >
+        <table class="center">
+            <tr>
+               
+                <td>
+                    <button type="submit" class="btn btn-primary" id="resetBtn" data-toggle="modal" 
+                    data-target="#confirmAlert" style="width: fit-content;" (click)="getMessage('Reset')">Reset</button>
+                 </td>
+                <td>
+                    <button type="submit" class="btn btn-primary" id="closeBtn"
+                    data-toggle="modal" data-target="#confirmAlert" style="width: fit-content;" (click)="getMessage('Close')">Close</button>
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+</form>
+
+
+
+
+
+
+
+
+<div class="modal fade" id="confirmAlert" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="width: 30%;margin-left: 35%;">
+    <div class="modal-dialog modal-sm" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <label
+            style="font-size: small; color: black; font-weight: bold; text-align: center; vertical-align: middle;">
+            {{message}}
+        </label>
+        </div>
+        <div class="modal-footer">
+            <table class="center">
+                <tr>
+                    <td>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" id="register"
+                            (click)="executeAction()" style="width: 80px;">Yes</button>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" style="width: 80px;">No</button>
+                    </td>
+                </tr>
+            </table>
+          
+        </div>
+      </div>
+    </div>
+  </div>

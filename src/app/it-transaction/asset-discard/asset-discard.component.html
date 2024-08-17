@@ -1,0 +1,249 @@
+<form [formGroup]="aseetDiscardForm">
+    <table style="width: 100%;background-color: white;" class="center">
+        <tr>
+            <td class="PageHeader">
+                Asset&nbsp;Discard&nbsp;
+            </td>
+    </table>
+
+
+
+    <fieldset class="RFS">
+        <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px;color: black;font-weight: bold;"> FIND ASSET
+        </legend>
+        <table class="center">
+            <tr>
+
+                <td >
+                    <input class="form-control" formControlName="itemCode" value={{itemCode}} [(ngModel)]='itemCode'>
+
+                </td>
+
+                <td >
+                    <button type="button" class="btn-primary"><i class="fa fa-search" aria-hidden="true"
+                            placeholder="search" (click)="AssetitemcodeFindFN(itemCode)"></i></button>
+                </td>
+            </tr>
+        </table>
+    </fieldset><br>
+
+
+    <fieldset class="RFS">
+        <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px;color: black;font-weight: bold;"> Asset
+            Discard Details</legend>
+        <table class="center">
+            <tr>
+                <!-- <td></td>
+                <td></td> -->
+                <td style="width: 15%" class="LabelFontStyle1">Item&nbsp;Id&nbsp;: </td>
+                <td> <input type='number'  formControlName="ditemId" class="form-control" ></td>
+                <td style="width: 15%" class="LabelFontStyle">Today&nbsp;&nbsp;Date: </td>
+                <td class="form-control"> {{Date}}</td>
+                <!-- <td></td> -->
+            </tr>
+            <tr>
+                <td> <input type='text' hidden formControlName="itemId" class="form-control" ></td>
+            </tr>
+            <tr>
+                <td style="width: 15%" class="LabelFontStyle">Discard&nbsp;Type&nbsp;: </td>
+                <td>
+                    <select type='number' formControlName="transType" id="transType" class="form-control"
+                        style="background-color: yellow;">
+                        <!-- <option></option> -->
+                        <option *ngFor="let sc of  TranstypList" [ngValue]="sc.cmntypeId">
+                            {{sc.codeDesc}}
+                        </option>
+                    </select>
+                </td>
+                <td style="width: 15%" class="LabelFontStyle1">Vendor&nbsp;List&nbsp;: </td>
+                <td>
+                    <select type='text' formControlName="dvendorlist" id="dvendorlist" class="form-control"
+                        style="background-color: yellow;">
+                        <!-- <option></option> -->
+                        <option *ngFor="let sc of  DvendorList" [ngValue]="sc.vendorName">
+                            {{sc.vendorName}}
+                        </option>
+                    </select>
+                </td>
+                <td style="width: 15%" class="LabelFontStyle1">Discard&nbsp;date&nbsp;: </td>
+                <td> <input type='date' formControlName="transDate" class="form-control" [(ngModel)]='transDate'
+                        value={{transDate}} style="background-color: yellow;" max="{{maxDate | date:'yyyy-MM-dd'}}">
+                </td> <!--  (change)="validateStrtDate(transDate)"-->
+
+                <td style="width: 15%" class="LabelFontStyle1">Reason&nbsp;&nbsp;: </td>
+                <td>
+                    <select type='number' formControlName="reasonId" id="reasonId" class="form-control"
+                        style="background-color: yellow;">
+                        <!-- <option></option> -->
+                        <option *ngFor="let sc of  ReasonList" [ngValue]="sc.cmntypeId">
+                            {{sc.codeDesc}}
+                        </option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 15%" class="LabelFontStyle1">Apply&nbsp;GST&nbsp;Value(%)&nbsp;: </td>
+                <div *ngIf="displayGstper; then thenGstper; else elseGstper"> </div>
+                <ng-template #thenGstper>
+                    <select type='text' formControlName="gst" id="gst" class="form-control"
+                        style="background-color: yellow; ">
+                        <option *ngFor="let sc of gstperList" [ngValue]="sc.code">
+                            {{sc.code}}
+                        </option>
+                    </select>
+                </ng-template>
+                <ng-template #elseGstper>
+                    <input type='text'  formControlName="gst" class="form-control">
+                </ng-template>
+                <td style="width: 15%" class="LabelFontStyle1">Value&nbsp;(Rs.)&nbsp;: </td>
+                <td> <input type='number' uppercase formControlName="value" (keydown.tab)="onKey($event)"
+                        class="form-control" style="background-color: yellow;"></td>
+                <td style="width: 15%" class="LabelFontStyle1">Total&nbsp;Value&nbsp;(Rs.)&nbsp;: </td>
+                <td> <input  type='number' uppercase formControlName="valueGst" class="form-control"
+                        style="background-color: yellow;"></td>
+                <td style="width: 15%" class="LabelFontStyle">Any&nbsp;Remark&nbsp;: </td>
+                <td style="width: 15%"> <input type='text' formControlName="remarks" class="form-control"></td>
+            </tr>
+        </table>
+    </fieldset><br>
+    <fieldset class="RFS">
+        <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px;color: black;font-weight: bold;">Item Details
+        </legend>
+        <table class="center">
+            <tr>
+                <td style="width: 15%" class="LabelFontStyle">Item&nbsp;Id&nbsp;: </td>
+                <td> <input type='text'  formControlName="itemCode" class="form-control" ></td>
+                <td style="width: 15%" class="LabelFontStyle">Item&nbsp;Type&nbsp;: </td>
+                <td> <input type='text'  uppercase formControlName="itemType" class="form-control"></td>
+                <td style="width: 15%" class="LabelFontStyle">&nbsp;Make&nbsp;: </td>
+                <td> <input type='text'  uppercase formControlName="productMake" class="form-control"></td>
+            </tr>
+            <!-- <br> -->
+            <tr>
+                <td style="width: 15%" class="LabelFontStyle">Product&nbsp;Serail&nbsp;No: </td>
+                <td> <input type='text'  uppercase formControlName="productserialNo" class="form-control"></td>
+                <!-- <td></td>
+                <td></td> -->
+                <td style="width: 15%" class="LabelFontStyle">&nbsp;MTM&nbsp;No: </td>
+                <td> <input type='text'  uppercase formControlName="mtmNo" class="form-control"></td>
+            </tr>
+                  <tr>
+                    <td> <input hidden type='text' uppercase formControlName="createdBy"  class="form-control"    ></td>
+            <td> <input hidden type='text' uppercase formControlName="lastupdatedBy"  class="form-control"    ></td>
+                  </tr>
+        </table>
+    </fieldset><br>
+
+    <fieldset class="RFS">
+        <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px;color: black;font-weight: bold;">
+            Location/Department Details</legend>
+        <table class="center">
+            <tr>
+                <td style="width: 15%" class="LabelFontStyle">&nbsp;City&nbsp;: </td>
+                <td> <input type='text'  formControlName="cityName" class="form-control"></td>
+                <td style="width: 15%" class="LabelFontStyle">Legal&nbsp;Entity&nbsp;: </td>
+                <td> <input type='text'  formControlName="legalEntity" class="form-control"></td>
+                <td style="width: 15%" class="LabelFontStyle">&nbsp;Division&nbsp;: </td>
+                <td> <input type='text'  formControlName="divName" class="form-control"></td>
+                <td style="width: 15%" class="LabelFontStyle">&nbsp;User&nbsp;Name: </td>
+                <td> <input type='text'  formControlName="userName" class="form-control"></td>
+            </tr>
+          
+            <tr>
+                <!-- <td></td>
+                <td></td> -->
+                <td style="width: 15%" class="LabelFontStyle">&nbsp;Location&nbsp;: </td>
+                <td> <input type='text'  formControlName="locName" class="form-control" ></td>
+                <td style="width: 15%" class="LabelFontStyle">&nbsp;Department&nbsp;: </td>
+                <td> <input type='text'  formControlName="deptName" class="form-control"></td>
+                <td style="width: 15%" class="LabelFontStyle">&nbsp;Status&nbsp;: </td>
+                <td> <input  type='text' uppercase formControlName="status" class="form-control"></td>
+            </tr>
+            <!-- <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+
+               
+
+            </tr> -->
+        </table>
+    </fieldset>
+
+    <fieldset class="RFS">
+        <table class="center">
+            <tr>
+                <div *ngIf="displayButton; then thenBlock1; else elseBlock1"></div>
+                <ng-template #thenBlock1>
+
+                    <td> <button type="submit" class="btn btn-info" id="register" (click)="searchMast()">Search</button>
+                    </td>
+                    <td> <button type="submit" class="btn btn-info" id="register" (click)="resetMast()">Reset</button>
+                    </td>
+                    <td> <button type="submit" class="btn btn-info" id="register" (click)="closeMast()">Close</button>
+                    </td>
+
+                </ng-template>
+                <ng-template #elseBlock1>
+                    <td> <button type="submit" class="btn btn-info" id="register" style="width: 100px;"
+                            (click)="newMast()">Aseet Discard</button></td>
+                    <!-- <td> <button type="submit" class="btn btn-info" id="register" style="width: 100px;"(click)="updateMast()">Aseet Discard</button></td> -->
+                    <td> <button type="submit" class="btn btn-info" id="register" (click)="searchMast()">Search</button>
+                    </td>
+                    <td> <button type="submit" class="btn btn-info" id="register" (click)="resetMast()">Reset</button>
+                    </td>
+                    <td> <button type="submit" class="btn btn-info" id="register" (click)="closeMast()">Close</button>
+                    </td>
+                </ng-template>
+
+            </tr>
+        </table><BR>
+
+    </fieldset>
+    <fieldset class="RFS">
+
+        <br>
+        <table class="GridFont" cellspacing="0" cellpadding="4"
+            style="border-color:#959595;border-collapse:collapse;width: 100%; ">
+            <thead>
+                <tr class="GridHeader">
+                    <th scope="col" style="border: 1px solid black;">Item Id</th>
+                    <th scope="col" style="border: 1px solid black;">Item Code</th>
+                    <th scope="col" style="border: 1px solid black;">Item Type</th>
+                    <th scope="col" style="border: 1px solid black;">city</th>
+                    <th scope="col" style="border: 1px solid black;">Company</th>
+                    <th scope="col" style="border: 1px solid black;">Location</th>
+                    <th scope="col" style="border: 1px solid black;">Division</th>
+                    <th scope="col" style="border: 1px solid black;">Department</th>
+                    <th scope="col" style="border: 1px solid black;">Product Make</th>
+                    <th scope="col" style="border: 1px solid black;">Asset No</th>
+
+                    <th scope="col" style="border: 1px solid black;">Select</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let com of allassetdiscardeSearch" class="ItemStyle" style="text-decoration:none;">
+                    <!-- *ngFor="let com of allCompList" class="ItemStyle" style="text-decoration:none;"-->
+                    <td style="border: 1px solid black;padding-left: 15px;">{{com.ditemId}}</td>
+                    <td style="border: 1px solid black;padding-left: 15px;">{{com.itemCode}}</td>
+                    <td style="border: 1px solid black;padding-left: 15px;">{{com.itemType}}</td>
+                    <td style="border: 1px solid black;padding-left: 15px;">{{com.city}}</td>
+                    <td style="border: 1px solid black;padding-left: 15px;">{{com.legalEntity}}</td>
+                    <td style="border: 1px solid black;padding-left: 15px;">{{com.locName}}</td>
+                    <td style="border: 1px solid black;padding-left: 15px;">{{com.divName}}</td>
+                    <td style="border: 1px solid black;padding-left: 15px;">{{com.deptName}}</td>
+                    <td style="border: 1px solid black;padding-left: 15px;">{{com.productMake}}</td>
+                    <td style="border: 1px solid black;padding-left: 15px;">{{com.faNo}}</td>
+                    <td style="border: 1px solid black;padding-left: 15px;"> <button type="button"
+                            style="width: fit-content;" class="btn btn-primary" data-dismiss="modal"
+                            (click)="AssetdiscardFindFN(com.itemCode)">Select</button></td>
+                    <td hidden style="border: 1px solid black;padding-left: 15px;">{{com.status}}</td>
+                    <td hidden style="border: 1px solid black;padding-left: 15px;">{{com.ouId}}</td>
+                </tr>
+            </tbody>
+
+        </table>
+    </fieldset>
+
+
+</form>

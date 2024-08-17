@@ -1,0 +1,398 @@
+<form [formGroup]="budgetTrns" (ngSubmit)="BudgetformMaster(budgetTrns.value)">    
+  
+    <table style="width: 100%;background-color: white;" class="center">
+        <tr>
+            <td class="PageHeader">
+                &nbsp;Budget&nbsp;Transaction&nbsp;
+            </td>
+                <td style="background-color: #FFE4B5;text-align: right;width: 100%;">
+                    &nbsp;Budget&nbsp;No&nbsp;
+                </td> 
+            
+            <td style="background-color: #FFE4B5;">
+                <input type="text" class="form-control" formControlName="budgetheaderId" [(ngModel)]='budgetheaderId' value={{budgetheaderId}}>
+            </td>
+            <td style="background-color: #FFE4B5;">
+                <button type="button" class="btn-primary" (click)="budgetheaderFN(budgetheaderId)"><i class="fa fa-search"
+                        aria-hidden="true"></i></button>
+            </td>
+        </tr>
+    </table>
+   
+
+     <fieldset class="RFS">
+        <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px;color: black;font-weight: bold;">Budget Header 
+        </legend>
+        <table class="center" style="width: fit-content;">
+            <tr>
+                <td style="width: 15%" class="LabelFontStyle">
+                    CITY&nbsp;:&nbsp;
+                  </td>
+                  <td>
+                      <input readonly type="text" class="form-control" formControlName="cityName">  
+                  </td>
+                  <input  hidden type="text" class="form-control" formControlName="cityId">
+
+                  <td style="width: 15%" class="LabelFontStyle">&nbsp;Date:</td>
+                  <td class="form-control" style="background-color: lightgreen;color: black;">{{Date}}</td>
+
+                 
+                  <td style="width: 15%" class="LabelFontStyle">
+                    Budget&nbsp;NO:&nbsp;
+                  </td>
+                  <td>
+                      <input type="text" readonly class="form-control" formControlName="budgetheaderId" >  
+                  </td>
+                </tr>
+
+            <tr>
+                <td style="width: 15%" class="LabelFontStyle">
+                    Location&nbsp;:&nbsp;
+                  </td>
+                  <td>
+                    <div *ngIf="isVisibleLocList; then thenLocList; else elseLocList"></div>
+                    <ng-template #thenLocList>
+                     <select id="locName" class="form-control" formControlName="locName" (change)="onlocationissueselect($event)"  #myinput>
+                          <option>--Select--</option>
+                          <option *ngFor="let sc of  locIdList" [value]="sc.locName" >
+                              {{sc.locName}}
+                          </option>
+                      </select>
+                    </ng-template>
+                    <ng-template #elseLocList>
+                        <input   type="text" class="form-control" formControlName="locName" >
+                    </ng-template>
+                  </td>
+                  <input type="number" hidden formControlName="locationId"class="form-control" >
+
+<!------------------------------------------------------------------------------------------------------------------------->
+
+                <td style="width: 15%" class="LabelFontStyle">
+                    Division&nbsp;:&nbsp;
+                  </td>
+                  <td>
+                    <div *ngIf="isVisibleDivList; then thenDivList; else elseDivList"></div>
+                    <ng-template #thenDivList>
+                     <select id="divName" class="form-control" formControlName="divName" (change)="onselectDivision($event)"  #myinput>
+                          <option>--Select--</option>
+                          <option *ngFor="let sc of  divIdlist" [value]="sc.codeDesc" >
+                              {{sc.codeDesc}}
+                          </option>
+                      </select>
+                    </ng-template>
+                    <ng-template #elseDivList>
+                        <input   type="text" class="form-control" formControlName="divName" >
+                    </ng-template>
+                  </td>
+                  <input type="number" hidden  formControlName="divisionId"class="form-control" >
+
+                  <!------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+                  <td style="width: 15%" class="LabelFontStyle">
+                    OP&nbsp;Unit:&nbsp;
+                  </td>
+                  <td>
+                    <div *ngIf="isVisibleOpunitList; then thenopunitList; else elseopunitList"></div>
+                    <ng-template #thenopunitList>
+                     <select id="companyName" class="form-control" formControlName="companyName" (change)="onselectopunit($event)"  #myinput>
+                          <option>--Select--</option>
+                          <option *ngFor="let sc of  opunitList" [value]="sc.compName" >
+                              {{sc.compName}}
+                          </option>
+                      </select>
+                    </ng-template>
+                    <ng-template #elseopunitList>
+                        <input   type="text" class="form-control" formControlName="companyName" >
+                    </ng-template>
+                  </td>
+                  <input type="number" hidden  formControlName="companyId"class="form-control" >
+
+                  <!------------------------------------------------------------------------------------------>
+            </tr>
+            <tr>
+                <td style="width: 15%" class="LabelFontStyle">
+                    Department&nbsp;:&nbsp;
+                  </td>
+                  <td>
+                    <div *ngIf="isVisibleDeptList; then thendeptList; else elsedeptList"></div>
+                    <ng-template #thendeptList>
+                     <select id="deptName" class="form-control" formControlName="deptName" (change)="onselectDepartment($event)"  #myinput>
+                          <option>--Select--</option>
+                          <option *ngFor="let sc of  DepartmentList" [value]="sc.codeDesc" >
+                              {{sc.codeDesc}}
+                          </option>
+                      </select>
+                    </ng-template>
+                    <ng-template #elsedeptList>
+                        <input   type="text" readonly class="form-control" formControlName="deptName" >
+                    </ng-template>
+                  </td>
+                  <input type="number" hidden  formControlName="deptId"class="form-control" >
+
+                  <!---------------------------------------------------------------------------------->
+
+                  <td style="width: 15%" class="LabelFontStyle">
+                    Fainancial&nbsp;Year:&nbsp;
+                  </td>
+                  <td>
+                    <div *ngIf="isVisibleFynlyerList; then thenfyList; else elsefyList"></div>
+                    <ng-template #thenfyList>
+                     <select id="finYear" class="form-control" formControlName="finYear" (change)="onselectFainacialyear($event)"  #myinput>
+                          <option>--Select--</option>
+                          <option *ngFor="let sc of  FainancialyearList" [value]="sc.codeDesc" >
+                              {{sc.codeDesc}}
+                          </option>
+                      </select>
+                    </ng-template>
+                    <ng-template #elsefyList>
+                        <input  readonly type="text" class="form-control" formControlName="finYear" >
+                    </ng-template>
+                  </td>
+                  <input type="number" hidden  formControlName="finyearId"class="form-control" >
+    <td>
+
+    </td>
+
+                  <td style="width: 15%" class="LabelFontStyle">
+                    <button type="submit" class="btn btn-primary" style="width: fit-content;" 
+                      (click)="ProceedBudget()"   >PROCEED</button>
+                </td>
+
+            </tr>
+        </table>
+     </fieldset>
+     <fieldset class="RFS">
+        <table class="center">
+            <td style="width: 15%" class="LabelFontStyle">
+                Line&nbsp;Count:&nbsp;
+              </td>
+              <td>
+                  <input type="text" readonly class="form-control" formControlName="totallines" >  
+              </td>
+
+              <td style="width: 15%" class="LabelFontStyle">
+                Budget&nbsp;Amount:&nbsp;
+              </td>
+              <td>
+                  <input type="text" readonly class="form-control" formControlName="budgetTotal" >  
+              </td>
+
+              <td style="width: 15%" class="LabelFontStyle">
+                Actual&nbsp;Amount:&nbsp;
+              </td>
+              <td>
+                  <input type="text" readonly  class="form-control" formControlName="actualTotal" >  
+              </td>
+
+        </table>
+     </fieldset>
+    
+     <fieldset class="RFS">
+        <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px;color: black;font-weight: bold;">Budget Line 
+        </legend>
+        <div class="grid_scroll">
+            <table style="width: 100%; border: solid 1px Gray"  class="GridFont" cellspacing="0" cellpadding="4"
+            rules="all" class="center">
+            <thead>
+                <tr class="GridHeader">
+                    <th style="width:4rem" scope="col">Srl&nbsp;No.</th>
+                    <th style="width:4rem" scope="col">Item&nbsp;Id</th>
+                    <th style="width:25rem" scope="col">Item&nbsp;Name</th>
+                    <th style="width:4rem" scope="col">Budget&nbsp;Amt</th>
+                    <th style="width:4rem" scope="col">Actual&nbsp;Amt</th>
+                    <th style="width:4rem" scope="col">Additional&nbsp;Info</th>
+                    <th style="width:4rem" scope="col">Budget&nbsp;Y/N</th>
+
+                    <div *ngIf="isVisiblebudgetalineDisable; then thenbudgetlineDisable; else elsebudgetlineDisable"></div>
+                    <ng-template #thenbudgetlineDisable>
+                        <th style="width:4rem" scope="col">Add&nbsp;</th>
+                        <th style="width:4rem" scope="col">Remove&nbsp;</th>
+                    </ng-template>
+                    <ng-template #elsebudgetlineDisable>
+                        
+                    </ng-template>
+                </tr>
+            </thead>
+            <tbody> 
+                <ng-container class="center" formArrayName="budgetLines">
+                    <ng-container *ngFor="let group of orderlineDetailsArray().controls; let i= index"
+                        [formGroupName]="i"> 
+                <tr>
+                    <td>
+                        <input type='number' readonly  formControlName="srlNo" class="form-control"
+                            style="width:2rem;height: 23px;font-size: 10px;">
+                    </td>
+                    <td>
+                        <input type='number' readonly style="width: 50px;"   formControlName="itemId" class="form-control" >
+                      
+                    </td> 
+                        <input hidden type='number' formControlName="budgetlineId" class="form-control"  >
+                        <td>
+                        <div *ngIf="isVisiblebudgetentyDisable[i]; then thenbudgetentryDisable; else elsebudgetentryDisable"></div>
+                        <ng-template #thenbudgetentryDisable>
+                       
+                        <input type='text' readonly  formControlName="buditemName" class="form-control" min="0" >
+                        
+                        </ng-template>
+                        <ng-template #elsebudgetentryDisable>
+                            
+                                    <select type="text" formControlName="buditemName" id="buditemName" class="form-control"
+                                style="background-color: yellow;" (change)="onslectlistitem(i,$event)" >
+                                   
+                                    <option>--Select--</option>
+                                     <option *ngFor="let sc of AllbudgetitementyList" [value]="sc.buditemName">
+                                        {{sc.buditemName}}</option>
+                              
+                                    </select>
+                                <input type="text" hidden formControlName="itemId">
+                             
+                        </ng-template>
+                        </td>
+                    <td>
+                        <input type='number' formControlName="budgetAmount" class="form-control"  name="budgetAmount{{i}}"  min="0"
+                        (keydown.tab)="onKey(i)"  >
+                      
+                    </td>
+                    <td>
+                        <input type='number' readonly formControlName="actualAmount" class="form-control"  name="actualAmount{{i}}"  min="0"
+                        (keydown.tab)="onKey(i)" >
+                      
+                    </td>
+                    <td>
+                        <input type='text' formControlName="remark" class="form-control " >
+                      
+                    </td>
+                    <td>
+                        <input type='text' readonly  formControlName="budgetItem" class="form-control"  >
+                    </td>
+                    <div *ngIf="isVisiblebudgetaddDisable; then thenbudgetaddDisable; else elsebudgetaddDisable"></div>
+                    <ng-template #thenbudgetaddDisable>
+                    <td>
+                        <button type="button" class="btn btn-primary" (click)="addRow(i)"
+                            style="width: min-content;"><i class="fa fa-plus"></i></button>
+                    </td>
+                   <td>
+                <div *ngIf="isVisibleremoveRow[i]; then thenremoveRow; else elseremoveRow"></div>
+                <ng-template #thenremoveRow>
+                    <button type="button" class="btn btn-primary" (click)="RemoveRow(i)"
+                        style="width: min-content;" ><i class="fa fa-trash"></i></button>
+                </ng-template>
+                <ng-template #elseremoveRow></ng-template>
+                </td>
+            </ng-template>
+            <ng-template #elsebudgetaddDisable>
+            </ng-template>
+                    
+                </tr>
+                    </ng-container>
+                </ng-container>
+            </tbody>
+        
+        </table>
+        </div>
+     </fieldset>
+     
+     <fieldset  class="RFS">
+        <table  class="center">
+            <tr>
+                <div *ngIf="displayButton; then thenBlock1; else elseBlock1"></div>
+                <ng-template #thenBlock1>
+                    <td>
+
+                        <!-- <button type="submit" class="btn btn-primary" style="width: 80px;" 
+                             (click)="newMast1()">Save</button> -->
+                             <button type="submit" class="btn btn-primary" id="saveBtn" data-toggle="modal" 
+                             data-target="#confirmAlert" (click)="getMessage('Save')">Save</button>
+                     </td>
+                     <td>
+                        <button type="submit" class="btn btn-primary" id="resetBtn" data-toggle="modal" 
+                        data-target="#confirmAlert" (click)="getMessage('Reset')">Reset</button>
+                     </td>
+                    <td>
+                        <button type="submit" class="btn btn-primary" id="closeBtn"
+                        data-toggle="modal" data-target="#confirmAlert" (click)="getMessage('Close')">Close</button>
+                    </td>
+                </ng-template>
+                <ng-template #elseBlock1>
+                    <td>
+                        <!-- <button type="submit" class="btn btn-primary" style="width: 80px;" 
+                             (click)="Update()">Update</button> -->
+                             <button type="submit" class="btn btn-primary" id="UpdateBtn" data-toggle="modal" 
+                             data-target="#confirmAlert" (click)="getMessage('Update')">Update</button>
+                     </td>
+                     <td>
+                        <button type="submit" class="btn btn-primary" id="resetBtn" data-toggle="modal" 
+                        data-target="#confirmAlert" (click)="getMessage('Reset')">Reset</button>
+                     </td>
+                    <td>
+                        <button type="submit" class="btn btn-primary" id="closeBtn"
+                        data-toggle="modal" data-target="#confirmAlert" (click)="getMessage('Close')">Close</button>
+                    </td>
+                </ng-template>
+            </tr>
+        </table>
+     </fieldset>
+</form>
+
+
+
+<div class="modal fade" id="confirmAlert" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="width: 30%;margin-left: 35%;">
+    <div class="modal-dialog modal-sm" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <label
+            style="font-size: small; color: black; font-weight: bold; text-align: center; vertical-align: middle;">
+            {{message}}
+        </label>
+        </div>
+        <div class="modal-footer">
+            <table class="center">
+                <tr>
+                    <td>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" id="register"
+                            (click)="executeAction()">Yes</button>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
+                    </td>
+                </tr>
+            </table>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<!-- <div class="modal" id="confirmAlert" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm"  role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" >Confirmation!</h5>
+        </div>
+        <div class="modal-body">
+            <label style="font-size: small; color: black; font-weight: bold; text-align: center; vertical-align: middle;">
+                {{message}}
+            </label>
+        </div>
+        <div class="modal-footer">
+            <table class="center">
+        <tr>
+            <td>
+            <button  type="submit" class="btn btn-info" data-dismiss="modal" id="register"   (click)="executeAction()">Yes</button>
+            </td>
+            <td>
+            <button type="button" class="btn btn-info" data-dismiss="modal">No</button>
+            </td>
+        </tr>
+        </table>
+        </div>
+        </div>
+        </div>
+    </div> -->

@@ -1,0 +1,341 @@
+<div class="d-flex" id="wrapper">
+  <div class="bg-light border-right" id="sidebar-wrapper">
+    <li class="nav-item dropdown">
+      <a class="list-group-item list-group-item-action bg-light"
+        (click)="dashboard()">&nbsp;&nbsp;Dashboard&nbsp;&nbsp;</a>
+    </li>
+
+    <li class="nav-item dropdown" [style.display]="isVisibleEmployeeMaster ? 'block' : 'none' ">
+      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="false"> Masters </a>
+      <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+        <li class="nav-item dropdown"><a class="dropdown-submenu" [routerLink]="['/admin/itMaster/empMaster']">Employee
+            Master</a></li>
+      </ul>
+    </li>
+
+
+    <li class="nav-item dropdown" [style.display]="isVisibleAllMaster ? 'block' : 'none' ">
+      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="false"> Masters </a>
+
+      <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+        <li class="nav-item dropdown"><a class="dropdown-submenu" [routerLink]="['/admin/itMaster/empMaster']">Employee
+            Master</a></li>
+        <li><a class="dropdown-submenu" [routerLink]="['/admin/itMaster/companyMaster']">Company Master</a></li>
+
+        <li><a class="dropdown-submenu" [routerLink]="['/admin/itMaster/ouMaster']">Ou Master</a></li>
+
+        <li><a class="dropdown-submenu" [routerLink]="['/admin/itMaster/locationMaster']">Location Master</a></li>
+
+        <li><a class="dropdown-submenu" [routerLink]="['/admin/itMaster/codeMaster']">Code Master</a></li>
+
+        <li><a class="dropdown-submenu" [routerLink]="['/admin/itMaster/CodetypeMaster']">Code Type Master</a></li>
+
+        <li><a class="dropdown-submenu" [routerLink]="['/admin/itMaster/codesubtypeMaster']">Code Sub Type Master</a>
+        </li>
+
+        <li><a class="dropdown-submenu" [routerLink]="['/admin/itMaster/vendorMaster']">Vendor Master</a></li>
+
+        <li><a class="dropdown-submenu" [routerLink]="['/admin/itMaster/inventorysubMaster']">Product Sub Type
+            Master</a></li>
+
+        <li><a class="dropdown-submenu" [routerLink]="['/admin/itMaster/vendoritemMaster']"> Budget Group Master</a>
+        </li>
+
+        <li><a class="dropdown-submenu" [routerLink]="['/admin/itMaster/budgetMaster']">Budget Master</a></li>
+        <!-- </div> -->
+
+      </ul>
+
+    </li>
+  
+    <div [style.display]="isVisibletansaction  ? 'block' : 'none'">
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">Transactions </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <li><a class="dropdown-submenu" [routerLink]="['/admin/itTransaction/Itemmaster']">Item Master</a></li>
+          <li><a class="dropdown-submenu" [routerLink]="['/admin/itTransaction/itemMsrchFrm']">Item Master List</a></li>
+          <li><a class="dropdown-submenu" [routerLink]="['/admin/itTransaction/trasform']">Transfer Form</a></li>
+          <li><a class="dropdown-submenu" [routerLink]="['/admin/itTransaction/tranaList']">Transfer List</a></li>
+          <li><a class="dropdown-submenu" [routerLink]="['/admin/itTransaction/recvdList']">Received List</a></li>
+          <li><a class="dropdown-submenu" [routerLink]="['/admin/itTransaction/recvdForm']">Received Form</a></li>
+          <li><a class="dropdown-submenu"
+              [routerLink]="['/admin/itTransaction/BillRecorder']">Supplier/Vendor&nbsp;Purchae/Bill&nbsp;Tracker</a>
+          </li>
+          <li><a class="dropdown-submenu"
+              [routerLink]="['/admin/itTransaction/Billrcdsrchfrm']">Supplier/Vendor&nbsp;Purchae/Bill&nbsp;Search&nbsp;Form</a>
+          </li>
+          <li><a class="dropdown-submenu" [routerLink]="['/admin/itTransaction/AseetDiscard']">Asset Discard</a></li>
+          <!-- <li><a class="dropdown-submenu" [routerLink]="['/admin/itTransaction/requisionForm']">Requisition Form</a></li> -->
+          <li><a class="dropdown-submenu" [routerLink]="['/admin/itTransaction/GatePasGen']">Gate Pass</a></li>
+          <!-- <li><a class="dropdown-submenu" [routerLink]="['/admin/itTransaction/AdminReqFormNew']">Admin Requision Form</a></li> -->
+
+
+        </ul>
+      </li>
+    </div>
+ <!-- Budget Transaction ********************* -->
+
+ <li class="nav-item dropdown" [style.display]="isVisibleBudgetTransaction  ? 'block' : 'none'">
+  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+    aria-haspopup="true" aria-expanded="false">
+    Budget Transaction
+  </a>
+
+  <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+    <li><a class="dropdown-submenu" [routerLink]="['/admin/budgetTransaction/BudgetTransaction']">Budget Entry</a></li>
+  </ul>
+</li>
+ 
+    <!-- IT Report ********************* -->
+    <li class="nav-item dropdown" [style.display]="isVisibleItReports  ? 'block' : 'none'">
+      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="false">
+        Reports
+      </a>
+
+      <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+        <li><a class="dropdown-submenu" [routerLink]="['/admin/itReports/AssetInstallForm']">Asset Installation Form</a>
+        </li>
+
+        <li><a class="dropdown-submenu" [routerLink]="['/admin/itReports/AllinvReport']">All Inventory Report</a></li>
+
+        <li><a class="dropdown-submenu" [routerLink]="['/admin/itReports/purchReport']">Purchase Report</a></li>
+
+        <li><a class="dropdown-submenu" [routerLink]="['/admin/itReports/AccInvReport']">Account Report</a></li>
+
+        <li><a class="dropdown-submenu" [routerLink]="['/admin/itReports/AssetTrnsReport']">Transfer Report</a></li>
+
+        <li><a class="dropdown-submenu" [routerLink]="['/admin/itReports/AssetScrapReport']">Asset Scrap Report</a></li>
+
+        <!-- <li><a class="dropdown-submenu" [routerLink]="['/admin/Report/FAGen']">FA DETAILS REPORT</a></li> -->
+
+        <!-- <li><a class="dropdown-submenu" [routerLink]="['/admin/Report/itemTranHistory']">ITEM WITH TRANSFER DETAILS REPORT</a></li> -->
+
+      </ul>
+    </li>
+
+
+
+
+    <li class="nav-item dropdown" [style.display]="isVisibleAdminAllMaster ? 'block' : 'none' ">
+      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="false"> Masters </a>
+
+      <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+        
+        <li><a class="dropdown-submenu" [routerLink]="['/admin/itMaster/companyMaster']">Company Master</a></li>
+        <li><a class="dropdown-submenu" [routerLink]="['/admin/itMaster/ouMaster']">Operating Unit Master</a></li>
+        <li><a class="dropdown-submenu" [routerLink]="['/admin/itMaster/locationMaster']">Location Master</a></li>
+        <li><a class="dropdown-submenu" [routerLink]="['/admin/itMaster/codeMaster']">Lookup Master</a></li>
+        <li><a class="dropdown-submenu" [routerLink]="['/admin/itMaster/CodetypeMaster']">Lookup Type Master</a></li>
+        <li class="nav-item dropdown"><a class="dropdown-submenu" [routerLink]="['/admin/itMaster/empMaster']">Employee Master</a></li>
+        <li><a class="dropdown-submenu" [routerLink]="['/admin/adminMaster/itemMaster']">Item Master</a></li>
+        <li><a class="dropdown-submenu" [routerLink]="['/admin/adminMaster/DocMaster']">Document Master</a></li>
+        <li><a class="dropdown-submenu" [routerLink]="['/admin/adminMaster/NewVendorMst']">Vendor Master</a></li>
+      </ul>
+    </li>
+
+    <li class="nav-item dropdown" [style.display]="isVisibleAdminTransaction  ? 'block' : 'none'">
+      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="false">
+        Transactions
+      </a>
+
+      <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+        <li><a class="dropdown-submenu" [routerLink]="['/admin/adminTransaction/AdminPurchase']">Purchase/Stock</a></li>
+        <li><a class="dropdown-submenu" [routerLink]="['/admin/adminTransaction/StockTransfer']">Stock Transfer</a></li>
+        <li><a class="dropdown-submenu" [routerLink]="['/admin/adminTransaction/ReceiptForm']">Receipt Creation</a></li>
+        <li><a class="dropdown-submenu" [routerLink]="['/admin/adminTransaction/Directreq']">Open Requisition</a></li>
+        <li><a class="dropdown-submenu" [routerLink]="['/admin/adminTransaction/StkAvailFrom']">Stock Availability</a></li>
+        <li><a class="dropdown-submenu" [routerLink]="['/admin/adminTransaction/miscellusform']">Miscellaneous Transaction</a></li>
+        <li><a class="dropdown-submenu" [routerLink]="['/admin/adminTransaction/AdREqList']">Pending Requisitions List</a></li>
+        <li><a class="dropdown-submenu" [routerLink]="['/admin/adminTransaction/AdminRequForm']">Requisition Acknowledge</a></li>
+        <li><a class="dropdown-submenu" [routerLink]="['/admin/adminTransaction/PendShipForm']">Pending Shipment List</a></li>
+        <li><a class="dropdown-submenu" [routerLink]="['/admin/adminTransaction/gatepassform']">Manual Gatepass</a></li>
+        <!-- <li><a class="dropdown-submenu" [routerLink]="['/admin/adminReports/Stktrnsricept']">Stock Transfer Receipt</a></li> -->
+        <li><a class="dropdown-submenu" [routerLink]="['/admin/adminReports/stockMadeReport']">Stock Transfer Made</a></li>
+        <li><a class="dropdown-submenu" [routerLink]="['/admin/adminReports/Stkrecipt']">Stock Transfer Receipt</a></li>
+        
+      </ul>
+    </li>
+ <!-- Admin User ********************* -->
+    <li class="nav-item dropdown" [style.display]="isVisibleAdminUserTransaction  ? 'block' : 'none'">
+      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="false">
+        Transactions
+      </a>
+
+      <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+        <li><a class="dropdown-submenu" [routerLink]="['/admin/adminTransaction/AdminUserRequ']">Requisition Form</a></li>
+      </ul>
+    </li>
+
+ <!-- Admin Report ********************* -->
+ <li class="nav-item dropdown" [style.display]="isVisibleAdminReports  ? 'block' : 'none'">
+  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+    aria-haspopup="true" aria-expanded="false">
+    Reports
+  </a>
+
+  <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+    <li><a class="dropdown-submenu" [routerLink]="['/admin/adminReports/miscellReport']">Miscellaneous Report</a></li>
+    <li><a class="dropdown-submenu" [routerLink]="['/admin/adminReports/purchaseReport']">Purchase Report</a></li>
+    <li><a class="dropdown-submenu" [routerLink]="['/admin/adminReports/requitionReport']">Requision Report</a></li>
+    <li><a class="dropdown-submenu" [routerLink]="['/admin/adminReports/directreq']">Direct Requision Report</a></li>
+    <li><a class="dropdown-submenu" [routerLink]="['/admin/adminReports/stockTransReport']">Stock Transfer Received Report</a></li>
+    <li><a class="dropdown-submenu" [routerLink]="['/admin/adminReports/Adstktrnsrepo']">Stock Transfer Report</a></li>
+    <li><a class="dropdown-submenu" [routerLink]="['/admin/adminReports/allStockReport']">All Stock Report</a></li>
+    <li><a class="dropdown-submenu" [routerLink]="['/admin/adminReports/manualGatePassReport']">Manual Gate Pass Report</a></li>
+    
+  </ul>
+ </li>
+
+
+ <li class="nav-item dropdown" [style.display]="isVisibleAdminUserReport  ? 'block' : 'none'">
+  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+    aria-haspopup="true" aria-expanded="false">
+    Reports
+  </a>
+
+  <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+    <li><a class="dropdown-submenu" [routerLink]="['/admin/adminReports/requitionReport']">Requision Report</a></li>
+  </ul>
+</li>
+
+    <div class="list-group list-group-flush">
+      <a hidden href="#" class="list-group-item list-group-item-action bg-light">Status</a>
+    </div>
+
+
+  </div>
+  <div id="page-content-wrapper" style="background-color: white;">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+      <button id="menu-toggle">
+        <i class="fa fa-hand-o-left" aria-hidden="true"></i>
+      </button>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        <table class="center" style="width: 100%;">
+          <tr>
+            <td style="text-align:center">
+              <img id="bajajlogo" src="assets\images\Saifinal.jpg" style="background-color: white;">
+            </td>
+            <td>
+              <table class="center" style="padding-top: 45px;">
+                <tr>
+                  <td>
+                    <table>
+                      <tr>
+                        <td style="font-size: 10px;color: blue;">
+                          User&nbsp;Details&nbsp;&nbsp;:
+                        </td>
+                        <td style="font-size: 10px;color: black;font-weight: bold;">{{loginName}}</td>
+                      </tr>
+                    </table>
+                  </td>
+
+                </tr>
+                <tr>
+                  <td>
+                    <table>
+                      <tr>
+                        <td style="font-size: 10px;color: blue;">
+                          OU &nbsp;NAME&nbsp;&nbsp;:
+                        </td>
+                        <td style="font-size: 10px;color: black;font-weight: bold;">{{ouName}}</td>
+                      </tr>
+                    </table>
+                  </td>
+
+                </tr>
+
+                <tr>
+                  <td>
+                    <table>
+                      <tr>
+                        <td style="font-size: 10px;color: blue;">
+                          LOCATION&nbsp;NAME&nbsp;&nbsp;:
+                        </td>
+                        <td style="font-size: 10px;color: black;font-weight: bold;">{{location}}</td>
+                      </tr>
+                    </table>
+                  </td>
+
+                </tr>
+
+                <tr>
+                  <td>
+                    <table>
+                      <tr>
+                        <td style="font-size: 10px;color: blue;">
+                          Dept&nbsp;NAME&nbsp;&nbsp;:
+                        </td>
+                        <td style="font-size: 10px;color: black;font-weight: bold;">{{deptName}}</td>
+                      </tr>
+                    </table>
+                  </td>
+
+                </tr>
+
+                <tr>
+                  <td colspan="2" style="font-size: 10px;width: 200px;font-weight: bold;"> {{todaysDataTime}}</td>
+                </tr>
+                <tr>
+                  <td><a class="dropdown-item" (click)="close()" style="color: blue;"><u>Logout</u></a></td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+
+            <td class="center" colspan="2">
+
+            </td>
+
+          </tr>
+        </table>
+
+      </div>
+    </nav>
+    <router-outlet>
+
+    </router-outlet>
+    <table class="center" style="width: 100%;">
+      <tr>
+        <td style="text-align:center">
+          <!-- <img class="w-50" id="" src="../../../assets/images/LOGO inventory.png" style="background-color: white;"> -->
+        </td>
+
+      </tr>
+    </table>
+  </div>
+</div>
+
+
+
+
+<div class="modal" id="itemPopModal" tabindex="-1" role="dialog" aria-hidden="true"
+  style="width: 1000px; text-align: center;">
+  <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirmation!</h5>
+      </div>
+      <div class="modal-body">
+        <label style="font-size: small; color: black; font-weight: bold; text-align: center; vertical-align: middle;">
+          Testing
+        </label>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

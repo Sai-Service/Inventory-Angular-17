@@ -1,0 +1,423 @@
+<form [formGroup]="adstkPucahseFrom" (ngSubmit)="adstkpurchase(adstkPucahseFrom.value)">
+    <table style="width: 100%;background-color: white;" class="center">
+        <tr>
+            <td class="PageHeader">
+                &nbsp;PURCHASE&nbsp;FORM&nbsp;
+            </td>
+            <td style="width: 15% ;background-color: #FFE4B5;" class="LabelFontStyle"> &nbsp;&nbsp;Purchase&nbsp;No:&nbsp;</td>
+           
+            <td style="background-color: #FFE4B5;">
+                <input type="text" class="form-control" formControlName="adheaderId1" [(ngModel)]='adheaderId1' value={{adheaderId1}}>
+            </td>
+            <td style="background-color: #FFE4B5;">
+                <button type="button" class="btn-primary" (click)="adheaderIdFindFN(adheaderId1)"><i class="fa fa-search"
+                        aria-hidden="true"></i></button>
+            </td>
+        </tr>
+    </table>
+    <fieldset>
+        <table class="center">
+            <tr>
+                <div *ngIf="closeResetButton; then hList1; else hList2"></div>
+                <ng-template #hList2>
+                    <div class="d-flex justify-content-center">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only" id="loading"></span>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template #hList1> </ng-template>
+
+                <td class="LabelFontStyle" style="color: blue;width: fit-content;" colspan="4">
+                    &nbsp;{{dataDisplay}}&nbsp;
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+
+    <fieldset class="RFS">
+        <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px;color: black;font-weight: bold;">ADMIN
+            Details
+        </legend>
+        <table class="center">
+            <tr>
+                <td style="width: 15%" class="LabelFontStyle"> &nbsp;&nbsp;Purchase&nbsp;No:&nbsp;</td>
+                <td><input  type="number" class="form-control" formControlName="adheaderId"
+                        style="width: 220px;"></td>
+
+                        <td style="width: 15%" class="LabelFontStyle1">&nbsp;Vendor&nbsp;Name:&nbsp;</td>
+                        <td colspan="3">
+                            <input type="text" formControlName="advend" style="background-color: yellow; width: 100%;"
+                            (keyup)="getUserIdsFirstWay($event)" id="userIdFirstWay"
+                            list="dynmicUserIds" class="form-control" placeholder="Vendor details"
+                            (change)="onSelectVendorNameFN($event)" />
+                        <datalist id="dynmicUserIds">
+                            <option *ngFor="let sc of AllAdminvendornameList" [value]="sc.name">
+                                {{sc.name}}</option>
+                        </datalist>
+                        <input type="text"  hidden formControlName="advendId">
+                        <!-- <input type="text" hidden formControlName="suppNo"> -->
+                        </td>
+
+
+                <td style="width: 15%" class="LabelFontStyle">Today&nbsp;Date:</td>
+                <td class="form-control" style="background-color: rgb(238, 238, 238);">{{Date}}</td>
+
+
+            </tr>
+            <tr>
+                <td style="width: 15%" class="LabelFontStyle"> &nbsp;&nbsp;Buyer&nbsp;Name&nbsp;:&nbsp;</td>
+                <td><input  type="text" class="form-control" formControlName="adBuyer" style="width: 220px;">
+                </td>
+                <td style="width: 15%" class="LabelFontStyle"> &nbsp;Buyer&nbsp;Ticket&nbsp;No&nbsp;:&nbsp;</td>
+                <td><input  type="text" class="form-control" formControlName="adtktNo" style="width: 220px;">
+                </td>
+                <td style="width: 15%" class="LabelFontStyle"> &nbsp;Division&nbsp;Name:&nbsp;</td>
+                <td><input  type="text" class="form-control" formControlName="adDivision" style="width: 220px;">
+                </td>
+
+                <td style="width: 15%" class="LabelFontStyle"> &nbsp;Location&nbsp;Name:&nbsp;</td>
+                <td><input readonly type="text" class="form-control" formControlName="adLoc1" style="width: 220px;"></td>
+                 <!-- <td><select type="text" formControlName="adLoc" id="adLoc" class="form-control"
+                                style="width: 9rem; background-color: yellow;">
+                                <option>--Select--</option>
+                                <option *ngFor="let sc of  allcitylist" [ngValue]="sc.locId">
+                                    {{sc.locName}}
+                                </option>
+                            </select>
+                        </td> -->
+                
+
+                <input hidden type="text" class="form-control" formControlName="adDept" style="width: 220px;">
+                <input hidden type="text" class="form-control" formControlName="adouId" style="width: 220px;">
+                <input hidden type="text" class="form-control" formControlName="adLoc" style="width: 220px;">
+            </tr>
+            <tr>
+                <td style="width: 15%" class="LabelFontStyle">&nbsp;Invoice&nbsp;No:</td>
+                <td> <input type="text" formControlName="advendBillno" class="form-control"></td>
+
+                <td style="width: 15%" class="LabelFontStyle">&nbsp;Invoice&nbsp;Date:</td>
+                <td> <input type="date" formControlName="advndBilldate1" class="form-control"></td>
+                <input hidden type="date" formControlName="advndBilldate" class="form-control">
+                <td style="width: 15%" class="LabelFontStyle">Tax&nbsp;Total&nbsp;Amount:</td>
+                <td> <input type="text"  formControlName="totalTax" class="form-control"></td>
+
+                <td style="width: 15%" class="LabelFontStyle">Total&nbsp;Amount:</td>
+                <td> <input type="text"  formControlName="totalAmt" class="form-control"></td>
+            </tr>
+        </table>
+    </fieldset>
+    <fieldset class="RFS">
+        <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px;color: black;font-weight: bold;">STOCK
+            DETAILES
+        </legend>
+        <tr>
+            <td style="width: 15%" class="LabelFontStyle1">Select&nbsp;Tax&nbsp;Type&nbsp;:</td>
+            <td> <select formControlName="adtaxCat" id="adtaxCat" class="form-control"
+                style="background-color: yellow;">
+                <option value="--Select--">--Select--</option>
+                <option value="IGST">IGST</option>
+                <option value="S-C-GST">S-C-GST</option>
+            </select>
+        </td>
+        </tr>
+        <table style="width: 100%; border: solid 1px Gray" class="auto-style4" cellspacing="0" cellpadding="4"
+            rules="all" class="center">
+            <thead>
+                <tr class="GridHeader">
+                    <th style="width:4rem" scope="col">Srl No.</th>
+                    <th style="width:5rem" scope="col">Item Category</th>
+                    <th style="width:4rem" scope="col">Item Name</th>
+                    <th style="width:6rem" scope="col">Tax %</th>
+                    <th style="width:6rem" scope="col">Qty</th>
+                    <th style="width:6rem" scope="col">Rate</th>
+                    <th style="width:6rem" scope="col">Disc Amt</th>
+                    <th style="width:6rem" scope="col">Sub Total</th>
+                    <th style="width:4rem" scope="col">S-GST</th>
+                    <th style="width:4rem" scope="col">C-GST</th>
+                    <th style="width:4rem" scope="col">I-GST</th>
+                    <th style="width:6rem" scope="col">Total Tax Amt</th>
+                    <th style="width:6rem" scope="col">Total Amt</th>
+                    <th style="width:6rem" scope="col">Line Status</th>
+                    <th style="width:6rem" scope="col">Add</th>
+                    <th style="width:6rem" scope="col">Remove</th>
+                </tr>
+            </thead>
+            <tbody> 
+                <ng-container class="center" formArrayName="stkLines">
+                    <ng-container *ngFor="let group of orderlineDetailsArray().controls; let i= index"
+                        [formGroupName]="i"> 
+                <tr>
+                            <td>
+                            <input type='number' [disabled]="isDisabled(i)"  readonly formControlName="adstksrNo" class="form-control"
+                                style="width:2rem;height: 23px;font-size: 10px;" (keyup)="onKey(i,$event)">
+                        </td>
+                        <td>
+                        <div *ngIf="displayBillType1[i]; then thenBillType1; else elseBillType1"> </div>
+                        <ng-template #thenBillType1>
+                            <select formControlName="adstkCat" id="adstkCat" class="form-control"
+                                style="background-color: yellow; width: 7rem;"
+                                (change)="onSelectItemType($event,i)">
+                                <option value="--Select--">--Select--</option>
+                                <option *ngFor="let sc of  AllreqItemCatagList" [value]="sc.category">
+                                    {{sc.category}}
+                                </option>
+                            </select>
+                        </ng-template>
+                        <ng-template #elseBillType1>
+                            <input [disabled]="isDisabled(i)"  type="text" readonly formControlName="adstkCat" class="form-control" style="width: 7rem;">
+                        </ng-template>
+                        
+                    </td>
+                    
+                        <td>
+                            <div *ngIf="displayRequItem[i]; then thenRequItem; else elseRequItem"> </div>
+                            <ng-template #thenRequItem>
+                                <select formControlName="adstkItem" class="form-control" style="background-color: yellow; height: 25px;font-size: 10px;" (change)="onSelectItemName($event,i)" > 
+                                    <option value="--Select--">--Select--</option>
+                                    <option *ngFor="let itemN of  onSelectItemNameFnList" [value]="itemN.item">
+                                        {{itemN.item}}
+                                    </option>
+                                </select>
+                            </ng-template>
+                            <ng-template #elseRequItem>
+                                <input type='text' [disabled]="isDisabled(i)" readonly  formControlName="adstkItem" class="form-control"
+                                    style="height: 25px;font-size: 10px;">
+                            </ng-template>
+                        </td>
+                    <td>
+                        <div *ngIf="displayGstper[i]; then thenGstper; else elseGstper"> </div>
+                        <ng-template #thenGstper>
+                            <select type='number' formControlName="adstkTax" id="adstkTax" class="form-control"
+                                style="background-color: yellow; width: 8rem;height: 25px;font-size: 10px;" >  <!---  (keydown.tab)="NumberkeyUp(i,event)"-->
+                                <option *ngFor="let sc of gstperList" [ngValue]="sc.code">
+                                    {{sc.code}}
+                                </option>
+                            </select>
+                        </ng-template>
+                        <ng-template #elseGstper>
+                            <input type='number' [disabled]="isDisabled(i)" readonly formControlName="adstkTax" class="form-control"
+                                style="width: 8rem;height: 25px;font-size: 10px;">
+                        </ng-template>
+                    </td>
+                    <div *ngIf="displayAmount[i]; then thenAmount; else elseAmount"> </div>
+                    <ng-template #thenAmount>
+                    <td>
+                        <input type='number' formControlName="adstkQty" class="form-control"
+                            style="width: 4rem;height: 25px;font-size: 10px;" name="adstkQty{{i}}"
+                            (keydown.tab)="onKey(i,$event)" min="0">   <!----(Keydown.tab)="validNumber($event)"-->
+                    </td>
+                    <td>
+                        <input type='number' formControlName="adunitRate" class="form-control"
+                            style="width: 6rem;height: 25px;font-size: 10px;" name="adunitRate{{i}}"
+                            (keydown.tab)="onKey(i,$event)" min="0">  <!---(Keydown.tab)="validNumber($event)"   / [disabled]="isDisableunitrate"-->
+                    </td>
+                    <td>
+                        <input type='number' formControlName="addiscAmt" class="form-control"
+                            style="width: 4rem;height: 25px;font-size: 10px;" name="addiscAmt{{i}}" main="0"
+                            (keydown.tab)="onKey(i,$event)">
+                    </td>
+                </ng-template>
+                <ng-template #elseAmount>
+                    <td>
+                        <input type='number' [disabled]="isDisabled(i)" readonly  formControlName="adstkQty" class="form-control"
+                            style="width: 4rem;height: 25px;font-size: 10px;" name="adstkQty{{i}}"
+                            (keydown.tab)="onKey(i,$event)" min="0"> <!----(Keydown.tab)="validNumber($event)"-->
+                    </td>
+                    <td>
+                        <input type='number' [disabled]="isDisabled(i)" readonly formControlName="adunitRate" class="form-control"
+                            style="width: 6rem;height: 25px;font-size: 10px;" name="adunitRate{{i}}"
+                            (keydown.tab)="onKey(i,$event)" min="0">  <!---(Keydown.tab)="validNumber($event)"   / [disabled]="isDisableunitrate"-->
+                    </td>
+                    <td>
+                        <input type='number' [disabled]="isDisabled(i)" readonly formControlName="addiscAmt" class="form-control"
+                            style="width: 4rem;height: 25px;font-size: 10px;" name="addiscAmt{{i}}" main="0"
+                            (keydown.tab)="onKey(i,$event)">
+                    </td>
+                </ng-template>
+                    <td>
+                        <input type='number' formControlName="adsubTotal" readonly [disabled]="isDisabled(i)"  class="form-control"
+                            style="width: 4rem;height: 25px;font-size: 10px;" name="adsubTotal{{i}}" main="0">
+                    </td>
+                   
+                    <td>
+                        <input type='number' formControlName="sgst" readonly [disabled]="isDisabled(i)"  class="form-control"
+                            style="width: 4rem;height: 25px;font-size: 10px;" name="sgst{{i}}" main="0">
+                    </td>
+                    <td>
+                        <input type='number' formControlName="cgst" readonly [disabled]="isDisabled(i)"  class="form-control"
+                            style="width: 4rem;height: 25px;font-size: 10px;" name="cgst{{i}}" main="0">
+                    </td>
+                    <td>
+                        <input type='number' formControlName="igst" readonly [disabled]="isDisabled(i)"  class="form-control"
+                            style="width: 4rem;height: 25px;font-size: 10px;" name="igst{{i}}" main="0">
+                    </td>
+                    <td>
+                        <input type='number' formControlName="adtaxAmt" readonly [disabled]="isDisabled(i)"  class="form-control"
+                            style="width: 4rem;height: 25px;font-size: 10px;" name="adtaxAmt{{i}}" main="0"
+                            (keydown.tab)="onKey(i,$event)">
+                    </td>
+                    <td>
+                        <input type='number' formControlName="adtotalAmt" readonly [disabled]="isDisabled(i)"  class="form-control"
+                            style="width: 4rem;height: 25px;font-size: 10px;" name="adtotalAmt{{i}}" main="0"
+                            (keydown.tab)="onKey(i,$event)">
+                    </td>
+                    <td>
+                        <div
+                            *ngIf="displayLineflowStatusCode[i]; then thenLineflowStatusCode; else elseLineflowStatusCode">
+                        </div>
+                        <ng-template #thenLineflowStatusCode>
+                    <td align="right" style="padding-right: 10px;">
+                        <input [disabled]="isDisabled(i)"  type="text" readonly formControlName="adstklinsts" name="adstklinsts"
+                            class="form-control" style="height: 20px;width:100px;" min="0">
+                    </td>
+                    </ng-template>
+                    <ng-template #elseLineflowStatusCode>
+                        <td align="right" style="padding-right: 10px;">
+                            <select formControlName="adstklinsts"  class="form-control"
+                                (change)="updateLineOnCancel(i,$event)" style="width: fit-content;">
+                              
+                                <option *ngFor="let sc of Linestatusist" [value]="sc.codeDesc">
+                                    {{sc.codeDesc}}
+                                </option>
+                            </select>
+                        </td>
+                    </ng-template>
+                    </td>
+                    <td>
+                            <button type="button" class="btn btn-primary" (click)="addRow(i)"
+                                style="width: min-content;"><i class="fa fa-plus"></i></button>
+                        </td>
+                <td>
+                    <div *ngIf="displayremovebutton; then thenremovebutton; else elseremovebutton"> </div>
+                    <ng-template #thenremovebutton>
+                        <button type="button" class="btn btn-primary" (click)="RemoveRow(i)"
+                            style="width: min-content;" ><i class="fa fa-trash"></i></button>
+                    </ng-template>
+                    <ng-template #elseremovebutton></ng-template>
+                    </td>
+                </tr> 
+            </ng-container>
+        </ng-container>  
+              
+        </tbody>
+  </table>
+    </fieldset>
+    <!----------------------------------------------------------CSV UPLOADED FILE----------------------------------->
+    <div *ngIf="displayCSVUpload; then thenCSVUpload; else elseCSVUpload"></div>
+    <ng-template #thenCSVUpload>
+    <fieldset class="RFS">
+        <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px; color: black;font-weight: bold;">CSV File Upload
+        </legend>
+        <table>
+        <tr>
+            <td colspan="3" style="width: 100%;padding-top: 0px;">
+                <table class="center">
+                    <tr>
+                        <td class="LabelFontStyle">
+                            &nbsp;&nbsp;Select&nbsp;CSV&nbsp;:&nbsp;
+                        </td>
+                        <td colspan="3">
+                            <input class="form-control" type="file" #fileInput accept=".csv"
+                                formControlName="file"
+                                style="vertical-align: middle;margin-top: 22px;width: 350px;">&nbsp;&nbsp;
+                        </td>
+                      
+                       
+                        <td>
+                            <button class="btn-primary" style="width: fit-content;" (click)="uploadCSVFile($event)">Upload</button>
+                        </td>
+                    </tr>
+                </table>
+        </tr>
+    </table>
+     </fieldset>
+    </ng-template>
+    <ng-template #elseCSVUpload></ng-template>
+
+
+
+
+    <!-- <fieldset [style.display]="isVisiblePouploaded? 'block' : 'none' " class="RFS">
+        <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px;color: black;font-weight: bold;">PO UPLOAD HERE  
+        </legend>
+        <table class="center">
+            <tr>
+                <td style="width: 15%" class="LabelFontStyle">File&nbsp;Name&nbsp;:
+                </td>
+                <td> <input type='text' disabled formControlName="podocName" class="form-control"></td>
+                <td class="LabelFontStyle">
+                    &nbsp;&nbsp;Po&nbsp;Upload&nbsp;Here&nbsp;
+                </td>
+                <td colspan="3">
+                    <input class="form-control" type="file" #fileInput accept=".pdf"
+                        formControlName="files" [(ngModel)]="files"
+                        style="vertical-align: middle;margin-top: 22px;width: 350px;">&nbsp;&nbsp;
+                </td>
+                <td>
+                    <button class="btn btn-primary" (click)="uploadFile($event)"
+                        style="width: 100%;font-size: 11px;">Upload</button>
+                </td>
+
+            </tr>
+        </table>
+    </fieldset> -->
+
+
+
+    <fieldset class="RFS">
+        <table class="center">
+            <tr>
+                <div *ngIf="displayButton; then thenBlock1; else elseBlock1"></div>
+                <ng-template #thenBlock1>
+                    <td>
+                        <button type="submit" class="btn btn-primary" style="width: 80px;" 
+                            (click)="newMast()">Save</button>
+                    </td>
+                    <td>
+                        <button type="submit" class="btn btn-primary" style="width: 80px;" 
+                             (click)="resetMast()">Reset</button>
+                    </td>
+                    <td><button type="submit" class="btn btn-info" id="register"
+                             (click)="closeMast( )">Close</button>  
+                    </td>
+
+                </ng-template>
+                <ng-template #elseBlock1>
+                    <td>
+                        <button type="submit" class="btn btn-primary" style="width: 80px;"  [style.display]="isVisibleupdateMast1 ? 'block' : 'none'"
+                             (click)="updateMast1( )">Update</button>
+                    </td>
+                    <td>
+                        <button type="submit" class="btn btn-primary" style="width: fit-content;"  [style.display]="isVisiblePoApprove ? 'block' : 'none'"
+                             (click)="approvePod()">Approve&nbsp;PO</button>
+                    </td>
+
+                    <td>
+                        <button type="submit" class="btn btn-primary" style="width: fit-content;"  [style.display]="isVisiblePurchaseord ? 'block' : 'none'"
+                             (click)="purcahseorder()">Purcahse&nbsp;Order&nbsp;Print</button>
+                    </td>
+                    
+                    <td>
+                        <button type="submit" class="btn btn-primary" style="width: 80px;" 
+                             (click)="resetMast( )">Reset</button>
+                    </td>
+
+                    <td>
+                        <button type="submit" class="btn btn-primary" style="width: 80px;"
+                            (click)="closeMast( )">Close</button>
+                    </td>
+                </ng-template>
+            </tr>
+        </table>
+    </fieldset>
+
+    
+
+
+    
+
+
+
+
+</form>

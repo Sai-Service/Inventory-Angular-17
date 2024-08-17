@@ -1,0 +1,71 @@
+<form [formGroup]="stocrecivedForm" (ngSubmit)="stocrecived(stocrecivedForm.value)">
+    <table style="width: 100%;background-color: white;">
+        <tr>
+            <td class="PageHeader">
+                Received&nbsp;List&nbsp;
+            </td>
+        </tr>
+    </table>
+    <table class="center">
+        <tr>
+            <td colspan="4">
+                <table class="center">
+                    <tr>
+                        <div *ngIf="closeResetButton; then hList1; else hList2"></div>
+                        <ng-template #hList2>
+                            <div class="d-flex justify-content-center">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="sr-only" id="loading"></span>
+                                </div>
+                            </div>
+                        </ng-template>
+                        <ng-template #hList1> </ng-template>
+                        <td class="LabelFontStyle" style="color: blue;width: fit-content;" colspan="4">
+                            &nbsp;{{dataDisplay}}&nbsp; </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <table class="GridFont">
+                    <thead>
+                        <tr class="GridHeader">
+                            <th scope="col" style="border: 1px solid black;">Traansfer Id</th>
+                            <th scope="col" style="border: 1px solid black;">Item Code</th>
+                            <th scope="col" style="border: 1px solid black;">Transfer Date</th>
+                            <th scope="col" style="border: 1px solid black;">City</th>
+                            <th scope="col" style="border: 1px solid black;">Company</th>
+                            <th scope="col" style="border: 1px solid black;">Transfer From</th>
+                            <th scope="col" style="border: 1px solid black;">Select</th>
+                            
+                        </tr>
+                    </thead>
+                        <tbody>
+                            <tr *ngFor="let com of stockReceivedList ; let i= index" class="ItemStyle"
+                            style="text-decoration:none;font-size: 14px;">
+                            <td style="border: 1px solid black;padding-left: 15px;">{{com.transferId}}</td>
+                            <td style="border: 1px solid black;padding-left: 15px;">{{com.itemCode}}</td>
+                            <td style="border: 1px solid black;padding-left: 15px;">{{com.transferDate | date:'dd-MM-yyyy'}}</td>
+                            <td style="border: 1px solid black;padding-left: 15px;">{{com.oldcity}}</td>
+                            <td style="border: 1px solid black;padding-left: 15px;">{{com.oldcomp}}</td>
+                            <td style="border: 1px solid black;padding-left: 15px;">{{com.oldloc}}</td>
+                            <td style="border: 1px solid black;"> <button type="button"  class="btn-primary" data-dismiss="modal" (click)="getByTranferId(com.transferId)">Select</button></td>
+                        </tr>
+                        </tbody>
+            
+      
+           
+   
+    </table>
+
+    <table class="center" style="width: 20%;">
+        <tr>
+            
+            <td> <button type="submit" class="btn-primary" id="register" (click)="resetMast()">Reset</button>
+            </td>
+            <td> <button type="submit" class="btn-primary" id="register" (click)="closeMast()">Close</button>
+            </td>
+
+        </tr>
+    </table>
+</form>

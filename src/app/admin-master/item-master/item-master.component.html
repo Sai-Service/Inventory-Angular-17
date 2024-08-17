@@ -1,0 +1,341 @@
+<form [formGroup]="itemMasterForm" (ngSubmit)="itemMaster(itemMasterForm.value)">
+    <table style="width: 100%;background-color: white;">
+        <tr>
+            <td class="PageHeader">
+                &nbsp;Item&nbsp;Master&nbsp;
+            </td>
+            <td>
+                <table style="width: 100%; background-color: #a4d3e9;">
+                    <tr>
+                        <td style="width: 15%" class="LabelFontStyle">Item&nbsp;Category&nbsp;:&nbsp;</td>
+                        <td>
+                            <select formControlName="itemcat" id="itemcat" class="form-control"
+                                (change)="onSelectItemType($event)">
+                                <option value="--Select--">--Select--</option>
+                                <option *ngFor="let sc of  AllreqItemCatagList" [value]="sc.category">
+                                    {{sc.category}}
+                                </option>
+                            </select>
+                        </td>
+                        <td style="width: 15%" class="LabelFontStyle">Item&nbsp;Name&nbsp;</td>
+                        <td>
+                        
+                            <input type="text" formControlName="itemName" style="background-color: yellow; "
+                    (keyup)="getUserIdsFirstWay($event)" id="userIdFirstWay"
+                    list="dynmicUserIds" class="form-control" />
+                <datalist id="dynmicUserIds">
+                    <option *ngFor="let sc of onSelectItemNameFnList" [value]="sc.item"> {{sc.item}}</option>
+                </datalist>
+                        </td>
+                        <td style="background-color: #FFE4B5;">
+                            <button type="button" class="btn-primary" (click)="itemNameFind()"><i class="fa fa-search"
+                                    aria-hidden="true"></i></button>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <fieldset class="RFS">
+        <table class="center">
+            <tr>
+                <div *ngIf="closeResetButton; then hList1; else hList2"></div>
+                <ng-template #hList2>
+                    <div class="d-flex justify-content-center">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only" id="loading"></span>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template #hList1> </ng-template>
+                <td class="LabelFontStyle" style="color: blue;width: fit-content;" colspan="4">
+                    &nbsp;{{dataDisplay}}&nbsp; </td>
+            </tr>
+        </table>
+    </fieldset>
+    <fieldset class="RFS">
+        <table class="center">
+            <tr>
+                <td style="width: 15%" class="LabelFontStyle1">Item&nbsp;Category&nbsp;:&nbsp;</td>
+                <td>
+                    <select formControlName="category" id="category" class="form-control"  (change)="onSelectItemDetails($event)" >
+                        <option value="--Select--">--Select--</option>
+                        <option *ngFor="let sc of  AllreqItemCatagList1" [value]="sc.codeDesc">
+                            {{sc.codeDesc}}
+                        </option>
+                    </select>
+                </td>
+                <td style="width: 15%" class="LabelFontStyle1">Item&nbsp;&nbsp;:&nbsp;</td>
+                <td>
+                    <input type='text' uppercase formControlName="item" class="form-control">
+                    <input type='text' hidden formControlName="itemId" class="form-control">
+                </td>
+                <td style="width: 15%" class="LabelFontStyle1">Item&nbsp;Description&nbsp;:&nbsp;</td>
+                <td>
+                    <input type='text' uppercase formControlName="itemDescription" class="form-control">
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 12%" class="LabelFontStyle">HSN&nbsp;/&nbsp;SAC&nbsp;:&nbsp;</td>
+                <td>
+                    <!-- <select formControlName="hsnCode" id="hsnCode" class="form-control">
+                        <option value="--Select--">--Select--</option>
+                        <option *ngFor="let sc of hasncodeList" [value]="sc.hsnsaccode">
+                            {{sc.hsnsaccode}}-{{sc.description}}
+                        </option>
+                    </select> -->
+                    <input type="text" formControlName="hsnCode" style="background-color: yellow; "
+                    (keyup)="getUserIdsFirstWay($event)" id="userIdFirstWay"
+                    list="dynmicUserIds1" class="form-control" />
+                <datalist id="dynmicUserIds1">
+                    <option *ngFor="let sc of hasncodeList" [value]="sc.hsnsaccode">{{sc.hsnsaccode}}-{{sc.description}}</option>
+                </datalist>
+                </td>
+
+                <td style="width: 12%" class="LabelFontStyle">UOM&nbsp;:&nbsp;</td>
+                <td>
+                    <select formControlName="uom" id="uom" class="form-control">
+                        <option value="--Select--">--Select--</option>
+                        <option *ngFor="let sc of Alluomlist" [value]="sc.codeDesc">
+                            {{sc.codeDesc}}
+                        </option>
+                    </select>
+                </td>
+
+                <td style="width: 15%" class="LabelFontStyle1">Status&nbsp;:&nbsp;</td>
+                <td>
+                    <div *ngIf="displayStatus; then statusLovNo; else statusLovYes"></div>
+                    <ng-template #statusLovNo>
+                        <!-- disabled -->
+                        <input type='text' formControlName="status" class="form-control">
+                    </ng-template>
+                    <ng-template #statusLovYes>
+
+                        <select formControlName="status" id="status" class="form-control"
+                            (change)='onOptionsSelectede($event)'>
+                            <option disabled>--Select--</option>
+                            <option *ngFor="let sc of  statusList" [ngValue]="sc.codeDesc">
+                                {{sc.codeDesc}}
+                            </option>
+                        </select>
+
+                    </ng-template>
+                </td>
+               
+            </tr>
+            <tr>
+                <div *ngIf="displayInactive; then thenBlockInactive; else elseBlockInactive"></div>
+                <ng-template #thenBlockInactive>
+                </ng-template>
+                <ng-template #elseBlockInactive>
+                    <td style="width: 10%" class="LabelFontStyle">
+                        Inactive&nbsp;Date:&nbsp;
+                    </td>
+                    <td>
+                        <!-- disabled -->
+                        <input type='date' formControlName="endDate" class="form-control"
+                            [ngModel]="endDate | date:'yyyy-MM-dd'">
+                    </td>
+                </ng-template>
+            </tr>
+        </table>
+    </fieldset>
+
+
+    <fieldset class="RFS">
+        <table class="center">
+            <tr>
+                <td style="width: 12%" class="LabelFontStyle">
+                    Stockable&nbsp;:&nbsp;
+                </td>
+
+                <td>
+                    <!-- [formControl]="stockable" (change)="stockableEvent($event)" -->
+                    <input type="text" formControlName="stockable"  class="form-control" style="width: 40px;">
+                </td>
+                <td style="width: 12%" class="LabelFontStyle">
+                    Purchasable&nbsp;:&nbsp;
+                </td>
+
+                <td>
+                    <!-- [formControl]="purchasable" -->
+                    <!-- <input type="checkbox" formControlName="purchasable" (change)="PurchasableEvent($event)"> -->
+                    <input type="text" formControlName="purchasable"  class="form-control" style="width: 40px;" >
+                </td>
+                <td style="width: 12%" class="LabelFontStyle">
+                    Costing&nbsp;:&nbsp;
+                </td>
+                <td>
+                    <!-- [(ngModel)]='costing' -->
+                    <!-- <input type="checkbox"  formControlName="costing" (change)="CostingEvent($event)" > -->
+                    <input type="text" formControlName="costing"  class="form-control" style="width: 40px;" >
+                </td>
+                <td style="width: 12%" class="LabelFontStyle">
+                    Internal Order&nbsp;:&nbsp;
+                </td>
+
+                <td>
+                    <!-- [formControl]="internalOrder" -->
+                    <!-- <input type="checkbox" formControlName="internalOrder" (change)="InternalOrderEvent($event)"> -->
+                    <input type="text" formControlName="internalOrder"  class="form-control" style="width: 40px;" >
+                </td>
+                <td style="width: 12%" class="LabelFontStyle">
+                    Is Taxable&nbsp;:&nbsp;
+                </td>
+
+                <td>
+                    <!-- [formControl]="isTaxable"  -->
+                    <!-- <input type="checkbox" formControlName="isTaxable" (change)="Istaxable($event)" > -->
+                    <input type="text" formControlName="isTaxable"  class="form-control" style="width: 40px;" >
+                </td>
+                <td style="width: 12%" class="LabelFontStyle">
+                    Asset Item&nbsp;:&nbsp;
+                </td>
+
+                <td>
+                    <!-- [formControl]="assetItem" -->
+                    <!-- <input type="checkbox" (change)="AssetItem($event)" formControlName="assetItem" > -->
+                    <input type="text" formControlName="assetItem"  class="form-control" style="width: 40px;" >
+                </td>
+            </tr>
+
+        </table>
+    </fieldset>
+    <fieldset class="RFS">
+        <table class="center">
+            <tr>
+
+                <div *ngIf="displayButtonCondition; then thenButtonCondition; else elseButtonCondition"></div>
+                <ng-template #thenButtonCondition>
+                    <td>
+                        <button type="submit" class="btn btn-primary" id="saveBtn" data-toggle="modal"
+                            data-target="#confirmAlert" (click)="getMessage('Save')"
+                            style="width: fit-content;">Save</button>
+                    </td>
+                    <td>
+                        <button type="submit" class="btn btn-primary" id="resetBtn" data-toggle="modal"
+                            data-target="#confirmAlert" (click)="getMessage('Reset')"
+                            style="width: fit-content;">Reset</button>
+                    </td>
+                    <td>
+                        <button type="submit" class="btn btn-primary" id="closeMastBtn" data-toggle="modal"
+                            data-target="#confirmAlert" (click)="getMessage('Close')"
+                            style="width: fit-content;">Close</button>
+                    </td>
+
+                </ng-template>
+                <ng-template #elseButtonCondition>
+                    <td>
+                        <button type="submit" class="btn btn-primary" id="updateBtn" data-toggle="modal"
+                            data-target="#confirmAlert" (click)="getMessage('Update')"
+                            style="width: fit-content;">Update</button>
+                    </td>
+                    <td>
+                        <button type="submit" class="btn btn-primary" id="resetBtn" data-toggle="modal"
+                            data-target="#confirmAlert" (click)="getMessage('Reset')"
+                            style="width: fit-content;">Reset</button>
+                    </td>
+                    <td>
+                        <button type="submit" class="btn btn-primary" id="closeMastBtn" data-toggle="modal"
+                            data-target="#confirmAlert" (click)="getMessage('Close')"
+                            style="width: fit-content;">Close</button>
+                    </td>
+
+                </ng-template>
+            </tr>
+        </table>
+    </fieldset>
+
+
+    <fieldset class="RFS">
+        <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px;color: black;font-weight: bold;">SEARCH
+        </legend>
+        <table class="center">
+            <tr>
+                <td style="width: 15%" class="LabelFontStyle">Item&nbsp;&nbsp;Catagory:</td>
+                <td>
+                    <select formControlName="category" id="category" class="form-control">
+                        <option value="--Select--">--Select--</option>
+                        <option *ngFor="let sc of  AllreqItemCatagList1" [value]="sc.codeDesc">
+                            {{sc.codeDesc}}
+                        </option>
+                    </select>
+                </td>
+
+                <button type="button" class="btn-primary" (click)="searchMast()"><i class="fa fa-search"
+                        aria-hidden="true"></i></button><!-- (click)="compIdFind(cmnTypeId)"-->
+
+            </tr>
+        </table>
+    </fieldset>
+
+
+
+    <table class="GridFont" cellspacing="0" cellpadding="4"
+        style="border-color:#959595;border-collapse:collapse;width: 100%; ">
+        <thead>
+            <tr class="GridHeader">
+
+                <th scope="col" style="border: 1px solid black;">Item Catagory Id</th>
+                <th scope="col" style="border: 1px solid black;">Item Catagory</th>
+                <th scope="col" style="border: 1px solid black;">item Name</th>
+                <th scope="col" style="border: 1px solid black;">Select</th>
+
+
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let com of allitemcatmstList let i=index" class="ItemStyle" style="text-decoration:none;">
+
+                <td style="border: 1px solid black;padding-left: 15px;">{{com.itemId}}</td>
+                <td style="border: 1px solid black;padding-left: 15px;">{{com.category}}</td>
+                <td style="border: 1px solid black;padding-left: 15px;">{{com.item}}</td>
+                <td style="border: 1px solid black;padding-left: 15px;"> <button type="button"
+                        style="width: fit-content;" class="btn btn-primary" data-dismiss="modal"
+                        (click)="itemNamesearchFind()">Select</button></td>
+            </tr>
+        </tbody>
+
+    </table>
+
+
+
+    </form>
+
+
+
+
+
+
+    <div class="modal fade" id="confirmAlert" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="width: 30%;margin-left: 35%;">
+        <div class="modal-dialog modal-sm" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <!-- <h5 class="modal-title" id="exampleModalLabel">Modal title</h5> -->
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <label
+                style="font-size: small; color: black; font-weight: bold; text-align: center; vertical-align: middle;">
+                {{message}}
+            </label>
+            </div>
+            <div class="modal-footer">
+                <table class="center" style="margin-right: 25%;">
+                    <tr>
+                        <td>
+                            <button type="button" class="btn btn-info" data-dismiss="modal" id="register"
+                                (click)="executeAction()">Yes</button>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-info" data-dismiss="modal">No</button>
+                        </td>
+                    </tr>
+                </table>
+              
+            </div>
+          </div>
+        </div>
+      </div>

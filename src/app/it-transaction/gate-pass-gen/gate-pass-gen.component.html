@@ -1,0 +1,205 @@
+<form [formGroup]="gatePassForm" (ngSubmit)="gatePGen(gatePassForm.value)">
+    <table style="width: 100%;background-color: white;">
+        <tr>
+            <td class="PageHeader">
+                Gate&nbsp;Pass&nbsp;
+            </td>
+        </tr>
+    </table>
+    <fieldset>
+        <table class="center">
+            <tr>
+                <div *ngIf="closeResetButton; then hList1; else hList2"></div>
+                <ng-template #hList2>
+                    <div class="d-flex justify-content-center">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only" id="loading"></span>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template #hList1> </ng-template>
+                <td class="LabelFontStyle" style="color: blue;width: fit-content;" colspan="4">
+                    &nbsp;{{dataDisplay}}&nbsp;
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+
+    <table class="center" style="width: 100%;background-color: #FFE4B5;">
+        <tr>
+            <td>
+                <table class="center">
+                    <tr>
+                        <td style="width: 15%" class="LabelFontStyle"> &nbsp;&nbsp;Gate&nbsp;Pass&nbsp;Reg.No&nbsp;:
+                        </td>
+                        <td><input  type="number" class="form-control" formControlName="gatepassId"
+                                style="width: 220px;"></td>
+
+                        <td style="width: 15%" class="LabelFontStyle"> &nbsp;Gate&nbsp;Pass&nbsp;Code&nbsp;:&nbsp;</td>
+                        <td><input type="text" class="form-control" formControlName="gatepassNo" value={{gatepassNo}} [(ngModel)]='gatepassNo'
+                                style="width: 220px;"></td>
+                        <td>
+                            <button type="button" class="btn-primary" (click)="gpcodeFind(gatepassNo)"><i class="fa fa-search" aria-hidden="true"></i></button>
+                        </td>
+
+                        <td style="width: 15%" class="LabelFontStyle">Today&nbsp;Date:</td>
+                        <td class="form-control" >{{Date}}</td>
+                    </tr>
+                   
+                    <tr>
+                        <td style="width: 15%" class="LabelFontStyle">Created By:</td>
+                        <td><input type="text"  class="form-control" formControlName="createBy"
+                                style="width: 220px;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 15%" class="LabelFontStyle"> &nbsp;Gate&nbsp;Pass&nbsp;Type&nbsp;:&nbsp;</td>
+                    
+                        <td>
+                            <select formControlName="gateType" id="gateType" class="form-control"
+                                (change)="GatepassType($event)" style="background-color: yellow;">
+                                <option value="SCRAP">Asset Scrap</option>
+                                <option value="REPAIR">Asset Repair</option>
+                                <option value="TRANSFER">Asset Tramsfer</option>
+                            </select>
+                        </td>
+                        <div *ngIf="displayVendorAndLoc; then thenVendorAndLoc; else elseVendorAndLoc"> </div>
+                        <ng-template #thenVendorAndLoc>
+                        <!-- <div [style.display]="isVisibleVendorlist ? 'block' : 'none' "> -->
+                            <td style="width: 15%" class="LabelFontStyle">&nbsp;To&nbsp;Vendor&nbsp;Name&nbsp;:</td>
+                            <td><select formControlName="gpvendName" id="gpvendName" class="form-control"
+                                    style="background-color: yellow;">
+                                    <option *ngFor="let sc of  AllvendornameList" [ngValue]="sc.vendorName">
+                                        {{sc.vendorName}}
+                                    </option>
+                                </select></td>
+                        <!-- </div>
+                        <div [style.display]="isVisibleloactionList ? 'block' : 'none' "> -->
+                            <td style="width: 15%" class="LabelFontStyle">&nbsp;To&nbsp;location&nbsp;Name&nbsp;:</td>
+                            <td><select formControlName="gptoLocname" id="gptoLocname" class="form-control"
+                                    style="background-color: yellow;">
+                                    <option *ngFor="let sc of  tolocationName" [ngValue]="sc.locName">
+                                        {{sc.locName}}
+                                    </option>
+                                </select></td>
+                        <!-- </div> -->
+                        </ng-template>
+                        <ng-template #elseVendorAndLoc>
+                        </ng-template>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <fieldset class="RFS">
+        <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px;color: black;font-weight: bold;">
+            Item Details</legend>
+        <table class="center">
+            <tr>
+                <td style="width: 15%" class="LabelFontStyle"> &nbsp;Item&nbsp;Code&nbsp;:&nbsp;</td>
+                <td><input type="text" class="form-control" formControlName="gpitemCode"
+                        (keydown.tab)="ItemCodeget(gpitemCode)" [(ngModel)]='gpitemCode' style="width: 220px;">
+                </td>
+
+                <td style="width: 15%" class="LabelFontStyle"> &nbsp;&nbsp;Item&nbsp;Name&nbsp;:&nbsp;</td>
+                <td><input  type="text" class="form-control" formControlName="gpitemType" style="width: 220px;">
+                </td>
+
+                <td style="width: 15%" class="LabelFontStyle"> &nbsp;Item&nbsp;Serial&nbsp;No/&nbsp;Engine&nbsp;No:</td>
+                <td><input  type="text" class="form-control" formControlName="gitemSn" style="width: 220px;">
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 15%" class="LabelFontStyle"> &nbsp;&nbsp;location&nbsp;Name&nbsp;:&nbsp;</td>
+                <td><input  type="text" class="form-control" formControlName="gatepassLoc"
+                        [(ngModel)]='gatepassLoc' style="width: 220px;">
+                </td>
+
+                <td style="width: 15%" class="LabelFontStyle"> &nbsp;&nbsp;Department&nbsp;Name&nbsp;:&nbsp;</td>
+                <td><input  type="text" class="form-control" formControlName="gpDepName" [(ngModel)]='gpDepName'
+                        style="width: 220px;">
+                </td>
+
+                <td style="width: 15%" class="LabelFontStyle"> &nbsp;Division&nbsp;Name&nbsp;:&nbsp;</td>
+                <td><input  type="text" class="form-control" formControlName="gpDiv" [(ngModel)]='gpDiv'
+                        style="width: 220px;">
+                </td>
+
+                <td><input hidden type="text" class="form-control" formControlName="gpouId" style="width: 220px;">
+            </tr>
+        </table>
+    </fieldset>
+    <table class="center">
+
+        <tr>
+            <td style="width: 15%" class="LabelFontStyle"> &nbsp;Remark&nbsp;: </td>
+            <td colspan="5">
+                <textarea id="gpRemark" formControlName="gpRemark" rows="2"
+                    style="width: 100%;resize: none; font-size: small;"></textarea>
+            </td>
+
+        </tr>
+    </table>
+    <fieldset class="RFS">
+        <table class="center">
+            <tr>
+                <div *ngIf="displayButton; then thenBlock1; else elseBlock1"></div>
+                <ng-template #thenBlock1>
+                    <td>
+                        <button mat-fab extended type="submit" style="width: fit-content;" class="btn btn-primary" id="register"
+                            (click)="GetPassgenData()">
+                            Generat Gate Pass
+                        </button>
+                    </td>
+                    <td> <button  type="submit" class="btn btn-info" id="register" (click)="searchMast()">Search</button></td>
+                    <td><button type="submit" class="btn btn-info" id="register" (click)="refresh()">Reset</button></td>
+                    <td> <button type="submit" class="btn btn-info" id="register" (click)="close()">Close</button></td>
+
+                </ng-template>
+                <ng-template #elseBlock1>
+                    <td>
+                        <button class="btn-primary1" style="width: 100px; background-color: green; width: fit-content;"
+                            (click)="Gatepassprint()">Gate Pass Print</button>
+                    </td>
+                    <td> <button  type="submit" class="btn btn-info" id="register" (click)="searchMast()">Search</button></td>
+                    <td> <button type="submit" class="btn btn-info" id="register" (click)="refresh()">Reset</button>
+                    </td>
+                    <td> <button type="submit" class="btn btn-info" id="register" (click)="close()">Close</button></td>
+                </ng-template>
+
+            </tr>
+        </table>
+    </fieldset>
+    <br>
+    <div class="grid_scroll">
+        <table class="GridFont" cellspacing="0" cellpadding="4"
+            style="border-color:#959595;border-collapse:collapse;width: 100%; ">
+            <thead>
+                <tr class="GridHeader">
+                    <th scope="col" style="border: 1px solid black;">Gate Pass Reg.No</th>
+                    <th scope="col" style="border: 1px solid black;">Gate Code</th>
+                    <th scope="col" style="border: 1px solid black;">Created By</th>
+                    <th scope="col" style="border: 1px solid black;">Gate Pass Type</th>
+                    <th scope="col" style="border: 1px solid black;">Item Code</th>
+                    <th scope="col" style="border: 1px solid black;">Item Serial No/ Engine No</th>
+                    <th scope="col" style="border: 1px solid black;">Select</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let com of lstcomments" class="ItemStyle" style="text-decoration:none;">
+                    <td style="border: 1px solid black;padding-left: 15px;">{{com.gatepassId}}</td>
+                    <td style="border: 1px solid black;padding-left: 15px;">{{com.gatepassNo}}</td>
+                    <td style="border: 1px solid black;padding-left: 15px;">{{com.createBy}}</td>
+                    <td style="border: 1px solid black;padding-left: 15px;">{{com.gateType}}</td>
+                    <td style="border: 1px solid black;padding-left: 15px;">{{com.gpitemCode}}</td>
+                    <td style="border: 1px solid black;padding-left: 15px;">{{com.gitemSn}}</td>
+                    <td style="border: 1px solid black;padding-left: 15px;"> <button type="button"
+                            style="width: fit-content;" class="btn btn-primary" data-dismiss="modal"
+                            (click)="gpcodeFind(com.gatepassNo)">Select</button></td>
+                    
+                </tr>
+            </tbody>
+
+        </table>
+    </div>
+</form>

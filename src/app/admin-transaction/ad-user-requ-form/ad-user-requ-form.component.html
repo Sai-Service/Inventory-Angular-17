@@ -1,0 +1,279 @@
+<form [formGroup]="requisisionForm"  (ngSubmit)="requisision(requisisionForm.value)"> 
+    <table style="width: 100%;background-color: white;" class="center">
+        <tr>
+            <td class="PageHeader">
+                &nbsp;Requisition&nbsp;Form&nbsp;
+            </td>
+            <td colspan="2" align="right" style="background-color: #FFE4B5;text-align: right;width: 100%;">
+                &nbsp;Requision&nbsp;Id&nbsp;&nbsp;
+            </td>
+            <td style="background-color: #FFE4B5;">
+                <input class="form-control" formControlName="reqhdNo1" [(ngModel)]='reqhdNo1'
+                    value={{reqhdNo1}}>
+            </td>
+            <td style="background-color: #FFE4B5;">
+                <button type="button" class="btn-primary" (click)="ReqHedIdFindFN(reqhdNo1)"><i class="fa fa-search"
+                        aria-hidden="true"></i></button>
+            </td>
+        </tr>
+    </table>
+    <fieldset class="RFS">
+        <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px; color: black;font-weight: bold;">Header&nbsp;Details </legend>
+    <table class="center">
+        <tr>
+            <td style="width: 15%" class="LabelFontStyle"> &nbsp;City(OU):&nbsp;</td>
+            <td>
+                <input  type="text" formControlName="loginArray1" id="loginArray1" [(ngModel)]="loginArray1" class="form-control" >
+              <input hidden type='number' formControlName="city"  class="form-control">
+              <input hidden type='number' formControlName="location"  class="form-control">
+            </td>
+            <td style="width: 15%" class="LabelFontStyle"> Requisition&nbsp;Number&nbsp;:&nbsp; </td>
+            <td>  <input  type="text" class="form-control" formControlName="reqhdNo" [(ngModel)]="reqhdNo"> </td>
+            <td style="width: 15%" class="LabelFontStyle"> Requisition&nbsp;Date&nbsp;:&nbsp; </td>
+            <td> <input   type="text" class="form-control" formControlName="reqDate" [(ngModel)]="reqDate" >  </td>
+        </tr>
+        <tr>
+            <td style="width: 15%" class="LabelFontStyle"> &nbsp;&nbsp;User&nbsp;Name&nbsp;:&nbsp;</td>
+            <td><input  type="text" class="form-control" formControlName="reqUsername" > </td>
+            <td style="width: 15%" class="LabelFontStyle"> &nbsp;&nbsp;Department&nbsp;Name&nbsp;:&nbsp;</td>
+            <td><input  type="text" class="form-control" formControlName="dept" > </td>
+            <td style="width: 15%" class="LabelFontStyle"> &nbsp;&nbsp;Location&nbsp;Name&nbsp;:&nbsp;</td>
+         <td><input  type="text" class="form-control" formControlName="loginArray">
+            <input hidden type='number' formControlName="location"  class="form-control">
+        </td>
+        </tr>
+        <tr>
+            <td style="width: 15%" class="LabelFontStyle"> &nbsp;Asign&nbsp;To&nbsp;Admin&nbsp;:&nbsp;</td>
+            <td>
+                <select formControlName="admintktNo" id="admintktNo" class="form-control"
+                    style="background-color: yellow;">
+                    <option value="--Select--">--Select--</option>
+                    <option *ngFor="let sc of  Asigntolocadmin" [ngValue]="sc.tktNo">
+                        {{sc.empName}}
+                    </option>
+                </select>
+            </td>
+            <td style="width: 15%" class="LabelFontStyle"> &nbsp;Remark&nbsp;: </td>
+            <td colspan="5">
+                <!-- <textarea id="reqRemarks" formControlName="reqRemarks" rows="2" style="width: 100%;resize: none; font-size: small;"></textarea> -->
+                <input  type="text" class="form-control" formControlName="reqRemarks" style="width: 100%;">
+            </td>
+            <input hidden type="text" class="form-control" formControlName="reqUsertktno" >
+        </tr>
+    </table>
+    </fieldset>
+    <div class="grid_scroll">
+    <fieldset class="RFS">
+        <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px; color: black;font-weight: bold;">Header&nbsp;Lines </legend>
+        <!-- <table>
+            <tr>
+                <td>
+                        <button type="submit" class="btn btn-primary"   (click)="acceptAllLine()" [style.display]="isVisibleAcceptAllLineBtn ? 'block' : 'none'"  style="width: fit-content;">Accept All Line</button>
+                  
+                </td>
+            </tr>
+        </table> -->
+        <table style="width: 100%; border: solid 1px Gray" class="auto-style4" cellspacing="0" cellpadding="4" rules="all" class="center">
+        <thead>
+            <tr class="GridHeader">
+                    <th style="width:2rem" scope="col">Srl No.</th>
+                    <th style="width:4rem" scope="col">Item Category</th>
+                    <th style="width:4rem" scope="col">Item Name</th>   
+                    <!-- <th style="width:4rem" scope="col">Available Qunatity</th>                         -->
+                    <th style="width:4rem" scope="col">Qunatity</th>
+                    <th style="width:4rem" scope="col">Recived Qunatity</th>
+                    <div *ngIf="isVisibleuserRequitionDisable1; then thenuserRequitionDisable1; else elseuserRequitionDisable1"></div>
+                    <ng-template #thenuserRequitionDisable1>
+                    <th style="width:8rem" scope="col">Admin Status</th>
+                    </ng-template>
+                    <ng-template #elseuserRequitionDisable1></ng-template>
+                    <th style="width:8rem" scope="col">User Status</th>
+                        <th style="width:1rem" scope="col">Add+</th>
+                        <th style="width:1rem" scope="col">Del-</th>
+            </tr>
+            <ng-container class="center" formArrayName="reqLines">
+                <ng-container *ngFor="let group of requestlineDetailsArray().controls; let i= index"
+                    [formGroupName]="i">
+                    <div *ngIf="isVisibleuserRequitionDisable; then thenuserRequitionDisable; else elseuserRequitionDisable"></div>
+                    <ng-template #thenuserRequitionDisable>
+                    <tr>
+                        <td>
+                            <input type='number'  formControlName="srlNo" class="form-control" style="width:2rem;height: 23px;font-size: 10px;" (keyup)="onKey(i,$event)">
+                        </td>
+                        <td>
+                            <select formControlName="itemcat" id="itemcat" class="form-control"
+                            style="background-color: yellow; width: 7rem;" 
+                            (change)="onSelectItemType($event,i)">
+                            <option value="--Select--">--Select--</option>
+                            <option *ngFor="let sc of  AllreqItemCatagList" [value]="sc.category">
+                                {{sc.category}}
+                            </option>
+                        </select>
+                        </td>
+                      
+                            <td>
+                                <select formControlName="itemName" class="form-control"  style="background-color: yellow; width: fit-content;" (change)="onSelectItemName($event,i)" > 
+                                    <option value="--Select--">--Select--</option>
+                                    <option *ngFor="let item of  itemMap2.get(i) | keyvalue"  [value]="item.value.item  ">
+                                    {{item.value.item}}
+                                     </option>
+                                </select>
+                            </td>
+                     
+                        <!-- <td>
+                            <input readonly type='number' formControlName="avlQty" class="form-control" 
+                                        style="width: 10rem;height:1.5rem;  font-size: 10px;"  name="avlQty{{i}}" >
+                        </td> -->
+                        <td>
+                            <!-- [disabled]="isDisabled(i)" -->
+                            <input [disabled]="isVisibleGetqtydisable" type='number' formControlName="qty"  class="form-control"
+                            style="width: 10rem;height:1.5rem;  font-size: 10px;" name="qty{{i}}"
+                            (keydown.tab)="onKey(i,$event)" min="0">
+                        </td>
+                        <td>
+                            <!-- [disabled]="isDisabled(i)" -->
+                            <input type='number'  formControlName="issuedQty" class="form-control"  name="receivedQty{{i}}" >
+                        </td>
+                        <td>
+                            <!-- [disabled]="isDisabled(i)" -->
+                            <input  type="text" formControlName="userstatus" name="userstatus" 
+                            class="form-control" style="height: 20px;width:100px;" min="0">
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-primary" (click)="addRow(i)"
+                                style="width: min-content;"><i class="fa fa-plus"></i></button>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-primary" (click)="RemoveRow(i)"
+                                style="width: min-content;" ><i class="fa fa-trash"></i></button>
+                        </td>
+                    </tr>
+                    </ng-template>
+                    <ng-template #elseuserRequitionDisable>
+                        <tr>
+                            <td>
+                                <input type='number'  formControlName="srlNo" class="form-control" style="width:2rem;height: 23px;font-size: 10px;" (keyup)="onKey(i,$event)">
+                            </td>
+                            <td>
+                                <input type='text'    [disabled]="true" formControlName="itemcat" class="form-control" >
+                               
+                            </td>
+                          
+                                <td>
+                                    <input type='text'  formControlName="itemName" class="form-control" >
+                                   
+                                </td>
+                         
+                            <td>
+                                <input type='text' hidden readonly formControlName="avlQty" class="form-control" >
+                              
+                            </td>
+                            <td>
+                                <input type='text'  formControlName="qty" class="form-control" >
+                               
+                            </td>
+                            <td>
+
+                                <input type='number'  formControlName="issuedQty" class="form-control"  >
+                            </td>
+                            <td>
+                                <input  type="text" formControlName="adminstatus" name="userstatus"
+                                class="form-control" style="height: 20px;" min="0">
+                            </td>
+                            <td>
+                                <input  type="text" formControlName="userstatus"  class="form-control" style="height: 20px;" min="0">
+                            </td>
+                        </tr>
+                    </ng-template>
+                </ng-container>
+            </ng-container>
+        </thead>
+        </table>
+        <fieldset class="RFS" >
+            <table class="center">
+                <tr>
+                    <td>
+                        <button type="submit" class="btn btn-primary" id="saveBtn" data-toggle="modal" style="width: fit-content;"  [style.display]="isVisibleUserRequitionSaveSave ? 'block' : 'none'"
+                        data-target="#confirmAlert" (click)="getMessage('Save')" >Save</button>
+                    </td>
+                    <td>
+                        <button type="submit" class="btn btn-primary" id="updateBtn" data-toggle="modal" style="width: fit-content;"  [style.display]="isVisibleUserRequitionupdate ? 'block' : 'none'"
+                        data-target="#confirmAlert" (click)="getMessage('Accept')" >Accept</button>
+                    </td>
+                    <td>
+                        <button type="submit" class="btn btn-primary" id="resetBtn" data-toggle="modal"  style="width: fit-content;"
+                        data-target="#confirmAlert" (click)="getMessage('Reset')">Reset</button>
+                     </td>
+                    <td>
+                        <button type="submit" class="btn btn-primary" id="closeBtn" style="width: fit-content;"
+                        data-toggle="modal" data-target="#confirmAlert" (click)="getMessage('Close')">Close</button>
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+    </fieldset>
+</div>
+</form>
+
+
+<div class="modal fade" id="confirmAlert" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="width: 30%;margin-left: 35%;">
+    <div class="modal-dialog modal-sm" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <label
+            style="font-size: small; color: black; font-weight: bold; text-align: center; vertical-align: middle;">
+            {{message}}
+        </label>
+        </div>
+        <div class="modal-footer">
+            <table class="center">
+                <tr>
+                    <td>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" id="register"
+                            (click)="executeAction()">Yes</button>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
+                    </td>
+                </tr>
+            </table>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+<!-- <div class="modal" id="confirmAlert" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm"  role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" >Confirmation!</h5>
+        </div>
+        <div class="modal-body">
+            <label style="font-size: small; color: black; font-weight: bold; text-align: center; vertical-align: middle;">
+                {{message}}
+            </label>
+        </div>
+        <div class="modal-footer">
+            <table class="center">
+        <tr>
+            <td>
+            <button  type="submit" class="btn btn-info" data-dismiss="modal" id="register"   (click)="executeAction()">Yes</button>
+            </td>
+            <td>
+            <button type="button" class="btn btn-info" data-dismiss="modal">No</button>
+            </td>
+        </tr>
+        </table>
+        </div>
+        </div>
+        </div>
+    </div> -->

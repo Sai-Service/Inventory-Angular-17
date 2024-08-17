@@ -1,0 +1,310 @@
+<form [formGroup]="stockTranferForm" (ngSubmit)="stockTransfer(stockTranferForm.value)">
+    <table style="width: 100%;background-color: white;">
+        <tr>
+            <td class="PageHeader">
+                &nbsp;Stock&nbsp;Transfer&nbsp;
+            </td>
+            <td>
+                <table style="width: 100%; background-color: #a4d3e9;">
+                    <tr>
+                        <td style="width: 15%" class="LabelFontStyle">Stock&nbsp;Transfer&nbsp;Number&nbsp;:</td>
+                        <td>
+                            <input type="text"  class="form-control" formControlName="ShipmentNo" id="ShipmentNo" [(ngModel)]="ShipmentNo">
+                        </td>
+                        <td colspan="8" style="text-align: left; width: 100%;">
+                            <button type="submit" class="btn btn-primary" (click)='shipmentNosearch(ShipmentNo)'><i class="fa fa-search"></i></button>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <fieldset class="RFS" style="background-color: white;">
+        <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px;font-weight: bold;color: black;">Headers Details</legend>
+        <table class="center">
+            <tr>
+                <td  class="LabelFontStyle">
+                    &nbsp;Transaction&nbsp;Type&nbsp;:&nbsp;
+                  </td>
+                  <td>
+                      <input  type="text" class="form-control" formControlName="transactionType">
+                    </td>
+                <td  class="LabelFontStyle">
+                  &nbsp;Transaction&nbsp;Number&nbsp;:&nbsp;
+                </td>
+                <td>
+                    <input  type="text" class="form-control" formControlName="stockTransNo" >
+                  </td>
+                  <td  class="LabelFontStyle">
+                   Transaction&nbsp;Date&nbsp;:&nbsp;
+                  </td>
+                  <td>
+                      <input  type="text" class="form-control" formControlName="stockTransDate" >
+                    </td>
+            </tr>
+            <tr>
+                <td  class="LabelFontStyle">
+                    &nbsp;Receipt&nbsp;Status&nbsp;:&nbsp;
+                   </td>
+                   <td>
+                       <input  type="text" class="form-control" formControlName="receiptStatus" >
+                     </td> 
+                <td  class="LabelFontStyle">
+                    &nbsp;Department&nbsp;:&nbsp;
+                  </td>
+                  <td>
+                    <input  type="text" class="form-control" formControlName="adDept" >
+                  </td>
+                  <td  class="LabelFontStyle">
+                    &nbsp;Division&nbsp;:&nbsp;
+                  </td>
+                  <td>
+                    <input  type="text" class="form-control" formControlName="adDivision" >
+                  </td>
+                   
+            </tr>
+            <tr>
+                <td class="LabelFontStyle">
+                    &nbsp;OU&nbsp;ID&nbsp;:&nbsp;
+                  </td>
+                  <td>
+                    
+                    <input   type="text" class="form-control" formControlName="ouName" >
+                    <input  hidden type="text" class="form-control" formControlName="adouId" >
+                  </td>
+                  <td  class="LabelFontStyle1">
+                    To&nbsp;Organization&nbsp;:&nbsp;
+                  </td>
+
+                  <td>
+                    <div *ngIf="isVisibleLocList; then thenLocList; else elseLocList"></div>
+                    <ng-template #thenLocList>
+                     <select id="toLocation" class="form-control" formControlName="toLocation" (change)="onlocationissueselect($event)" #myinput>
+                          <option>--Select--</option>
+                          <option *ngFor="let sc of  locIdList" [value]="sc.locCode" >
+                              {{sc.locName}}
+                          </option>
+                      </select>
+                    </ng-template>
+                    <ng-template #elseLocList>
+                        <input   type="text" class="form-control" formControlName="toLocation" >
+                    </ng-template>
+                  </td>
+                  <input type="number" hidden  formControlName="toLocationId"class="form-control"  >
+                  <td  class="LabelFontStyle1">
+                    Requested&nbsp;To&nbsp;:&nbsp;
+                  </td>
+                  <td>
+                    <div *ngIf="isVisiblerequestedTo; then thenrequestedTo; else elserequestedTo"></div>
+                    <ng-template #thenrequestedTo>
+                     <select  class="form-control" formControlName="requestedTo" (change)="onOptionSelectEmpl($event)" >
+                          <option>--Select--</option>
+                          <option *ngFor="let sc of  requetedNameList" [value]="sc.empName" >
+                              {{sc.empName}}
+                          </option>
+                      </select>
+                    </ng-template>
+                    <ng-template #elserequestedTo>
+                        <input   type="text" class="form-control" formControlName="requestedTo" >
+                    </ng-template>
+                  </td>
+                  <input type="number" hidden formControlName="requestedTo1"class="form-control"  >
+            </tr>
+            <tr>
+                <td class="LabelFontStyle">
+                    &nbsp;From&nbsp;Requested&nbsp;:&nbsp;
+                  </td>
+                  <td>
+                    <input  type="text" class="form-control" formControlName="adBuyer" >
+                  </td>
+                  <td class="LabelFontStyle">
+                    &nbsp;Total&nbsp;Amount&nbsp;:&nbsp;
+                  </td>
+                  <td>
+                    <input  type="text" class="form-control" formControlName="totalAmt" style="font-weight: bold;">
+                  </td>
+                  <input  type="text" hidden class="form-control" formControlName="adouId" style="font-weight: bold;">
+                  <input  type="text" hidden class="form-control" formControlName="adLoc" style="font-weight: bold;">
+            </tr>
+        </table>
+    </fieldset>
+    <fieldset class="RFS" style="background-color: white;">
+        <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px;font-weight: bold;color: black;">Lines Details</legend>
+        <table style="width: 100%; border: solid 1px Gray" class="auto-style4" cellspacing="0" cellpadding="4"
+            rules="all" class="center">
+            <thead>
+                <tr class="GridHeader">
+                    <th style="width:4rem" scope="col">Srl&nbsp;No.</th>
+                    <th style="width:4rem" scope="col">Item&nbsp;Category</th>
+                    <th style="width:4rem" scope="col">Item</th>
+                    <th style="width:4rem" scope="col">On&nbsp;Hand&nbsp;Qty</th>
+                    <th style="width:4rem" scope="col">Rate</th>
+                    <th style="width:4rem" scope="col">Quantity</th>
+                    <th style="width:4rem" scope="col">Price</th>
+                    <th style="width:6rem" scope="col">Add</th>
+                    <th style="width:6rem" scope="col">Remove</th>
+                </tr>
+            </thead>
+            <tbody> 
+                <ng-container class="center" formArrayName="stkLines">
+                    <ng-container *ngFor="let group of orderlineDetailsArray().controls; let i= index"
+                        [formGroupName]="i"> 
+                <tr>
+                            <td>
+                            <input type='number' [disabled]="isDisabled(i)" readonly formControlName="adstksrNo" class="form-control"
+                                style="width:2rem;height: 23px;font-size: 10px;">
+                        </td>
+                        <td>
+                            <div *ngIf="displayadstkCat[i]; then thenadstkCat; else elseadstkCat"></div>
+                            <ng-template #thenadstkCat>
+                            <select formControlName="adstkCat" id="adstkCat" class="form-control"
+                            style="background-color: yellow; width: 7rem;"
+                            (change)="onSelectItemType($event,i)">
+                            <option value="--Select--">--Select--</option>
+                            <option *ngFor="let sc of  AllreqItemCatagList" [value]="sc.category">
+                                {{sc.category}}
+                            </option>
+                            <!-- <option *ngFor="let item of  itemMap2.get(i) | keyvalue"
+                            [value]="item.value.codeDesc">
+                            {{item.value.codeDesc}}
+                        </option> -->
+                        </select>
+                            </ng-template>
+                            <ng-template #elseadstkCat>
+                                <input type='text' [disabled]="isDisabled(i)" readonly formControlName="adstkCat" class="form-control">
+                            </ng-template>
+                        </td>
+                        <td>
+                            <div *ngIf="displayadstkItem[i]; then thenadstkItem; else elseadstkItem"></div>
+                            <ng-template #thenadstkItem>
+                            <select formControlName="adstkItem" class="form-control"  style="background-color: yellow; width: 7rem;" (change)="onSelectItemName($event,i)" > 
+                                <option value="--Select--">--Select--</option>
+                                <!-- <option *ngFor="let itemN of  onSelectItemNameFnList" [Value]="itemN.codeDesc">
+                                    {{itemN.codeDesc}}
+                                </option> -->
+                                 <option *ngFor="let item of  itemMap2.get(i) | keyvalue"
+                            [value]="item.value.item">
+                            {{item.value.item}}
+                        </option>
+                            </select>
+                            </ng-template>
+                            <ng-template #elseadstkItem>
+                                <input type='text' [disabled]="isDisabled(i)" readonly formControlName="adstkItem" class="form-control">
+                            </ng-template>
+                        </td>
+                        <td>
+                            <input type='number' [disabled]="isDisabled(i)" readonly formControlName="onhandQty"  class="form-control">
+                        </td> 
+                        <td>
+                            <input type='number' [disabled]="isDisabled(i)" readonly formControlName="adunitRate"  class="form-control">
+                        </td>
+                        <td>
+                            <div *ngIf="displayadstkQty[i]; then thenadstkQty; else elseadstkQty"></div>
+                            <ng-template #thenadstkQty>
+                            <input type='number'  formControlName="adstkQty"  (keydown.tab)="onKey($event,i)" class="form-control">
+                            </ng-template>
+                            <ng-template #elseadstkQty>
+                                <input type='number' [disabled]="isDisabled(i)" readonly formControlName="adstkQty"   class="form-control">
+                            </ng-template>
+                        </td>
+                        <td>
+                            <input type='number' [disabled]="isDisabled(i)" readonly formControlName="adtotalAmt" class="form-control">
+                            <input hidden type='text'  formControlName="adstklinsts" class="form-control">
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-primary" (click)="addRow(i)"
+                                style="width: min-content;"><i class="fa fa-plus"></i></button>
+                        </td>
+                <td>
+                        <button type="button" class="btn btn-primary" (click)="RemoveRow(i)"
+                            style="width: min-content;" ><i class="fa fa-trash"></i></button>
+                    </td>
+                </tr>
+                    </ng-container>
+                </ng-container>
+        </table>
+    </fieldset>
+
+    <fieldset class="RFS" >
+        <table class="center">
+            <tr>
+                <td>
+                    <button type="submit" class="btn btn-primary" id="saveBtn" data-toggle="modal"  [style.display]="isVisibleReceiptSave ? 'block' : 'none'"
+                    data-target="#confirmAlert" (click)="getMessage('Save')" >Save</button>
+                </td>
+                <td>
+                    <button type="submit" class="btn btn-primary" id="resetBtn" data-toggle="modal" 
+                    data-target="#confirmAlert" (click)="getMessage('Reset')">Reset</button>
+                 </td>
+                <td>
+                    <button type="submit" class="btn btn-primary" id="closeBtn"
+                    data-toggle="modal" data-target="#confirmAlert" (click)="getMessage('Close')">Close</button>
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+</form>
+
+
+
+
+<div class="modal fade" id="confirmAlert" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="width: 30%;margin-left: 35%;">
+    <div class="modal-dialog modal-sm" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <label
+            style="font-size: small; color: black; font-weight: bold; text-align: center; vertical-align: middle;">
+            {{message}}
+        </label>
+        </div>
+        <div class="modal-footer">
+            <table class="center">
+                <tr>
+                    <td>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" id="register"
+                            (click)="executeAction()">Yes</button>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
+                    </td>
+                </tr>
+            </table>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<!-- <div class="modal" id="confirmAlert" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm"  role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" >Confirmation!</h5>
+        </div>
+        <div class="modal-body">
+            <label style="font-size: small; color: black; font-weight: bold; text-align: center; vertical-align: middle;">
+                {{message}}
+            </label>
+        </div>
+        <div class="modal-footer">
+            <table class="center">
+        <tr>
+            <td>
+            <button  type="submit" class="btn btn-info" data-dismiss="modal" id="register"   (click)="executeAction()">Yes</button>
+            </td>
+            <td>
+            <button type="button" class="btn btn-info" data-dismiss="modal">No</button>
+            </td>
+        </tr>
+        </table>
+        </div>
+        </div>
+        </div>
+    </div> -->

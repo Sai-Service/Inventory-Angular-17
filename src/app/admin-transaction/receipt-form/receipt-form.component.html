@@ -1,0 +1,317 @@
+<form [formGroup]="adminReceiptFrom" (ngSubmit)="adminReceipt(adminReceiptFrom.value)">
+    <table style="width: 100%;background-color: white;" class="center">
+        <tr>
+            <td class="PageHeader">
+                &nbsp;Receipt&nbsp;Creation&nbsp;
+            </td>
+        </tr>
+       
+    </table>
+    <table>
+        <tr>
+            <td style="width: 15% ;background-color: #FFE4B5;" class="LabelFontStyle"> &nbsp;&nbsp;Purchase&nbsp;No:&nbsp;</td>
+           
+            <td style="background-color: #FFE4B5;">
+                <input type="text" class="form-control" formControlName="poNo" value={{poNo}}>
+            </td>
+            <td style="background-color: #FFE4B5;">
+                <button type="button" class="btn-primary" (click)="poFind()"><i class="fa fa-search"
+                        aria-hidden="true"></i></button>
+            </td>
+            <td style="width: 15% ;background-color: #FFE4B5;" class="LabelFontStyle"> &nbsp;&nbsp;Receipt&nbsp;No:&nbsp;</td>
+           
+            <td style="background-color: #FFE4B5;">
+                <input type="text" class="form-control" formControlName="receiptNo1"  value={{receiptNo}}>
+            </td>
+            <td style="background-color: #FFE4B5;">
+                <button type="button" class="btn-primary" (click)="receiptFind()"><i class="fa fa-search"
+                        aria-hidden="true"></i></button>
+            </td>
+            <td style="width: 15% ;background-color: #FFE4B5;" class="LabelFontStyle"> &nbsp;&nbsp;Stock&nbsp;Transfer&nbsp;No:&nbsp;</td>
+           
+            <td style="background-color: #FFE4B5;">
+                <input type="text" class="form-control" formControlName="shipNo"  value={{shipNo}}>
+            </td>
+            <td style="background-color: #FFE4B5;">
+                <button type="button" class="btn-primary" (click)="shipmentFind()"><i class="fa fa-search"
+                        aria-hidden="true"></i></button>
+            </td>
+        </tr>
+    </table>
+    <fieldset class="RFS" style="background-color: white;">
+        <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px;font-weight: bold;color: black;">Receipt Headers Details</legend>
+        <table class="center" style="width: 100%;">
+            <tr>
+                <input type="text" hidden  formControlName="advendId" class="form-control" >
+                <input type="text" hidden  formControlName="adLoc" class="form-control" >
+                <td style="width: 15%" class="LabelFontStyle">
+                    Division&nbsp;:&nbsp;
+                </td>
+                <td  style="border: none;color: black;">
+                    <input type="text"  formControlName="adDivision" class="form-control" >
+                </td>
+                <td style="width: 15%" class="LabelFontStyle">
+                    Department&nbsp;:&nbsp;
+                </td>
+                <td  style="border: none;color: black;">
+                    <input type="text"  formControlName="adDept" class="form-control" >
+                </td>
+                <td style="width: 15%" class="LabelFontStyle">
+                    Purchase&nbsp;No&nbsp;:&nbsp;
+                </td>
+                <td  style="border: none;color: black;">
+                    <input type="number"  formControlName="adheaderId" class="form-control" >
+                </td>
+                <td style="width: 15%" class="LabelFontStyle">
+                    Purchase&nbsp;Date&nbsp;:&nbsp;
+                </td>
+                <td  style="border: none;color: black;">
+                    <input type="text"  formControlName="adDate1" class="form-control" >
+                    <input hidden type="text"  formControlName="adDate" class="form-control" >
+                </td>
+            </tr>
+            <tr>  
+                <td style="width: 15%" class="LabelFontStyle">
+                   Vendor&nbsp;Name&nbsp;:&nbsp;
+                </td>
+                <td  style="border: none;color: black;" colspan="3">
+                    <input type="text"  formControlName="vendorName" class="form-control"  style="width: 100%;">
+                </td>  
+                <td style="width: 15%" class="LabelFontStyle">
+                    OU&nbsp;City&nbsp;:&nbsp;
+                </td>
+                <td  style="border: none;color: black;">
+                    <input type="text"  formControlName="ouCity" class="form-control" >
+                    <input hidden type="text"  formControlName="adouId" class="form-control" >
+                </td> 
+                <td style="width: 15%" class="LabelFontStyle">
+                    PO&nbsp;Status&nbsp;:&nbsp;
+                </td>
+                <td  style="border: none;color: black;">
+                    <input type="text"  formControlName="adstatus" class="form-control" >
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 15%" class="LabelFontStyle">
+                    Invoice&nbsp;No&nbsp;:&nbsp;
+                </td>
+                <td  style="border: none;color: black;" >
+                    <input type="text"  formControlName="advendBillno" class="form-control">
+                </td>  
+                <td style="width: 15%" class="LabelFontStyle">
+                    Invoice&nbsp;Date&nbsp;:&nbsp;
+                </td>
+                <td  style="border: none;color: black;" >
+                    <input type="text"  formControlName="advndBilldate1" class="form-control">
+                    <input type="text" hidden  formControlName="advndBilldate" class="form-control">
+                </td>
+                <td style="width: 15%" class="LabelFontStyle">
+                    Approval&nbsp;Ticket&nbsp;No&nbsp;:&nbsp;
+                </td>
+                <td  style="border: none;color: black;" >
+                    <input type="text"  formControlName="adtktNo" class="form-control">
+                </td>
+                <td style="width: 15%" class="LabelFontStyle">
+                    Approval&nbsp;Ticket&nbsp;Name&nbsp;:&nbsp;
+                </td>
+                <td  style="border: none;color: black;" >
+                    <input type="text"  formControlName="adBuyer" class="form-control">
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 15%" class="LabelFontStyle">
+                    Location&nbsp;Name&nbsp;:&nbsp;
+                </td>
+                <td  style="border: none;color: black;" >
+                    <input type="text"  formControlName="locName" class="form-control">
+                </td>
+                <td style="width: 15%" class="LabelFontStyle">
+                    Remark&nbsp;:&nbsp;
+                </td>
+                <td  style="border: none;color: black;" >
+                    <input type="text"  formControlName="remark" class="form-control">
+                </td>
+                <td style="width: 15%" class="LabelFontStyle">
+                    Total&nbsp;Tax&nbsp;:&nbsp;
+                </td>
+                <td  style="border: none;color: black;" >
+                    <input type="text"  formControlName="totalTax" class="form-control" style="font-weight: bold;text-align: right;">
+                </td>
+                <td style="width: 15%" class="LabelFontStyle">
+                    Total&nbsp;Amount&nbsp;:&nbsp;
+                </td>
+                <td  style="border: none;color: black;" >
+                    <input type="text"  formControlName="totalAmt" class="form-control" style="font-weight: bold;text-align: right;">
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 15%" class="LabelFontStyle">
+                    Receipt&nbsp;Number&nbsp;:&nbsp;
+                </td>
+                <td  style="border: none;color: black;" >
+                    <input hidden type="text"  formControlName="rcvHeaderId" class="form-control">
+                    <input  type="text"  formControlName="receiptNo" class="form-control">
+                      </td>
+                <td style="width: 15%" class="LabelFontStyle">
+                    Receipt&nbsp;Date&nbsp;:&nbsp;
+                </td>
+                <td  style="border: none;color: black;" >
+                    <input type="text"  formControlName="receiptDt" class="form-control">
+                </td>
+                <input hidden type="text"  formControlName="toLocationId" class="form-control" >
+                <td style="width: 15%" class="LabelFontStyle">
+                    Stock&nbsp;Transfer&nbsp;No&nbsp;:&nbsp;
+                </td>
+                <td>
+                  <input type="text"  formControlName="stockTransNo" class="form-control" >
+                </td>
+                <td style="width: 15%" class="LabelFontStyle">
+                    Requested&nbsp;To&nbsp;:&nbsp;
+                </td>
+                  <td>
+                      <input type="text"  formControlName="requestedTo" class="form-control" >
+                  </td>
+                  <input type="text" hidden formControlName="stockTransDate" class="form-control" >
+            </tr>
+           
+        </table>
+    </fieldset>
+    <div class="grid_scroll">
+    <fieldset class="RFS" style="background-color: white;">
+        <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px;font-weight: bold;color: black;">Receipt Line Details</legend>
+       
+        <table class="auto-style4" class="GridFont" cellspacing="0" cellpadding="4" border="0" id="ctl00_cpForm_grdActions" style="border-color:#959595;width:100%;border-collapse:collapse;">
+        <thead>
+            <tr class="GridHeader">
+                <th style="width:4rem" scope="col">Srl No.</th>
+                <th style="width:5rem" scope="col">Item Category</th>
+                <th style="width:4rem" scope="col">Item Name</th>
+                <th style="width:6rem" scope="col">Tax %</th>
+                <th style="width:6rem" scope="col">Qty</th>
+                <th style="width:6rem" scope="col">Rate</th>
+                <th style="width:6rem" scope="col">Disc Amt</th>
+                <th style="width:6rem" scope="col">Sub Total</th>
+                <th style="width:4rem" scope="col">S-GST</th>
+                <th style="width:4rem" scope="col">C-GST</th>
+                <th style="width:4rem" scope="col">I-GST</th>
+                <th style="width:6rem" scope="col">Total Tax Amt</th>
+                <th style="width:6rem" scope="col">Total Amt</th>
+                <th style="width:6rem" scope="col">Stock Line Status</th>
+            </tr>
+        </thead>
+        <tbody> 
+            <ng-container class="center" formArrayName="stkLines">
+                <ng-container *ngFor="let group of orderlineDetailsArray().controls; let i= index"
+                    [formGroupName]="i"> 
+                    <tr>
+                         <td>
+                            <input type='number' [disabled]="isDisabled(i)"  formControlName="adstksrNo" class="form-control" style="width:2rem;height: 23px;font-size: 10px;">
+                         </td>
+                         <td>
+                            <input type='text' [disabled]="isDisabled(i)"  formControlName="adstkCat" class="form-control" style="height: 23px;width: 7rem;">
+                         </td>
+                         <td>
+                            <input type='text' [disabled]="isDisabled(i)"  formControlName="adstkItem" class="form-control" style="height: 23px;width: 7rem;">
+                         </td>
+                         <td>
+                            <input type='text' [disabled]="isDisabled(i)"  formControlName="adstkTax" class="form-control" style="height: 23px;width: 7rem;text-align: right;">
+                         </td>
+                         
+                         <td>
+                            <input type='text' [disabled]="isDisabled(i)"  formControlName="adstkQty" class="form-control" style="height: 23px;width: 7rem;text-align: right;">
+                         </td>
+                         <td>
+                            <input type='text' [disabled]="isDisabled(i)"  formControlName="adunitRate" class="form-control" style="height: 23px;width: 7rem;text-align: right;">
+                         </td>
+                         <td>
+                            <input type='text' [disabled]="isDisabled(i)"  formControlName="addiscAmt" class="form-control" style="height: 23px;width: 7rem;text-align: right;">
+                         </td>
+                         <td>
+                            <input type='text' [disabled]="isDisabled(i)"  formControlName="adsubTotal" class="form-control" style="height: 23px;width: 7rem;text-align: right;">
+                         </td>
+                         <td>
+                            <input type='text' [disabled]="isDisabled(i)"  formControlName="sgst" class="form-control" style="height: 23px;width: 7rem;text-align: right;">
+                         </td>
+                         <td>
+                            <input type='text' [disabled]="isDisabled(i)"  formControlName="cgst" class="form-control" style="height: 23px;width: 7rem;text-align: right;">
+                         </td>
+                         <td>
+                            <input type='text' [disabled]="isDisabled(i)"  formControlName="igst" class="form-control" style="height: 23px;width: 7rem;text-align: right;">
+                         </td>
+                         <td>
+                            <input type='text' [disabled]="isDisabled(i)"  formControlName="adtaxAmt" class="form-control" style="height: 23px;width: 7rem;text-align: right;">
+                         </td>
+                         <td>
+                            <input type='text' [disabled]="isDisabled(i)"  formControlName="adtotalAmt" class="form-control" style="height: 23px;width: 7rem;text-align: right;">
+                         </td>
+                         <td>
+                            <input type='text' [disabled]="isDisabled(i)"  formControlName="adstklinsts" class="form-control" style="height: 23px;width: 7rem;text-align: right;">
+                         </td>
+                    </tr>
+                </ng-container>
+            </ng-container>
+        </tbody>
+        </table>
+       
+    </fieldset>
+</div>
+    <fieldset class="RFS" >
+        <table class="center">
+            <tr>
+                <td>
+                    <button type="submit" class="btn btn-primary" id="saveBtn" data-toggle="modal"  [style.display]="isVisibleReceiptSave ? 'block' : 'none'"
+                    data-target="#confirmAlert" (click)="getMessage('Save')" >Save</button>
+                </td>
+                <td>
+                    <button type="submit" class="btn btn-primary" id="saveBtn" data-toggle="modal"  style="width: fit-content;" [style.display]="isVisibleReceiptView ? 'block' : 'none'"
+                    (click)="receiptoutputView()">View GRR</button>
+                </td>
+
+                <td>
+                    <button type="submit" class="btn btn-primary" id="resetBtn" data-toggle="modal" 
+                    data-target="#confirmAlert" (click)="getMessage('Reset')">Reset</button>
+                 </td>
+                <td>
+                    <button type="submit" class="btn btn-primary" id="closeBtn"
+                    data-toggle="modal" data-target="#confirmAlert" (click)="getMessage('Close')">Close</button>
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+</form>
+
+
+
+<div class="modal fade" id="confirmAlert" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="width: 30%;margin-left: 35%;">
+    <div class="modal-dialog modal-sm" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <label
+            style="font-size: small; color: black; font-weight: bold; text-align: center; vertical-align: middle;">
+            {{message}}
+        </label>
+        </div>
+        <div class="modal-footer">
+            <table class="center">
+                <tr>
+                    <td>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" id="register"
+                            (click)="executeAction()">Yes</button>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
+                    </td>
+                </tr>
+            </table>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+

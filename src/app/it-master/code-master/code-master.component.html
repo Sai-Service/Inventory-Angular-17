@@ -1,0 +1,178 @@
+
+<form [formGroup]="codeMasterForm"  (ngSubmit)="codeMaster(codeMasterForm.value)" >
+    <table style="width: 100%;background-color: white;" class="center">
+        <tr>
+            <td class="PageHeader">
+              &nbsp;LOOKUP&nbsp;MASTER
+            </td>
+            <td colspan="2" align="right" style="background-color: #FFE4B5;text-align: right;width: 100%;">
+                &nbsp;Common&nbsp;Type&nbsp;Id&nbsp;
+            </td>
+            <td style="background-color: #FFE4B5;">
+                <input   class="form-control" formControlName="cmntypeId" value={{cmntypeId}}  [(ngModel)]='cmntypeId'>
+                <!--[style.display]="isVisibleOrderFind ? 'block' : 'none'">-->
+            </td>
+            
+            <td style="background-color: #FFE4B5;" >
+                <button type="button" class="btn-primary" (click)="cmnTypeIdFind(cmntypeId)" ><i class="fa fa-search"
+                       aria-hidden="true"></i></button><!-- (click)="compIdFind(cmnTypeId)"-->
+            </td>
+        </tr>
+    </table>
+    <fieldset class="RFS">
+        <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px;color: black;font-weight: bold;">CODE MASTER </legend>
+        <table class="center">
+            <tr>
+                
+                <td style="width: 15%" class="LabelFontStyle1"> Code&nbsp;&nbsp;Type: </td>
+                <td>
+                    <select type='text' formControlName="codeType" id="codeType" class="form-control" style="background-color: yellow;" >
+                        <!-- <option></option> -->
+                        <option *ngFor="let sc of  AllcodetypeList" [ngValue]="sc.codeType"  >
+                            {{sc.codeDesc}}
+                        </option>
+                    </select>
+                </td>
+                <!-- </td>  <td style="background-color: #ffffff;" >
+                    <button type="button" class="btn-primary" (click)="cmnTypeIdFind(cmntypeId)" >
+                           aria-hidden="true"></i></button>
+                </td>
+                <td> <input type='number'  formControlName="cmntypeId"  class="form-control"  style="background-color: yellow;"  ></td>  -->
+
+                <td style="width: 15%" class="LabelFontStyle1"> Code&nbsp;&nbsp;: </td>
+                <td> <input type='text' uppercase formControlName="code"  class="form-control" style="background-color: yellow;" placeholder="Enter Code " ></td>  <!-- (keyup)="onKey($event )"-->
+                <td style="width: 15%" class="LabelFontStyle1"> Code&nbsp;&nbsp;Description: </td>
+                <td> <input type='text' uppercase formControlName="codeDesc"  class="form-control" placeholder="Enter Code Description"   ></td> 
+
+        <tr>
+           
+            
+            <td style="width: 15%" class="LabelFontStyle">&nbsp;Remark:</td>
+            <td> <input type='text'  formControlName="remark"  class="form-control" ></td>
+<!-- 
+            <td style="width: 15%" class="LabelFontStyle1"> Status&nbsp;&nbsp;: </td>
+            <td>
+                <select type='text' formControlName="status" id="status" [(ngModel)]="status"  class="form-control" style="background-color: yellow;"  placeholder="---SELECT---" >
+                    <option>Active</option> 
+                    <option>Inactive</option>
+                  </select>
+            </td> -->
+            <td style="width: 15%" class="LabelFontStyle1"> Status&nbsp;&nbsp;: </td>
+            <div *ngIf="displayStatus; then statusLovNo; else statusLovYes"></div>
+            <ng-template #statusLovNo> 
+            <td > <input   type='text' formControlName="status" [(ngModel)]='status' value={{status}} class="form-control" ></td>
+            </ng-template>
+            <ng-template #statusLovYes> 
+                    <td>
+                        <select formControlName="status" id="status" class="form-control"  
+                        [(ngModel)]="status" (change)='onOptionsSelectede($event)'>
+                        <option disabled>--Select--</option>
+                        <option *ngFor="let sc of  statusList" [ngValue] ="sc.codeDesc">
+                            {{sc.codeDesc}}
+                        </option>
+                    </select>
+                    </td>
+            </ng-template>
+            <td style="width: 15%" class="LabelFontStyle1"> Start&nbsp;&nbsp;Date: </td>
+            <div *ngIf="displaystartDate; then thenstartDate; else elsestartDate"></div>
+            <ng-template #thenstartDate>            
+            <td > <input type="date" formControlName="startDate" [(ngModel)]='startDate' value={{startDate}} 
+                            class="form-control"  style="background-color: yellow;"></td>
+            </ng-template>
+            <ng-template #elsestartDate>     
+                <td > <input   type="date" formControlName="startDate"  value={{startDate}} 
+                    class="form-control"    ></td>
+            </ng-template>
+        </tr>
+        <!-- <tr>
+           
+        </tr> -->
+
+        <div *ngIf="displayInactive; then thenBlockInactive; else elseBlockInactive"></div>
+                    <ng-template #thenBlockInactive>
+                    </ng-template>
+                    <ng-template #elseBlockInactive>
+                        <tr>
+                            <td style="width: 10%" class="LabelFontStyle1">
+                                Inactive&nbsp;Date:&nbsp;
+                            </td>
+                            <td>
+                                <input  type='date' formControlName="endDate" class="form-control"
+                                    [ngModel]="endDate | date:'yyyy-MM-dd'">
+                            </td>
+                        </tr>
+                    </ng-template>
+
+       
+    </table>    
+    </fieldset>
+
+<table class="center">
+    <tr>
+        <div *ngIf="displayButton; then thenBlock1; else elseBlock1"></div>
+        <ng-template #thenBlock1>
+        <td> <button type="submit" class="btn btn-info" id="register" (click)="newMast()">Save</button></td>
+        <!-- <td> <button  type="submit" class="btn btn-info" id="register" (click)="searchMast()">Search</button></td> -->
+        <td> <button type="submit" class="btn btn-info" id="register" (click)="resetMast()">Reset</button></td>
+        <td> <button type="submit" class="btn btn-info" id="register" (click)="closeMast()">Close</button></td>
+       
+        </ng-template>
+        <ng-template #elseBlock1>
+            <td> <button type="submit" class="btn btn-info" id="register" (click)="updateMast()">Update</button></td>
+            <!-- <td> <button  type="submit" class="btn btn-info" id="register" (click)="searchMast()">Search</button></td> -->
+            <td> <button type="submit" class="btn btn-info" id="register" (click)="resetMast()">Reset</button></td>
+            <td> <button type="submit" class="btn btn-info" id="register" (click)="closeMast()">Close</button></td>
+        </ng-template>
+        
+    </tr>
+</table>
+
+<fieldset class="RFS">
+    <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px;color: black;font-weight: bold;"> SEARCH</legend>
+    <table class="center">
+        <tr>
+            <td style="width: 15%" class="LabelFontStyle"> Code&nbsp;&nbsp;Type: </td>
+            <td>
+                <select  type='text' formControlName="codeType" id="codeType" class="form-control" style="background-color: yellow;" >
+                    <!-- <option></option> -->
+                    <option *ngFor="let sc of  AllcodetypeList" [ngValue]="sc.codeType"  >
+                        {{sc.codeDesc}}
+                    </option>
+                </select>
+            </td>
+           
+                <button type="button" class="btn-primary" (click)="searchMast()" ><i class="fa fa-search"
+                       aria-hidden="true"></i></button><!-- (click)="compIdFind(cmnTypeId)"-->
+        
+        </tr>
+    </table>
+</fieldset>
+
+
+
+<table  class="GridFont" cellspacing="0" cellpadding="4"   style="border-color:#959595;border-collapse:collapse;width: 100%; ">
+    <thead>
+        <tr class="GridHeader">
+            
+            <th hidden scope="col" style="border: 1px solid black;">Common Type Id</th> 
+            <th scope="col" style="border: 1px solid black;">Code Type</th>
+            <th scope="col" style="border: 1px solid black;">Code</th>
+            <th scope="col" style="border: 1px solid black;">Code Description</th>
+            <th scope="col" style="border: 1px solid black;">Select</th> 
+        </tr>
+    </thead>
+        <tbody>
+            <tr *ngFor="let com of allcodemstList let i=index" class="ItemStyle" style="text-decoration:none;">
+               
+                <td hidden style="border: 1px solid black;padding-left: 15px;">{{com.cmntypeId}}</td>
+                <td style="border: 1px solid black;padding-left: 15px;">{{com.codeType}}</td>
+                <td style="border: 1px solid black;padding-left: 15px;">{{com.code}}</td>
+                <td style="border: 1px solid black;padding-left: 15px;">{{com.codeDesc}}</td>
+                
+                <td style="border: 1px solid black;padding-left: 15px;"> <button type="button" style="width: fit-content;"  class="btn btn-primary" data-dismiss="modal" (click)="cmnTypeIdFind(com.cmntypeId)">Select</button></td>
+            </tr>
+        </tbody>
+    
+</table>
+
+</form>

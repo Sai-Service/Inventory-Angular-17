@@ -1,0 +1,177 @@
+<form [formGroup]="recivedFrom" (ngSubmit)="RecivedForm(recivedFrom.value)">
+    <table style="width: 100%;background-color: white;" class="center">
+        <tr>
+            <td class="PageHeader">
+                &nbsp;ASSET&nbsp;RECEIVED&nbsp;FORM
+            </td>
+    </table>
+
+    <fieldset class="RFS">
+        <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px;color: black;font-weight: bold;">Old User
+            Details
+        </legend>
+        <table class="center">
+            <tr>
+                <td style="width: 15%" class="LabelFontStyle1"> Old&nbsp;City&nbsp;: </td>
+                <td> <input type='text'  formControlName="oldcity" class="form-control"></td>
+                <td style="width: 15%" class="LabelFontStyle1">Old&nbsp;Company&nbsp;: </td>
+                <td> <input type='text'  uppercase formControlName="oldcomp" class="form-control"></td>
+                <td style="width: 15%" class="LabelFontStyle1">&nbsp;Old&nbsp;Location: </td>
+                <td> <input type='text'  uppercase formControlName="oldloc" class="form-control"></td>
+
+            </tr>
+        </table>
+    </fieldset>
+
+    <fieldset class="RFS">
+        <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px;color: black;font-weight: bold;">Asset
+            Recived Details </legend>
+        <table class="center">
+
+            <tr>
+               
+                <td style="width: 15%" class="LabelFontStyle">Transfer&nbsp;&nbsp;Id: </td>
+                <td> <input type='number'  formControlName="transferId" class="form-control"
+                        [(ngModel)]='transferId'></td>
+
+                <td style="width: 15%" class="LabelFontStyle">Transfer&nbsp;&nbsp;Date: </td>
+                <td> <input type='text'  formControlName="transferDate" class="form-control"
+                        [(ngModel)]='transferDate '></td>
+
+
+                <td style="width: 15%" class="LabelFontStyle1">Item&nbsp;Code&nbsp;: </td>
+                <td> <input type='text' formControlName="itemCode" class="form-control"></td>
+
+                <input hidden formControlName="itemId" class="form-control">
+
+            </tr>
+            <tr hidden>
+                <td style="width: 15%" class="LabelFontStyle1"> New&nbsp;City&nbsp;: </td>
+                <td> <input type='number'  formControlName="newcityId" class="form-control"></td>
+
+
+                <td style="width: 15%" class="LabelFontStyle1">New &nbsp;Company&nbsp;: </td>
+                <td> <input type='text'  formControlName="newcomp" class="form-control"></td>
+
+                <td style="width:15%" class="LabelFontStyle1">new&nbsp; Division&nbsp;&nbsp;: </td>
+                <td> <input type='number'  formControlName="newdivId" class="form-control"></td>
+            </tr>
+            <tr>
+                <td style="width: 15%" class="LabelFontStyle1">New&nbsp;Location&nbsp;&nbsp;: </td>
+                <td> <input type='text'  formControlName="newloc" class="form-control"></td>
+    
+                <td style="width: 15%" class="LabelFontStyle1">New&nbsp;User&nbsp;Ticket&nbsp;No: </td>
+                <td><input type='text' uppercase formControlName="newusertktNo" class="form-control" (keydown.tab)="TicketNoSearch(newusertktNo)">
+                </td>
+
+                <td style="width: 15%" class="LabelFontStyle1">New&nbsp;User&nbsp;User&nbsp;Name: </td>
+                <td> <input type='text' uppercase formControlName="newuserName" class="form-control"
+                        style="background-color:  rgb(143, 255, 148);"></td>
+
+            </tr>
+
+            <tr>
+                <td style="width: 15%" class="LabelFontStyle1">New&nbsp;User&nbsp;Contact&nbsp;No: </td>
+                <td> <input type='text' uppercase formControlName="newuserContact" class="form-control"
+                        style="background-color:  rgb(143, 255, 148);"></td>
+                <td style="width: 15%" class="LabelFontStyle1">New&nbsp;User&nbsp;Email&nbsp;Id: </td>
+                <td> <input type='text' uppercase formControlName="newuserEmail" class="form-control"
+                        style="background-color:  rgb(143, 255, 148);"></td>
+
+                <td style="width: 15%" class="LabelFontStyle1">&nbsp;Recived&nbsp;By&nbsp;: </td>
+                <td>
+                  
+                    <select type='text' formControlName="receivedBy" id="receivedBy" class="form-control"
+                        style="background-color: yellow;">
+                        <option *ngFor="let sc of receivedbymembers" [ngValue]="sc.codeDesc">
+                            {{sc.codeDesc}}
+                        </option>
+                    </select>
+                </td>
+                </tr><br>
+                <tr>
+              
+
+                        <td style="width: 15%" class="LabelFontStyle"> &nbsp;Remark&nbsp;: </td>
+                           
+                            <td colspan="5">
+                                <textarea id="remarks" formControlName="remarks" rows="2"
+                                    style="width: 100%;resize: none; font-size: small;"></textarea>
+                            </td>
+                <input hidden formControlName="olddiv" class="form-control">
+                <input hidden formControlName="oldlocId" class="form-control">
+                <input hidden formControlName="oldusertktNo" class="form-control">
+                <input hidden formControlName="olduserName" class="form-control">
+                <input hidden formControlName="olduserEmail" class="form-control">
+                <input hidden formControlName="getpassNo" class="form-control">
+                <input hidden formControlName="remarks" class="form-control">
+                <input hidden formControlName="transferBy" class="form-control">
+                <input hidden formControlName="trnsRemarks" class="form-control">
+                
+
+            </tr>
+        </table>
+    </fieldset>
+    <fieldset class="RFS">
+        <table class="center">
+            <tr>
+                <div *ngIf="displayButton; then thenBlock1; else elseBlock1"></div>
+                <ng-template #thenBlock1>
+                    <td> <button type="submit" class="btn btn-info" id="register" style="width: 150px;"
+                            (click)="updateMast()">Asset Received</button></td>
+                    <td> <button type="submit" class="btn btn-info" id="register" (click)="searchMast()">Search</button>
+                    </td>
+                    <td> <button type="submit" class="btn btn-info" id="register" (click)="resetMast()">Reset</button>
+                    </td>
+                    <td> <button type="submit" class="btn btn-info" id="register" (click)="closeMast()">Close</button>
+                    </td>
+
+                </ng-template>
+                <ng-template #elseBlock1>
+                    <td> <button type="submit" class="btn btn-info" id="register" style="width: 100px;"
+                            [disabled]="isDisablerecivedbutton" (click)="updateMast()">Recived Asset</button></td>
+                    <td> <button type="submit" class="btn btn-info" id="register" (click)="searchMast()">Search</button>
+                    </td>
+                    <td> <button type="submit" class="btn btn-info" id="register" (click)="resetMast()">Reset</button>
+                    </td>
+                    <td> <button type="submit" class="btn btn-info" id="register" (click)="closeMast()">Close</button>
+                    </td>
+                </ng-template>
+
+            </tr>
+        </table>
+    </fieldset>
+    <BR>
+    <div class="grid_scroll">
+        <table class="GridFont" cellspacing="0" cellpadding="15"
+            style="border-color:#959595;border-collapse:collapse;width: 100%; ">
+            <thead>
+                <tr class="GridHeader">
+                    <th scope="col" style="border: 1px solid black; width: 30px;">Transfer No</th>
+                    <th scope="col" style="border: 1px solid black;">Transfer Date</th>
+                    <th scope="col" style="border: 1px solid black;">Asset Item Code</th>
+                    <th scope="col" style="border: 1px solid black;">From Location</th>
+                    <th scope="col" style="border: 1px solid black; width:180px;">Transfer By</th>
+                    <th scope="col" style="border: 1px solid black;">status</th>
+                    <th scope="col" style="border: 1px solid black; width:90px;">Recived By</th>
+                    <th scope="col" style="border: 1px solid black;">Recived Date</th>
+                    <th scope="col" style="border: 1px solid black;">GatePass No</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let com of allRecivedsearch" class="ItemStyle" style="text-decoration:none;">
+                    <td style="border: 1px solid black;padding-left: 15px;">{{com.transferId}}</td>
+                    <td style="border: 1px solid black;padding-left: 15px;">{{com.transferDate | date:'dd-MM-yyyy hh:mm:ss'}}</td>
+                    <td style="border: 1px solid black;padding-left: 15px;">{{com.itemCode}}</td>
+                    <td style="border: 1px solid black;padding-left: 15px;">{{com.oldloc}}</td>
+                    <td style="border: 1px solid black;padding-left: 15px;width:180px;">{{com.transferBy}}</td>
+                    <td style="border: 1px solid black;padding-left: 15px;">{{com.status}}</td>
+                    <td style="border: 1px solid black;padding-left: 15px;">{{com.receivedBy}}</td>
+                    <td style="border: 1px solid black;padding-left: 15px;">com.receivedDate </td>
+                    <td style="border: 1px solid black;padding-left: 15px;">{{com.getpassNo}}</td>
+               
+            </tbody>
+        </table>
+    </div>
+
+</form>

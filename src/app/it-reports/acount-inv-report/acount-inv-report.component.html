@@ -1,0 +1,103 @@
+<form [formGroup]="AccountReportForm" (ngSubmit)="AccReport(AccountReportForm.value)">
+    <div class="center">
+        <table style="width: 100%;background-color: white;">
+            <tr>
+                <td class="PageHeader">
+                    &nbsp;Account&nbsp;Inventory&nbsp;Report&nbsp;
+                </td>
+            </tr>
+        </table>
+    </div>
+    <table class="center">
+        <tr>
+            <div *ngIf="closeResetButton; then hList1; else hList2"></div>
+            <ng-template #hList2>
+                <div class="d-flex justify-content-center">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="sr-only" id="loading"></span>
+                    </div>
+                </div>
+            </ng-template>
+            <ng-template #hList1> </ng-template>
+            <td class="LabelFontStyle" style="color: blue;width: fit-content;" colspan="4">
+                &nbsp;{{dataDisplay}}&nbsp; </td>
+        </tr>
+    </table>
+
+
+    <fieldset class="RFS">
+        <table class="center">
+            <tr>
+                <!-- <input type='number' hidden formControlName="ouId" value={{ouId}} class="form-control">-->
+                <td class="LabelFontStyle">
+                    &nbsp;OU&nbsp;CITY&nbsp;:&nbsp;&nbsp;{{ouCity}}&nbsp;
+                </td>
+            </tr>
+            <br>
+            <tr>
+                <td style="width: 15%" class="LabelFontStyle">
+                    &nbsp;Location&nbsp;Code&nbsp;:&nbsp;
+                </td>
+                <td>
+                    <select formControlName="locId" id="locId" class="form-control">
+
+                        <option *ngFor="let sc of AccRepLocationList" [value]="sc.locId">
+                            {{sc.locName}}
+                        </option>
+                    </select>
+                </td>
+                <td style="width: 15%" class="LabelFontStyle">
+                    &nbsp;Department&nbsp;:&nbsp;
+                </td>
+                <td>
+                    <select formControlName="dept" id="dept" class="form-control">
+                        <option>--Select--</option>
+                        <option *ngFor="let sc of  AccRepDepartmentList" [value]="sc.cmntypeId">
+                            {{sc.codeDesc}}
+                        </option>
+                    </select>
+                </td>
+                <td style="width: 15%" class="LabelFontStyle">
+                    &nbsp;Item&nbsp;Type:&nbsp;
+                </td>
+                <td>
+                    <select formControlName="itemTypeId" id="itemTypeId" class="form-control">
+                        <option>--Select--</option>
+                        <option *ngFor="let sc of  AccRepItemTypeList" [value]="sc.cmntypeId">
+                            {{sc.codeDesc}}
+                        </option>
+                    </select>
+                </td>
+                <!-- <input type='number' hidden formControlName="vendorId" value={{vendorId}} class="form-control"
+                            style="background-color: yellow;"> -->
+
+                <input type='number' hidden formControlName="ouId" value={{ouId}} class="form-control">
+
+            </tr>
+            <br>
+        </table>
+    </fieldset>
+
+
+    <!-- <td></td>
+                    <td></td> -->
+    <br>
+    <fieldset class="RFS">
+        <table class="center">
+            <tr>
+                <td>
+                    <button class="btn-primary1" style="width: 100px; background-color: green;"
+                        (click)="reportDetails()">View Report</button>
+                </td>
+                <td>
+                    <button type="submit" class="btn btn-primary" id="register" (click)="refresh()" style="width:90PX">
+                        Clear
+                    </button>
+                </td>
+                <td>
+                    <button type="submit" (click)="close()" class="btn btn-primary" style="width:90PX">Close</button>
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+</form>

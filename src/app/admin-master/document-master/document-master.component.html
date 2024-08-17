@@ -1,0 +1,239 @@
+<form [formGroup]="DocumentMasterForm" (ngSubmit)="DocMaster(DocumentMasterForm.value)">
+    <table style="width: 100%;background-color: white;">
+        <tr>
+            <td class="PageHeader">
+                &nbsp;Document&nbsp;Master&nbsp;
+            </td>
+            <td colspan="2" align="right"  style="width: 100%; background-color: #a4d3e9; text-align: right;width: 100%;">
+                &nbsp;Document&nbsp;Id&nbsp;&nbsp;
+            </td>
+            <td style="width: 100%; background-color: #a4d3e9;">
+                <input class="form-control" formControlName="docSrlID" 
+                value={{docSrlID}} [(ngModel)]='docSrlID'>
+            </td>
+    
+                <td style="background-color: #FFE4B5;">
+                    <button type="button" class="btn-primary" (click)="DocumentNoFind(docSrlID)"><i class="fa fa-search"
+                     aria-hidden="true"></i></button>
+                </td>
+            
+        </tr>
+    </table>
+    <fieldset class="RFS">
+        <table class="center">
+            <tr>
+                <div *ngIf="closeResetButton; then hList1; else hList2"></div>
+                <ng-template #hList2>
+                    <div class="d-flex justify-content-center">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only" id="loading"></span>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template #hList1> </ng-template>
+                <td class="LabelFontStyle" style="color: blue;width: fit-content;" colspan="4">
+                    &nbsp;{{dataDisplay}}&nbsp; </td>
+            </tr>
+        </table>
+    </fieldset>
+    <fieldset class="RFS">
+        <table class="center">
+            <tr>
+                <td style="width: 15%" class="LabelFontStyle">&nbsp;Document&nbsp;Id&nbsp;:&nbsp;</td>
+                <td>
+                    <!-- disabled -->
+                    <input type='number'  formControlName="docSrlID"  class="form-control">
+                </td>
+                <td style="width: 15%" class="LabelFontStyle">&nbsp;Document&nbsp;Serial&nbsp;No:&nbsp;</td>
+                <td>
+                    <!-- disabled -->
+                    <input type='number'  formControlName="docSrlNo" class="form-control">
+                </td>
+                <td style="width: 15%" class="LabelFontStyle1">&nbsp;Transaction&nbsp;Type&nbsp;:&nbsp;</td>
+                <td>
+                    <select  type='text' formControlName="transactionType" id="transactionType" class="form-control" (change)="onSelectItemType($event)" style="background-color: yellow;" >
+                        <option *ngFor="let sc of  DoctransactiontypeList" [ngValue]="sc.codeDesc"  >
+                           {{sc.codeDesc}}
+                        </option>
+                    </select>
+                </td>
+                <input type='number' hidden formControlName="attribute3"  class="form-control">
+            </tr>
+            <tr>
+                <td style="width: 15%" class="LabelFontStyle1"> Location&nbsp;Name: </td>
+                <td >
+                    <select type='number' formControlName="locId" id="locId" class="form-control" style="background-color: yellow;">
+                        <option *ngFor="let sc of  ALLlocIdList" [ngValue]="sc.locId" >
+                            {{sc.locId}}-{{sc.locName}}
+                        </option>
+                    </select>
+                </td>
+                <td style="width: 15%" class="LabelFontStyle">&nbsp;Financial&nbsp;Year&nbsp;:&nbsp;</td>
+                <td>
+                    <!-- disabled -->
+                    <input type='number'  formControlName="financialYear"  class="form-control">
+                </td>
+            </tr>
+            <tr>
+                <input type='number' hidden formControlName="ouId"  class="form-control">
+                <input type='number' hidden formControlName="attribute2"  class="form-control">
+                <input type='number' hidden formControlName="createdBy"  class="form-control">
+                <input type='number' hidden formControlName="updatedby"  class="form-control">
+                
+                <!-- <input type='number' hidden formControlName="createdDate"  class="form-control"> -->
+            </tr>
+        </table>
+    </fieldset>
+    <fieldset class="RFS">
+        <table class="center">
+            <tr>
+              
+                <div *ngIf="displayButtonCondition; then thenButtonCondition; else elseButtonCondition"></div>
+                <ng-template #thenButtonCondition>
+                    <td>
+                        <button type="submit" class="btn btn-primary" id="saveBtn" data-toggle="modal" 
+                        data-target="#confirmAlert" (click)="getMessage('Save')" style="width: fit-content;">Save</button>
+                     </td>
+                     <td>
+                        <button type="submit" class="btn btn-primary" id="resetBtn" data-toggle="modal" 
+                        data-target="#confirmAlert" (click)="getMessage('Reset')" style="width: fit-content;">Reset</button>
+                     </td>
+                     <td>
+                        <button type="submit" class="btn btn-primary" id="closeMastBtn" data-toggle="modal" 
+                        data-target="#confirmAlert" (click)="getMessage('Close')" style="width: fit-content;">Close</button>
+                     </td>
+                     
+                   
+                </ng-template>
+                <ng-template #elseButtonCondition>
+                    <!-- <td>
+                        <button type="submit" class="btn btn-primary" id="updateBtn" data-toggle="modal" 
+                        data-target="#confirmAlert" (click)="getMessage('Update')" style="width: fit-content;">Update</button>
+                     </td> -->
+                     <td>
+                        <button type="submit" class="btn btn-primary" id="resetBtn" data-toggle="modal" 
+                        data-target="#confirmAlert" (click)="getMessage('Reset')" style="width: fit-content;">Reset</button>
+                     </td>
+                     <td>
+                        <button type="submit" class="btn btn-primary" id="closeMastBtn" data-toggle="modal" 
+                        data-target="#confirmAlert" (click)="getMessage('Close')" style="width: fit-content;">Close</button>
+                     </td>
+                     
+                   
+                </ng-template>
+            </tr>
+        </table>
+    </fieldset>
+
+    <fieldset class="RFS">
+        <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px;color: black;font-weight: bold;">DOCUMENT SEARCH</legend>
+        <table class="center" style="width: 30%;">
+            <tr>
+                <td style="width: 15%" class="LabelFontStyle"> Location&nbsp;Name: </td>
+                <td >
+                    <select type='number' formControlName="locId" id="locId" class="form-control" style="background-color: yellow;">
+                        <option *ngFor="let sc of  ALLlocIdList" [ngValue]="sc.locId" >
+                            {{sc.locId}}-{{sc.locName}}
+                        </option>
+                    </select>
+                </td>
+                <td>
+                    <button type="button" class="btn-primary" (click)="searchMast()" ><i class="fa fa-search"
+                       aria-hidden="true"></i></button>
+                   </td>
+
+            </tr>
+        </table></fieldset>
+
+    
+
+<table  class="GridFont" cellspacing="0" cellpadding="4"   style="border-color:#959595;border-collapse:collapse;width: 100%; ">
+    <thead>
+        <tr class="GridHeader">
+            <th scope="col" style="border: 1px solid black;">DOcumnet Id</th>
+            <th scope="col" style="border: 1px solid black;">Location Name</th>
+            <th scope="col" style="border: 1px solid black;">Trasaction Type</th>
+            <th scope="col" style="border: 1px solid black;">Document Sr No</th> 
+            <th scope="col" style="border: 1px solid black;">Select</th>
+          
+            
+        </tr>
+    </thead>
+        <tbody>
+            <tr *ngFor="let com of alldocmstList let i=index" class="ItemStyle" style="text-decoration:none;">
+                <td style="border: 1px solid black;padding-left: 15px;">{{com.docSrlID}}</td>
+                <td style="border: 1px solid black;padding-left: 15px;">{{com.locName}}</td>
+                <td style="border: 1px solid black;padding-left: 15px;">{{com.transactionType}}</td>
+                <td style="border: 1px solid black;padding-left: 15px;">{{com.docSrlNo}}</td>
+                
+                
+                <td style="border: 1px solid black;padding-left: 15px;"> <button type="button" style="width: fit-content;"  class="btn btn-primary" data-dismiss="modal" (click)="DocumentNoFind(com.docSrlID)">Select</button></td>
+            </tr>
+        </tbody>
+    
+</table>
+</form>
+
+
+
+<div class="modal fade" id="confirmAlert" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="width: 30%;margin-left: 35%;">
+    <div class="modal-dialog modal-sm" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <!-- <h5 class="modal-title" id="exampleModalLabel">Modal title</h5> -->
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <label
+            style="font-size: small; color: black; font-weight: bold; text-align: center; vertical-align: middle;">
+            {{message}}
+        </label>
+        </div>
+        <div class="modal-footer">
+            <table class="center" style="margin-right: 25%;">
+                <tr>
+                    <td>
+                        <button type="button" class="btn btn-info" data-dismiss="modal" id="register"
+                            (click)="executeAction()">Yes</button>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-info" data-dismiss="modal">No</button>
+                    </td>
+                </tr>
+            </table>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+<!-- <div class="modal" id="confirmAlert" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm"  role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" >Confirmation!</h5>
+        </div>
+        <div class="modal-body">
+            <label style="font-size: small; color: black; font-weight: bold; text-align: center; vertical-align: middle;">
+                {{message}}
+            </label>
+        </div>
+        <div class="modal-footer">
+            <table class="center">
+        <tr>
+            <td>
+            <button  type="submit" class="btn btn-info" data-dismiss="modal" id="register"   (click)="executeAction()">Yes</button>
+            </td>
+            <td>
+            <button type="button" class="btn btn-info" data-dismiss="modal">No</button>
+            </td>
+        </tr>
+        </table>
+        </div>
+        </div>
+        </div>
+    </div> -->

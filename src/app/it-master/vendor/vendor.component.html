@@ -1,0 +1,159 @@
+
+<form [formGroup]="vendorMasterForm"  (ngSubmit)="vendorMaster(vendorMasterForm.value)">
+    <table style="width: 100%;background-color: white;" class="center">
+        <tr>
+            <td class="PageHeader">
+                &nbsp;&nbsp;VENDOR&nbsp;MASTER
+            </td>
+            <td colspan="2" align="right" style="background-color: #FFE4B5;text-align: right;width: 100%;">
+                &nbsp;Vendor&nbsp;Id&nbsp;&nbsp;
+            </td>
+            <td style="background-color: #FFE4B5;">
+                <input class="form-control" formControlName="vendorId" 
+                value={{vendorId}} [(ngModel)]='vendorId'>
+            </td>
+            <!-- [style.display]="isVisibleOrderFind ? 'block' : 'none'"  -->
+            <td style="background-color: #FFE4B5;" >
+                <button type="button" class="btn-primary"  (click)="vendorIdFind(vendorId)"><i class="fa fa-search"
+                       aria-hidden="true"></i></button>
+            </td>
+        </tr>
+    </table>
+   
+    <fieldset class="RFS">
+        <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px;color: black;font-weight: bold;">OU DETAILS</legend>
+        <table class="center">
+            <tr>
+                
+                <td style="width: 15%" class="LabelFontStyle1"> Vendor&nbsp;Name&nbsp;: </td>
+                <td> <input type='text' uppercase formControlName="vendorName"  class="form-control" style="background-color: yellow;"  placeholder="Enter Vendor Name" ></td> <!-- (keyup)="onKey($event )"-->
+                <td style="width: 15%" class="LabelFontStyle1"> Vendor&nbsp;&nbsp;Location: </td>
+                <td> <input type='text' uppercase formControlName="vendorLocation"  class="form-control" style="background-color: yellow;"  placeholder="Enter Vendor Location" ></td>  <!-- (keyup)="onKey($event )"-->
+                <td style="width: 15%" class="LabelFontStyle1"> Vendor&nbsp;&nbsp;City: </td>
+                <td> <input type='text' uppercase formControlName="vendorCity"  class="form-control"   placeholder="Enter Vendor City"  ></td> 
+
+        <tr>
+           
+            <td style="width: 15%" class="LabelFontStyle1"> Vendor&nbsp;Address: </td>
+            <td> <input type='text' uppercase formControlName="vendorAddress"  class="form-control"   placeholder="Enter Vendor Address" ></td> <!-- (keyup)="onKey($event )"-->
+            <!-- <td style="width: 15%" class="LabelFontStyle1"> Payment&nbsp;&nbsp;Type: </td>
+                <td>
+                    <select type='text' formControlName="paymentTerm" id="paymentTerm" [(ngModel)]="paymentTerm"  class="form-control" style="background-color: yellow;">
+                        <option>--SELECT--</option> 
+                        <option>CASH</option>
+                        <option>CHEQUE</option>
+                        <option>MONTHLY</option>
+                         <option *ngFor="let sc of  OuCityList" [(ngValue)]=sc.cmntypeId  >
+                            {{sc.codeDesc}}
+                        </option>  
+                    </select>
+                </td> -->
+                <td style="width: 15%" class="LabelFontStyle1"> Payment&nbsp;&nbsp;Term: </td> 
+                <td>
+                    <select  type='text' formControlName="paymentTerm" id="paymentTerm" class="form-control" style="background-color: yellow;"  placeholder="--SELECT--">
+                        <option>---SELECT---</option>
+                        <option *ngFor="let sc of AllPaymenttermList" [ngValue]="sc.codeDesc"  >
+                            
+                           {{sc.codeDesc}}
+                        </option>
+                    </select>
+                </td> 
+                <td style="width: 15%" class="LabelFontStyle1"> GST&nbsp;&nbsp;No: </td>
+            <td> <input type='text' uppercase formControlName="gstNo"  (keydown.tab)="panCardValidation($event)" class="form-control"   placeholder="Enter GST No" ></td>  <!-- (keyup)="onKey($event )"-->
+        </tr>
+
+        <tr>
+            
+            <td style="width: 15%" class="LabelFontStyle1"> Pan&nbsp;Card&nbsp;No: </td>
+            <td > <input type='string' uppercase formControlName="panNo"  class="form-control"  (keydown.tab)="gstNoValidation($event)"   placeholder="Enter PAN Card No" ></td> <!-- (keyup)="onKey($event )"-->
+            <td style="width: 15%" class="LabelFontStyle1"> Corporate&nbsp;Identification&nbsp;No: </td>
+            <td> <input type='text' uppercase formControlName="cinNo"  (keydown.tab)="cinNoNoValidation($event)"  class="form-control"    placeholder="Enter CIN No"></td>  <!-- (keyup)="onKey($event )"-->
+            <td style="width: 15%" class="LabelFontStyle1"> Status&nbsp;&nbsp;: </td>
+            <td>
+                <select type='text' formControlName="status" id="status" [(ngModel)]="status"  class="form-control" style="background-color: yellow;"  placeholder="---SELECT---" >
+                    <!-- <option>--SELECT--</option> -->
+                    <option>Active</option> 
+                    <option>Iactive</option>
+                   
+                    <!-- <option *ngFor="let sc of  OuCityList" [(ngValue)]=sc.cmntypeId  >
+                        {{sc.codeDesc}}
+                    </option>   -->
+                </select>
+            </td>
+        </tr>
+
+        <tr>
+            <td style="width: 15%" class="LabelFontStyle"> Other&nbsp;&nbsp;Information: </td>
+            <td > <input type='text' uppercase  formControlName="otherInfo"  class="form-control" style="width: 100%;" style="background-color: rgb(255, 245, 152); " ></td>  <!-- (keyup)="onKey($event )"-->
+            <td style="width: 15%" class="LabelFontStyle1"> Start&nbsp;&nbsp;Date:</td>
+                <td> <input type='date'  formControlName="startDate" class="form-control"    ></td> 
+        </tr>
+        
+    </table>    
+    </fieldset>
+
+
+    <fieldset class="RFS">
+    <table class="center">
+       
+        <tr>
+            <div *ngIf="displayButton; then thenBlock1; else elseBlock1"></div>   
+            <ng-template #thenBlock1>
+            <td> <button type="submit" class="btn btn-info" id="register" (click)="newMast()">Save</button></td>
+            <td> <button  type="submit" class="btn btn-info" id="register" (click)="searchMast()">Search</button></td>
+            <td> <button type="submit" class="btn btn-info" id="register" (click)="resetMast()">Reset</button></td>
+            <td> <button type="submit" class="btn btn-info" id="register" (click)="closeMast()">Close</button></td>
+          </ng-template>
+            <ng-template #elseBlock1>
+                <td> <button type="submit" class="btn btn-info" id="register" (click)="updateMast()">Update</button></td>
+                <td> <button  type="submit" class="btn btn-info" id="register" (click)="searchMast()">Search</button></td>
+                <td> <button type="submit" class="btn btn-info" id="register" (click)="resetMast()">Reset</button></td>
+                <td> <button type="submit" class="btn btn-info" id="register" (click)="closeMast()">Close</button></td>
+            </ng-template>
+            
+        </tr>
+   
+    </table>
+    </fieldset>
+
+<fieldset class="RFS">
+  
+    <br>
+    <table  class="GridFont" cellspacing="0" cellpadding="4"   style="border-color:#959595;border-collapse:collapse;width: 100%; ">
+        <thead>
+            <tr class="GridHeader">
+                <th scope="col" style="border: 1px solid black;">Vendor Id</th>
+                <th scope="col" style="border: 1px solid black;">Vendor Name</th>
+                <th scope="col" style="border: 1px solid black;">Vendor Location</th>
+                <th scope="col" style="border: 1px solid black;">Verndor City</th>
+                <th scope="col" style="border: 1px solid black;">Vendor Adress </th>
+                <th scope="col" style="border: 1px solid black;">Payment Type</th>
+                <th scope="col" style="border: 1px solid black;">GST No</th>
+                <th scope="col" style="border: 1px solid black;">PAN No</th>
+                <th scope="col" style="border: 1px solid black;">CIN</th>
+                <th scope="col" style="border: 1px solid black;">Status</th>
+                <th scope="col" style="border: 1px solid black;">Select</th>
+           
+            </tr>
+        </thead>
+            <tbody>
+                <tr  *ngFor="let com of allVendorList" class="ItemStyle" style="text-decoration:none;"><!-- *ngFor="let com of allCompList" class="ItemStyle" style="text-decoration:none;"-->
+                    <td style="border: 1px solid black;padding-left: 15px;">{{com.vendorId}}</td>
+                    <td style="border: 1px solid black;padding-left: 15px;">{{com.vendorName}}</td>
+                    <td style="border: 1px solid black;padding-left: 15px;">{{com.vendorLocation}}</td>
+                    <td style="border: 1px solid black;padding-left: 15px;">{{com.vendorCity}}</td>
+                    <td style="border: 1px solid black;padding-left: 15px;">{{com.vendorAddress}}</td>
+                    <td style="border: 1px solid black;padding-left: 15px;">{{com.paymentTerm}}</td>
+                    <td style="border: 1px solid black;padding-left: 15px;">{{com.gstNo}}</td>
+                    <td style="border: 1px solid black;padding-left: 15px;">{{com.panNo}}</td>
+                    <td style="border: 1px solid black;padding-left: 15px;">{{com.cinNo}}</td>
+                    <td style="border: 1px solid black;padding-left: 15px;">{{com.status}}</td>
+
+                    <td style="border: 1px solid black;padding-left: 15px;"> <button type="button" style="width: fit-content;"  class="btn btn-primary" data-dismiss="modal" (click)="vendorIdFind(com.vendorId)">Select</button></td>
+                </tr>
+            </tbody>
+        
+    </table>
+</fieldset>
+
+</form>
