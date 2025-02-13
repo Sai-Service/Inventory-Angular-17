@@ -1,0 +1,163 @@
+:root {
+  --primary-color: #54b4eb;
+  --secondary-color: #2fa4e7;
+  --border-color: #35357c;
+  --button-hover-color: #5c9bda;
+  --font-family: 'Verdana', sans-serif;
+}
+
+.auto-style4 {
+  color: #333;
+  font-family: var(--font-family);
+  font-size: small;
+  height: 16px;
+  width: 100%;
+  text-align: left;
+  border: 2px ridge var(--border-color);
+  margin: 0;
+}
+
+.grid_scroll_1,
+.grid_scroll_2 {
+  overflow-y: scroll;
+  width: 100%;
+  max-width: 1370px;
+  height: 250px;
+}
+
+.grid_scroll {
+  overflow: auto;
+  width: 100%;
+  height: 200px;
+}
+
+.form-control, .form-control1 {
+  font-family: var(--font-family);
+  font-size: 12px;
+  padding: 3px;
+  border: 1px solid black;
+  width: 200px;
+  height: 50%;
+}
+
+.form-control1 {
+  width: 80px;
+}
+
+.SubHeading1, .SubHeading2 {
+  font-family: var(--font-family);
+  padding: 2px;
+  text-align: left;
+  width: 100%;
+}
+
+.SubHeading1 {
+  font-size: large;
+  background: linear-gradient(var(--primary-color), var(--secondary-color) 60%, #1d9ce5);
+}
+
+.SubHeading2 {
+  font-size: small;
+  font-weight: bold;
+  background: linear-gradient(wheat, wheat, wheat);
+}
+
+.btn-info, .btn-primary {
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 3rem;
+  height: 22px;
+  font-size: 11px;
+  line-height: 10px;
+  text-align: center;
+}
+
+.btn-info {
+  width: 5rem;
+  background: linear-gradient(var(--primary-color), var(--secondary-color) 60%, #1d9ce5);
+  color: black;
+  border: 1px solid #2c3e50;
+}
+
+.btn-primary {
+  width: 3rem;
+  background: linear-gradient(var(--primary-color), var(--secondary-color) 60%, #1d9ce5);
+  color: black;
+  border: 1px solid #2c3e50;
+}
+
+.btn-primary:hover {
+  background-color: var(--button-hover-color);
+}
+
+.tabs {
+  position: absolute;
+  top: 50%;
+  left: 57%;
+  transform: translate(-50%, -50%);
+  width: 1300px;
+  height: 470px;
+}
+
+.tabs .tab-header {
+  padding: 10px;
+  display: flex;
+}
+
+.tabs .tab-header > div {
+  flex: 1;
+  text-align: center;
+  padding: 10px;
+  font-weight: 500;
+  color: black;
+  cursor: pointer;
+}
+
+.tabs .tab-header > div.active {
+  color: #a1c7ff;
+}
+
+.tabs .tab-indicator {
+  position: absolute;
+  width: calc(25% - 5px);
+  height: 40px;
+  background: #598de0;
+  top: 10px;
+  left: 10px;
+  border-radius: 20px;
+}
+
+#loading {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 1;
+  width: 120px;
+  height: 120px;
+  margin: -60px 0 0 -60px;
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+fieldset {
+  border: 1px solid #608cb0;
+  border-radius: 3px;
+  padding: 0.75em;
+  margin: 1px auto;
+}
+
+.RFS legend {
+  font-size: 1em;
+  padding: 2px 5px;
+  background: #fefeff;
+  border: 1px solid #608cb0;
+  border-radius: 3px;
+  color: black;
+}

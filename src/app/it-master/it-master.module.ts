@@ -14,6 +14,7 @@ import { OuComponent } from './ou/ou.component';
 import { VendorComponent } from './vendor/vendor.component';
 import { VendorItemComponent } from './vendor-item/vendor-item.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { FAupdateFormComponent } from './faupdate-form/faupdate-form.component';
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     OuComponent,
     VendorComponent,
     VendorItemComponent,
-    DashboardComponent
+    DashboardComponent,
+    FAupdateFormComponent
   ],
   imports: [
     CommonModule,

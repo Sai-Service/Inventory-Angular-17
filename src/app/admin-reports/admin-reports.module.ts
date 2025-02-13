@@ -12,6 +12,9 @@ import { ManualGatePassReportComponent } from './manual-gate-pass-report/manual-
 import { DirectreqRepoComponent } from './directreq-repo/directreq-repo.component';
 import { StockTransReceComponent } from './stock-trans-rece/stock-trans-rece.component';
 import { AdminStktrnsReportComponent } from './admin-stktrns-report/admin-stktrns-report.component';
+import { AddirectReqReportComponent } from './addirect-req-report/addirect-req-report.component';
+import { StockLdgerRepoComponent } from './stock-ldger-repo/stock-ldger-repo.component';
+
 
 
 @NgModule({
@@ -25,7 +28,10 @@ import { AdminStktrnsReportComponent } from './admin-stktrns-report/admin-stktrn
     ManualGatePassReportComponent,
     DirectreqRepoComponent,
     StockTransReceComponent,
-    AdminStktrnsReportComponent
+    AdminStktrnsReportComponent,
+    AddirectReqReportComponent,
+    StockLdgerRepoComponent,
+   
   ],
   imports: [
     CommonModule,

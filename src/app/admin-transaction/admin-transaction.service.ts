@@ -26,6 +26,9 @@ export class AdminTransactionService {
   onhandQtyFn(itemName:any,locId:any): Observable<any> {
     return this.http.get(this.ServerUrl + `/OnHand/LocationItemWise?itemName=${itemName}&fromLocation=${locId}`);
   }
+  onhandQtyFnlist(itemName:any): Observable<any> {
+    return this.http.get(this.ServerUrl + `/AdminItem/AllItems?category=${itemName}`);
+  }
 
   stkRequestedEmFn(ouId:any,locId:any,deptId:any,role:any): Observable<any> {
     return this.http.get(this.ServerUrl + `/EmpMst/WithAllAdmin?ouId=${ouId}&locId=${locId}&deptId=${deptId}&role=${role}`);
@@ -44,6 +47,16 @@ export class AdminTransactionService {
     const url = this.ServerUrl + '/Receipt/addSTTransfer';
     return this.http.post(url, TransctionitemMasterRecord, options);
   }
+
+  viewStkreciptviewFn(stockTransNo:any) {
+    const REQUEST_URI = this.ServerUrl + `/ReqReports/StockReceipt?stockTransNo=${stockTransNo}`;
+    return this.http.get(REQUEST_URI, {
+      // params: REQUEST_PARAMS,
+      responseType: 'arraybuffer',
+      headers: this.headers,
+    });
+  }
+
 
   miscellaSaveFn(TransctionitemMasterRecord:any) {
     const options = {
@@ -87,9 +100,19 @@ onSelectReqItemNameFn(codeType:any): Observable<any> {
   return this.http.get(this.ServerUrl + `/AdminItem/AllItems?category=${codeType}`); ////CodeTypeMst/REQ/REQ
 }
 
+onSelectReqItemNameFn1(codeType:any,ouId:any): Observable<any> {
+  return this.http.get(this.ServerUrl + `/AdminItem/AllItemsWithOu?category=${codeType}&attribute1=${ouId}`); ////CodeTypeMst/REQ/REQ
+}
+
 adheaderIdFindFN(headId:any): Observable<any> {
   return this.http.get(this.ServerUrl + `/AdminStock/PoNumber?adheaderId=${headId}`);
 }
+
+adheaderIdFindFN1(headId:any,location:any): Observable<any> {
+  return this.http.get(this.ServerUrl + `/AdminStock/PoNumber?adheaderId=${headId}&adLoc=${location}`);
+}
+
+///AdminStock/PoNumber?adheaderId=168&adLoc=126
 
 public StckRecordedSubmit(BillRecorder:any) {
   const options = {
@@ -155,10 +178,14 @@ UpdateAdminReqBilllineRecorder(UpdateCounterSaleInvRecord:any) {
   return this.http.put(url, UpdateCounterSaleInvRecord, options);
 }
 
-Asigntolocadmin(ouID:any): Observable<any> {
-  return this.http.get(this.ServerUrl + `/EmpMst/AdminTktNo?adouId=${ouID}`);
-}
+// Asigntolocadmin(ouID:any): Observable<any> {
+//   return this.http.get(this.ServerUrl + `/EmpMst/AdminTktNo?adouId=${ouID}`);
+// }
 
+Asigntolocadmin(ouID:any,locId:any): Observable<any> {
+  return this.http.get(this.ServerUrl + `/EmpMst/AdminTktNoWITHlOC?adouId=${ouID}&locId=${locId}`);
+}
+// /ITInventory/EmpMst/AdminTktNoWITHlOC?adouId=106&locId=236
 
 UpdateUserReqBilllineRecorder(UpdateCounterSaleInvRecord:any) {
   const options = {
@@ -181,6 +208,11 @@ adheaderIdFindReceiptFN(headId:any): Observable<any> {
   return this.http.get(this.ServerUrl + `/AdminStock/PoNumApprove?adheaderId=${headId}&adstatus=APPROVED`);
 }
 
+adheaderIdFindReceiptFN1(headId:any,locId:any): Observable<any> {
+  return this.http.get(this.ServerUrl + `/AdminStock/PoNumApprove?adheaderId=${headId}&adstatus=APPROVED&adLoc=${locId}`);
+}
+
+/////http://localhost:8080/AdminStock/PoNumApprove?adheaderId=316&adstatus=APPROVED&adLoc=859   
 
 shipmentFindFN(shipNo:any): Observable<any> {
   return this.http.get(this.ServerUrl + `/Receipt/STTransNo?stockTransNo=${shipNo}`);
@@ -188,6 +220,9 @@ shipmentFindFN(shipNo:any): Observable<any> {
 
 receiptNoFindFn(headId:any): Observable<any> {
   return this.http.get(this.ServerUrl + `/Receipt/ReceiptNo?receiptNo=${headId}`);
+}
+  receiptNoFindFn1(headId:any,locId:any): Observable<any> {
+  return this.http.get(this.ServerUrl + `/Receipt/ReceiptNo?receiptNo=${headId}&adLoc=${locId}`);
 }
 
 public updateReceiptSaveFn(TransctionitemMasterRecord:any) {

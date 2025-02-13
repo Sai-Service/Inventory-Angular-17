@@ -48,22 +48,22 @@
             <tr>
                 <td style="width: 15%" class="LabelFontStyle1"> City&nbsp;: </td>
                 <td>
-                    <input  type="text" formControlName="loginArray1" id="loginArray1" [(ngModel)]="loginArray1"
+                    <input type="text" formControlName="loginArray1" id="loginArray1" [(ngModel)]="loginArray1"
                         class="form-control" style="width: 200px; border-color: black;">
-                    <input hidden type='number' formControlName="cityId"  class="form-control">
+                    <input hidden type='number' formControlName="cityId" class="form-control">
                 </td>
                 <td style="width: 15%" class="LabelFontStyle1">&nbsp;Supplier&nbsp;:&nbsp;</td>
                 <td colspan="5">
-                  
+
                     <input type="text" formControlName="suppId1" style="background-color: yellow; width: 100%;"
-                    (keyup)="getUserIdsFirstWay($event)" id="userIdFirstWay"
-                    list="dynmicUserIds" class="form-control" placeholder="Supplier details"
-                    (change)="onSelectVendorName($event)" />
-                <datalist id="dynmicUserIds">
-                    <option *ngFor="let sc of AllvendornameList" [value]="sc.vendorName">
-                        {{sc.vendorName}}</option>
-                </datalist>
-                <input type="text" hidden formControlName="suppId">
+                        (keyup)="getUserIdsFirstWay($event)" id="userIdFirstWay" list="dynmicUserIds"
+                        class="form-control" placeholder="Supplier details" (change)="onSelectVendorName($event)" />
+                    <datalist id="dynmicUserIds">
+                        <option *ngFor="let sc of AllvendornameList" [value]="sc.vendorName">
+                            {{sc.vendorName}}</option>
+                    </datalist>
+                    <input type="text" hidden formControlName="suppId">
+
                 </td>
             </tr>
             <tr>
@@ -84,7 +84,7 @@
                 <td style="width: 15%" class="LabelFontStyle">Today&nbsp;Date:</td>
                 <td class="form-control" style="background-color: rgb(238, 238, 238);"> {{Date}}</td>
                 <td style="width: 15%" class="LabelFontStyle">Purchase&nbsp;Id&nbsp;:</td>
-                <td> <input type='number'  formControlName="headerId" class="form-control" value={{headerId}}
+                <td> <input type='number' formControlName="headerId" class="form-control" value={{headerId}}
                         style="background-color:  rgb(17, 252, 36);"></td>
             </tr>
             <tr>
@@ -100,8 +100,9 @@
                 <td style="width: 15%" class="LabelFontStyle1">Bill&nbsp;Date&nbsp;: </td>
                 <td>
                     <input type="date" formControlName="billDate" max="{{minDate | date:'yyyy-MM-dd'}}"
-                        [(ngModel)]="billDate" class="form-control" style="background-color: yellow;">
-                </td>
+                        [(ngModel)]="billDate" class="form-control" style="background-color: yellow;" > <!---[min]="minDate"
+                        [max]="maxDate"-->
+                 </td>
                 <!--max="{{minDate | date:'yyyy-MM-dd'}}"-->
                 <td style="width:15%" class="LabelFontStyle1">&nbsp;Approved&nbsp;By&nbsp;: </td>
                 <td>
@@ -131,24 +132,25 @@
                 </td>
                 <td style="width: 15%" class="LabelFontStyle1">Service&nbsp;To&nbsp;:</td>
                 <td>
-                    <input type="date" formControlName="serviceTo" 
-                        [(ngModel)]="serviceTo" class="form-control" style="background-color: yellow;">  <!--max="{{minDate | date:'yyyy-MM-dd'}}"-->
+                    <input type="date" formControlName="serviceTo" [(ngModel)]="serviceTo" class="form-control"
+                        style="background-color: yellow;"> <!--max="{{minDate | date:'yyyy-MM-dd'}}"-->
                 </td>
             </tr>
         </table>
     </fieldset>
     <fieldset class="RFS">
-        <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px; color: black;font-weight: bold;">LINE HEADER </legend>
+        <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px; color: black;font-weight: bold;">LINE HEADER
+        </legend>
         <table class="ceneter">
             <tr>
                 <td style="width: 15%" class="LabelFontStyle1">Select&nbsp;Tax&nbsp;Type&nbsp;:</td>
                 <td> <select formControlName="taxType" id="taxType" class="form-control"
-                    style="background-color: yellow;">
-                    <option value="--Select--">--Select--</option>
-                    <option value="IGST">IGST</option>
-                    <option value="S-C-GST">S-C-GST</option>
-                </select>
-            </td>
+                        style="background-color: yellow;">
+                        <option value="--Select--">--Select--</option>
+                        <option value="IGST">IGST</option>
+                        <option value="S-C-GST">S-C-GST</option>
+                    </select>
+                </td>
             </tr>
         </table>
         <table style="width: 100%; border: solid 1px Gray" class="auto-style4" cellspacing="0" cellpadding="4"
@@ -174,7 +176,7 @@
                     <th style="width:10rem" scope="col">Buget Expence Type</th>
                     <th style="width:8rem" scope="col">Line Status</th>
                     <th style="width:2rem" scope="col">Add+</th>
-                  
+
                 </tr>
             </thead>
             <tbody>
@@ -183,8 +185,9 @@
                         [formGroupName]="i">
                         <tr>
                             <td>
-                                <input type='number' [disabled]="isDisabled(i)" formControlName="srlNo" class="form-control"
-                                    style="width: 2rem;height: 25px;font-size: 10px;" (keyup)="onKey(i,$event)">
+                                <input type='number' readonly [disabled]="isDisabled(i)" formControlName="srlNo"
+                                    class="form-control" style="width: 2rem;height: 25px;font-size: 10px;"
+                                    (keyup)="onKey(i,$event)">
                             </td>
                             <td>
                                 <div *ngIf="displayBillType1[i]; then thenBillType1; else elseBillType1"> </div>
@@ -199,9 +202,13 @@
                                     </select>
                                 </ng-template>
                                 <ng-template #elseBillType1>
-                                    <input  type="text" formControlName="billType" class="form-control">
+                                    <input readonly type="text" formControlName="billType" class="form-control">
                                 </ng-template>
                                 <input hidden formControlName="billTypeId" class="form-control">
+                                <input hidden formControlName="finYear" class="form-control">
+                                <input hidden formControlName="attribute1" class="form-control">
+                                <!-- <input hidden formControlName="attribut2" class="form-control"> -->
+
 
                             </td>
                             <td>
@@ -236,7 +243,7 @@
                                     </select>
                                 </ng-template>
                                 <ng-template #elseBillType>
-                                    <input type='text' formControlName="vitemName" class="form-control"
+                                    <input readonly type='text' formControlName="vitemName" class="form-control"
                                         style="width: 8rem;height: 25px;font-size: 10px;">
                                 </ng-template>
                             </td>
@@ -244,7 +251,7 @@
                                 <select type='text' formControlName="warntyPeriod" id="warntyPeriod"
                                     class="form-control"
                                     style="background-color: yellow; width: 8rem;height: 25px;font-size: 10px;">
-                                    <option>NOT APPLICABLE</option>
+                                    <option>N0T APPLICABLE</option>
                                     <option>01 YEAR</option>
                                     <option>02 YEAR</option>
                                     <option>03 YEAR</option>
@@ -257,61 +264,68 @@
                                 <div *ngIf="displayGstper[i]; then thenGstper; else elseGstper"> </div>
                                 <ng-template #thenGstper>
                                     <select type='text' formControlName="gstPer" id="gstPer" class="form-control"
-                                        style="background-color: yellow; width: 6rem;" >  <!---  (keydown.tab)="NumberkeyUp(i,event)"-->
+                                        style="background-color: yellow; width: 6rem;">
+                                        <!---  (keydown.tab)="NumberkeyUp(i,event)"-->
                                         <option *ngFor="let sc of gstperList" [ngValue]="sc.code">
                                             {{sc.code}}
                                         </option>
                                     </select>
                                 </ng-template>
                                 <ng-template #elseGstper>
-                                    <input type='text'  formControlName="gstPer" id="gstPer" name="gstPer{{i}}" (keydown.tab)="onKey(i,$event)" class="form-control"
+                                    <input readonly type='text' formControlName="gstPer" id="gstPer" name="gstPer{{i}}"
+                                    (input)="onKey(i,$event)" (keydown.tab)="onKey(i,$event)" class="form-control"
                                         style="width: 8rem;height: 25px;font-size: 10px;">
                                 </ng-template>
                             </td>
                             <td>
                                 <input type='number' formControlName="qty" class="form-control"
                                     style="width: 4rem;height: 25px;font-size: 10px;" name="qty{{i}}"
-                                    (keydown.tab)="onKey(i,$event)"
-                                      min="0">   <!----(Keydown.tab)="validNumber($event)"-->
+                                    (input)="onKey(i,$event)" (keydown.tab)="onKey(i,$event)" min="0">
+                                <!----(Keydown.tab)="validNumber($event)"-->
                             </td>
                             <td>
                                 <input type='number' formControlName="unitRate" class="form-control"
                                     style="width: 6rem;height: 25px;font-size: 10px;" name="unitRate{{i}}"
-                                    (keydown.tab)="onKey(i,$event)"  min="0" >  <!---(Keydown.tab)="validNumber($event)"-->
+                                    (input)="onKey(i,$event)"  (keydown.tab)="onKey(i,$event)" min="0"> <!---(Keydown.tab)="validNumber($event)"-->
                             </td>
-                           
                             <td>
                                 <input type='number' formControlName="discAmt" class="form-control"
                                     style="width: 4rem;height: 25px;font-size: 10px;" name="discAmt{{i}}" main="0"
-                                    (keydown.tab)="onKey(i,$event)">
+                                    (input)="onKey(i,$event)" (keydown.tab)="onKey(i,$event)">
                             </td>
                             <td>
                                 <input type='number' formControlName="subTotal" class="form-control"
-                                    style="width: 4rem;height: 25px;font-size: 10px;"  [disabled]="isDisabled(i)" name="subTotal{{i}}" main="0">
+                                    style="width: 4rem;height: 25px;font-size: 10px;" [disabled]="isDisabled(i)"
+                                    name="subTotal{{i}}" main="0">
                             </td>
                             <td>
-                                <input type='number' formControlName="sgst"  class="form-control"
-                                    style="width: 4rem;height: 25px;font-size: 10px;"  [disabled]="isDisabled(i)" main="0">
+                                <input type='number' formControlName="sgst" class="form-control"
+                                    style="width: 4rem;height: 25px;font-size: 10px;" [disabled]="isDisabled(i)"
+                                    main="0">
                             </td>
                             <td>
                                 <input type='number' formControlName="cgst" class="form-control"
-                                    style="width: 4rem;height: 25px;font-size: 10px;"  [disabled]="isDisabled(i)" main="0">
+                                    style="width: 4rem;height: 25px;font-size: 10px;" [disabled]="isDisabled(i)"
+                                    main="0">
                             </td>
                             <td>
-                                <input type='number' formControlName="igst"  class="form-control"
-                                    style="width: 4rem;height: 25px;font-size: 10px;"  [disabled]="isDisabled(i)" main="0">
+                                <input type='number' formControlName="igst" class="form-control"
+                                    style="width: 4rem;height: 25px;font-size: 10px;" [disabled]="isDisabled(i)"
+                                    main="0">
                             </td>
                             <td>
-                                <input type='number' formControlName="gstAmt"  class="form-control"
-                                    style="width: 4rem;height: 25px;font-size: 10px;" name="gstAmt{{i}}"  [disabled]="isDisabled(i)" main="0">
+                                <input type='number' formControlName="gstAmt" class="form-control"
+                                    style="width: 4rem;height: 25px;font-size: 10px;" name="gstAmt{{i}}"
+                                    [disabled]="isDisabled(i)" main="0">
                             </td>
                             <td>
-                                <input type='number' formControlName="totalAmt"  class="form-control"
-                                    style="width: 4rem;height: 25px;font-size: 10px;" name="totalAmt{{i}}"  [disabled]="isDisabled(i)" main="0">
+                                <input type='number' formControlName="totalAmt" class="form-control"
+                                    style="width: 4rem;height: 25px;font-size: 10px;" name="totalAmt{{i}}"
+                                    [disabled]="isDisabled(i)" main="0">
                             </td>
                             <td>
-                                <input type='text'  formControlName="budgetType" class="form-control"
-                                    style="width: 10rem;height: 25px;font-size: 10px;"  [disabled]="isDisabled(i)">
+                                <input type='text' formControlName="budgetType" class="form-control"
+                                    style="width: 10rem;height: 25px;font-size: 10px;" [disabled]="isDisabled(i)">
                             </td>
                             <input hidden formControlName="itemTypeId" class="form-control">
                             <td>
@@ -320,13 +334,13 @@
                                 </div>
                                 <ng-template #thenLineflowStatusCode>
                             <td align="right" style="padding-right: 10px;">
-                                <input  type="text" formControlName="linestatus" name="lineStatus"
-                                    class="form-control" style="height: 20px;width:100px;" min="0">
+                                <input type="text" formControlName="linestatus" name="lineStatus" class="form-control"
+                                    style="height: 20px;width:100px;" min="0">
                             </td>
                             </ng-template>
                             <ng-template #elseLineflowStatusCode>
                                 <td align="right" style="padding-right: 10px;">
-                                    <select formControlName="linestatus"  class="form-control"
+                                    <select formControlName="linestatus" class="form-control"
                                         (change)="updateLineOnCancel(i,$event)" style="width: fit-content;">
                                         <option>--Select--</option>
                                         <option value="BOOKED">BOOKED</option>
@@ -340,7 +354,7 @@
                                 <button type="button" class="btn btn-primary" (click)="addRow(i)"
                                     style="width: min-content;"><i class="fa fa-plus"></i></button>
                             </td>
-                           
+
                         </tr>
                     </ng-container>
                 </ng-container>
@@ -369,36 +383,34 @@
                     <table class="center">
                         <tr>
                             <td style="width: 15%" class="LabelFontStyle">Line&nbsp;Count&nbsp;:</td>
-                            <td> <input type="text"  formControlName="lineCount" class="form-control"></td>
+                            <td> <input type="text" formControlName="lineCount" class="form-control"></td>
                         </tr>
                         <tr>
                             <td style="width: 15%" class="LabelFontStyle">Quntity&nbsp;Total&nbsp;:</td>
-                            <td> <input type="text"  formControlName="qtyTotal" class="form-control"></td>
+                            <td> <input type="text" formControlName="qtyTotal" class="form-control"></td>
                         </tr>
                         <tr>
                             <td style="width: 15%" class="LabelFontStyle">Item &nbsp;Amount&nbsp;:</td>
-                            <td> <input type="text"  formControlName="itemAmt" class="form-control"></td>
+                            <td> <input type="text" formControlName="itemAmt" class="form-control"></td>
                         </tr>
                         <tr>
                             <td style="width: 15%" class="LabelFontStyle">Total&nbsp;Tax&nbsp;:</td>
-                            <td> <input type="text"  formControlName="taxTotal" class="form-control"></td>
+                            <td> <input type="text" formControlName="taxTotal" class="form-control"></td>
                         </tr>
                         <tr>
                             <td style="width: 15%" class="LabelFontStyle">Total&nbsp;Discount&nbsp;Amount:</td>
-                            <td> <input type="text"  formControlName="totdiscAmt" class="form-control"></td>
+                            <td> <input type="text" formControlName="totdiscAmt" class="form-control"></td>
                         </tr>
 
                         <tr>
                             <td style="width: 15%" class="LabelFontStyle">Total&nbsp;delivery&nbsp;Charges:</td>
-                            <td> <input type="text"  formControlName="totdelChrges" class="form-control"></td>
+                            <td> <input type="text" formControlName="totdelChrges" class="form-control"></td>
                         </tr>
 
                         <tr>
                             <td style="width: 15%" class="LabelFontStyle">Grand&nbsp;Total&nbsp;:</td>
-                            <td> <input type="text"  formControlName="grandTotal" class="form-control"></td>
+                            <td> <input type="text" formControlName="grandTotal" class="form-control"></td>
                         </tr><br>
-
-
                     </table>
                 </fieldset>
             </td>
@@ -406,13 +418,11 @@
     </fieldset>
     <table>
         <tr>
-            <td>
-                <button   type="button" class="btn-primary" style="width: 150px; height: 25px;" data-toggle="modal"
-                    data-target="#uploadedData"  > <!-- [style.display]="isVisibleDocUoload ? 'block' : 'none'" -->
+            <!-- <td>
+                <button type="button" class="btn-primary" style="width: 150px; height: 25px;" data-toggle="modal"
+                    data-target="#uploadedData">
                     Attached&nbsp;Document&nbsp;
                 </button>
-
-                <!-- The Modal -->
                 <div class="modal" id="uploadedData">
                     <div class="modal-dialog modal-xl">
                         <div class="modal-content">
@@ -445,8 +455,9 @@
                                                     </td>
                                                     <td style="width: 15%" class="LabelFontStyle">File&nbsp;Name&nbsp;:
                                                     </td>
-                                                    <!-- disabled -->
-                                                    <td> <input type='text'  formControlName="docName" class="form-control"></td>
+
+                                                    <td> <input type='text' formControlName="docName"
+                                                            class="form-control"></td>
                                                     <td class="LabelFontStyle">
                                                         &nbsp;&nbsp;Document&nbsp;Upload&nbsp;Here&nbsp;
                                                     </td>
@@ -456,7 +467,7 @@
                                                             style="vertical-align: middle;margin-top: 22px;width: 350px;">&nbsp;&nbsp;
                                                     </td>
                                                     <td>
-                                                        <button class="btn btn-primary" (click)="uploadFile($event)"
+                                                        <button class="btn btn-primary" (click)="uploadFile1($event)"
                                                             style="width: 100%;font-size: 11px;">Upload</button>
                                                     </td>
 
@@ -470,7 +481,7 @@
                                 </div>
 
                             </div>
-                            <!-- Modal footer -->
+
                             <div class="modal-footer">
                                 <button type="button" style="width: 80px; height: 20px;" class="btn-primary"
                                     data-dismiss="modal">Close</button>
@@ -479,15 +490,94 @@
                         </div>
                     </div>
                 </div>
-            </td>
-            <td>
-                <button type="button" class="btn-primary" style="width: 150px; height: 25px;" data-toggle="modal"
-                    data-target="#uploadedData1" (click)="viewDocument()"> 
-                    Open&nbsp;Document&nbsp;
-                </button>
+            </td> -->
+            <!--------------------------------------------------------------------------------------------------------------------------------->
 
-                <div class="modal" id="uploadedData1">
-                    <div class="modal-dialog modal-xl">
+            <td>
+                <button type="submit" class="btn btn-primary" id="register" data-toggle="modal"
+                    style="width: fit-content;" data-target="#confirmAlert2">Attached Document</button>
+                <div class="modal fade" id="confirmAlert2" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true" style="width:fit-content">
+                    <div class="modal-dialog modal-sm" role="document">
+
+                        <div class="modal-content">
+
+                            <div class="modal-body">
+                                <div class="grid_scroll">
+
+                                    <table class="GridFont" id="excel-table" cellspacing="0" cellpadding="4">
+                                        <tbody>
+                                            <fieldset class="RFS">
+                                                <legend id="FormsPH_LGAadhaar" class="RFSL"
+                                                    style="font-size: 12px;color: black;font-weight: bold;">DOCUMENT
+                                                    DETAILS</legend>
+                                                <tr>
+                                                    <td style="width:15%" class="LabelFontStyle1">
+                                                        &nbsp;DOCUMENT&nbsp;TYPE&nbsp;: </td>
+                                                    <td colspan="3">
+                                                    <td>
+                                                        <select type='text' formControlName="docType" id="docType"
+                                                            class="form-control"
+                                                            style="width: 9rem; background-color: yellow;">
+
+                                                            <option *ngFor="let sc of  DoctypeList"
+                                                                [ngValue]="sc.codeDesc">
+                                                                {{sc.codeDesc}}
+                                                            </option>
+                                                        </select>
+
+                                                    </td>
+                                                    <td style="width: 15%" class="LabelFontStyle">File&nbsp;Name&nbsp;:
+                                                    </td>
+
+                                                    <td> <input type='text' formControlName="docName"
+                                                            class="form-control"></td>
+                                                    <td class="LabelFontStyle">
+                                                        &nbsp;&nbsp;Document&nbsp;Upload&nbsp;Here&nbsp;
+                                                    </td>
+                                                    <td colspan="3">
+                                                        <input class="form-control" type="file" #fileInput accept=".pdf"
+                                                            formControlName="files" [(ngModel)]="files"
+                                                            style="vertical-align: middle;margin-top: 22px;width: 350px;">&nbsp;&nbsp;
+                                                    </td>
+                                                    <td>
+                                                        <button class="btn btn-primary" (click)="uploadFile($event)"
+                                                            style="width: 100%;font-size: 11px;">Upload</button>
+                                                    </td>
+                                                </tr>
+                                            </fieldset>
+                                        </tbody>
+                                    </table>
+                                    <div class="modal-footer">
+                                        <button type="button" style="width: 80px; height: 20px;" class="btn-primary"
+                                            data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                                
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </td>
+
+
+            <!--------------------------------------------------------------------------------------------------------------------------------------------------->
+
+            <td>
+                <button type="submit" class="btn btn-primary" id="register" data-toggle="modal"
+                    style="width: fit-content;" data-target="#confirmAlert1" (click)="viewDocument()">View
+                    Document</button>
+
+
+                <div class="modal fade" id="confirmAlert1" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true" style="width:20cm">
+
+
+                    <div class="modal-dialog modal-sm" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -550,10 +640,10 @@
                     max="{{minDate | date:'yyyy-MM-dd'}}"></td>
             <td style="width: 15%" class="LabelFontStyle">Recevied&nbsp;By&nbsp;:</td>
             <td> <input type='text' uppercase formControlName="receivedBy" class="form-control"></td>
-<tr>
-            <td> <input hidden type='text' uppercase formControlName="createdBy"  class="form-control"    ></td>
-            <td> <input hidden type='text' uppercase formControlName="lastupdatedBy"  class="form-control"    ></td>
-</tr>
+            <tr>
+                <td> <input hidden type='text' formControlName="createdBy" class="form-control"></td>
+                <td> <input hidden type='text' uppercase formControlName="lastupdatedBy" class="form-control"></td>
+            </tr>
         </table>
     </fieldset>
 
@@ -568,7 +658,8 @@
                         <button type="submit" class="btn btn-primary" style="width: 80px;" data-toggle="modal"
                             data-target="#confirmAlert" (click)="getMessage('newMast1')">Save</button>
                     </td>
-                    <td><button type="submit" class="btn btn-info" id="register" style="width: fit-content;" [routerLink]="['/admin/itTransaction/Billrcdsrchfrm']">Search</button></td>
+                    <td><button type="submit" class="btn btn-info" id="register" style="width: fit-content;"
+                            [routerLink]="['/admin/itTransaction/Billrcdsrchfrm']">Search</button></td>
 
                     <td>
                         <button type="submit" class="btn btn-primary" style="width: 80px;" data-toggle="modal"
@@ -588,9 +679,14 @@
                     </td>
 
                     <!-- </div> -->
-                    <td><button type="submit" class="btn btn-info" id="register" style="width: fit-content;" [routerLink]="['/admin/itTransaction/Billrcdsrchfrm']">Search</button></td>
-                 
-                    
+                    <td><button type="submit" class="btn btn-info" id="register" style="width: fit-content;"
+                            [routerLink]="['/admin/itTransaction/Billrcdsrchfrm']">Search</button></td>
+
+                    <td>
+
+                        <button type="submit" class="btn btn-primary" style="width:fit-content" data-toggle="modal"
+                            data-target="#confirmAlert" (click)="getMessage('CopyForm')">Copy</button>
+                    </td>
 
                     <td>
 
@@ -612,38 +708,39 @@
 
 
 
-<div class="modal fade" id="confirmAlert" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="width: 30%;margin-left: 35%;">
+<div class="modal fade" id="confirmAlert" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true" style="width: 30%;margin-left: 35%;">
     <div class="modal-dialog modal-sm" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <!-- <h5 class="modal-title" id="exampleModalLabel">Modal title</h5> -->
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+        <div class="modal-content">
+            <div class="modal-header">
+                <!-- <h5 class="modal-title" id="exampleModalLabel">Modal title</h5> -->
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <label
+                    style="font-size: small; color: black; font-weight: bold; text-align: center; vertical-align: middle;">
+                    {{message}}
+                </label>
+            </div>
+            <div class="modal-footer">
+                <table class="center" style="margin-right: 25%;">
+                    <tr>
+                        <td>
+                            <button type="button" class="btn btn-info" data-dismiss="modal" id="register"
+                                (click)="executeAction()">Yes</button>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-info" data-dismiss="modal">No</button>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
         </div>
-        <div class="modal-body">
-            <label
-            style="font-size: small; color: black; font-weight: bold; text-align: center; vertical-align: middle;">
-            {{message}}
-        </label>
-        </div>
-        <div class="modal-footer">
-            <table class="center" style="margin-right: 25%;">
-                <tr>
-                    <td>
-                        <button type="button" class="btn btn-info" data-dismiss="modal" id="register"
-                            (click)="executeAction()">Yes</button>
-                    </td>
-                    <td>
-                        <button type="button" class="btn btn-info" data-dismiss="modal">No</button>
-                    </td>
-                </tr>
-            </table>
-          
-        </div>
-      </div>
     </div>
-  </div>
+</div>
 
 
 
@@ -690,7 +787,7 @@
             <div class="modal-body">
                 <label
                     style="font-size: small; color: black; font-weight: bold; text-align: center; vertical-align: middle;">
-              
+
                     Want&nbsp;to&nbsp;Close.&nbsp;Confirm&nbsp;(Yes/No)?&nbsp;
                 </label>
             </div>

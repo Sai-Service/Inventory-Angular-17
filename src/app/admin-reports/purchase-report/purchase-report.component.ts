@@ -89,11 +89,7 @@ export class PurchaseReportComponent {
   
   }
 
-  reportDetails() {
-    // var isvaliddata1 = this.validation();
-    //       if (isvaliddata1 === false) {
-    //         return;
-    //       }     
+  reportDetails() {    
     this.closeResetButton = false;
     this.progress = 0;
     this.dataDisplay = 'Report Is Running....Do not refresh the Page';
@@ -103,7 +99,7 @@ export class PurchaseReportComponent {
     var toDate = this.pipe.transform(pucDt2, 'dd-MMM-yyyy');
     const fileName = 'ADMIN STOCK PURCHASE REPORT OF-' + fromDate + '-TO-' + toDate + '.xlsx';
     var locId = this.adpurReportForm.get('locId')?.value;
-    if (locId === null) { locId = undefined }
+    if (locId === null) { locId = '' }
 
     const EXT = fileName.substr(fileName.lastIndexOf('.') + 1);
     this.service.AdminPurchaseReport(fromDate, toDate, sessionStorage.getItem('ouId'),locId)

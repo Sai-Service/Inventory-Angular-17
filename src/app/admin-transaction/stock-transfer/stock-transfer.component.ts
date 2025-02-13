@@ -15,8 +15,8 @@ import { HttpClient } from '@angular/common/http';
 import { disableDebugTools } from '@angular/platform-browser';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { saveAs } from 'file-saver';
-import { AdminTransactionService } from '../admin-transaction.service'
-import { AdminMasterService } from 'D:/Jyotik/itinventory/newe/angular/itInvenoryAndAdmin/src/app/admin-master/admin-master.service';
+// import { AdminTransactionService } from '../admin-transaction.service'
+import { AdminTransactionService } from '../admin-transaction.service';
 
 
 
@@ -66,9 +66,11 @@ export class StockTransferComponent {
   isVisibleLocList:boolean=true;
   isVisiblerequestedTo:boolean=true;
   isVisibleReceiptSave:boolean=true;
+  isVisibleReceiptview:boolean=false;
+  printWindow:Window | null;
 
 
-  constructor(private fb: FormBuilder, private router: Router,private router1:ActivatedRoute, private adminServiceService: AdminTransactionService,private service:AdminMasterService) {
+  constructor(private fb: FormBuilder, private router: Router,private router1:ActivatedRoute, private adminServiceService: AdminTransactionService,private service:AdminTransactionService) {
     this.stockTranferForm = fb.group({
       ShipmentNo:[],
       transactionType:[{ value: '', disabled: true }],
@@ -243,20 +245,43 @@ export class StockTransferComponent {
     
    }
 
+  //  onSelectItem(event:any,i:any){
+  //   var itemName= event.target.value;
+  //   alert(itemName);
+   
+  //   this.adminServiceService.onhandQtyFn(itemName,sessionStorage.getItem('locId'))
+  //   .subscribe(
+  //     data => {
+  //       this.onhandQtyList = data.obj;
+  //       console.log(this.onhandQtyList);
+  //       if (data.obj.length===0){
+  //         // alert('Selected Item Stock Not Available. Please Check.!')
+  //       }
+  //       else{
+  //       var patch = this.stockTranferForm.get('stkLines') as FormArray;
+  //       // patch.controls[i].patchValue({ avlQty: data.obj[0].onhandqty,adunitRate:data.obj[0].price});
+  //     }
+  //     var patch1 = this.stockTranferForm.get('stkLines')?.value;
+  //     var itemType1 = itemName.substr(itemName.indexOf(': ') + 1, itemName.length);
+  //     for (let k = 0; k < patch1.length;k++){
+  //       if (i != k){
+  //         if (patch1[k].itemName === itemType1){
+  //           alert('Same Item Present In Line no : '+ (k+1));
+  //           this.orderlineDetailsArray().controls[i].patchValue({ itemName:null})
+  //           return;
+  //         }
+  //       }
+  //     } });}
+    
+  
+      
+
+
+
+
+
    onSelectItemName(event:any,i:any){
     var itemName = event.target.value;
-    // alert(itemName);
-    // if (i != 0 ){
-    //   var stkForArra = this.stockTranferForm.get('stkLines') as FormArray; 
-    //   var stkForArra1 = stkForArra.getRawValue();
-    //   for (let k=0;k < stkForArra1.length ; k++){
-    //     alert(stkForArra1[k].adstkItem)
-    //     if (itemName === stkForArra1[k].adstkItem){
-    //       alert('Same Item Already Present in Lines.! Please Confirm & Revert the same.!');
-    //       return;
-    //     }
-    //   }
-    // }
     this.adminServiceService.onhandQtyFn1(itemName,sessionStorage.getItem('locId'))
     .subscribe(
       data => {
@@ -268,6 +293,21 @@ export class StockTransferComponent {
         else{
         var patch = this.stockTranferForm.get('stkLines') as FormArray;
         patch.controls[i].patchValue({ onhandQty: data.obj[0].onhandqty,adunitRate:data.obj[0].price});
+        
+        
+      }
+      var patch1 = this.stockTranferForm.get('stkLines')?.value;
+      var itemType1 = itemName.substr(itemName.indexOf(': ') + 1, itemName.length);
+      for (let k = 0; k < patch1.length;k++){
+    
+        if (i != k){
+          if (patch1[k].adstkItem === itemType1){
+            alert('Same Item Present In Line no : '+ (k+1));
+            this.orderlineDetailsArray().controls[i].patchValue({ adstkItem:null, onhandQty:0,adunitRate:0})
+            // patch1.controls[i].patchValue({ onhandQty:0,adunitRate:0});
+            return;
+          }
+        }
       }
       }
     );
@@ -306,6 +346,9 @@ export class StockTransferComponent {
    }
 
    addRow(i:number){
+    this.displayadstkCat [i] =false;
+    this.displayadstkItem[i] = false;
+    this.displayadstkQty[i] =false;
     this.orderlineDetailsArray().push(this.AdstkLinesGroup());
     var len = this.orderlineDetailsArray().length;
     var patch = this.stockTranferForm.get('stkLines') as FormArray;
@@ -324,11 +367,30 @@ export class StockTransferComponent {
     return index % 2 === 0;
   }
 
-   RemoveRow(i:number){
-    if (i === 0) {
+  //  RemoveRow1(i:number){
+  //   if (i === 0) {
+  //   }
+  //   else{
+  //   this.orderlineDetailsArray().removeAt(i);
+  //   var formVal = this.stockTranferForm.get('stkLines')?.value;
+  //   var formArr = this.stockTranferForm.get('stkLines') as FormArray;
+  //   for (let i = 0; i < formVal.length; i++) {
+  //     (formArr.controls[i]).patchValue({
+  //       lineNumber: i + 1,
+  //     });
+  //   }
+  // }
+  //  }
+
+  RemoveRow(i: number) {
+    var trxLnArr2 = this.stockTranferForm.get('stkLines') as FormArray;
+    var trxLnArr1 = trxLnArr2.getRawValue();
+    if (trxLnArr1.length === 1) {
+      alert('Not able to Delete This Line');
+      return;
     }
-    else{
     this.orderlineDetailsArray().removeAt(i);
+    this.updateLineAmt(0);
     var formVal = this.stockTranferForm.get('stkLines')?.value;
     var formArr = this.stockTranferForm.get('stkLines') as FormArray;
     for (let i = 0; i < formVal.length; i++) {
@@ -336,8 +398,8 @@ export class StockTransferComponent {
         lineNumber: i + 1,
       });
     }
+    
   }
-   }
 
 
 
@@ -389,7 +451,48 @@ export class StockTransferComponent {
    }
  
 
-   receiptSave(){
+  //  receiptSave(){
+  //   // this.closeResetButton = false;
+  //   // this.progress = 0;
+  //   // this.dataDisplay = 'Receipt Saving in progress....Do not refresh the Page';
+  //   var orderLines1 = this.stockTranferForm.get('stkLines') as FormArray;
+  //   var orderLines = orderLines1.getRawValue();
+  //   console.log(orderLines); 
+  //   let jsonData = this.stockTranferForm.getRawValue();
+  //   var arrayControlNew = this.stockTranferForm.get('stkLines') as FormArray;
+  //   var arrayControl = arrayControlNew.getRawValue();
+    
+  //   for (let i=0;i<arrayControl.length;i++){
+  //   if ( arrayControl[i].onhandQty<arrayControl[i].adstkQty){
+  //     alert(arrayControl[i].adstksrNo+' '+arrayControl[i].itemName+' '+'You are enter more than On Hand Quantity.! please Confirm');
+  //     this.displayadstkCat[i]=false;
+  //   this.displayadstkItem[i]=false;
+  //   this.displayadstkQty[i]=false;
+  //     return;
+      
+  //   }
+  // }
+  //   this.adminServiceService.stockTransSaveFn(JSON.stringify(jsonData)).subscribe((res: any) => {
+  //     if (res.code === 200) {
+  //       alert(res.message);
+  //       var shipNo=res.obj;
+  //       this.stockTranferForm.patchValue({stockTransNo:res.obj});
+  //       alert(res.obj)
+  //       this.shipmentNosearch(res.obj);
+  //       this.stockTranferForm.disable();
+        
+  //     }
+  //     else{
+  //       alert(res.obj)
+  //     }
+  //  })
+  //  }
+
+  receiptSave(){
+    // var isvaliddata1 = this.validation();
+    // if (isvaliddata1 === false) {
+    //   return;
+    // }
     // this.closeResetButton = false;
     // this.progress = 0;
     // this.dataDisplay = 'Receipt Saving in progress....Do not refresh the Page';
@@ -399,15 +502,10 @@ export class StockTransferComponent {
     let jsonData = this.stockTranferForm.getRawValue();
     var arrayControlNew = this.stockTranferForm.get('stkLines') as FormArray;
     var arrayControl = arrayControlNew.getRawValue();
-    
     for (let i=0;i<arrayControl.length;i++){
     if ( arrayControl[i].onhandQty<arrayControl[i].adstkQty){
       alert(arrayControl[i].adstksrNo+' '+arrayControl[i].itemName+' '+'You are enter more than On Hand Quantity.! please Confirm');
-      this.displayadstkCat[i]=false;
-    this.displayadstkItem[i]=false;
-    this.displayadstkQty[i]=false;
       return;
-      
     }
   }
     this.adminServiceService.stockTransSaveFn(JSON.stringify(jsonData)).subscribe((res: any) => {
@@ -417,13 +515,26 @@ export class StockTransferComponent {
         this.stockTranferForm.patchValue({stockTransNo:res.obj});
         alert(res.obj)
         this.shipmentNosearch(res.obj);
-        this.stockTranferForm.disable();
-        
+        this.isVisibleReceiptview=true;
       }
       else{
         alert(res.obj)
       }
    })
+   }
+
+
+   StockTransMadeView(){
+    var orderNumber = this.stockTranferForm.get('stockTransNo')?.value;
+    const fileName = 'download.pdf';
+    const EXT = fileName.substr(fileName.lastIndexOf('.') + 1);
+    this.adminServiceService.viewStkreciptviewFn(orderNumber)
+      .subscribe(data => {
+        var blob = new Blob([data], { type: 'application/pdf' });
+        var url = URL.createObjectURL(blob);
+        var printWindow = window.open(url, '', 'width=800,height=500');
+        // printWindow.open
+      })
    }
 
   }

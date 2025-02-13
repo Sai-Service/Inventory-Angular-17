@@ -11,6 +11,9 @@ import * as xlsx from 'xlsx';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ItTransService } from '../../it-transaction/it-trans.service';
 
+
+
+
 interface IEmplMaster {
   
   ouId: number;
@@ -118,6 +121,7 @@ export class EmployeeComponent {
   isVisibleSearchAllSsup:boolean=true;
   isVisibleSupAdminloc:boolean=true;
   isVisibleadminloc:boolean=true;
+  displayLocName:boolean=true;
 
 
   
@@ -239,7 +243,7 @@ export class EmployeeComponent {
 
       if(  sessionStorage.getItem('role')==='Admin') {
         // this.purchaseReportForm.patchValue({ ouId: sessionStorage.getItem('ouId') })
-        this.employeesMasterForm.patchValue({ locId: sessionStorage.getItem('locId') })
+        // this.employeesMasterForm.patchValue({ locId: sessionStorage.getItem('locId') })
     this.employeesMasterForm.patchValue({ ouId: sessionStorage.getItem('ouId') })
     this.employeesMasterForm.patchValue({ deptId: sessionStorage.getItem('deptId') });
     this.employeesMasterForm.patchValue({ tktNo: sessionStorage.getItem('tktNo') });
@@ -326,11 +330,12 @@ export class EmployeeComponent {
     this.displayButton = false;
     this.displayStatus = false;
     this.displaystartDate = false;
+    this.displayLocName=false;
     // this.employeesMasterForm.get('locId').disable();
     // this.employeesMasterForm.get('deptId').disable();
     this.employeesMasterForm.get('tktNo')?.disable();
     this.employeesMasterForm.get('desgId')?.disable();
-    this.employeesMasterForm.get('title')?.disable();
+    this.employeesMasterForm.get('divisionId')?.disable();
     this.employeesMasterForm.get('fname')?.disable();
     this.employeesMasterForm.get('mname')?.disable();
     this.employeesMasterForm.get('lname')?.disable();
@@ -344,13 +349,10 @@ export class EmployeeComponent {
         (data:any) => {
           if (data.code == 200) {
             this.employeesMasterForm.patchValue(data.obj);
-            // alert(data.obj.startDt)
             this.employeesMasterForm.patchValue({ startDt: this.pipe.transform(data.obj.startDt, 'yyyy-MM-dd') });
             console.log(this.locIdList);
             let SelectLocCode = this.locIdList.find((locCode: any) => locCode.locId = data.obj.locId)
             console.log(this.locIdList);
-            // let SelectdivCode = this.DivisionIDList.find((divCode: any) => divCode.divisionId = data.obj.divisionId)
-            // console.log(SelectdivCode);
             let selectDesignation = this.DesignationList.find((desCode: any) => desCode.codeDesc = data.obj.designation)
             console.log(selectDesignation + '------ +' + Number(selectDesignation.cmntypeId));
             this.employeesMasterForm.patchValue({ desgId: selectDesignation.cmntypeId })
@@ -365,12 +367,24 @@ export class EmployeeComponent {
   }
 
 
-  findByDesCode(event:any) {
-    var code = event.target.value;
-    var codedesc = code.substr(code.indexOf(':') + 1, code.length).trim(code);
-    // var codedesc = (codedesc1).trim();
-    let selectDesignation = this.DesignationList.find((desCode: any) => desCode.codeDesc = codedesc)
-    this.employeesMasterForm.patchValue({ desgId: selectDesignation.cmntypeId })
+  // findByDesCode(event:any) {
+  //   var code = event.target.value;
+  //   var codedesc1 = code.substr(code.indexOf(':') + 1, code.length).trim(code);
+  //   var codedesc = (codedesc1).trim();
+  //   let selectDesignation = this.DesignationList.find((desCode: any) => desCode.codeDesc = codedesc)
+  //   this.employeesMasterForm.patchValue({ desgId: selectDesignation.cmntypeId })
+  // }
+
+  
+  findByDesCode(event:any){
+    var codeDe = event.target.value;
+    var codeDesc = codeDe.substr(codeDe.indexOf(':') + 1, codeDe.length).trim();
+    var Designation = this.DesignationList.find((d:any) => d.codeDesc === codeDesc);
+    console.log(Designation);
+    var locId=Designation.cmntypeId;
+    // alert(locId)
+    this.employeesMasterForm.patchValue({desgId:Designation.cmntypeId});
+   
   }
 
 
@@ -556,14 +570,13 @@ export class EmployeeComponent {
 
 
 
-  updateMast() {
-
+  updateMast(){
     const formValue: IEmplMaster = this.employeesMasterForm.getRawValue();
     this.CheckDataValidations();
     if (this.checkValidation === true) {
-      let select = this.lstcomments.find(d => d.divisionName === this.divisionName);
-      console.log(select);
-     this.divisionId =select.divisionId;
+    //   let select = this.lstcomments.find(d => d.divisionName === this.divisionName);
+    //   console.log(select);
+    //  this.divisionId =select.divisionId;
 
       this.service.UpdateEmpMasterByTktNo(formValue, formValue.tktNo).subscribe((res: any) => {
         if (res.code === 200) {

@@ -73,6 +73,8 @@ interface IItemMaster {
   isTaxable: string;
   taxCategoryPur: number;
   taxCategorySale: number;
+  createdBy:string;
+  attribute1:string;
 }
 
 @Component({
@@ -115,6 +117,8 @@ export class ItemMasterComponent {
   userList1: any[] = [];
   lastkeydown1: number = 0;
   displayCosting = true;
+  createdBy:string;
+  attribute1:string;
 
   constructor(private fb: FormBuilder, private router: Router,private router1:ActivatedRoute,private service: AdminMasterService, private location: Location,
     private AdminMasterService:AdminMasterService) {
@@ -135,6 +139,8 @@ export class ItemMasterComponent {
       internalOrder:[],
       isTaxable:[],
       assetItem:[],
+      createdBy:[],
+      attribute1:[],
 
     })
   }
@@ -142,6 +148,8 @@ export class ItemMasterComponent {
   ngOnInit(): void {
     $("#wrapper").toggleClass("toggled");
     this.itemMasterForm.patchValue({status:'Active'});
+    this.itemMasterForm.patchValue({createdBy:sessionStorage.getItem('tktNo')});
+    this.itemMasterForm.patchValue({attribute1:sessionStorage.getItem('ouId')});
 
     this.service.AllreqItemCatagList()
     .subscribe(
@@ -192,7 +200,7 @@ export class ItemMasterComponent {
     this.itemMasterForm.get('costing')?.disable();
     this.itemMasterForm.get('internalOrder')?.disable();
     this.itemMasterForm.get('isTaxable')?.disable();
-    this.itemMasterForm.get('assetItem')?.disable();
+    // this.itemMasterForm.get('assetItem')?.disable();
   }
 
 
@@ -242,7 +250,7 @@ export class ItemMasterComponent {
 
    afterSearchDisable(){
     this.itemMasterForm.get('category')?.disable();
-    this.itemMasterForm.get('item')?.disable();
+    // this.itemMasterForm.get('item')?.disable();
     // this.itemMasterForm.get('category')?.disable();
     // this.itemMasterForm.get('category')?.disable();
    }

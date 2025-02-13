@@ -23,6 +23,10 @@ export class RequitionReportComponent {
   toDate: Date|null;
   locId: number|null;
   ouId: number |null;
+  locName:string;
+  locationId:number;
+  deptId:number;
+
   closeResetButton = true;
   dataDisplay: any;
   progress = 0;
@@ -30,6 +34,10 @@ export class RequitionReportComponent {
   public maxDate = new Date();
   pipe = new DatePipe('en-US');
   public now = new Date();
+  locIdList:any=[];
+  isVisibletoadmin:boolean;
+  isVisibletocmn:boolean;
+  isVisibleViewAdmin:boolean;
 
 
   constructor(private fb: FormBuilder, private router: Router, private service: AdminReportsService, private location1: Location, private router1: ActivatedRoute, ) {
@@ -38,12 +46,41 @@ export class RequitionReportComponent {
       toDate: [],
       locId: [],
       ouId: [],
+      locName:[],
+      locationId:[],
+  deptId:[],
 
     })
 
    }
 
   ngOnInit(): void {
+
+    
+if( sessionStorage.getItem('role') ==='Admin')  {
+
+  this.isVisibletoadmin=true;
+  this.isVisibleViewAdmin=true;
+  this.isVisibletocmn=true;
+ 
+  }
+  if(sessionStorage.getItem('role')  ==='User')  
+  {
+  this.isVisibletoadmin=false;
+  this.isVisibleViewAdmin=false;
+  this.isVisibletocmn=false;
+ 
+  }
+
+  this.service.TolocationIdList(sessionStorage.getItem('ouId') )
+  .subscribe((data:any) => {
+    this.locIdList = data.obj;
+    let locCodeList = this.locIdList.filter((locId:any) => (locId.locId))
+    console.log(locCodeList);
+    this.locIdList=locCodeList;
+    })
+
+
 
   }
   get f() { return this.AdminReqReportForm.controls; }
@@ -58,7 +95,7 @@ export class RequitionReportComponent {
     this.location1.back();
   }
 
-  reportDetails() {
+  reportDetailsAdmin() {
 
     this.closeResetButton = false;
     this.progress = 0;
@@ -67,10 +104,14 @@ export class RequitionReportComponent {
     var fromDate = this.pipe.transform(pucDt1, 'dd-MMM-yyyy');
     var pucDt2 = this.AdminReqReportForm.get('toDate')?.value;
     var toDate = this.pipe.transform(pucDt2, 'dd-MMM-yyyy');
+    var ouId = sessionStorage.getItem('ouId');
+    var cmntypeId=this.AdminReqReportForm.get('deptId')?.value;   
+    var locId = this.AdminReqReportForm.get('locationId')?.value;
+    if (locId === null) { ouId = sessionStorage.getItem('ouId'); locId=''}
+    if (cmntypeId === null) { cmntypeId = '' }
     const fileName = 'ADMIN REQUSISION REPORT OF-' + fromDate + '-TO-' + toDate + '.xlsx';
-
     const EXT = fileName.substr(fileName.lastIndexOf('.') + 1);
-    this.service.AdminRequsitionReport(sessionStorage.getItem('ouId'),fromDate, toDate)
+    this.service.AdminRequsitionReport(ouId,fromDate,toDate,locId,cmntypeId)
       .subscribe(data => {
         saveAs(new Blob([data]), fileName);
         this.closeResetButton = true;
@@ -78,4 +119,45 @@ export class RequitionReportComponent {
       })
   }
 
+
+
+
+  reportDetailsuser() {
+
+    this.closeResetButton = false;
+    this.progress = 0;
+    this.dataDisplay = 'Report Is Running....Do not refresh the Page';
+    var pucDt1 = this.AdminReqReportForm.get('fromDate')?.value;
+    var fromDate = this.pipe.transform(pucDt1, 'dd-MMM-yyyy');
+    var pucDt2 = this.AdminReqReportForm.get('toDate')?.value;
+    var toDate = this.pipe.transform(pucDt2, 'dd-MMM-yyyy');
+    var ouId = sessionStorage.getItem('ouId');
+   var cmntypeId =sessionStorage.getItem('deptId')
+   var locId = sessionStorage.getItem('locId')
+    if (locId === null) { ouId = sessionStorage.getItem('ouId'); locId=''}
+    if (cmntypeId === null) { cmntypeId = '' }
+    const fileName = 'ADMIN REQUSISION REPORT OF-' + fromDate + '-TO-' + toDate + '.xlsx';
+    const EXT = fileName.substr(fileName.lastIndexOf('.') + 1);
+    this.service.AdminRequsitionReport(ouId,fromDate,toDate,locId,cmntypeId)
+      .subscribe(data => {
+        saveAs(new Blob([data]), fileName);
+        this.closeResetButton = true;
+        this.dataDisplay = 'Report Generated Successfully...'
+      })
+  }
+
+
+
+  onlocationissueselect(event:any){
+    var locName = event.target.value;
+    // debugger;
+    // alert('-------'+locName+'--------');
+    console.log( this.locIdList);
+    var locNameList = this.locIdList.find((d:any) => d.locName === locName)
+    console.log(locNameList);
+    var locaId=locNameList.locId;
+    // alert(locaId)
+    this.AdminReqReportForm.patchValue({locationId:locNameList.locId});
+   
+    }
 }

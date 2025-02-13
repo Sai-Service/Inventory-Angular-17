@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { ReactiveFormsModule ,FormsModule} from '@angular/forms';
 import { StocktransferReportComponent } from './stocktransfer-report.component';
 
 describe('StocktransferReportComponent', () => {
@@ -8,7 +8,8 @@ describe('StocktransferReportComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [StocktransferReportComponent]
+      declarations: [StocktransferReportComponent],
+      imports: [ReactiveFormsModule,FormsModule],
     })
     .compileComponents();
     

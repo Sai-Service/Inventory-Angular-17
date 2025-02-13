@@ -10,7 +10,7 @@
         </legend>
         <table class="center" style="width: 30%;">
             <tr>
-                <td style="width: 15%" class="LabelFontStyle1">Find&nbsp;With&nbsp;Item&nbsp;Code: </td>
+                <td style="width:10%" class="LabelFontStyle1">Find&nbsp;With&nbsp;Item&nbsp;Code: </td>
                 <td style="background-color: #ffffff;">
                     <input class="form-control" formControlName="itemCode" value={{itemCode}} [(ngModel)]='itemCode'> 
                    
@@ -28,28 +28,35 @@
             TRANSFER DETAILS </legend>
         <table class="center">
             <tr>
+                <td style="width: 15%"  class="LabelFontStyle">Transfer&nbsp;Id&nbsp;: </td>
+                <td> <input type='text' readonly formControlName="transferId" class="form-control"></td>
+
                 <td style="width: 15%" class="LabelFontStyle1"> From&nbsp;City&nbsp;: </td>
                 <td> <input type='text' formControlName="oldcity" class="form-control"></td>
                 <td style="width: 15%" class="LabelFontStyle1">From&nbsp;Company&nbsp;: </td>
-                <td> <input type='text'  uppercase formControlName="oldcomp" class="form-control"></td>
-                <td style="width: 15%" class="LabelFontStyle1">&nbsp;From&nbsp;Division: </td>
-                <td> <input type='text'  uppercase formControlName="olddiv" class="form-control"></td>
+                <td> <input type='text'   formControlName="oldcomp" class="form-control"></td>
             </tr>
             <tr>
+                <td style="width: 15%" class="LabelFontStyle1">&nbsp;From&nbsp;Division: </td>
+                <td> <input type='text'   formControlName="olddiv" class="form-control"></td>
+            
                 <td style="width: 15%" class="LabelFontStyle1">&nbsp;From&nbsp;Location: </td>
 
-                <td> <input type='text' uppercase formControlName="oldloc" class="form-control"></td>
+                <td> <input type='text'  formControlName="oldloc" class="form-control"></td>
 
 
                 <td style="width: 15%" class="LabelFontStyle1"> Old&nbsp;Department&nbsp;: </td>
                 <td> <input type='text'  formControlName="olddept" class="form-control"></td>
-                <td style="width: 15%" class="LabelFontStyle1">Old&nbsp;User&nbsp;Name: </td>
 
-                <td> <input type='text'  uppercase formControlName="olduserName" class="form-control"></td>
             </tr>
 
 
             <tr>
+
+                <td style="width: 15%" class="LabelFontStyle1">Old&nbsp;User&nbsp;Name: </td>
+
+                <td> <input type='text'  uppercase formControlName="olduserName" class="form-control"></td>
+            
 
                 <td style="width: 15%" class="LabelFontStyle1">Old&nbsp;User&nbsp;Ticket&nbsp;No: </td>
                 <td> <input type='text'  uppercase formControlName="oldusertktNo" class="form-control"></td>
@@ -135,9 +142,16 @@
             </tr><br>
             <tr>
                 <td style="width: 15%" class="LabelFontStyle"> &nbsp;Remark&nbsp;: </td>
-                <!-- <td colspan="5" rowspan="10px"> <input uppercase type='text' formControlName="remarks" class="form-control" style="width: 100%;" ></td> -->
                 <td colspan="5">
                     <textarea id="trnsRemarks" formControlName="trnsRemarks" rows="2"
+                        style="width: 100%;resize: none; font-size: small;"></textarea>
+                </td>
+
+            </tr>
+            <tr>
+                <td style="width: 15%" class="LabelFontStyle"> Condition&nbsp;Of&nbsp;Asset: </td>
+                <td colspan="5">
+                    <textarea id="assetCondition" formControlName="assetCondition" rows="2"
                         style="width: 100%;resize: none; font-size: small;"></textarea>
                 </td>
 
@@ -154,14 +168,16 @@
 
                 </td>
                 <td style="width: 15%" class="LabelFontStyle">Transfer&nbsp;&nbsp;Date: </td>
-                <td> <input type='date' uppercase formControlName="transferDate" class="form-control"
+                <td> <input type='date' uppercase formControlName="transferDate" max="{{maxDate | date:'yyyy-MM-dd'}}" min="{{minDate | date:'yyyy-MM-dd'}}" class="form-control"
                         style="background-color:   rgb(251, 255, 4);"></td>
             </tr>
 
             <tr>
-                <td> <input hidden type='text' uppercase formControlName="createdBy"  class="form-control"    ></td>
-        <td> <input hidden type='text' uppercase formControlName="lastupdatedBy"  class="form-control"    ></td>
-              </tr>
+        <td> <input hidden type='text' uppercase formControlName="createdBy"  class="form-control" ></td>
+        <td> <input hidden type='text' uppercase formControlName="lastupdatedBy"  class="form-control" ></td>
+        <td> <input hidden type='text' uppercase formControlName="division"  class="form-control" ></td>
+        <td> <input hidden type='text' uppercase formControlName="dept"  class="form-control" ></td>
+        </tr>
               
         </table>
     </fieldset><br>
@@ -174,13 +190,12 @@
                 <ng-template #thenBlock1>
 
                     <td>
-                         <!-- <button type="submit" class="btn btn-info" id="register" (click)="resetMast()">Reset</button> -->
-                  
+                        
                          <button type="submit" class="btn btn-primary" id="resetMastBtn" data-toggle="modal" style="width: fit-content;"
                          data-target="#confirmAlert" (click)="getMessage('resetMast')">Reset</button>
                     </td>
                     <td> 
-                        <!-- <button type="submit" class="btn btn-info" id="register" (click)="closeMast()">Close</button> -->
+                        
                         <button type="submit" class="btn btn-primary" id="closeMastBtn" data-toggle="modal" style="width: fit-content;"
                         data-target="#confirmAlert" (click)="getMessage('closeMast')">Close</button>
                     </td>
@@ -188,14 +203,13 @@
                 </ng-template>
                 <ng-template #elseBlock1>
                     <td> 
-                        <!-- <button type="submit" class="btn btn-info" id="register" style="width: 100px;"
-                            (click)="newMast()">Asset Transfer</button> -->
+                        
                             <button type="submit" class="btn btn-primary" id="newMastBtn" data-toggle="modal" style="width: fit-content;"
                             data-target="#confirmAlert" (click)="getMessage('newMast')">Asset Transfer</button>
                     </td>
 
                     <td>
-                        <!-- <button type="submit" class="btn btn-info" id="register" (click)="resetMast()">Reset</button> -->
+                    
                  
                         <button type="submit" class="btn btn-primary" id="resetMastBtn" data-toggle="modal" style="width: fit-content;"
                         data-target="#confirmAlert" (click)="getMessage('resetMast')">Reset</button>
@@ -211,6 +225,50 @@
             </tr>
         </table>
     </fieldset>
+
+    <fieldset class="RFS">
+        <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px;color: black;font-weight: bold;"> Asset
+            Tnasfer Print</legend>
+        <table class="center">
+            <tr>
+                <td style="width: 15%" class="LabelFontStyle1">Transfer&nbsp;date&nbsp;: </td>
+                 <td><input type="date" class="form-control" formControlName="TrnsDate"
+                max="{{minDate | date:'yyyy-MM-dd'}}"></td>
+                 
+                <td style="width: 15%" class="LabelFontStyle1">&nbsp;From&nbsp;Location&nbsp;: </td>
+                <td>
+                    <!-- <select  type='number' formControlName="newlocId" id="newlocId" class="form-control" style="background-color: yellow;" > -->
+                    <select formControlName="oldlocId" id="oldlocId" class="form-control"
+                        style="background-color: yellow;">
+                        <option *ngFor="let subType of getAllOuLocationIdFn" [ngValue]="subType.locId">
+                            {{subType.locId}}-{{subType.locName}}
+                        </option>
+                    </select>
+                </td>
+
+                <td style="width: 15%" class="LabelFontStyle1">&nbsp;To&nbsp;Location&nbsp;: </td>
+                <td>
+                    <!-- <select  type='number' formControlName="newlocId" id="newlocId" class="form-control" style="background-color: yellow;" > -->
+                    <select formControlName="newLocId" id="newLocId" class="form-control"
+                        style="background-color: yellow;">
+                        <option *ngFor="let subType of getAllOuLocationIdFn" [ngValue]="subType.locId">
+                            {{subType.locId}}-{{subType.locName}}
+                        </option>
+                    </select>
+                </td>
+
+                <td>
+                    <button class="btn-primary" style="width: 100px; background-color: green;"
+                        (click)="TnasferPrint()">GENRATE PRINT</button>
+                </td>
+
+
+            </tr>
+        </table>
+    </fieldset>
+
+
+
     <BR>
 
 </form>

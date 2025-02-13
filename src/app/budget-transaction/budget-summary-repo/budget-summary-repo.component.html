@@ -1,0 +1,161 @@
+<form [formGroup]="budgetsummryForm" (ngSubmit)="BudgetSumForm(budgetsummryForm.value)">
+    <div class="center">
+        <table style="width: 100%;background-color: white;">
+            <tr>
+                <td class="PageHeader">
+                    &nbsp;Budget&nbsp;Summary&nbsp;Report&nbsp;
+                </td>
+            </tr>
+        </table>
+    </div>
+    <table class="center">
+        <tr>
+            <div *ngIf="closeResetButton; then hList1; else hList2"></div>
+            <ng-template #hList2>
+                <div class="d-flex justify-content-center">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="sr-only" id="loading"></span>
+                    </div>
+                </div>
+            </ng-template>
+            <ng-template #hList1> </ng-template>
+            <td class="LabelFontStyle" style="color: blue;width: fit-content;" colspan="4">
+                &nbsp;{{dataDisplay}}&nbsp; </td>
+        </tr>
+    </table>
+
+    <fieldset class="RFS">
+        <table class="center">
+            <tr>
+                <!-- <td style="width: 15%" class="LabelFontStyle">
+                    CITY&nbsp;:&nbsp;
+                  </td>
+                  <td>
+                      <input readonly type="text" class="form-control" formControlName="cityName">  
+                  </td>
+                  <input  hidden type="text" class="form-control" formControlName="cityId"> -->
+                <!--------------------------------------------------------------------------------------------------------------->
+
+                <div *ngIf="isVisibleLocList; then thenLocList; else elseLocList"></div>
+                        <ng-template #thenLocList>
+                        <td style="width: 15%" class="LabelFontStyle">&nbsp;City&nbsp;&nbsp;: </td>
+                       <td>
+                    <select type='number' formControlName="cityId" id="cityId" class="form-control"
+                        (change)="onSelectOuCity($event)" >
+                        <!-- <option></option> -->
+                        <option *ngFor="let sc of  AlllocationitemList" [ngValue]="sc.ouId">
+                            {{sc.ouName}}
+                        </option>
+                    </select>
+                </td>
+                <td style="width: 15%" class="LabelFontStyle">&nbsp;Location&nbsp;&nbsp;: </td>
+                <td>
+                    <!-- <select  type='number' formControlName="newlocId" id="newlocId" class="form-control" style="background-color: yellow;" > -->
+                    <select formControlName="locName" id="locName" class="form-control"
+                        >
+                        <option *ngFor="let subType of getAllOuLocationIdFn" [ngValue]="subType.locName">
+                            {{subType.locId}}-{{subType.locName}}
+                        </option>
+                    </select>
+                </td>
+                </ng-template>
+                <ng-template #elseLocList>
+                    <td style="width: 15%" class="LabelFontStyle">
+                        CITY&nbsp;:&nbsp;
+                      </td>
+                      <td>
+                          <input readonly type="text" class="form-control" formControlName="cityName">  
+                      </td>
+
+                      <td style="width: 15%" class="LabelFontStyle">
+                        Location&nbsp;:&nbsp;
+                      </td>
+                      <td>
+                        
+                         <select id="locName" class="form-control" formControlName="locName" (change)="onlocationissueselect($event)"  #myinput>
+                              <option>--Select--</option>
+                              <option *ngFor="let sc of  locIdList" [value]="sc.locName" >
+                                  {{sc.locName}}
+                              </option>
+                          </select>    
+                      </td>
+                      <input type="number" hidden formControlName="locationId"class="form-control" >
+                      <input readonly hidden type="text" class="form-control" formControlName="locName" >
+    
+                </ng-template>
+<!--------------------------------------------------------------------------------------------------------------------------------------------->
+                  <td style="width: 15%" class="LabelFontStyle1">
+                    Financial&nbsp;Year:&nbsp;
+                  </td>
+                <td>
+                    <div *ngIf="isVisibleFynlyerList; then thenfyList; else elsefyList"></div>
+                    <ng-template #thenfyList>
+                     <select id="finYear" class="form-control" formControlName="finYear" (change)="onselectFainacialyear($event)" style="background-color: yellow;"  #myinput>
+                          <option>--Select--</option>
+                          <option *ngFor="let sc of  FainancialyearList" [value]="sc.codeDesc" >
+                              {{sc.codeDesc}}
+                          </option>
+                      </select>
+                    </ng-template>
+                    <ng-template #elsefyList>
+                        <input readonly  type="text" class="form-control" formControlName="finYear" >
+                    </ng-template>
+                  </td>
+                  <input type="number" hidden  formControlName="finyearId"class="form-control" >
+
+                  <!-- <td style="width: 15%" class="LabelFontStyle">
+                    Location&nbsp;:&nbsp;
+                  </td>
+                  <td>
+                    <div *ngIf="isVisibleLocList; then thenLocList; else elseLocList"></div>
+                    <ng-template #thenLocList>
+                     <select id="locName" class="form-control" formControlName="locName" (change)="onlocationissueselect($event)"  #myinput>
+                          <option>--Select--</option>
+                          <option *ngFor="let sc of  locIdList" [value]="sc.locName" >
+                              {{sc.locName}}
+                          </option>
+                      </select>
+                    </ng-template>
+                    <ng-template #elseLocList>
+                        <input readonly  type="text" class="form-control" formControlName="locName" >
+                    </ng-template>
+                  </td>
+                  <input type="number" hidden formControlName="locationId"class="form-control" > -->
+
+
+
+
+            </tr>
+        </table>
+    </fieldset>
+    
+    <fieldset class="RFS">
+        <table class="center">
+            <tr>
+                <td>
+                    <div *ngIf="isVisibleSuperRepo; then thenSuper; else elseadmin"></div>
+                    <ng-template #thenSuper>
+                    <button class="btn-primary" style="width: 100px; background-color: green;"
+                        (click)="reportDetailsSuper()">View Report</button>
+                    </ng-template>
+                    <ng-template  #elseadmin>
+                        <button class="btn-primary" style="width: 100px; background-color: green;"
+                        (click)="reportDetails()">View Report</button>
+                    </ng-template>
+                </td>
+                
+                <td>
+                    <button type="submit" class="btn btn-primary" id="register" (click)="refresh()"
+                        style="width:90PX">
+                        Clear
+                    </button>
+                </td>
+                <td>
+                    <button type="submit" (click)="close()" class="btn btn-primary"
+                        style="width:90PX">Close</button>
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+  
+</form>

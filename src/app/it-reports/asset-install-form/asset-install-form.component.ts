@@ -92,6 +92,7 @@ export class AssetInstallFormComponent {
   progress = 0;
   private sub: any;
   itemcodeAknFN:any;
+  allAssetsearch:any[];
   public AllcomapanyName: Array<string> = [];
   pipe = new DatePipe('en-US');
 
@@ -262,6 +263,28 @@ export class AssetInstallFormComponent {
         this.dataDisplay = ''
        
       })
+  }
+
+  searchMast(){
+    this.reportService.allAssetInsttList(sessionStorage.getItem('ouId'))
+        .subscribe(
+          data => {
+            this.allAssetsearch = data.obj;
+            console.log(this.allAssetsearch);
+          }
+        );
+  }
+
+  openDocument(docId: any) {
+    // var headerId = this.AcknowledgementForm.get('headerId')?.value;
+    const fileName = 'download.pdf';
+    this.service.AssetinstallationView(docId)
+      .subscribe(data => {
+        var blob = new Blob([data], { type: 'application/pdf' });
+        var url = URL.createObjectURL(blob);
+        var printWindow = window.open(url, '', 'width=800,height=500');
+
+      });
   }
 
 }

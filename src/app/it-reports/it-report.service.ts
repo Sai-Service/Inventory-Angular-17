@@ -26,7 +26,30 @@ export class ItReportService {
       headers: this.headers,
     });
   }
+
+  AssetHistoryForm(itemcode:any){
+    const REQUEST_URI = this.ServerUrl +`/ItemInvReports/AssetHistory?itemcode=${itemcode}`;
+    return this.http.get(REQUEST_URI, {
+      responseType: 'arraybuffer',
+      headers: this.headers,
+    });
+  }
+
+
+  AssetinstallationView(itemcode:any){
+    const REQUEST_URI = this.ServerUrl +`/ItemInvReports/print?itemCode=${itemcode}`;
+    return this.http.get(REQUEST_URI, {
+      responseType: 'arraybuffer',
+      headers: this.headers,
+    });
+  }
   
+  allAssetInsttList(ouID:any): Observable<any> {
+    return this.http.get(this.ServerUrl + `/AssetInstall/AssetInstallList?city=${ouID}`);
+  }
+  
+
+
   itemcodeAknFN(City:any,itemCode:any): Observable<any> {
     return this.http.get(this.ServerUrl + `/ItemMst/itc?city=${City}&itemCode=${itemCode}`);
   }
@@ -121,6 +144,9 @@ getAccLocationSearch(ouId:any): Observable<any> {
   return this.http.get(this.ServerUrl + `/locationMst/loc/${ouId}`);
 }
 
+getBatchNameSearch(locId:any,btcsts:any): Observable<any> {
+  return this.http.get(this.ServerUrl + `/faBatch/batchName?locId=${locId}&batchStatus=${btcsts}`);
+}
 
 getAccDepartmentSearch(): Observable<any> {
   return this.http.get(this.ServerUrl + '/CodeMst/dept/DEPT');
@@ -157,4 +183,89 @@ AssetScrapReport(fromDate:any,toDate:any,ouId:any){
 }
 
 
+GatePassSummuryReport(fromDate:any,toDate:any,ouId:any){
+  const REQUEST_URI = this.ServerUrl +`/ItemInvReports/GatePassNewReport?fromDate=${fromDate}&toDate=${toDate}&gpouId=${ouId}`;
+  return this.http.get(REQUEST_URI, {
+    responseType: 'arraybuffer',
+    headers: this.headers,
+    
+  });
+}
+
+
+
+FACsvaccUpoadDocument(formData:any,file:any,createdBY:any ) {
+  formData.append('file', file);
+  // formData.append('headerId',headerId)
+  const REQUEST_URI = this.ServerUrl + `/AccountAsset/UploadAsset?createdBy=${createdBY}`;
+  return this.http.post(REQUEST_URI, formData);
+}
+
+
+FACsvaccassetUpoadDocument(formData:any ,file:any,createdBY:any ) {
+  formData.append('file', file);
+  // formData.append('headerId',headerId)
+  const REQUEST_URI = this.ServerUrl + `/AccountAsset/UploadFA?createdBy=${createdBY}`;
+  return this.http.post(REQUEST_URI, formData);
+}
+
+FAssetBatchWiseReport(locId:any, btchsts:any,batchName:any){
+  const REQUEST_URI = this.ServerUrl +`/ItemInvReports/FaAssetReport?batchName=${batchName}&erplocId=${locId}&batchStatus=${btchsts}`;
+  return this.http.get(REQUEST_URI, {
+    // params: REQUEST_PARAMS,
+    responseType: 'arraybuffer',
+    headers: this.headers,
+  });
+}
+
+FAssetCommonReport(login:any){
+  const REQUEST_URI = this.ServerUrl +`/ItemInvReports/FaAssetNoCommon?createdBy=${login}`;
+  return this.http.get(REQUEST_URI, {
+    // params: REQUEST_PARAMS,
+    responseType: 'arraybuffer',
+    headers: this.headers,
+  });
+}
+
+
+//////Documnets
+
+viewDocumentFn(): Observable<any> {
+  return this.http.get(this.ServerUrl + `/ITForms/AllPdf`);
+}
+
+openDocumentFn(itId:any) {
+  const REQUEST_URI = this.ServerUrl + `/ITForms/downloadfile?itId=${itId}`;
+  return this.http.get(REQUEST_URI, {
+    responseType: 'arraybuffer',
+    headers: this.headers,
+  });
+}
+
+
+UpoadDocument1(formData: FormData ,file:any,docName:any,) {
+  formData.append('file', file);
+  const REQUEST_URI = this.ServerUrl + `/ITForms/UploadIdForm?createdBy=${docName}`;
+  return this.http.post(REQUEST_URI, formData);
+}
+
+
+PMInvReport(ouId:any,locId:any,Dept:any){
+ 
+  const REQUEST_URI = this.ServerUrl +`/ItemInvReports/PMReport?city=${ouId}&location=${locId}&dept=${Dept}`;
+  return this.http.get(REQUEST_URI, {
+    responseType: 'arraybuffer',
+    headers: this.headers,
+  });
+}
+
+
+PMInvExcelReport(ouId:any,locId:any,Dept:any){
+ 
+  const REQUEST_URI = this.ServerUrl +`/ItemInvReports/PMReportNew?city=${ouId}&location=${locId}&dept=${Dept}`;
+  return this.http.get(REQUEST_URI, {
+    responseType: 'arraybuffer',
+    headers: this.headers,
+  });
+}
 }

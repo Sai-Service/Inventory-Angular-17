@@ -98,6 +98,8 @@
                                 <textarea id="remarks" formControlName="remarks" rows="2"
                                     style="width: 100%;resize: none; font-size: small;"></textarea>
                             </td>
+                <input hidden formControlName="newdeptId" class="form-control">
+                <input hidden formControlName="olddept" class="form-control">
                 <input hidden formControlName="olddiv" class="form-control">
                 <input hidden formControlName="oldlocId" class="form-control">
                 <input hidden formControlName="oldusertktNo" class="form-control">
@@ -141,6 +143,50 @@
             </tr>
         </table>
     </fieldset>
+
+    <fieldset class="RFS">
+        <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px;color: black;font-weight: bold;"> Asset
+            Recived Print</legend>
+        <table class="center">
+            <tr>
+                <td style="width: 15%" class="LabelFontStyle1">Recived&nbsp;date&nbsp;: </td>
+                 <td><input type="date" class="form-control" formControlName="ReceivedDate"
+                max="{{minDate | date:'yyyy-MM-dd'}}"></td>
+
+
+                <td style="width: 15%" class="LabelFontStyle1">&nbsp;From&nbsp;Location&nbsp;: </td>
+                <td>
+                    <!-- <select  type='number' formControlName="newlocId" id="newlocId" class="form-control" style="background-color: yellow;" > -->
+                    <select formControlName="oldlocId" id="oldlocId" class="form-control"
+                        style="background-color: yellow;">
+                        <option *ngFor="let subType of getAllOuLocationIdFn" [ngValue]="subType.locId">
+                            {{subType.locId}}-{{subType.locName}}
+                        </option>
+                    </select>
+                </td>
+
+
+                <td style="width: 15%" class="LabelFontStyle1">&nbsp;To&nbsp;Location&nbsp;: </td>
+                <td>
+                    <!-- <select  type='number' formControlName="newlocId" id="newlocId" class="form-control" style="background-color: yellow;" > -->
+                    <select formControlName="newLocId" id="newLocId" class="form-control"
+                        style="background-color: yellow;">
+                        <option *ngFor="let subType of getAllOuLocationIdFn" [ngValue]="subType.locId">
+                            {{subType.locId}}-{{subType.locName}}
+                        </option>
+                    </select>
+                </td>
+
+                <td>
+                    <button class="btn-primary" style="width: 100px; background-color: green;"
+                        (click)="RecivedPrint()">GENRATE PRINT</button>
+                </td>
+
+
+            </tr>
+        </table>
+    </fieldset>
+
     <BR>
     <div class="grid_scroll">
         <table class="GridFont" cellspacing="0" cellpadding="15"
@@ -161,13 +207,13 @@
             <tbody>
                 <tr *ngFor="let com of allRecivedsearch" class="ItemStyle" style="text-decoration:none;">
                     <td style="border: 1px solid black;padding-left: 15px;">{{com.transferId}}</td>
-                    <td style="border: 1px solid black;padding-left: 15px;">{{com.transferDate | date:'dd-MM-yyyy hh:mm:ss'}}</td>
+                    <td style="border: 1px solid black;padding-left: 15px;">{{com.transferDate | date:'dd-MM-yyyy'}}</td>
                     <td style="border: 1px solid black;padding-left: 15px;">{{com.itemCode}}</td>
                     <td style="border: 1px solid black;padding-left: 15px;">{{com.oldloc}}</td>
                     <td style="border: 1px solid black;padding-left: 15px;width:180px;">{{com.transferBy}}</td>
                     <td style="border: 1px solid black;padding-left: 15px;">{{com.status}}</td>
                     <td style="border: 1px solid black;padding-left: 15px;">{{com.receivedBy}}</td>
-                    <td style="border: 1px solid black;padding-left: 15px;">com.receivedDate </td>
+                    <td style="border: 1px solid black;padding-left: 15px;">{{com.receivedDate | date:'dd-MM-yyyy'}}</td>
                     <td style="border: 1px solid black;padding-left: 15px;">{{com.getpassNo}}</td>
                
             </tbody>

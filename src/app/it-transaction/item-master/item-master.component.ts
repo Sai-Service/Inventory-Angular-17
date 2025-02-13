@@ -101,7 +101,7 @@ interface ItrnsitemMaster {
   startDate: Date;
   endDate: string;
   subtypeName: string;
-  // attribute1:number;
+  attribute3:string;
   cmntypeId: Number;
   prodName: string;
   status: string;
@@ -129,7 +129,7 @@ interface ItrnsitemMaster {
   fanoYN:string;
   mtmNo:string;
   avlicKeyYN:string;
-
+  attribute5:string;
 
 
   (startDate: DatePipe, todaysDataTime: DatePipe): DatePipe;
@@ -236,7 +236,7 @@ export class ItemMasterComponent {
   allitemMasterList: any[];
   prodName: string;
   cmntypeId: Number;
-
+  attribute5:string;
   bajjajRyn: string;
   erpYn: string;
   dmsYn: string;
@@ -246,10 +246,7 @@ export class ItemMasterComponent {
     { itemId: 36, startDate: '2023-09-2008:44:54' },
   ];
   todaysDataTime: any[] = [];
-
   todayData: any[] = [];
-  
-
   generalValue: string;
   loginArray: string | null;
   loginArray1: string | null;
@@ -258,7 +255,7 @@ export class ItemMasterComponent {
   private sub: any;
   // role:string;
   avlicKeyYN:string;
-
+  attribute3:string;
   // oldDate:Date;
   onSelectItemTypeFnList: any=[];
 
@@ -314,6 +311,9 @@ export class ItemMasterComponent {
   showAVLiceKeyDetails=false;
 
   displayMonitor = true;
+  displaypurchasedate=false;
+  displayvendoraname=false;
+  displaywarrantydate=false;
 
   displayEndDate = false;
   displaystartDate = true;
@@ -430,6 +430,8 @@ export class ItemMasterComponent {
       itemform: [],
       generalValue: [],
       ipAddressD:[],
+      attribute3:[],
+      attribute5:[],
 
     })
 
@@ -438,7 +440,6 @@ export class ItemMasterComponent {
   }
 
   itemcodeFindFN(itemCode:any) {
-   
     this.closeResetButton = false;
     this.progress = 0;
     this.dataDisplay = 'Data Searching in progress....Do not refresh the Page';
@@ -447,9 +448,18 @@ export class ItemMasterComponent {
     this.displayButton3 = false;
     this.displayButton4 = false;
     this.displaystartDate = false;
-    this.itemMasterForm.get('itemCode')?.disable();
-    this.itemMasterForm.get('itemId')?.disable();
-    this.itemMasterForm.get('division')?.disable();
+    this.itemMasterForm.patchValue({attribute5: sessionStorage.getItem('loginName') });
+    // var updatedBy =this.itemMasterForm.patchValue({ attribute5:sessionStorage.getItem('loginName') });
+    // this.itemMasterForm.get('itemCode')?.disable();
+    // this.itemMasterForm.get('itemId')?.disable();
+    // this.itemMasterForm.get('division')?.disable();
+    // this.itemMasterForm.get('legalEntity')?.disable();
+    // this.itemMasterForm.get('location')?.disable();
+   
+    // this.itemMasterForm.get('userName')?.disable();
+    // this.itemMasterForm.get('userDesigntn')?.disable();
+    // this.itemMasterForm.get('usercontactNo')?.disable();
+    // this.itemMasterForm.get('emailId')?.disable();
     // this.isVisibleitemMbuton=false;
     var itemType = this.itemMasterForm.get('typeList')?.value;
     if (itemType == 'ItemCode') {
@@ -462,13 +472,17 @@ export class ItemMasterComponent {
             this.closeResetButton = false;
             this.progress = 0;
             // this.dataDisplay = data.message;
+            
             return;
           }
           if (data.code === 200) {
             this.closeResetButton = true;
-    this.progress = 0;
-    // this.dataDisplay = data.message;
-    this.dataDisplay ='Data Display Sucessfully....';
+             this.progress = 0;
+             this.itemMasterForm.get('itemCode')?.disable();
+            this.itemMasterForm.get('itemId')?.disable();
+            this.itemMasterForm.get('division')?.disable();
+            // this.itemMasterForm.patchValue({ lastUpdatedBy:sessionStorage.getItem('loginName') });
+            this.dataDisplay ='Data Display Sucessfully....';
             this.itemMasterForm.patchValue(data.obj);
             this.showFADetails = true;
             this.showIPDetails=true;
@@ -486,6 +500,12 @@ export class ItemMasterComponent {
             if (data.obj.faNo != null || data.obj.faNo != undefined || data.obj.faNo != ''){
               this.itemMasterForm.patchValue({ fanoYN:'GENRATE'})
             }
+            //  if (data.obj.status == 'Alloted'){
+            //     this.isVisibleupdateBIM=true;
+            //   }
+            //   if (data.obj.status = 'Active'){
+            //     this.isVisibleupdateBIM=false;
+            //   }
             
             this.service.onSelectItemTypeFn(data.obj.itemTypeId)
               .subscribe(
@@ -500,10 +520,75 @@ export class ItemMasterComponent {
               else{
                 this.displayMonitor=false;
               }
+             
           }
+          this.itemMasterForm.patchValue({attribute5: sessionStorage.getItem('loginName') });
+          this.itemMasterForm.patchValue({ lastUpdatedBy:sessionStorage.getItem('loginName') });
     }
     )
     }
+////////////////////////////////////////////////////////////////////
+// if (itemType == 'ItemCode') {
+//   this.service.AllotteditemcodeFindFN(sessionStorage.getItem('city'),itemCode)
+//     .subscribe( 
+//       data => {
+        
+//         if (data.code === 400) {
+//         alert("This Item Code Not Found/This Asset Allready Discarded !!!");
+//         this.closeResetButton = false;
+//         this.progress = 0;
+//         // this.dataDisplay = data.message;
+//         return;
+//       }
+//       if (data.code === 200) {
+//         this.closeResetButton = true;
+// this.progress = 0;
+// // this.dataDisplay = data.message;
+// this.dataDisplay ='Data Display Sucessfully....';
+//         this.itemMasterForm.patchValue(data.obj);
+//         this.showFADetails = true;
+//         this.showIPDetails=true;
+//         this.showAVLiceKeyDetails=true;
+//         this.itemMasterForm.patchValue({ startDt: this.pipe.transform(data.obj.startDt, 'yyyy-MM-dd') });
+//         this.itemMasterForm.patchValue({ purchaseDt: this.pipe.transform(data.obj.purchaseDt, 'yyyy-MM-dd') });
+//         this.itemMasterForm.patchValue({ warrntyDt: this.pipe.transform(data.obj.warrntyDt, 'yyyy-MM-dd') });
+//         this.itemMasterForm.patchValue({ weDt: this.pipe.transform(data.obj.weDt, 'yyyy-MM-dd') });
+//         this.itemMasterForm.patchValue({ avexpDate: this.pipe.transform(data.obj.avexpDate, 'yyyy-MM-dd') });
+//         this.itemMasterForm.patchValue({ discardDt: this.pipe.transform(data.obj.discardDt, 'yyyy-MM-dd') });
+//         this.itemMasterForm.patchValue({ dtofInstall: this.pipe.transform(data.obj.dtofInstall, 'yyyy-MM-dd') });
+//         if (data.obj.ipAddress != null || data.obj.ipAddress != undefined || data.obj.ipAddress != ''){
+//           this.itemMasterForm.patchValue({ ipAddressD:'IPADDS'})
+//         }
+//         if (data.obj.faNo != null || data.obj.faNo != undefined || data.obj.faNo != ''){
+//           this.itemMasterForm.patchValue({ fanoYN:'GENRATE'})
+//         }
+//         if (data.obj.status = 'Alloted'){
+//           this.isVisibleupdateBIM=true;
+//         }
+//         if (data.obj.status = 'Active'){
+//           this.isVisibleupdateBIM=false;
+//         }
+
+        
+//         this.service.onSelectItemTypeFn(data.obj.itemTypeId)
+//           .subscribe(
+//             data => {
+//               this.onSelectItemTypeFnList = data.obj;
+//               console.log(this.onSelectItemTypeFnList);
+//             }
+//           );
+//           if (data.obj.itemTypeId===120){
+//             this.displayMonitor=true;
+//           }
+//           else{
+//             this.displayMonitor=false;
+//           }
+//       }
+// }
+// )
+// }
+/////////////////////////////////////////////////////////////////////
+
     if (itemType == 'SerialNo') {
       this.service.serialenoFindFN(sessionStorage.getItem('city'),itemCode)
         .subscribe(
@@ -519,11 +604,16 @@ export class ItemMasterComponent {
               this.closeResetButton = true;
               this.progress = 0;
               this.dataDisplay ='Data Display Sucessfully....';
+              this.itemMasterForm.get('itemCode')?.disable();
+              this.itemMasterForm.get('itemId')?.disable();
+              this.itemMasterForm.get('division')?.disable();
+              // this.itemMasterForm.get('legalEntity')?.disable();
               // this.dataDisplay = data.message;
             this.itemMasterForm.patchValue(data.obj);
             this.showFADetails = true;
             this.showIPDetails=true;
             this.showAVLiceKeyDetails=true;
+            this.itemMasterForm.patchValue({attribute5: sessionStorage.getItem('loginName') });
             this.itemMasterForm.patchValue({ startDt: this.pipe.transform(data.obj.startDt, 'yyyy-MM-dd') });
 
             this.itemMasterForm.patchValue({ purchaseDt: this.pipe.transform(data.obj.purchaseDt, 'yyyy-MM-dd') });
@@ -544,7 +634,15 @@ export class ItemMasterComponent {
                   console.log(this.onSelectItemTypeFnList);
                 }
               );
+              // if (data.obj.status = 'Alloted'){
+              //   this.isVisibleupdateBIM=true;
+              // }
+              // if (data.obj.status = 'Active'){
+              //   this.isVisibleupdateBIM=false;
+              // }
           }
+          this.itemMasterForm.patchValue({attribute5: sessionStorage.getItem('loginName') });
+          this.itemMasterForm.patchValue({ lastUpdatedBy:sessionStorage.getItem('loginName') });
     })
         }
 
@@ -557,6 +655,10 @@ export class ItemMasterComponent {
               this.closeResetButton = false;
               this.progress = 0;
               this.dataDisplay = data.message;
+              this.itemMasterForm.get('itemCode')?.disable();
+              this.itemMasterForm.get('itemId')?.disable();
+              this.itemMasterForm.get('division')?.disable();
+              // this.itemMasterForm.get('legalEntity')?.disable();
               return;
             }
             if (data.code === 200) {
@@ -568,6 +670,7 @@ export class ItemMasterComponent {
             this.showFADetails = true;
             this.showIPDetails=true;
             this.showAVLiceKeyDetails =true;
+            this.itemMasterForm.patchValue({attribute5: sessionStorage.getItem('loginName') });
             this.itemMasterForm.patchValue({ startDt: this.pipe.transform(data.obj.startDt, 'yyyy-MM-dd') });
 
             this.itemMasterForm.patchValue({ purchaseDt: this.pipe.transform(data.obj.purchaseDt, 'yyyy-MM-dd') });
@@ -590,6 +693,7 @@ export class ItemMasterComponent {
               );
           }
          } )
+         this.itemMasterForm.patchValue({ lastUpdatedBy:sessionStorage.getItem('loginName') });
     }
 
 
@@ -614,6 +718,7 @@ export class ItemMasterComponent {
             this.showFADetails = true;
             this.showIPDetails=true;
             this.showAVLiceKeyDetails=true;
+            this.itemMasterForm.patchValue({attribute5: sessionStorage.getItem('loginName') });
             this.itemMasterForm.patchValue({ startDt: this.pipe.transform(data.obj.startDt, 'yyyy-MM-dd') });
 
             this.itemMasterForm.patchValue({ purchaseDt: this.pipe.transform(data.obj.purchaseDt, 'yyyy-MM-dd') });
@@ -636,6 +741,7 @@ export class ItemMasterComponent {
               );
           }
     })
+    this.itemMasterForm.patchValue({ lastUpdatedBy:sessionStorage.getItem('loginName') });
     }
 
     if (itemType == 'userName') {
@@ -658,6 +764,7 @@ export class ItemMasterComponent {
             this.showFADetails = true;
             this.showIPDetails=true;
             this.showAVLiceKeyDetails=true;
+            this.itemMasterForm.patchValue({attribute5: sessionStorage.getItem('loginName') });
             this.itemMasterForm.patchValue({ startDt: this.pipe.transform(data.obj.startDt, 'yyyy-MM-dd') });
 
             this.itemMasterForm.patchValue({ purchaseDt: this.pipe.transform(data.obj.purchaseDt, 'yyyy-MM-dd') });
@@ -680,6 +787,7 @@ export class ItemMasterComponent {
               );
           }
          } )
+         this.itemMasterForm.patchValue({ lastUpdatedBy:sessionStorage.getItem('loginName') });
     }
 
     if (itemType == 'productInvoiceNo') {
@@ -724,6 +832,7 @@ export class ItemMasterComponent {
               );
           }
          })
+         this.itemMasterForm.patchValue({ lastUpdatedBy:sessionStorage.getItem('loginName') });
     }
 
       
@@ -744,7 +853,8 @@ export class ItemMasterComponent {
     this.itemMasterForm.patchValue({ division: sessionStorage.getItem('divisionId') });
     this.itemMasterForm.patchValue({createdBy:sessionStorage.getItem('loginName')}); 
     this.itemMasterForm.patchValue({lastUpdatedBy:sessionStorage.getItem('loginName')});
-    // this.role= sessionStorage.getItem('role');
+    // this.itemMasterForm.patchValue({ attribute5:sessionStorage.getItem('loginName') });
+   
     const todaysDataTime = new Date();
 
     this.todayData = this.data.filter(item => {
@@ -776,6 +886,7 @@ export class ItemMasterComponent {
         this.itemcodeFindFN(this.itemCode);
         this.displayButton4 = false;
         this.displaystartDate = false;
+        // this.itemMasterForm.patchValue({ lastUpdatedBy:sessionStorage.getItem('loginName') });
         this.service.itemcodeFindFN(sessionStorage.getItem('city'),this.itemCode)
         .subscribe( 
           data => {
@@ -786,6 +897,7 @@ export class ItemMasterComponent {
             this.showFADetails = true;
             this.showIPDetails=true;
             this.showAVLiceKeyDetails=true;
+            this.itemMasterForm.patchValue({attribute5: sessionStorage.getItem('loginName') });
             this.itemMasterForm.patchValue({ startDt: this.pipe.transform(data.obj.startDt, 'yyyy-MM-dd') });
 
             this.itemMasterForm.patchValue({ purchaseDt: this.pipe.transform(data.obj.purchaseDt, 'yyyy-MM-dd') });
@@ -807,10 +919,68 @@ export class ItemMasterComponent {
                   console.log(this.onSelectItemTypeFnList);
                 }
               );
+              this.itemMasterForm.patchValue({attribute5: sessionStorage.getItem('loginName') });
+              this.itemMasterForm.patchValue({ lastUpdatedBy:sessionStorage.getItem('loginName') });
+              if (data.obj.status == 'Alloted' && sessionStorage.getItem('role') ==='User'){
+                this.isVisibleupdateBIM=true;
+              }
           }
+          
   
     )
   }  
+  if ( this.itemCode != undefined) {
+    this.closeResetButton = true;
+    // this.itemcodeFindFN(this.itemCode);
+    this.displayButton4 = false;
+    this.displaystartDate = false;
+    this.itemMasterForm.patchValue({ attribute5:sessionStorage.getItem('loginName') });
+    this.service.AllotteditemcodeFindFN(sessionStorage.getItem('city'),this.itemCode)
+    .subscribe( 
+      data => {
+        this.closeResetButton = true;
+        this.displayButton4 = false;
+        this.dataDisplay ='Data Display Sucessfully....';
+        this.itemMasterForm.patchValue(data.obj);
+        this.showFADetails = true;
+        this.showIPDetails=true;
+        this.showAVLiceKeyDetails=true;
+        this.itemMasterForm.get('itemCode')?.disable();
+            this.itemMasterForm.get('itemId')?.disable();
+            this.itemMasterForm.get('division')?.disable();
+            this.itemMasterForm.get('legalEntity')?.disable();
+            this.itemMasterForm.get('location')?.disable();
+            this.itemMasterForm.get('itemTypeId')?.disable();
+        this.itemMasterForm.patchValue({ startDt: this.pipe.transform(data.obj.startDt, 'yyyy-MM-dd') });
+
+        this.itemMasterForm.patchValue({ purchaseDt: this.pipe.transform(data.obj.purchaseDt, 'yyyy-MM-dd') });
+
+        this.itemMasterForm.patchValue({ warrntyDt: this.pipe.transform(data.obj.warrntyDt, 'yyyy-MM-dd') });
+
+        this.itemMasterForm.patchValue({ weDt: this.pipe.transform(data.obj.weDt, 'yyyy-MM-dd') });
+
+        this.itemMasterForm.patchValue({ avexpDate: this.pipe.transform(data.obj.avexpDate, 'yyyy-MM-dd') });
+
+        this.itemMasterForm.patchValue({ discardDt: this.pipe.transform(data.obj.discardDt, 'yyyy-MM-dd') });
+
+        this.itemMasterForm.patchValue({ dtofInstall: this.pipe.transform(data.obj.dtofInstall, 'yyyy-MM-dd') });
+
+        this.service.onSelectItemTypeFn(data.obj.itemTypeId)
+          .subscribe(
+            data => {
+              this.onSelectItemTypeFnList = data.obj;
+              console.log(this.onSelectItemTypeFnList);
+            }
+          );
+          this.itemMasterForm.patchValue({attribute5: sessionStorage.getItem('loginName') });
+         this.itemMasterForm.patchValue({ lastUpdatedBy:sessionStorage.getItem('loginName') });
+         if (data.obj.status == 'Alloted' && sessionStorage.getItem('role') ==='User'){
+          this.isVisibleupdateBIM=true;
+        }
+      }
+
+)
+}  
       
 
     });
@@ -1038,8 +1208,8 @@ export class ItemMasterComponent {
       // this.itemMasterForm.get('itemCode')?.disable();
       this.itemMasterForm.get('loginArray1')?.disable();
       this.itemMasterForm.get('city')?.disable();
-      this.itemMasterForm.get('purchaseDt')?.disable();
-      this.itemMasterForm.get('warrntyDt')?.disable();
+      // this.itemMasterForm.get('purchaseDt')?.disable();
+      // this.itemMasterForm.get('warrntyDt')?.disable();
       this.itemMasterForm.get('monitemCode')?.disable();
 
     
@@ -1376,15 +1546,14 @@ if (itemsubType==='LAPTOP'){
     //   return;
     // }
     const formValue: ItrnsitemMaster = this.itemMasterForm.getRawValue();
-    this.itemMasterForm.patchValue({ lastUpdatedBy:sessionStorage.getItem('loginName') });
+    // this.itemMasterForm.patchValue({ lastUpdatedBy:sessionStorage.getItem('loginName') });
     this.service.UpdateTransactionitemMasterById(formValue, formValue.itemCode).subscribe((res: any) => {
       if (res.code === 200) {
         alert(res.message);
-        // window.location.reload();
         this.closeResetButton = true;
         this.dataDisplay = 'Detailes Update Successfully..';
         this.itemMasterForm.disable();
-        this.itemMasterForm.patchValue({ lastUpdatedBy:sessionStorage.getItem('loginName') });
+        
       } else {
         if (res.code === 400) {
           alert(res.message);
@@ -1414,9 +1583,45 @@ if (itemsubType==='LAPTOP'){
       // alert('inMoni')
       this.displayMonitor = true;
     }
-    else if (itemType12 != '120') {
-      this.displayMonitor = false;
+    if(itemType12 == '152'){
+      // alert('printer');
+      this. displaypurchasedate=true;
+      this.displayvendoraname=true;
+      this.displaywarrantydate=true
+      this.displayButton4=true
+
+
     }
+    if(itemType12 == '157'){
+      // alert('printer');
+      this. displaypurchasedate=true;
+      this.displayvendoraname=true;
+      this.displaywarrantydate=true
+      this.displayButton4=true
+    }
+    if(itemType12 == '211'){
+      // alert('printer');
+      this. displaypurchasedate=true;
+      this.displayvendoraname=true;
+      this.displaywarrantydate=true
+      this.displayButton4=true
+    }
+    if(itemType12 == '213'){
+      // alert('printer');
+      this. displaypurchasedate=true;
+      this.displayvendoraname=true;
+      this.displaywarrantydate=true
+      this.displayButton4=true
+    }
+    
+    else if (itemType12 != '120' && itemType12 != '152' && itemType12 != '157' && itemType12 != '211' && itemType12 != '213'){
+      this.displayMonitor = false;
+      this. displaypurchasedate=false;
+      this.displayvendoraname=false;
+      this.displaywarrantydate=false;
+      this.displayButton4=false;
+    }
+
   }
 
   FaNoYN(event:any) {
@@ -1538,7 +1743,6 @@ if (itemsubType==='LAPTOP'){
     this.dataDisplay = 'Report Is Running....Do not refresh the Page';
     const fileName = 'Asset Acknowledgment Form' + '.pdf';
     var ITEMCODE = this.itemMasterForm.get('itemCode')?.value;
-    // alert(ITEMCODE);
     const EXT = fileName.substr(fileName.lastIndexOf('.') + 1);
     this.service.AcknowledgementForm(sessionStorage.getItem('ouId'),ITEMCODE)
       .subscribe(data => {
@@ -1563,13 +1767,13 @@ if (itemsubType==='LAPTOP'){
       }
     );
   }
-
+// ,emailId:data.obj.emailId
   TicketNoSearch(usertktNo:any){
     this.service.TicketNoSearchFn(sessionStorage.getItem('ouId'),usertktNo)
     .subscribe(
       data => {
         if (data.code === 200) {
-          this.itemMasterForm.patchValue({userName:data.obj.empName,emailId:data.obj.emailId,usercontactNo:data.obj.contactNo,userDesigntn:data.obj.designation})
+          this.itemMasterForm.patchValue({userName:data.obj.empName,usercontactNo:data.obj.contactNo,userDesigntn:data.obj.designation})
           this.itemMasterForm.get('usertktNo')?.disable();
           this.itemMasterForm.get('userName')?.disable();
           this.itemMasterForm.get('usercontactNo')?.disable();
@@ -1586,6 +1790,13 @@ if (itemsubType==='LAPTOP'){
   }
 
 
+
+  onInputChange() {
+    const inputValue = this.itemMasterForm.get('faNo')?.value || '';
+    this.itemMasterForm.patchValue({
+      attribute3: inputValue.slice(-5)
+    });
+  }
 
 
   purchaseRefNoSearch(purchaserefNo:any){

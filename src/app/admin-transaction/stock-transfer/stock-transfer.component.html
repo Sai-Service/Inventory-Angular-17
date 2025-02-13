@@ -136,7 +136,7 @@
                 <tr class="GridHeader">
                     <th style="width:4rem" scope="col">Srl&nbsp;No.</th>
                     <th style="width:4rem" scope="col">Item&nbsp;Category</th>
-                    <th style="width:4rem" scope="col">Item</th>
+                    <th style="width:8rem" scope="col">Item</th>
                     <th style="width:4rem" scope="col">On&nbsp;Hand&nbsp;Qty</th>
                     <th style="width:4rem" scope="col">Rate</th>
                     <th style="width:4rem" scope="col">Quantity</th>
@@ -177,7 +177,7 @@
                         <td>
                             <div *ngIf="displayadstkItem[i]; then thenadstkItem; else elseadstkItem"></div>
                             <ng-template #thenadstkItem>
-                            <select formControlName="adstkItem" class="form-control"  style="background-color: yellow; width: 7rem;" (change)="onSelectItemName($event,i)" > 
+                            <select formControlName="adstkItem" class="form-control"  style="background-color: yellow; width: 18rem;" (change)="onSelectItemName($event,i)"> 
                                 <option value="--Select--">--Select--</option>
                                 <!-- <option *ngFor="let itemN of  onSelectItemNameFnList" [Value]="itemN.codeDesc">
                                     {{itemN.codeDesc}}
@@ -228,6 +228,9 @@
     <fieldset class="RFS" >
         <table class="center">
             <tr>
+                <td> <button type="submit" class="btn btn-primary" id="register" style="width: fit-content;" (click)="StockTransMadeView()"  [style.display]="isVisibleReceiptview ? 'block' : 'none'" >View Receipt Made</button></td>
+                <td>
+                    
                 <td>
                     <button type="submit" class="btn btn-primary" id="saveBtn" data-toggle="modal"  [style.display]="isVisibleReceiptSave ? 'block' : 'none'"
                     data-target="#confirmAlert" (click)="getMessage('Save')" >Save</button>

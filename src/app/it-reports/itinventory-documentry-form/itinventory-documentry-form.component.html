@@ -1,0 +1,100 @@
+<form [formGroup]="ItinventorydocFrom" (ngSubmit)="itinventorydoc(ItinventorydocFrom.value)">
+    <table style="width: 100%;background-color: white;" class="center">
+        <tr>
+            <td class="PageHeader">
+                &nbsp;IT&nbsp;INVENTORY&nbsp;DOCUMENT&nbsp;FORM&nbsp;
+            </td>
+        </tr>
+    </table>
+    <fieldset>
+        <table class="center">
+            <tr>
+                <div *ngIf="closeResetButton; then hList1; else hList2"></div>
+                <ng-template #hList2>
+                    <div class="d-flex justify-content-center">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only" id="loading"></span>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template #hList1> </ng-template>
+
+                <td class="LabelFontStyle" style="color: blue;width: fit-content;" colspan="4">
+                    &nbsp;{{dataDisplay}}&nbsp;
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+
+<fieldset class="RFS">
+    <legend id="FormsPH_LGAadhaar" class="RFSL"
+        style="font-size: 12px;color: black;font-weight: bold;">UPLOAD 
+        DOCUMENT HERE</legend>
+    <tr>
+       
+        <td style="width: 15%" class="LabelFontStyle">File&nbsp;Name&nbsp;:
+        </td>
+
+        <td> <input type='text' formControlName="docName"
+                class="form-control"></td>
+        <td class="LabelFontStyle">
+            &nbsp;&nbsp;Document&nbsp;Upload&nbsp;Here&nbsp;
+        </td>
+        <td colspan="3">
+            <input class="form-control" type="file" #fileInput accept=".pdf"
+                formControlName="files" [(ngModel)]="files"
+                style="vertical-align: middle;margin-top: 22px;width: 350px;">&nbsp;&nbsp;
+        </td>
+        <td>
+            <button class="btn btn-primary" (click)="uploadFile($event)"
+                style="width: 100%;font-size: 11px;">Upload</button>
+        </td>
+    </tr>
+</fieldset>
+
+<table class="center">
+    <table class="center">
+        <tr>
+            <td>
+                <button type="submit" class="btn btn-primary" id="register" (click)="refresh()"
+                    style="width:90PX">
+                    Clear
+                </button>
+            </td>
+            <td>
+                <button type="submit" (click)="close()" class="btn btn-primary"
+                    style="width:90PX">Close</button>
+            </td>
+            <td>
+                <button type="submit" (click)="viewDocument()" class="btn btn-primary"
+                    style="width:90PX">Search</button>
+            </td>
+        </tr>
+    </table>
+</table>
+
+<fieldset class="RFS">
+    <!-- <legend id="FormsPH_LGAadhaar" class="RFSL"
+        style="font-size: 12px;color: black;font-weight: bold;"> 
+        DOCUMENT </legend> -->
+<table class="GridFont" cellspacing="0" cellpadding="4"
+                                    style="border-color:#959595;border-collapse:collapse;width: 100%; ">
+                                    <tr class="GridHeader">
+                                        <th scope="col" style="border: 1px solid black;">ID</th>
+                                        <th scope="col" style="border: 1px solid black;">Document Name</th>
+                                         <th scope="col" style="border: 1px solid black;">Document Path</th>
+                                        <th scope="col" style="border: 1px solid black;">View Document</th>
+                                    </tr>
+                                    <tr *ngFor="let com of viewAllDoucmnet" class="ItemStyle"
+                                        style="text-decoration:none;font-size: 12px;text-align: center;">
+                                        <td style="border: 1px solid black;color: black;"> {{com.itId}}</td>
+                                        <td style="border: 1px solid black;color: black;"> {{com.createdBy}}</td>
+                                        <td style="border: 1px solid black;color: black;"> {{com.path}}</td>
+                                        <td style="border: 1px solid black;"> <button type="button"
+                                                style="width: 170px;" class="btn btn-primary" data-dismiss="modal"
+                                                (click)="openDocument(com.itId)">View&nbsp;Document</button>
+                                        </td>
+                                    </tr>
+                                </table>
+</fieldset>
+</form>

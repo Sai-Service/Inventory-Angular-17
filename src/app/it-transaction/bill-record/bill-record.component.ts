@@ -9,13 +9,14 @@ import { NgModule } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { DatePipe, formatDate } from '@angular/common';
 import * as xlsx from 'xlsx';
-import { data, trim } from 'jquery';
+import { data, event, trim } from 'jquery';
 import { Observable } from 'rxjs';
 import { TypeofExpr } from '@angular/compiler';
 import { HttpClient } from '@angular/common/http';
 import { disableDebugTools } from '@angular/platform-browser';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { saveAs } from 'file-saver'
+import { ALL } from 'node:dns';
 
 const MIME_TYPES = {
   pdf: 'application/pdf',
@@ -95,6 +96,8 @@ interface billsuppform {
   docType:string;
   attribute1:number;
   attribute2:number;
+  finYear:string;
+  currantYear:string;
 }
 
 
@@ -127,6 +130,8 @@ export class BillRecordComponent {
   headerId: string;
   public minDate = new Date();
   public maxDate = new Date();
+//    minDate! :string;
+//  maxDate! : string;
   displayLineflowStatusCode: Array<boolean> = [];
   displayitemdesc: Array<boolean> = [];
   displayGstper: Array<boolean> = [];
@@ -173,13 +178,23 @@ export class BillRecordComponent {
   userList1: any[] = [];
   lastkeydown1: number = 0;
   lineValidation = false;
+  BilllineValidation=false;
   lastupdatedBy: string;
   sgst1:number;
   igst1:number;
+  finYear:string;
+  finYearFnList:any=[];
+  currantYear:string;
+  
+
+
+  isModalOpen: boolean = false;
+  selectedFile: File | null = null;
 
   constructor(private fb: FormBuilder, private router: Router, private service: ItTransService, private router1: ActivatedRoute) {
     this.Date = formatDate(this.date, 'dd-MM-yyyy', 'en-US');
     this.billRecorderForm = fb.group({
+      // headerDetails: this.fb.group({
       billNo: [],
       typeList: [],
       loginArray1: [],
@@ -217,6 +232,7 @@ export class BillRecordComponent {
 
       ]),
     })
+  // })
   }
 
   billLinesGroup() {
@@ -252,12 +268,14 @@ export class BillRecordComponent {
       gstAmt: [{ value: '0', disabled: true }],
       subTotal: [{ value: '0', disabled: true }],
       totalAmt: [{ value: '0', disabled: true }],
-      attribute1: [0],
+      attribute1: [],
       attribute2: [0],
       lineStatus: [],
       itemdesc: [],
       discAmt: [0],
-      warntyPeriod: []
+      warntyPeriod: [],
+      finYear:[],
+      currantYear:[],
 
     });
   }
@@ -285,7 +303,9 @@ export class BillRecordComponent {
     (patch.controls[0]).patchValue(
       {
         srlNo: 1,
-        linestatus: 'BOOKED'
+        linestatus: 'BOOKED',
+        
+        
       }
     );
 
@@ -460,7 +480,37 @@ export class BillRecordComponent {
       this.billRecorderForm.get('headerId')?.disable();
       this.billRecorderForm.get('totdiscAmt')?.disable();
       this.billRecorderForm.get('totdiscAmt')?.disable();
+
+
+
+      this.service.finYearFn(this.pipe.transform(this.date, 'yyyy'))            
+      .subscribe(
+        data => {
+          this.finYearFnList = data.obj;
+          this.currantYear = data.obj[0].code;
+          this.orderlineDetailsArray().controls[0].patchValue({finYear:this.currantYear})
+        }
+      );
+
+
+
+
+    //   const currentDate = new Date();
+    // const pastDate = new Date();
+    // pastDate.setDate(currentDate.getDate() - 15);
+
+    // // Format dates to 'YYYY-MM-DD'
+    // this.maxDate = this.formatDate(currentDate);
+    // this.minDate = this.formatDate(pastDate);
   }
+
+
+  // private formatDate(date: Date): string {
+  //   const year = date.getFullYear();
+  //   const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  //   const day = date.getDate().toString().padStart(2, '0');
+  //   return `${year}-${month}-${day}`;
+  // }
 
 
   get f() { return this.billRecorderForm.controls; }
@@ -509,7 +559,7 @@ export class BillRecordComponent {
                 this.displayBillType1[i] = false;
                 this.displayBillType[i] = false;
                 this.displayitemdesc[i] = false;
-                this.displayGstper[i] = true;
+                this.displayGstper[i] = false;
                 this.isDisableqty[i] = false;
 
                 // alert(data.obj.billLines[i].linestatus+'-------')
@@ -611,6 +661,8 @@ export class BillRecordComponent {
   OnSelectTypeList(event: any) {
   }
 
+  
+
   CheckLineValidations(i: number) {
     var prcLineArr1 = this.billRecorderForm.get('billLines')?.value;
     var lineValue1 = prcLineArr1[i].billType;
@@ -655,12 +707,13 @@ export class BillRecordComponent {
       this.lineValidation = false;
       return;
     }
-    if (lineValue7 === undefined || lineValue7 === null) {
+    ////|| lineValue7 !=='0'
+    if (lineValue7 === undefined || lineValue7 === null ) {
       alert("Line-" + j + " Item Quntity :  should not be null value");
       this.lineValidation = false;
       return;
     }
-    if (lineValue8 === undefined || lineValue8 === null) {
+    if (lineValue8 === undefined || lineValue8 === null ) {
       alert("Line-" + j + "UNIT RATE :  should not be null value");
       this.lineValidation = false;
       return;
@@ -687,7 +740,8 @@ export class BillRecordComponent {
       (patch.controls[len - 1]).patchValue(
         {
           srlNo: len,
-          linestatus: 'BOOKED'
+          linestatus: 'BOOKED',
+          finYear:this.currantYear  , 
         }
       );
       this.displayBillType[len - 1] = true;
@@ -812,7 +866,6 @@ export class BillRecordComponent {
     const formValue = this.transData(this.billRecorderForm.value);
     const formValue1 = this.transData(this.billRecorderForm.getRawValue());
     console.log(formValue);
-    // alert(this.billRecorderForm.get('headerId')?.value)
     formValue.headerId = this.billRecorderForm.get('headerId')?.value;
     this.service.UpdateBilllineRecorder(formValue1)
       .subscribe((res: any) => {
@@ -845,7 +898,11 @@ export class BillRecordComponent {
 
   viewDocument() {
     var headerId = this.billRecorderForm.get('headerId')?.value;
-    // alert(headerId)
+    if(headerId==undefined){
+      alert('First Search bill no/Purchase Id.')
+  
+      }
+      else{
     this.service.viewDocumentFn(headerId).subscribe((res: any) => {
       if (res.code === 200) {
         alert(res.message);
@@ -853,8 +910,10 @@ export class BillRecordComponent {
         this.dataDisplay = 'File Uploaded Sucessfully....'
         this.closeResetButton = true;
       }
-      else { }
-    })
+      // else { }
+    
+    })}
+ 
   }
 
 
@@ -906,7 +965,7 @@ export class BillRecordComponent {
       xlsx.utils.table_to_sheet(this.suplaierBilltable1.nativeElement);
     const wb: xlsx.WorkBook = xlsx.utils.book_new();
     xlsx.utils.book_append_sheet(wb, ws, 'Sheet1');
-    xlsx.writeFile(wb, 'SUPLAIER BILLS DATA .xlsx');
+    xlsx.writeFile(wb,'SUPLAIER BILLS DATA .xlsx');
   }
 
 
@@ -1003,6 +1062,48 @@ export class BillRecordComponent {
     });
   }
 
+
+
+  transDataCopy(val: any) {
+    delete val.headerId; 
+     return val;
+   }
+
+  
+
+   CopyForm() {
+    this.closeResetButton = true;
+    this.progress = 0;
+    this.dataDisplay = 'Bill Recorder Save is progress....Do not refresh the Page';
+    var orderLines = this.billRecorderForm.get('billLines')?.value;
+    var orderLinesNew = this.billRecorderForm.get('billLines') as FormArray;
+    this.billRecorderForm.patchValue({ createdBy: sessionStorage.getItem('loginName') })
+    const formValue = this.transDataCopy(this.billRecorderForm.getRawValue());
+    formValue.cityId = Number(sessionStorage.getItem('ouId'));
+    
+    console.log(formValue);
+    this.service.BillrecoderCopySubmit(formValue).subscribe((res: any) => {
+      if (res.code === 200) {
+        alert(res.message);
+        this.dataDisplay = 'Duplicate Bill Recorder Save Successfully';
+        this.billRecorderForm.disable();
+        this.billNoFindFN(res.obj.headerId);
+        this.billRecorderForm.patchValue({ headerId: res.obj.headerId });
+        this.billRecorderForm.patchValue({ createdBy: sessionStorage.getItem('loginName') })
+        this.displayButton = false;
+      } else {
+        if (res.code === 400) {
+          alert(res.message);
+  
+        }
+      }
+    });
+  }
+  
+  
+
+  
+
   public validation() {
     this.closeResetButton = false;
     this.progress = 0;
@@ -1056,6 +1157,7 @@ export class BillRecordComponent {
       this.dataDisplay = 'Please Select Bill Date.!';
       return;
     }
+
     if (approvedBy === undefined || approvedBy === null || approvedBy === '') {
       alert('Please Select Approved By Field.!');
       this.closeResetButton = false;
@@ -1127,8 +1229,10 @@ export class BillRecordComponent {
           alert(res.message);
           this.billRecorderForm.disable();
           this.billNoFindFN(res.obj.headerId);
-          this.billRecorderForm.patchValue({headerId: res.obj.headerId});
+          // this.billRecorderForm.patchValue({headerId: res.obj.headerId});
+          this.billRecorderForm.patchValue({headerId: res.obj.newBillHdr.headerId});
           this.displayButton = false;
+          this.dataDisplay = 'Bill Recorder Save Successfully.';
         } else {
           if (res.code === 400) {
             alert(res.message);
@@ -1141,59 +1245,25 @@ export class BillRecordComponent {
     // } else { alert("Data Validation Not Sucessfull....\nPosting Not Done...") }
   }
 
-
-
-  transDataCopy(val: any) {
-   
- 
-     return val;
-   }
-
-
-  CopyForm() {
-    var isvaliddata1 = this.validation();
-    // if (isvaliddata1 === false) {
-    //   return;
-    // }
-    this.closeResetButton = true;
-    this.progress = 0;
-    this.dataDisplay = 'Bill Recorder Save is progress....Do not refresh the Page';
-    var orderLines = this.billRecorderForm.get('billLines')?.value;
-    var orderLinesNew = this.billRecorderForm.get('billLines') as FormArray;
-    this.billRecorderForm.patchValue({ createdBy: sessionStorage.getItem('loginName') })
-    const formValue = this.transDataCopy(this.billRecorderForm.value);
-    formValue.cityId = Number(sessionStorage.getItem('ouId'));
-    // formValue.divisionId = Number(sessionStorage.getItem('divisionId'));
-    console.log(formValue);
-    this.service.BillrecoderCopySubmit(formValue).subscribe((res: any) => {
-      if (res.code === 200) {
-        alert(res.message);
-        this.dataDisplay = 'Duplicate Bill Recorder Save Successfully';
-        this.billRecorderForm.disable();
-        this.billNoFindFN(res.obj.headerId);
-        this.billRecorderForm.patchValue({ headerId: res.obj.headerId });
-        this.billRecorderForm.patchValue({ createdBy: sessionStorage.getItem('loginName') })
-        this.displayButton = false;
-      } else {
-        if (res.code === 400) {
-          alert(res.message);
-
-        }
-      }
-    });
+  CheckLineValidationstaxtyp() {
+    var taxType = this.billRecorderForm.get('taxType')?.value;
+    if (taxType === undefined || taxType === null || taxType === '') {
+      alert('Please Select First Tax Type ');
+      return;
+    }
+    // this.BilllineValidation = true;
   }
 
+  
   onSelectItemType(event: any, i: number) {
+    this.CheckLineValidationstaxtyp();
+    (this.billRecorderForm.get('headerDetails')?.valid);
     var itemType = event.target.value;
-    // debugger;
-    // alert(itemType)
     var itemType1 = itemType.substr(itemType.indexOf(': ') + 1, itemType.length);
     var itemType12 = trim(itemType1);
     var billType = this.AllBilltypeList.find((billType: any) => billType.codeDesc === itemType);
     console.log(billType);
-
     var billId = itemType;
-
     this.orderlineDetailsArray().controls[i].patchValue({ billTypeId: itemType })
     this.service.onSelectItemNameFn(billId)
       .subscribe(
@@ -1202,7 +1272,7 @@ export class BillRecordComponent {
           console.log(this.onSelectItemNameFnList);
         }
       );
-
+    
   }
 
 
@@ -1217,13 +1287,12 @@ export class BillRecordComponent {
     this.orderlineDetailsArray().controls[i].patchValue({ itemId: itemLi.itemId })
     this.orderlineDetailsArray().controls[i].patchValue({ expenseTypeId: budget.expenseTypeId })
     this.orderlineDetailsArray().controls[i].patchValue({ budgetType: budget.itemName })
-
+    this.orderlineDetailsArray().controls[i].patchValue({ attribute1: budget.attribute1 })
   }
 
 
 
-  onKey(i: number, event: any) {
-    alert(i);
+  onKey(i: number, event: any) {  
     var arrayControlNew = this.billRecorderForm.get('billLines') as FormArray;
     var arrayControl = arrayControlNew.getRawValue();
     var pricingQty = arrayControl[i].qty;
@@ -1270,7 +1339,7 @@ export class BillRecordComponent {
       this. igst1 = Math.ceil(this.igst1);
     }
     
-  // alert(igst+'----'+sgst)
+
 
     if ( this.igst1 ===undefined){
       this.igst1 = 0;
@@ -1282,7 +1351,7 @@ export class BillRecordComponent {
 
     var gstTot1 = (this.sgst1 + this.sgst1 +this. igst1);
     var gstTot = Math.ceil(gstTot1);
-    var totAmt = todisAmt + gstTot;  ///subTot
+    var totAmt = todisAmt + gstTot; 
     var patch = this.billRecorderForm.get('billLines') as FormArray;
     patch.controls[i].patchValue({ gstAmt: gstTot });
     patch.controls[i].patchValue({ subTotal: subTot });
@@ -1358,6 +1427,63 @@ export class BillRecordComponent {
 
 
 
+  openModal() {
+    this.isModalOpen = true;
+  }
+
+  closeModal() {
+    this.isModalOpen = false;
+  }
+
+  onFileSelected(event: any) {
+    this.selectedFile = event.target.files[0];
+    if (this.selectedFile) {
+      this.billRecorderForm.patchValue({
+        files: this.selectedFile
+      });
+    }
+  }
+
+  uploadFile1(event: any) {
+    var files = this.billRecorderForm.get('files')?.value;
+    if (files === undefined) {
+      alert('First Select CSV & Then Click upload Button !..');
+      return;
+    }
+    debugger
+    this.closeResetButton = false;
+    this.progress = 0;
+    this.dataDisplay = 'File Upload in progress....Do not refresh the Page'
+    event.target.disabled = true;
+    let formData = new FormData();
+    formData.append('files', this.fileInput.nativeElement.files[0]);
+    var docType = this.billRecorderForm.get('docType')?.value;
+
+    var docName = this.billRecorderForm.get('docName')?.value;
+
+    var loginName = sessionStorage.getItem('loginName');
+
+    var headerId = this.billRecorderForm.get('headerId')?.value;
+
+    this.service.UpoadDocument1(formData, files, docType, docName, loginName, headerId).subscribe((res: any) => {
+      if (res.code === 200) {
+        alert(res.message);
+
+        this.dataDisplay = 'File Uploaded Sucessfully....'
+        this.closeResetButton = true;
+        this.billRecorderForm.get('files')?.reset();
+      }
+      else {
+        if (res.code === 400) {
+          alert(res.message);
+
+          this.dataDisplay = 'File Uploading Failed....'
+          this.closeResetButton = true;
+          this.billRecorderForm.get('files')?.reset();
+
+        }
+      }
+    })
 
 }
-
+}

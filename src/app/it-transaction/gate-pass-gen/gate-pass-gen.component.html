@@ -43,12 +43,16 @@
                         </td>
 
                         <td style="width: 15%" class="LabelFontStyle">Today&nbsp;Date:</td>
-                        <td class="form-control" >{{Date}}</td>
+                        <td  readonly class="form-control" >{{Date}}</td>
                     </tr>
                    
                     <tr>
                         <td style="width: 15%" class="LabelFontStyle">Created By:</td>
-                        <td><input type="text"  class="form-control" formControlName="createBy"
+                        <td><input type="text" readonly class="form-control" formControlName="createBy"
+                                style="width: 220px;">
+                        </td>
+                        <td style="width: 15%" class="LabelFontStyle">Location Name:</td>
+                        <td><input type="text" readonly class="form-control" formControlName="loginLocation"
                                 style="width: 220px;">
                         </td>
                     </tr>
@@ -60,7 +64,7 @@
                                 (change)="GatepassType($event)" style="background-color: yellow;">
                                 <option value="SCRAP">Asset Scrap</option>
                                 <option value="REPAIR">Asset Repair</option>
-                                <option value="TRANSFER">Asset Tramsfer</option>
+                                <option value="TRANSFER">Asset Transfer</option>
                             </select>
                         </td>
                         <div *ngIf="displayVendorAndLoc; then thenVendorAndLoc; else elseVendorAndLoc"> </div>
@@ -75,30 +79,52 @@
                                 </select></td>
                         <!-- </div>
                         <div [style.display]="isVisibleloactionList ? 'block' : 'none' "> -->
-                            <td style="width: 15%" class="LabelFontStyle">&nbsp;To&nbsp;location&nbsp;Name&nbsp;:</td>
+                            <!-- <td style="width: 15%" class="LabelFontStyle">&nbsp;To&nbsp;location&nbsp;Name&nbsp;:</td>
                             <td><select formControlName="gptoLocname" id="gptoLocname" class="form-control"
                                     style="background-color: yellow;">
                                     <option *ngFor="let sc of  tolocationName" [ngValue]="sc.locName">
                                         {{sc.locName}}
                                     </option>
-                                </select></td>
+                                </select></td> -->
                         <!-- </div> -->
                         </ng-template>
                         <ng-template #elseVendorAndLoc>
                         </ng-template>
+                        
+
+                        <div *ngIf="displayLoction; then thenLoc; else elseLoc"> </div>
+                        <ng-template #thenLoc>
+                        <td style="width: 15%" class="LabelFontStyle">&nbsp;To&nbsp;location&nbsp;Name&nbsp;:</td>
+                            <td><select formControlName="gptoLocname" id="gptoLocname" class="form-control"
+                                    style="background-color: yellow;">
+                                    <option *ngFor="let sc of  tolocationName" [ngValue]="sc.locName">
+                                        {{sc.locName}}
+                            </option>
+                        </select></td>
+                    </ng-template>
+                    <ng-template #elseLoc>
+                    </ng-template>
+                    <td>
+                        <input type="text" hidden class="form-control" formControlName="gpheaderId" style="width: 220px;">
+                    </td>
+
+                    
+
                     </tr>
+
+
                 </table>
             </td>
         </tr>
     </table>
-    <fieldset class="RFS">
+   <!--- <fieldset class="RFS">
         <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px;color: black;font-weight: bold;">
             Item Details</legend>
         <table class="center">
             <tr>
                 <td style="width: 15%" class="LabelFontStyle"> &nbsp;Item&nbsp;Code&nbsp;:&nbsp;</td>
                 <td><input type="text" class="form-control" formControlName="gpitemCode"
-                        (keydown.tab)="ItemCodeget(gpitemCode)" [(ngModel)]='gpitemCode' style="width: 220px;">
+                        (keydown.tab)="ItemCodeget(gpitemCode,i)" [(ngModel)]='gpitemCode' style="width: 220px;">
                 </td>
 
                 <td style="width: 15%" class="LabelFontStyle"> &nbsp;&nbsp;Item&nbsp;Name&nbsp;:&nbsp;</td>
@@ -108,7 +134,7 @@
                 <td style="width: 15%" class="LabelFontStyle"> &nbsp;Item&nbsp;Serial&nbsp;No/&nbsp;Engine&nbsp;No:</td>
                 <td><input  type="text" class="form-control" formControlName="gitemSn" style="width: 220px;">
                 </td>
-            </tr>
+            </tr> 
             <tr>
                 <td style="width: 15%" class="LabelFontStyle"> &nbsp;&nbsp;location&nbsp;Name&nbsp;:&nbsp;</td>
                 <td><input  type="text" class="form-control" formControlName="gatepassLoc"
@@ -128,7 +154,93 @@
                 <td><input hidden type="text" class="form-control" formControlName="gpouId" style="width: 220px;">
             </tr>
         </table>
+    </fieldset>-->
+ 
+
+    <fieldset class="RFS">
+        <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px;color: black;font-weight: bold;">
+            Item Details</legend>
+       
+
+    <table style="width: 100%; border: solid 1px Gray" class="auto-style4" cellspacing="0" cellpadding="4" rules="all"
+        class="center">
+        <thead>
+            <tr class="GridHeader">
+                <th style="width:4rem" scope="col">Srl No.</th>
+                <th style="width:4rem" scope="col">Item Code</th>
+                <th style="width:4rem" scope="col">Item Serial No</th>
+                <th style="width:4rem" scope="col">Item Item Type</th>
+                <th style="width:4rem" scope="col">Location Name</th>
+                <th style="width:4rem" scope="col">Department Name</th>
+                <th style="width:4rem" scope="col">Division Name</th>
+                <th style="width:4rem" scope="col">Add Line</th>
+                <th style="width:4rem" scope="col">Remove Line</th>
+            </tr>
+        </thead>
+    
+        <tbody>
+            <ng-container class="center" formArrayName="gatepassLines">
+                <ng-container *ngFor="let group of GatepasslineDetailsArray().controls; let i= index" [formGroupName]="i">
+                    <tr>
+                        <td>
+                            <input type='number' readonly formControlName="srlNo" class="form-control"
+                                style="width: 2rem;height: 25px;font-size: 10px;"> 
+                               
+                                <!---(keyup)="onKey(i,$event)"-->
+                                
+                        </td>
+                        <td>
+                        <div *ngIf="displayItemCode[i]; then thenItemcode; else elseItemcode"> </div>
+                        <ng-template #thenItemcode>
+                        <input type="text" class="form-control" formControlName="gpitemCode"
+                                (keydown.tab)="ItemCodeget($event,i)"   name="gpitemCode{{i}}" style="width: 220px;">
+                        
+                        
+                            </ng-template>
+                            <ng-template #elseItemcode>
+                                <input type="text" readonly class="form-control" formControlName="gpitemCode"
+                                 style="width: 220px;">
+                        
+                            </ng-template>
+                            </td>
+                        <td>
+                            <input type="text" readonly class="form-control" formControlName="gitemSn" name="gitemSn{{i}}" style="width: 220px;">
+                        </td>
+                        <td>
+                            <input type="text" readonly class="form-control" formControlName="gpitemType" name="gpitemType{{i}}" style="width: 220px;">
+                        </td>
+                        <td>
+                            <input type="text" readonly class="form-control" formControlName="gatepassLoc" name="gatepassLoc{{i}}" 
+                                style="width: 220px;">
+                        </td>
+                        <td>
+                            <input type="text" readonly class="form-control" formControlName="gpDepName" name="gpDepName{{i}}" 
+                                style="width: 220px;">
+                        </td>
+                        <td><input type="text" readonly class="form-control" formControlName="gpDiv" name="gpDiv{{i}}"
+                                style="width: 220px;">
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-primary" (click)="addRow(i)" style="width: min-content;"><i
+                                    class="fa fa-plus"></i></button>
+                        </td>
+
+                        <td>
+                            <div *ngIf="displayremovebutton; then thenremovebutton; else elseremovebutton"> </div>
+                            <ng-template #thenremovebutton>
+                                <button type="button" class="btn btn-primary" (click)="RemoveRow(i)"
+                                    style="width: min-content;" ><i class="fa fa-trash"></i></button>
+                            </ng-template>
+                            <ng-template #elseremovebutton></ng-template>
+                            </td>
+                    </tr>
+    
+                </ng-container>
+            </ng-container>
+        </tbody>
+    </table>
     </fieldset>
+
     <table class="center">
 
         <tr>

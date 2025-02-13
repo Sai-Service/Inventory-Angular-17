@@ -12,7 +12,13 @@ import { TypeofExpr } from '@angular/compiler';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { ItTransService } from '../it-trans.service';
+import { saveAs } from 'file-saver';
 
+const MIME_TYPES:any = {
+  pdf: 'application/pdf',
+  xls: 'application/vnd.ms-excel',
+  xlsx: 'application/vnc.openxmlformats-officedocument.spreadsheetxml.sheet'
+};
 
 interface trnsform{
 transferId:number;
@@ -51,6 +57,10 @@ transferId:number;
   receivedDate:Date;
   recivedYN:string;
   receivedBy:String;
+  ReceivedDate:Date;
+  newLocId:number;
+
+
 }
 
 @Component({
@@ -104,6 +114,7 @@ export class RecievedListFormComponent {
   displayStatus = false;
   today = new Date();
   Today = '';
+  ReceivedDate:Date;
   allassettransferList:any[];
   public AllcityitemList: Array<string> = [];
   public AllligelentityList: Array<string> = [];     //for comapany name
@@ -118,6 +129,14 @@ export class RecievedListFormComponent {
   deptndlocTicketNoList:any[];
   allRecivedsearch:any[];
   receivedbymembers:any[];
+  maxDate = new Date();
+  minDate = new Date();
+  closeResetButton = true;
+  display:any;
+  dataDisplay:any;
+  progress = 0;
+  newLocId:number;
+  getAllOuLocationIdFn:any=[];
 
   constructor(private fb: FormBuilder, private router: Router, private service: ItTransService, private router1: ActivatedRoute ) {
 
@@ -164,6 +183,9 @@ transferBy:[],
 receivedDate:[],
 recivedYN:[],
 receivedBy:[],
+ReceivedDate:[],
+newLocId:[],
+olddept:[],
 
 
 
@@ -242,6 +264,15 @@ closeMast() {
   );
   
 
+  this.service.getAllOuLocationId(sessionStorage.getItem('ouId'))
+  .subscribe(
+    data => {
+      this.getAllOuLocationIdFn = data.obj;
+      console.log(this.getAllOuLocationIdFn);
+    }
+  );
+  
+
   this.sub = this.router1.params.subscribe(params => {
     this.transferId = params['transId'];
     if (this.transferId != undefined) {
@@ -271,7 +302,7 @@ this.recivedFrom.get('newloc')?.disable();
   .subscribe(
     data => {
       this.recivedFrom.patchValue({oldcity:data.obj.oldcity,oldcomp:data.obj.oldcomp,oldloc:data.obj.oldloc,transferDate:data.obj.transferDate,itemCode:data.obj.itemCode, newlocId:data.obj.newlocId,itemId:data.obj.itemId,olddiv:data.obj.olddiv,oldlocId:data.obj.oldlocId,olduserEmail:data.obj.olduserEmail,
-        olduserName:data.obj.olduserName,oldusertktNo:data.obj.oldusertktNo,getpassNo:data.obj.getpassNo,olddept:data.obj.olddept,transferBy:data.obj.transferBy,trnsRemarks:data.obj.trnsRemarks,
+        olduserName:data.obj.olduserName,oldusertktNo:data.obj.oldusertktNo,getpassNo:data.obj.getpassNo,olddept:data.obj.olddept,transferBy:data.obj.transferBy,trnsRemarks:data.obj.trnsRemarks,newdeptId:data.obj.newdeptId,
         newloc:sessionStorage.getItem('locName'),newcomp:sessionStorage.getItem('compCode'),newcityId:sessionStorage.getItem('ouId'),newdivId:sessionStorage.getItem('divisionId')})
     }
   );
@@ -384,6 +415,29 @@ this.recivedFrom.get('newloc')?.disable();
     );
   }
 
+
+
+  RecivedPrint(){
+
+    this.closeResetButton = false;
+      this.progress = 0;
+      this.dataDisplay = 'Report Is Running....Do not refresh the Page';
+      var transDate = this.recivedFrom.get('ReceivedDate')?.value;
+      var fromDate = this.pipe.transform(transDate, 'dd-MMM-yyyy');
+      var city = sessionStorage.getItem('ouId');
+      var locname = this.recivedFrom.get('newLocId')?.value;
+      var oldlocId = this.recivedFrom.get('oldlocId')?.value;
+      const fileName = 'Asset Recieved Print From Location-'+ oldlocId + '.pdf';
+      
+      const EXT = fileName.substr(fileName.lastIndexOf('.') + 1);
+      this.service.AssetRecievdPrintForm(fromDate,city,locname,oldlocId)
+        .subscribe(data => {
+          saveAs(new Blob([data], { type: MIME_TYPES[EXT] }), fileName);
+          this.closeResetButton = true;
+          this.dataDisplay = ''
+         
+        })
+  }
 
 
    }

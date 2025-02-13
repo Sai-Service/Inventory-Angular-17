@@ -93,7 +93,7 @@
             <td> <input type='number' uppercase formControlName="erpLocId"  class="form-control"  placeholder="Enter ERP Location Id"  ></td> 
         </tr>
         
-        <tr>
+        <!-- <tr>
             <td style="width: 15%" class="LabelFontStyle1"> Start&nbsp;&nbsp;Date: </td>
             <div *ngIf="displaystartDate; then thenstartDate; else elsestartDate"></div>
             <ng-template #thenstartDate>            
@@ -107,7 +107,58 @@
             <td style="width: 15%" class="LabelFontStyle1"> Status&nbsp;&nbsp;: </td>
             <td> <input type='text' uppercase formControlName="status"  class="form-control"    ></td> 
              
+          </tr> -->
+
+
+          <tr>
+            <td style="width: 15%" class="LabelFontStyle1"> Start&nbsp;&nbsp;Date: </td>
+            <div *ngIf="displaystartDate; then thenstartDate; else elsestartDate"></div>
+            <ng-template #thenstartDate>            
+            <td > <input type="date" formControlName="startDate" [(ngModel)]='startDate' value={{startDate}} 
+                            class="form-control"  (change)="validateStartDate(startDate)" style="background-color: yellow;"></td>
+            </ng-template>
+            <ng-template #elsestartDate>     
+                <td > <input type="date" formControlName="startDate"  value={{startDate}} 
+                    class="form-control"    ></td>
+            </ng-template>
+             
+            <!-- <td style="width: 15%" class="LabelFontStyle1"> Status&nbsp;&nbsp;: </td> -->
+            <td style="width: 15%" class="LabelFontStyle1"> Status&nbsp;&nbsp;: </td>
+                <div *ngIf="displayStatus; then statusLovNo; else statusLovYes"></div>
+                <ng-template #statusLovNo> 
+                <td > <input  type='text' formControlName="status" [(ngModel)]='status' value={{status}} class="form-control" ></td>
+                </ng-template>
+                <ng-template #statusLovYes> 
+                        <td>
+                            <select formControlName="status" id="status" class="form-control"  
+                            [(ngModel)]="status" (change)='onOptionsSelectede($event)'>
+                            <option disabled>--Select--</option>
+                            <option *ngFor="let sc of  statusList" [ngValue] ="sc.codeDesc">
+                                {{sc.codeDesc}}
+                            </option>
+                        </select>
+                        </td>
+                </ng-template>
+                     <!-- <td></td> -->
+                     <td></td>
+    
+                <div *ngIf="displayInactive; then thenBlockInactive; else elseBlockInactive"></div>
+                <ng-template #thenBlockInactive>
+                </ng-template>
+                <ng-template #elseBlockInactive>
+                    <tr>
+                        <td style="width: 15%" class="LabelFontStyle1">
+                            Inactive&nbsp;Date:&nbsp;
+                        </td>
+                        <td>
+                            <input  type='date' formControlName="endDate" class="form-control"
+                                [ngModel]="endDate | date:'yyyy-MM-dd'">
+                        </td>
+                    </tr>
+                </ng-template>
           </tr>
+          <tr>
+    
     
     </table>    
     </fieldset>

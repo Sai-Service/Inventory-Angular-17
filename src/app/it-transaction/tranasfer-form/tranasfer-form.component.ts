@@ -11,9 +11,13 @@ import * as xlsx from 'xlsx';
 import { trim } from 'jquery';
 import { TypeofExpr } from '@angular/compiler';
 import { HttpClient } from '@angular/common/http';
+import { saveAs } from 'file-saver';
 
-
-
+const MIME_TYPES:any = {
+  pdf: 'application/pdf',
+  xls: 'application/vnd.ms-excel',
+  xlsx: 'application/vnc.openxmlformats-officedocument.spreadsheetxml.sheet'
+};
 
 
 interface ItransformMaster{
@@ -46,7 +50,8 @@ oldusertktNo:string;
 olduserName:string; 
 userContact:string;
 olduserEmail:string; 
-
+division:number;
+dept:number;
 newDept:string;
 receivedDate:String;
 recivedYN:string;
@@ -54,9 +59,11 @@ receivedBy:String;
 trnsRemarks:string;
 transferBy:string;
 getpassNo:String;
-
+TrnsDate:Date;
 createdBy:string;
 lastupdatedBy:string;
+newLocId:Number;
+assetCondition:string;
 
 }
 
@@ -108,16 +115,23 @@ export class TranasferFormComponent {
   getpassNo:String;
   createdBy:string;
   lastupdatedBy:string;
-
+  TrnsDate:Date;
   displayButton = true;
   displayEndDate=false;
   displaystartDate=true;
   pipe = new DatePipe('en-US');
   displayStatus = false;
- 
-
+  newLocId:Number;
+  maxDate = new Date();
+  minDate = new Date();
   today = new Date();
   Today = '';
+  closeResetButton = true;
+  display:any;
+  dataDisplay:any;
+  progress = 0;
+  division:number;
+dept:number;
 
    public allassettransferList:any[];
   public AllcityitemList: any=[];
@@ -138,6 +152,7 @@ export class TranasferFormComponent {
   public getsearchassettrnsData:any[];
   getRecivedLocationId:any;
   transferBymembers:any[];
+  assetCondition:string;
 
 
 
@@ -188,6 +203,11 @@ transferBy:[],
 getpassNo:[],
 createdBy:[],
 lastupdatedBy:[],
+TrnsDate:[],
+newLocId:[],
+assetCondition:[],
+division:[],
+dept:[],
 
 
 
@@ -424,23 +444,21 @@ closeMast() {
 
         if (formValue.newlocId === undefined || formValue.newlocId === null) {
           this.checkValidation = false;
-          msg1 = "New Location No: Should not be null....";
+          msg1 = "New Location : Should not be null....";
           alert(msg1);
           return;
     }
 
        if (formValue.newcityId === undefined || formValue.newcityId === null) {
-      this.checkValidation = false;
-      
-       msg1 = "New City No: Should not be null....";
+      this.checkValidation = false; 
+       msg1 = "New City : Should not be null....";
             alert(msg1);
             return;
       }
 
       if (formValue.newcomp === undefined || formValue.newcomp === null) {
         this.checkValidation = false;
-        
-         msg1 = "New Company No: Should not be null....";
+         msg1 = "New Company : Should not be null....";
               alert(msg1);
               return;
         }
@@ -452,18 +470,18 @@ closeMast() {
   }
   
 
-  newMast() {  
-    // alert('Asset Transfer !!!!! ')
-    const formValue: ItransformMaster = this.transData(this.TransferForm.value);
-    this.CheckDataValidations();
-    if (this.checkValidation === true) {
-      console.log(formValue);
-      
+  newMast() {
+    const formValue:ItransformMaster= this.transData(this.TransferForm.getRawValue());
+    console.log(formValue); 
+    // if (this.checkValidation === true) {
+    //   this.CheckDataValidations(); 
+     
     this.service.AssettransferSubmit(formValue).subscribe((res: any) => {
       if (res.code === 200) {
         alert(res.message);    
         this.TransferForm.disable();
         this.AssettransIdFindFN(res.obj.transferId);
+        this.TransferForm.patchValue({ transferId: res.obj.transferId });
         this.displayButton=true;
         this.pipe.transform(res.obj.transferDate, 'yyyy-MM-dd') 
       } else {
@@ -473,11 +491,10 @@ closeMast() {
         }
       }
     });
-  }
+  // }
   }
 
   updateMast() {
-
     const formValue: ItransformMaster = this.TransferForm.getRawValue();
     this.service.UpdateAssettransferMasterById(formValue, formValue.transferId).subscribe((res: any) => {
       if (res.code === 200) {
@@ -533,6 +550,50 @@ closeMast() {
        return;
      }
 
+
+
+
+    //  TnasferPrint(){
+    //   this.closeResetButton = false;
+    //   this.progress = 0;
+    //   this.dataDisplay = 'Report Is Running....Do not refresh the Page';
+    //   var transDate = this.TransferForm.get('TrnsDate')?.value;
+    //   var fromDate = this.pipe.transform(transDate, 'dd-MMM-yyyy');
+    //   var city = sessionStorage.getItem('ouId');
+    //   var locname = this.TransferForm.get('newLocId')?.value;
+    //   const fileName = 'Asset Transfer Print To Location-'+ this.newLocId + '.pdf';
+      
+    //   const EXT = fileName.substr(fileName.lastIndexOf('.') + 1);
+    //   this.service.AssetTransPrintForm(fromDate,city,locname)
+    //     .subscribe(data => {
+    //       saveAs(new Blob([data], { type: MIME_TYPES[EXT] }), fileName);
+    //       this.closeResetButton = true;
+    //       this.dataDisplay = ''
+         
+    //     })
+    // }
+
+
+    TnasferPrint(){
+      this.closeResetButton = false;
+      this.progress = 0;
+      this.dataDisplay = 'Report Is Running....Do not refresh the Page';
+      var transDate = this.TransferForm.get('TrnsDate')?.value;
+      var fromDate = this.pipe.transform(transDate, 'dd-MMM-yyyy');
+      var city = sessionStorage.getItem('ouId');
+      var locname = this.TransferForm.get('newLocId')?.value;
+      var OldLoId = this.TransferForm.get('oldlocId')?.value;
+      const fileName = 'Asset Transfer Print To Location-'+ locname + '.pdf';
+      
+      const EXT = fileName.substr(fileName.lastIndexOf('.') + 1);
+      this.service.AssetTransPrintForm(fromDate,city,locname,OldLoId)
+        .subscribe(data => {
+          saveAs(new Blob([data], { type: MIME_TYPES[EXT] }), fileName);
+          this.closeResetButton = true;
+          this.dataDisplay = ''
+         
+        })
+    }
 }
 
 

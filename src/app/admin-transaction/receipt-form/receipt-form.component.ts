@@ -184,7 +184,7 @@ receiptNo1:number;
 
   poFind(){ 
    var poNo= this.adminReceiptFrom.get('poNo')?.value;
-    this.service.adheaderIdFindReceiptFN(poNo)
+    this.service.adheaderIdFindReceiptFN1(poNo,sessionStorage.getItem('locId'))
     .subscribe(
       data => {
         if (data.code===200){
@@ -267,7 +267,7 @@ receiptNo1:number;
 
   receiptFind(){
     var receiptNo= this.adminReceiptFrom.get('receiptNo1')?.value;
-    this.service.receiptNoFindFn(receiptNo)
+    this.service.receiptNoFindFn1(receiptNo,sessionStorage.getItem('locId'))
     .subscribe(
       data => {
         if (data.code===200){

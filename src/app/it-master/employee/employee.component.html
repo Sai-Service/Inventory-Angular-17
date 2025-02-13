@@ -62,13 +62,14 @@
                         </option>
                     </select>
                 </td>
-
+                <!-- <div *ngIf="displayLocName; then locNamet; else locNameN"></div>
+                <ng-template #locNamet> -->
                 <td style="width: 15%" class="LabelFontStyle1"> Location&nbsp;&nbsp;: </td>
                 <td [style.display]="isVisibleSupAdminloc ? 'block' : 'none' ">
                     <select type='number' formControlName="locId" id="locId" class="form-control" style="background-color: yellow;">
                         <!-- <option>ALLlocIdList</option> -->
                         <option *ngFor="let sc of  ALLlocIdList" [ngValue]="sc.locId" >
-                            {{sc.locId}}-{{sc.locName}}
+                            {{sc.locName}}
                         </option>
                     </select>
                 </td>
@@ -76,10 +77,22 @@
                     <select type='number' formControlName="locId" id="locId" class="form-control" style="background-color: rgb(255, 255, 255);">
                         <!-- <option></option> -->
                         <option *ngFor="let sc of  locIdList" [ngValue]="sc.locId" >
-                            {{sc.locId}}-{{sc.locName}}
+                            {{sc.locName}}
                         </option>
                     </select>
                 </td>
+                <!-- </ng-template>
+                <ng-template #locNameN>
+                    <td style="width: 15%" class="LabelFontStyle1"> Location&nbsp;&nbsp;:</td>
+                    <td>
+                        <select type='number' formControlName="locId" id="locId" class="form-control" style="background-color: rgb(255, 255, 255);">                         
+                            <option *ngFor="let sc of  locIdList" [ngValue]="sc.locId" >
+                                {{sc.locName}}
+                            </option>
+                        </select>
+                    </td>
+                
+                </ng-template> -->
             </tr>
 
             <tr>
@@ -100,12 +113,12 @@
             <td>
                 <select type='text' formControlName="designation" id="designation" class="form-control" style="background-color: yellow;" (change)="findByDesCode($event)">
                     <!-- <option></option> -->
-                    <option *ngFor="let sc of  DesignationList" [ngValue]="sc.codeDesc"  >
+                    <option *ngFor="let sc of  DesignationList" [ngValue]="sc.codeDesc">
                         {{sc.codeDesc}}   
                     </option>
                 </select>
             </td>
-            <input type="number"  formControlName="desgId" >
+            <input type="number" hidden formControlName="desgId" >
             <td style="width: 15%" class="LabelFontStyle1"> Title&nbsp;&nbsp;: </td>
             <td>
                 <select  type='text' formControlName="title" id="title" class="form-control" style="background-color: yellow;">
@@ -185,7 +198,7 @@
             <ng-template #thenEndDate> 
             <td style="width: 15%" class="LabelFontStyle"> End&nbsp;&nbsp;Date: </td>
             <td > <input  type='date' formControlName="endDt" [(ngModel)]='endDt' value={{endDt}} 
-                class="form-control"   ></td>
+                class="form-control" ></td>
             </ng-template>
             <ng-template #elseEndDate> 
             </ng-template> -->

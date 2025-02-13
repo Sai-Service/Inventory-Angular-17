@@ -421,4 +421,12 @@ export class ItmasterService {
     return this.http.get(this.ServerUrl + `/CodeTypeMst/AllAdmin?attribute4=${dept}&status=${sts}`);
   }
 
+
+
+  FAupdatecsvUpoadDocument(formData: FormData ,file:any,createdBY:any ) {
+    formData.append('file', file);
+    // formData.append('headerId',headerId)
+    const REQUEST_URI = this.ServerUrl + `/ItemMst/FaUpdateCSV?lastUpdatedBy=${createdBY}`;
+    return this.http.post(REQUEST_URI, formData);
+  }
 }

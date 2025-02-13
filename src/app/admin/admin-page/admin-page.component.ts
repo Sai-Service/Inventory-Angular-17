@@ -49,6 +49,7 @@ export class AdminPageComponent {
   isVisibleAdminUserTransaction:boolean=false;
   isVisibleAdminUserReport:boolean=false;
   isVisibleBudgetTransaction:boolean=false;
+  isVisibleAccountAllReport:boolean=false
 
   constructor(private fb: FormBuilder, private router: Router,) {
     // constructor(private router: Router ) {
@@ -152,6 +153,30 @@ export class AdminPageComponent {
      this.isVisibleAdminUserReport=false;
      this.isVisibleBudgetTransaction=true;
     }
+    
+
+    if  (sessionStorage.getItem('deptName')==='ACCOUNTS-DDL'){
+      if (sessionStorage.getItem('role')==='FA'){
+      this.isVisibleEmployeeMaster=false;
+      this.isVisibleAllMaster=false;
+      this.isVisibletansaction=false;
+      this.isVisibleItReports=false;
+      this.isVisibleAdminTransaction=false;
+      this.isVisibleAdminAllMaster=false;
+      this.isVisibleAdminReports=false;
+      this.isVisibleAdminUserTransaction=false;
+      this.isVisibleAdminUserReport=false;
+      this.isVisibleBudgetTransaction=false;
+      this.isVisibleAccountAllReport=true;
+      }
+     }
+
+
+
+
+
+
+
     if  (sessionStorage.getItem('deptName')==='IT DEPARTMENT'){
       if (sessionStorage.getItem('role')==='Admin'){
         this.isVisibleEmployeeMaster=true;
@@ -160,7 +185,7 @@ export class AdminPageComponent {
         this.isVisibleItReports=true;
         this.isVisibleAdminTransaction=false;
         this.isVisibleAdminAllMaster=false;
-        this.isVisibleAdminReports=true;
+        this.isVisibleAdminReports=false;
         this.isVisibleAdminUserTransaction=false;
         this.isVisibleAdminUserReport=false;
         this.isVisibleBudgetTransaction=true;
@@ -183,7 +208,7 @@ export class AdminPageComponent {
     }
   
     if (sessionStorage.getItem('deptName') !='ADMIN'){
-      if (sessionStorage.getItem('deptName') !='IT DEPARTMENT'){
+      if (sessionStorage.getItem('deptName') !='IT DEPARTMENT' && sessionStorage.getItem('deptName') !='ACCOUNTS-DDL'){
       this.isVisibleAdminUserTransaction=true;
       this.isVisibleAdminUserReport=true;
       }

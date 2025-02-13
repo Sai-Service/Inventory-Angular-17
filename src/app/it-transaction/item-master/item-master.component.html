@@ -1,7 +1,14 @@
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+    crossorigin="anonymous"></script>
 
 
 
@@ -91,8 +98,11 @@
                             <td> <input type='number' formControlName="itemId" class="form-control"
                                     style="background-color: rgb(143, 255, 148);"></td>
                             <td style="width: 15%" class="LabelFontStyle">Item&nbsp;Code&nbsp;: </td>
-                            <td> <input type='text' formControlName="itemCode" value="itemCode"
-                                    class="form-control" style="background-color:  rgb(143, 255, 148);"></td>
+                            <td> <input type='text' formControlName="itemCode" value="itemCode" class="form-control"
+                                    style="background-color:  rgb(143, 255, 148);"></td>
+
+
+                                    
                             <td style="width: 15%" class="LabelFontStyle1"> Item&nbsp;&nbsp;Type: </td>
                             <td>
                                 <select type='number' formControlName="itemTypeId" id="itemTypeId" class="form-control"
@@ -137,9 +147,8 @@
                     <table class="center">
                         <tr>
                             <td style="width: 15%" class="LabelFontStyle1"> City&nbsp;: </td>
-                            <input  type="text" formControlName="loginArray1" id="loginArray1"
-                                [(ngModel)]="loginArray1" class="form-control"
-                                style="width: 200px; border-color: black;">
+                            <input type="text" formControlName="loginArray1" id="loginArray1" [(ngModel)]="loginArray1"
+                                class="form-control" style="width: 200px; border-color: black;">
 
                             <input hidden type='number' uppercase formControlName="city" class="form-control">
 
@@ -156,8 +165,8 @@
                             </ng-template>
                             <ng-template #actNo>
 
-                                <select hidden type='number'  formControlName="city" id="city"
-                                    [(ngModel)]="city" class="form-control">
+                                <select hidden type='number' formControlName="city" id="city" [(ngModel)]="city"
+                                    class="form-control">
                                     <option *ngFor="let sc of  locIdList" [value]="sc.city">
                                         {{sc.ouCity}}
                                     </option>
@@ -532,23 +541,59 @@
                                 </table>
                             </td>
 
+
+                            <!-------------------------------------------------------------------------------------------------->
                             <td style="width: 15%" class="LabelFontStyle1">Purchase&nbsp;&nbsp;Date: </td>
-                            <td> <input type='text' uppercase formControlName="purchaseDt"
-                                    class="form-control"></td>
+                            <td>
+                                <div *ngIf="displaypurchasedate; then thendateenter; else elsedateentr"></div>
+                                <ng-template #thendateenter>
+                            <td> <input type='date' formControlName="purchaseDt" class="form-control"></td>
+                            </ng-template>
+                            <ng-template #elsedateentr>
+                                <td> <input type='text' readonly uppercase formControlName="purchaseDt"
+                                        class="form-control"></td>
+                            </ng-template>
+                            </td>
+
 
                         </tr>
                         <tr>
                             <td style="width: 15%" class="LabelFontStyle"> Purchase&nbsp;&nbsp;Cost: </td>
                             <td> <input type='number' formControlName="purchaseCost" class="form-control"
                                     style="background-color: yellow;"></td>
+
                             <td style="width: 15%" class="LabelFontStyle1"> Vendor&nbsp;&nbsp;Name: </td>
                             <td>
-                                <input type='text' readonly formControlName="vendorName" class="form-control">
-                            </td>
-                            <td style="width: 15%"  class="LabelFontStyle1">Warranty&nbsp;End&nbsp;Date: </td>
-                            <td> <input type='text'   formControlName="warrntyDt" class="form-control">
+                                <div *ngIf="displayvendoraname; then thendatecost; else elsedatecost"></div>
+                                <ng-template #thendatecost>
+                            <!-- <td> <input type='text' formControlName="vendorName" class="form-control"></td> -->
+                            <select type='text' formControlName="vendorName" id="vendorName" class="form-control"
+                                    style="background-color: yellow;">
+                                    <!-- <option></option> -->
+                                    <option *ngFor="let sc of  AllvendornameList" [ngValue]="sc.vendorName">
+                                        {{sc.vendorName}}
+                                    </option>
+                                </select>
+
+                        </ng-template>
+                            <ng-template #elsedatecost>
+                                <td> <input type='text' readonly uppercase formControlName="vendorName"
+                                        class="form-control"></td>
+                            </ng-template>
                             </td>
 
+
+                            <td style="width: 15%" class="LabelFontStyle1">Warranty&nbsp;End&nbsp;Date: </td>
+                            <td>
+                                <div *ngIf="displaywarrantydate; then thenwarrntydte; else elsewarrantydte"></div>
+                                <ng-template #thenwarrntydte>
+                            <td> <input type='date' formControlName="warrntyDt" class="form-control"></td>
+                            </ng-template>
+                            <ng-template #elsewarrantydte>
+                                <td> <input type='text' readonly uppercase formControlName="warrntyDt"
+                                        class="form-control"></td>
+                            </ng-template>
+                            </td>
                         </tr>
                     </table>
                 </fieldset>
@@ -607,24 +652,24 @@
                             </td>
                             <td></td>
                             <td>
-                            <div *ngIf="showIPDetails; then IPYes; else IPNo;"></div>
-                            <ng-template #IPYes>
-                             <input type='text' uppercase formControlName="ipAddress" class="form-control"
+                                <div *ngIf="showIPDetails; then IPYes; else IPNo;"></div>
+                                <ng-template #IPYes>
+                                    <input type='text' uppercase formControlName="ipAddress" class="form-control"
                                         style="background-color:  rgb(252, 251, 247);">
-                            </ng-template>
-                            <ng-template #IPNo>
-                            </ng-template>
-                        </td>
+                                </ng-template>
+                                <ng-template #IPNo>
+                                </ng-template>
+                            </td>
                             <td style="width: 15%" class="LabelFontStyle1">USB&nbsp;Blocked&nbsp;: </td>
                             <td>
-                            <select type='text' formControlName="usbBlocked" id="usbBlocked" class="form-control"
-                                style="background-color: yellow;">
-                                <option>Yes</option>
-                                <option>No</option>
-                                <option>Not Applicable</option>
+                                <select type='text' formControlName="usbBlocked" id="usbBlocked" class="form-control"
+                                    style="background-color: yellow;">
+                                    <option>Yes</option>
+                                    <option>No</option>
+                                    <option>Not Applicable</option>
 
-                            </select>
-                        </td>
+                                </select>
+                            </td>
                             <td></td>
 
 
@@ -650,15 +695,18 @@
                                 </select>
                             </td>
                             <td>
-                            <div *ngIf="showFADetails; then FAYes; else FANo"></div>
-                            <ng-template #FAYes>
+                                <div *ngIf="showFADetails; then FAYes; else FANo"></div>
+                                <ng-template #FAYes>
 
-                                 <input type='text' uppercase formControlName="faNo" class="form-control"
-                                        style="background-color:  rgb(252, 251, 247);">
-                            </ng-template>
-                            <ng-template #FANo>
-                            </ng-template>
-                        </td>
+                                    <input type='text' uppercase formControlName="faNo" class="form-control"
+                                        style="background-color:  rgb(252, 251, 247);" (input)="onInputChange()">
+                                </ng-template>
+                                <ng-template #FANo>
+                                </ng-template>
+                            </td>
+                            <input type='text' hidden uppercase formControlName="attribute3" class="form-control"
+                                        style="background-color:  rgb(252, 251, 247);" >
+                            
                         </tr>
                     </table>
                 </fieldset>
@@ -676,8 +724,8 @@
                     <table class="center">
                         <tr>
                             <td style="width: 15%" class="LabelFontStyle">Item&nbsp;Code&nbsp;: </td>
-                            <td> <input type='text'  uppercase formControlName="monitemCode"
-                                    class="form-control" style="background-color: rgb(143, 255, 148);"></td>
+                            <td> <input type='text' uppercase formControlName="monitemCode" class="form-control"
+                                    style="background-color: rgb(143, 255, 148);"></td>
                             <td style="width: 15%" class="LabelFontStyle">&nbsp;Make&nbsp;: </td>
                             <td>
                                 <select type='text' formControlName="monitorMake" id="monitorMake" class="form-control">
@@ -705,16 +753,18 @@
                         </tr>
                         <tr>
                             <td style="width: 15%" class="LabelFontStyle1">Monitor&nbsp;Fixed&nbsp;Asset&nbsp;No: </td>
-                            <td> <input uppercase type='text' formControlName="monitorfaNo"
-                                    class="form-control" style=" background-color:  rgb(255, 238, 2);"></td>
+                            <td> <input uppercase type='text' formControlName="monitorfaNo" class="form-control"
+                                    style=" background-color:  rgb(255, 238, 2);"></td>
 
                             <td> <input hidden type='text' uppercase formControlName="status" class="form-control"
                                     style="background-color:   rgb(255, 238, 2);"></td>
 
-                            <td> <input hidden type='text' uppercase formControlName="createdBy" class="form-control">
+                            <td> <input hidden type='text'  formControlName="createdBy" class="form-control">
                             </td>
-                            <td> <input hidden type='text' uppercase formControlName="lastUpdatedBy"
+                            <td> <input  type='text' hidden  formControlName="lastUpdatedBy"
                                     class="form-control"></td>
+
+                            <td> <input  type='text'  hidden formControlName="attribute5" class="form-control"></td>        
                         </tr>
                     </table>
                 </fieldset>
@@ -727,53 +777,58 @@
 
                 <div *ngIf="displayButton4; then thenBlock4; else elseBlock4"></div>
                 <ng-template #thenBlock4>
-                   
-                    <td> 
-                       
-                        <button type="submit" class="btn btn-primary" id="register" data-toggle="modal" style="width: fit-content;"
-                            data-target="#confirmAlert" (click)="getMessage('newMast')">Save</button>
-                 </td>
-                   
-                    <td> 
+
+                    <td>
+
+                        <button type="submit" class="btn btn-primary" id="register" data-toggle="modal"
+                            style="width: fit-content;" data-target="#confirmAlert"
+                            (click)="getMessage('newMast')">Save</button>
+                    </td>
+
+                    <td>
                         <!-- <button type="submit" class="btn btn-info" id="register" data-toggle="modal"
                             data-toggle="modal" data-target="#confirmAlert"
                             (click)="getMessage('resetMast')">Reset</button> -->
-                            <button type="submit" class="btn btn-primary" id="register" data-toggle="modal" style="width: fit-content;"
-                            data-target="#confirmAlert" (click)="getMessage('resetMast')">Reset</button>
-                        </td>
+                        <button type="submit" class="btn btn-primary" id="register" data-toggle="modal"
+                            style="width: fit-content;" data-target="#confirmAlert"
+                            (click)="getMessage('resetMast')">Reset</button>
+                    </td>
                     <td>
-                         <!-- <button type="submit" class="btn btn-info" id="register" data-toggle="modal"
+                        <!-- <button type="submit" class="btn btn-info" id="register" data-toggle="modal"
                             data-target="#confirmAlert" (click)="getMessage('closeMast')"
                             (click)="closeMast()">Close</button> -->
-                            <button type="submit" class="btn btn-primary" id="register" data-toggle="modal" style="width: fit-content;"
-                            data-target="#confirmAlert" (click)="getMessage('closeMast')" >Close</button>
-                        </td>
+                        <button type="submit" class="btn btn-primary" id="register" data-toggle="modal"
+                            style="width: fit-content;" data-target="#confirmAlert"
+                            (click)="getMessage('closeMast')">Close</button>
+                    </td>
 
                     <td><button type="submit" class="btn btn-info" id="register" style="width: fit-content;"
                             [routerLink]="['/admin/itTransaction/itemMsrchFrm']">Item Master List</button></td>
                 </ng-template>
                 <ng-template #elseBlock4>
 
-                    <td [style.display]="isVisibleupdateBIM ? 'block' : 'none' "> 
+                    <td [style.display]="isVisibleupdateBIM ? 'block' : 'none' ">
                         <!-- <button type="submit"
                             class="btn btn-info" id="register" data-toggle="modal" data-target="#confirmAlert"
                             (click)="getMessage('updateMast')">Update</button> -->
-                            <button type="submit" class="btn btn-primary" id="register" data-toggle="modal" style="width: fit-content;"
-                            data-target="#confirmAlert" (click)="getMessage('updateMast')">Update</button>
-                        </td>
-                   
-                    <td> 
+                        <button type="submit" class="btn btn-primary" id="register" data-toggle="modal"
+                            style="width: fit-content;" data-target="#confirmAlert"
+                            (click)="getMessage('updateMast')">Update</button>
+                    </td>
+
+                    <td>
                         <!-- <button type="submit" class="btn btn-info" id="register" data-toggle="modal"
                             data-target="#confirmAlert" (click)="getMessage('resetMast')">Reset</button> -->
-                            <button type="submit" class="btn btn-primary" id="register" data-toggle="modal" style="width: fit-content;"
-                            data-target="#confirmAlert" (click)="getMessage('resetMast')">Reset</button>
-                        </td>
-                    <td> 
+                        <button type="submit" class="btn btn-primary" id="register" data-toggle="modal"
+                            style="width: fit-content;" data-target="#confirmAlert"
+                            (click)="getMessage('resetMast')">Reset</button>
+                    </td>
+                    <td>
                         <button type="submit" class="btn btn-info" id="register" data-toggle="modal"
                             data-target="#confirmAlert" (click)="getMessage('closeMast')">Close</button>
-                            <!-- <button type="submit" class="btn btn-primary" id="register" data-toggle="modal" style="width: fit-content;"
+                        <!-- <button type="submit" class="btn btn-primary" id="register" data-toggle="modal" style="width: fit-content;"
                             data-target="#confirmAlert"  (click)="closeMast()" (click)="getMessage('closeMast')">Close</button> -->
-                        </td>
+                    </td>
                     <!-- <td><button type="submit" class="btn btn-info" id="register" style="width: fit-content;" [routerLink]="['/admin/transaction/itemlistf']">Item Master List</button></td> -->
                     <button type="button" class="btn-primary" style="width: 150px; height: 25px;" data-toggle="modal"
                         (click)="reportDetails()">
@@ -789,38 +844,39 @@
 </form>
 
 
-<div class="modal fade" id="confirmAlert" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="width: 30%;margin-left: 35%;">
+<div class="modal fade" id="confirmAlert" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true" style="width: 30%;margin-left: 35%;">
     <div class="modal-dialog modal-sm" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <label
+                    style="font-size: small; color: black; font-weight: bold; text-align: center; vertical-align: middle;">
+                    {{message}}
+                </label>
+            </div>
+            <div class="modal-footer">
+                <table class="center">
+                    <tr>
+                        <td>
+                            <button type="button" class="btn btn-info" data-dismiss="modal" id="register"
+                                (click)="executeAction()">Yes</button>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-info" data-dismiss="modal">No</button>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
         </div>
-        <div class="modal-body">
-            <label
-            style="font-size: small; color: black; font-weight: bold; text-align: center; vertical-align: middle;">
-            {{message}}
-        </label>
-        </div>
-        <div class="modal-footer">
-            <table class="center">
-                <tr>
-                    <td>
-                        <button type="button" class="btn btn-info" data-dismiss="modal" id="register"
-                            (click)="executeAction()">Yes</button>
-                    </td>
-                    <td>
-                        <button type="button" class="btn btn-info" data-dismiss="modal">No</button>
-                    </td>
-                </tr>
-            </table>
-          
-        </div>
-      </div>
     </div>
-  </div>
+</div>
 
 
 <!-- <div class="modal" id="confirmAlert" tabindex="-1" role="dialog" aria-hidden="true"

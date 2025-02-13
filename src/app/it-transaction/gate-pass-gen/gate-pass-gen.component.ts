@@ -31,6 +31,8 @@ interface gatepasGenerator {
   gpouId: Number;
   gptoLocname: string;
   gpvendName: string;
+  loginLocation:string;
+
 
 }
 
@@ -79,7 +81,11 @@ export class GatePassGenComponent {
   dataDisplay: any;
   progress = 0;
   lstcomments: any;
-
+  srlNo:number;
+  displayItemCode:Array<boolean>=[];
+  displayremovebutton:boolean=true;
+  displayLoction=false;
+  loginLocation:string;
 
 
 
@@ -93,18 +99,28 @@ export class GatePassGenComponent {
       toDate: [],
       createBy: [],
       gateType: [],
-      gpitemType: [],
-      gpDepName: [],
-      gpDiv: [],
-      gpOuName: [],
       gpRemark: [],
-      gpitemCode: [],
-      gitemSn: [],
       gatepassLoc: [],
       gptypeId: [],
       gpouId: [],
+      gpheaderId:[],
       gptoLocname: [],
       gpvendName: [],
+      loginLocation:[],
+      gatepassLines: this.fb.array([this.GateLinesGroup(),
+
+      ]),
+    })
+  }
+  GateLinesGroup() {
+    return this.fb.group({
+      srlNo:[],
+      gpitemCode: [],
+      gitemSn: [],
+      gatepassLoc: [],
+      gpDepName: [],
+      gpDiv: [],
+      gpitemType:[],
     })
   }
 
@@ -120,9 +136,13 @@ export class GatePassGenComponent {
 
   ngOnInit(): void{
     $("#wrapper").toggleClass("toggled");
+    this.displayItemCode[0]=true;
     var loginName = (sessionStorage.getItem('empName'));
-    this.gatePassForm.patchValue({ createBy: loginName });
+    var locName = (sessionStorage.getItem('locName'));
 
+    this.gatePassForm.patchValue({ createBy: loginName });
+    this.gatePassForm.patchValue({ loginLocation: locName });
+    
     var ouID = (sessionStorage.getItem('ouId'));
     this.gatePassForm.patchValue({ gpouId: ouID });
 
@@ -160,6 +180,14 @@ export class GatePassGenComponent {
     this.gatePassForm.get('gpDepName')?.disable();
     this.gatePassForm.get('gpDiv')?.disable();
 
+
+    var patch = this.gatePassForm.get('gatepassLines') as FormArray
+    (patch.controls[0]).patchValue(
+      {
+        srlNo: 1,
+
+      }
+    );
   }
 
 
@@ -172,44 +200,96 @@ export class GatePassGenComponent {
     this.router.navigate(['admin']);
   }
 
+  GatepasslineDetailsArray(): FormArray {
+    return <FormArray>this.gatePassForm.get('gatepassLines')
+  }
+  
+
+  addRow(i: number) {
+    this.displayItemCode[i]=false;
+      this.GatepasslineDetailsArray().push(this.GateLinesGroup());
+      var len = this.GatepasslineDetailsArray().length;
+      var patch = this.gatePassForm.get('gatepassLines') as FormArray;
+      (patch.controls[len - 1]).patchValue(
+        {
+          srlNo: len,
+         
+        }
+      );
+      this.displayItemCode[len-1]=true;
+
+  }
+
+  RemoveRow(i:number){
+    alert('you confirm to delate this line!!!!')
+    var gatepLineArrray = this.gatePassForm.get('gatepassLines') as FormArray;
+    var GatepLineArrrayDis = gatepLineArrray.getRawValue();
+    if (GatepLineArrrayDis.length === 1){
+      alert('Not Able to Delete This Line.!');
+      return;
+    }
+    this.GatepasslineDetailsArray().removeAt(i);
+  }
+
+
   GetPassgenData() {
-    const formValue: gatepasGenerator = this.gatePassForm.getRawValue();
-    this.service.GatepasssgenForm(formValue).subscribe((data: any) => {
-      if (data.code === 200) {
-        alert(data.message);
-        this.displayButton = false;
+    this.closeResetButton = true;
+    this.progress = 0;
+    this.dataDisplay = 'Bill Recorder Save is progress....Do not refresh the Page';
+    var orderLines = this.gatePassForm.get('gatepassLines')?.value;
+    var orderLinesNew = this.gatePassForm.get('gatepassLines') as FormArray;
+    const formValue = this.transData(this.gatePassForm.value);
+    console.log(formValue);
+    let jsonData = this.gatePassForm.getRawValue();
+    this.service.GatepasssgenForm(jsonData).subscribe((res: any) => {
+      if (res.code === 200) {
+         alert(res.message);
+        this.dataDisplay = 'Gate Pass Genreted Successfully';
         this.gatePassForm.disable();
-        this.gatePassForm.patchValue({ gatepassNo: data.obj.gatepassNo, gatepassId: data.obj.gatepassId });
-      } else {
-        if (data.code === 400) {
-          alert(data.message);
+        this.displayButton = false;
+        this.gatePassForm.patchValue({gatepassId: res.obj.gpheaderId });
+        this.gatePassForm.patchValue({gatepassNo: res.obj.gatepassNo });
+      
+      } 
+        if (res.code === 400) {
+          alert(res.message);
 
         }
-      }
+      
     });
   }
 
-  gpcodeFind(gatepassNo: any) {
-    // alert(gatepassNo)
+
+
+
+
+  gpcodeFind(gpcode: any) {
     this.displayButton = false;
     this.gatePassForm.get('gpitemCode')?.disable();
     this.gatePassForm.get('gatepassNo')?.disable();
     this.progress = 0;
     this.dataDisplay = '';
-    this.displayVendorAndLoc=true;
-    // this.isVisibleVendorlist = true;
-
-    // this.isVisibleloactionList = true;
-    // var gatepassNo = this.gatePassForm.get('gatepassNo').value;
-    // alert(gatepassNo);
-    this.service.gpCodeFindFN(sessionStorage.getItem('ouId'), gatepassNo)
+    this.displayVendorAndLoc = true;
+    var gpouId = sessionStorage.getItem('ouId')
+    this.service.gpCodeFindFN(gpcode,gpouId)
       .subscribe(
         data => {
           if (data.code == 200) {
-            this.gatePassForm.patchValue(data.obj);
-            this.gatePassForm.disable();
-            this.progress = 0;
-            this.dataDisplay = 'Data Display Successfuly';
+             this.GatepasslineDetailsArray().clear();
+            this.dataDisplay = 'Data Display Successfully....';
+            let control = this.gatePassForm.get('gatepassLines') as FormArray;
+            for (let i = 0; i < data.obj.gatepassLines.length; i++) {
+              var BillLinesAllList: FormGroup = this.GateLinesGroup();
+              console.log(BillLinesAllList);
+              control.push(BillLinesAllList);
+              this.displayItemCode[i] =false;
+              this.gatePassForm.disable();
+              this.gatePassForm.patchValue({gatepassId: data.obj.gpheaderId });
+              this.GatepasslineDetailsArray().controls[i].patchValue({srlNo: data.obj.srlNo, gpitemCode: data.obj.gpitemCode, gpDepName: data.obj.gpDepName, gitemSn: data.obj.gitemSn, gatepassLoc: data.obj.gatepassLoc})
+              this.progress = 0;
+              this.dataDisplay = 'Data Display Successfuly';
+              this.gatePassForm.patchValue(data.obj);
+            }
           }
           else {
             alert(data.message)
@@ -222,12 +302,14 @@ export class GatePassGenComponent {
 
   }
 
-  ItemCodeget(gpitemCode: any) {
-    this.service.ItemCodeGetSearchFn(sessionStorage.getItem('ouId'), gpitemCode)
+  ItemCodeget(event: any ,i:any) {
+    var itemCode=event.target.value;
+    this.service.ItemCodeGetSearchFn(sessionStorage.getItem('ouId'), itemCode)
       .subscribe(
         data => {
           if (data.code === 200) {
-            this.gatePassForm.patchValue({ gitemSn: data.obj.productserialNo, gpDepName: data.obj.deptName, gpDiv: data.obj.divName, gpitemType: data.obj.itemType, gatepassLoc: data.obj.locName })
+            this.GatepasslineDetailsArray().controls[i].patchValue({gitemSn: data.obj.productserialNo, gpDepName: data.obj.deptName, gpDiv: data.obj.divName, gpitemType: data.obj.itemsubType, gatepassLoc: data.obj.locName})
+            //this.gatePassForm.patchValue({ gitemSn: data.obj.productserialNo, gpDepName: data.obj.deptName, gpDiv: data.obj.divName, gpitemType: data.obj.itemType, gatepassLoc: data.obj.locName })
 
           } else {
             if (data.code === 400) {
@@ -247,18 +329,20 @@ export class GatePassGenComponent {
     if (gateType === 'SCRAP') {
       // this.isVisibleVendorlist = true;
       this.displayVendorAndLoc=true;
-      this.isVisibleloactionList = false;
+      // this.isVisibleloactionList = false;
+      this.displayLoction=false;
     }
     if (gateType === 'REPAIR') {
       // this.isVisibleVendorlist = true;
       this.displayVendorAndLoc=true;
-      this.isVisibleloactionList = false;
+      // this.isVisibleloactionList = false;
+      this.displayLoction=false;
 
     }
     if (gateType === 'TRANSFER') {
       // this.isVisibleVendorlist = false;
       this.displayVendorAndLoc=false;
-      this.isVisibleloactionList = true;
+      this.displayLoction = true;
     }
   }
 

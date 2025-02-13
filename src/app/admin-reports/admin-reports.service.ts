@@ -44,8 +44,40 @@ export class AdminReportsService {
   }
   
 
-  AdminRequsitionReport(ouId:any,fromDate:any,toDate:any){
-    const REQUEST_URI = this.ServerUrl +`/ReqReports/Req?city=${ouId}&fromDt=${fromDate}&toDt=${toDate}`;
+  AdminRequsitionReport(ouId:any,fromDate:any,toDate:any,location:any,cmntypeId:any){
+    const REQUEST_URI = this.ServerUrl +`/ReqReports/Req?city=${ouId}&fromDt=${fromDate}&toDt=${toDate}&location=${location}&cmntypeId=${cmntypeId}`;
+    return this.http.get(REQUEST_URI, {
+      responseType: 'arraybuffer',
+      headers: this.headers,
+    });
+  }
+
+//  /ReqReports/Req?city=106&fromDt=01-Nov-2024&toDt=07-Dec-2024&location=154&cmntypeId
+
+  // StockLedgerReport(fromDate:any,toDate:any,ouId:any,itemName:any){
+  //   const REQUEST_URI = this.ServerUrl +`/ReqReports/StockLedger?fromDate=${fromDate}&todate=${toDate}&locationId=${ouId}&itemName=${itemName}`;
+  //   return this.http.get(REQUEST_URI, {
+  //     responseType: 'arraybuffer',
+  //     headers: this.headers,
+  //   });
+  // }
+
+
+
+  StockLedgerReport(fromDate:any,toDate:any,ouId:any,itemName:any){
+    const REQUEST_URI = this.ServerUrl +`/ReqReports/StockLedger?fromDate=${fromDate}&todate=${toDate}&locationId=${ouId}&itemName=${itemName}`;
+    return this.http.get(REQUEST_URI, {
+      responseType: 'arraybuffer',
+      headers: this.headers,
+    });
+  }
+
+  TolocationIdList(ouId:any): Observable<any> {
+    return this.http.get(this.ServerUrl + `/locationMst/loc/${ouId}`);
+   }
+
+  AdminDirectRequsitionReport(ouId:any,fromDate:any,toDate:any){
+    const REQUEST_URI = this.ServerUrl +`//ReqReports/DIRECTISSUE?city=${ouId}&fromDt=${fromDate}&toDt=${toDate}`;
     return this.http.get(REQUEST_URI, {
       responseType: 'arraybuffer',
       headers: this.headers,
@@ -110,5 +142,15 @@ export class AdminReportsService {
       responseType: 'arraybuffer',
       headers: this.headers,
     });
+  }
+
+
+  onSelectReqItemNameFn(codeType:any): Observable<any> {
+    return this.http.get(this.ServerUrl + `/AdminItem/AllItems?category=${codeType}`); ////CodeTypeMst/REQ/REQ
+  }
+
+  
+  AllreqItemCatagList(): Observable<any> {
+    return this.http.get(this.ServerUrl + `/AdminItem/DistinctItems`);  ////CodeMst/dept/STATIONARY
   }
 }

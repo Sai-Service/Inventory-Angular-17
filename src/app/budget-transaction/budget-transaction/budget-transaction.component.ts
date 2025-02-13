@@ -105,11 +105,11 @@ export class BudgetTransactionComponent {
   AllbudgetitementyList:any=[];
   AllbudgetitementyListFN:any=[];
   isDisabled1 = false;
+  private sub: any;
 
 
 
-
-  constructor(private fb: FormBuilder, private router: Router,private service: BudgetTraService) {
+  constructor(private fb: FormBuilder, private router: Router,private service: BudgetTraService,private router1: ActivatedRoute) {
     this.Date = formatDate( this.date, 'dd-MM-yyyy', 'en-US'); 
     this.budgetTrns = fb.group({
       cityId:[],
@@ -176,7 +176,7 @@ export class BudgetTransactionComponent {
 
     this.service.TolocationIdList(sessionStorage.getItem('ouId')).subscribe(data => {
       this.locIdList = data.obj;
-      let locCodeList = this.locIdList.filter((locId:any) => (locId.locId === Number(sessionStorage.getItem('locId')))==false)
+      let locCodeList = this.locIdList.filter((locId:any) => (locId.locId ))
       console.log(locCodeList);
       this.locIdList=locCodeList;
   });
@@ -218,10 +218,45 @@ this.service.AllbudgetitemList()
         this.AllbudgetitementyList=data.obj;
       }
     );
+
+
+
+    this.sub = this.router1.params.subscribe((params:any) => {
+      this.budgetheaderId = params['budgetheaderId'];
+      if ( this.budgetheaderId != undefined) {
+        this.displayButton = false;
+        this.service.budgethedidFindFN(this.budgetheaderId)
+        .subscribe(
+          data => {
+        this.isVisiblebudgetaddDisable=true;
+        this.isVisiblebudgetalineDisable=true;
+        this.orderlineDetailsArray().clear();
+        this.budgetTrns.patchValue(data.obj);
+        let control = this.budgetTrns.get('budgetLines') as FormArray;
+        for (let i = 0; i < data.obj.budgetLines.length; i++) {
+          var BillLinesAllList1: FormGroup = this.BdgetkLinesGroup();  
+          control.push(BillLinesAllList1);
+          this.isVisiblebudgetentyDisable[i]=true;
+          this.orderlineDetailsArray().controls[i].patchValue({
+            itemId:data.obj.budgetLines[i].itemId,
+            budgetlineId:data.obj.budgetLines[i].budgetlineId,budgetItem:data.obj.budgetLines[i].budgetItem,actualAmount:data.obj.budgetLines[i].actualAmount,
+            buditemName:data.obj.budgetLines[i].buditemName,remark:data.obj.budgetLines[i].remark,budgetAmount:data.obj.budgetLines[i].budgetAmount,
+            srlNo:Number(i+1)
+          })
+          this.budgetTrns.patchValue({'totallines':data.obj.length})
+         this.isVisibleLocList=false;
+         this.isVisibleDivList=false;
+         this.isVisibleOpunitList=false;
+         this.isVisibleDeptList=false;
+         this.isVisibleFynlyerList=false;
+         this.updateTotAmtPerline(0)
+      }
+    })
+      };})}
     
     
   
-  }
+  
 
   disableAllItem(){
   
@@ -244,7 +279,7 @@ this.service.AllbudgetitemList()
 
 
   onlocationissueselect(event:any){
-    var locName = event.target.value;
+    var locName = event.target.value.trim();
     var locNameList = this.locIdList.find((d:any) => d.locName === locName)
     console.log(locNameList);
     var locId=locNameList.locId;
@@ -274,7 +309,7 @@ this.service.AllbudgetitemList()
     var buditemName1 = event.target.value; 
     // alert(buditemName1);
     var patch = this.budgetTrns.get('budgetLines')?.value;
-    var itemType1 = buditemName1.substr(buditemName1.indexOf(': ') + 1, buditemName1.length);
+    var itemType1 = buditemName1.substr(buditemName1.indexOf(':') + 1, buditemName1.length);
     console.log(this.AllbudgetitementyList);
     // debugger;
     for (let k = 0; k < patch.length;k++){
@@ -287,15 +322,11 @@ this.service.AllbudgetitemList()
       }
     }
     var itemLi = this.AllbudgetitementyList.find((itemName:any) => itemName.buditemName === itemType1);
-
     console.log(itemLi);
-    // debugger
-   
-    // alert(i)
     this.orderlineDetailsArray().controls[i].patchValue({ budgetlineId:itemLi.itemId,
       itemId:itemLi.itemId,
       actualAmount: itemLi.actualAmount,
-      budgetItem:itemLi.budgetItem,budgetAmount:0})
+      budgetItem:itemLi.budgetItem,budgetAmount:itemLi.budgetAmount})
    
 
    
@@ -319,7 +350,6 @@ this.service.AllbudgetitemList()
   }
 
   addRow(i:number){
-    
     this.orderlineDetailsArray().push(this.BdgetkLinesGroup());
     var len = this.orderlineDetailsArray().length;
     var patch = this.budgetTrns.get('budgetLines') as FormArray;
@@ -333,6 +363,7 @@ this.service.AllbudgetitemList()
     this.isVisibleremoveRow[len-1]=true;
     this.budgetTrns.patchValue({totallines:len})
   }
+
 
 
   RemoveRow(i:number){
@@ -362,17 +393,15 @@ this.service.AllbudgetitemList()
 
   onSelectVendorName(event:any){
     var suppName = event.target.value;
-    console.log(this.AllbudgetitemList);
-    let selectedValue = this.AllbudgetitemList.find((v:any) => v.buditemName == suppName);
-    console.log(selectedValue.itemId);
+   console.log(this.AllbudgetitemList);
+   let selectedValue = this.AllbudgetitemList.find((v:any) => v.buditemName == suppName);
+   console.log(selectedValue.itemId);
    this.budgetTrns.patchValue({advendId:selectedValue.itemId});
  
   }
 
 
   ProceedBudget(){
-  //   var headerId = this.billRecorderForm.get('headerId').value;
-  // this.displayButton = false;
   var cityId = this.budgetTrns.get('cityId')?.value;
   var compId = this.budgetTrns.get('companyId')?.value;
   var divId = this.budgetTrns.get('divisionId')?.value;
@@ -382,7 +411,6 @@ this.service.AllbudgetitemList()
   
     var patch = this.budgetTrns.get('budgetLines') as FormArray;
     this.orderlineDetailsArray().clear();  
-      // this.displayButton = false;
       this.service.ProceedbyFindFN(cityId,compId,divId,fyr,loId)
         .subscribe(
           data => {
@@ -398,7 +426,7 @@ this.service.AllbudgetitemList()
                 var BillLinesAllList1: FormGroup = this.BdgetkLinesGroup();
                 control.push(BillLinesAllList1);
                 this.isVisiblebudgetentyDisable[i]=true;
-                // this.isVisiblebudgetentyDisable[i]=true;
+                
                 this.orderlineDetailsArray().controls[i].patchValue({itemId:data.obj[i].itemId,
                   budgetlineId:data.obj[i].budgetlineId,budgetItem:data.obj[i].budgetItem,actualAmount:data.obj[i].actualAmount,
                   buditemName:data.obj[i].buditemName,remark:data.obj[i].remark,budgetAmount:data.obj[i].budgetAmount,
@@ -407,10 +435,7 @@ this.service.AllbudgetitemList()
                 this.budgetTrns.patchValue({'totallines':data.obj.length})
             }
           }
-          // else{
-          //   this.isVisiblebudgetentyDisable[i]=true
-
-          // }
+         
           this.budgetTrns.patchValue(data.obj);
           
         })
@@ -425,12 +450,12 @@ this.service.AllbudgetitemList()
           var orderLines = this.budgetTrns.get('budgetLines')?.value;
           var orderLinesNew = this.budgetTrns.get('budgetLines') as FormArray;
           const formValue = this.transData(this.budgetTrns.value);
-          // formValue.cityId = Number(sessionStorage.getItem('ouId'));
+
           console.log(formValue);
           this.service.BudgetrecoderSubmit(formValue).subscribe((res: any) => {
             if (res.code === 200) {
                alert(res.message);
-              // this.budgetTrns.disable();
+              
               this.displayButton = false;
               this.budgetheaderFN(res.obj.budgetheaderId)
 
@@ -448,9 +473,6 @@ this.service.AllbudgetitemList()
           var arrayControl = arrayControlNew.getRawValue();
           var budgetAmount = arrayControl[i].budgetAmount;
           var actualTotal = arrayControl[i].actualAmount;         
-              //  var budgetAmt = Math.round(((budgetAmount )+Number.EPSILON) * 100) / 100;
-              //  var patch = this.budgetTrns.get('budgetLines') as FormArray;
-              // //  patch.controls[i].patchValue({ budgetAmt: budgetAmt });
                this.updateTotAmtPerline(0)
 
 
@@ -478,7 +500,7 @@ this.service.AllbudgetitemList()
 
 
         }
-        // alert(actualTotal1);
+       
 
         this.budgetTrns.patchValue({ 'budgetTotal':budgetAmount1.toFixed(0),'actualTotal':actualTotal1.toFixed(0)});
       }
@@ -529,6 +551,7 @@ this.service.AllbudgetitemList()
       }
 
 
+
       Update(){
         // this.closeResetButton = false;
         // this.progress = 0;
@@ -564,7 +587,7 @@ this.service.AllbudgetitemList()
   getMessage(msgType: string) {
     this.msgType = msgType;
     if (msgType.includes("Save")) {
-     //  this.submitted = true;
+     
       (document.getElementById('saveBtn') as HTMLInputElement).setAttribute('data-target', '#confirmAlert');
    
       this.message = "Do you want to Save the changes(Yes/No)?"

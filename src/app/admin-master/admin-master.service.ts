@@ -136,7 +136,7 @@ export class AdminMasterService {
   } 
 
   cityList(): Observable<any> {
-    return this.http.get(this.ServerUrl + '/cmnLookup/City');
+    return this.http.get(this.ServerUrl + '/CodeMst/dept/CITY');
   }
 //////////////////////////////////////////VENDOR MASTER/////////////////////////////
 
@@ -214,6 +214,13 @@ export class AdminMasterService {
     return this.http.get(this.ServerUrl + '/CodeMst/dept/JAI_TDS_SECTION');
   }
 
+
+  AllmsmesupptypeList(): Observable<any> {
+    var msme='MSMETYPE';
+    var admin='ADMIN'
+    return this.http.get(this.ServerUrl + `/CodeTypeMst/AllReasons?cmnType=${msme}&attribute4=${admin}`);
+  }
+  
   locationCodeList(): Observable<any> {
     return this.http.get(this.ServerUrl + '/fndAcctLookup/lookupTypeWise/SS_Location');
   }
@@ -244,7 +251,7 @@ export class AdminMasterService {
     return this.http.get(this.ServerUrl + '/CodeMst/dept/State');
   }
   YesNoList(): Observable<any> {
-    return this.http.get(this.ServerUrl + '/cmnLookup/YesNo');
+    return this.http.get(this.ServerUrl + '/CodeMst/dept/YesNo');
   }
 
   supplierType(): Observable<any> {

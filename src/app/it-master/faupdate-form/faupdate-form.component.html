@@ -1,0 +1,76 @@
+<form [formGroup]="FAupdationFrom" (ngSubmit)="itfaupation(FAupdationFrom.value)">
+    <table style="width: 100%;background-color: white;" class="center">
+        <tr>
+            <td class="PageHeader">
+                &nbsp;FA&nbsp;CSV&nbsp;UPLOAD&nbsp;FORM&nbsp;
+            </td>
+        </tr>
+    </table>
+    <fieldset>
+        <table class="center">
+            <tr>
+                <div *ngIf="closeResetButton; then hList1; else hList2"></div>
+                <ng-template #hList2>
+                    <div class="d-flex justify-content-center">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only" id="loading"></span>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template #hList1> </ng-template>
+
+                <td class="LabelFontStyle" style="color: blue;width: fit-content;" colspan="4">
+                    &nbsp;{{dataDisplay}}&nbsp;
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+
+    <fieldset class="RFS">
+        <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px; color: black;font-weight: bold;">FA ASSET CSV File Upload
+        </legend>
+        <table>
+        <tr style="left:50;">
+            <td colspan="3" style="width: 100%;padding-top: 0px;">
+                <table class="center">
+                    <tr>
+                        <td class="LabelFontStyle">
+                            &nbsp;&nbsp;Select&nbsp;CSV&nbsp;:&nbsp;
+                        </td>
+                        <td colspan="3">
+                            <input class="form-control" type="file" #fileInput accept=".csv"
+                                formControlName="file"
+                                style="vertical-align: middle;margin-top: 22px;width: 350px;">&nbsp;&nbsp;
+                        </td>
+                      
+                       
+                        <td>
+                            <button class="btn-primary" style="width: fit-content;" (click)="uploadFAupdateCSVFile($event)">Upload</button>
+                        </td>
+                    </tr>
+                </table>
+        </tr>
+    </table>
+     </fieldset>
+
+     
+    <table class="center">
+        <table class="center">
+            <tr>
+                <td>
+                    <button type="submit" class="btn btn-primary" id="register" (click)="refresh()"
+                        style="width:90PX">
+                        Clear
+                    </button>
+                </td>
+                <td>
+                    <button type="submit" (click)="close()" class="btn btn-primary"
+                        style="width:90PX">Close</button>
+                </td>
+            </tr>
+        </table>
+    </table>
+
+    </form>
+
+

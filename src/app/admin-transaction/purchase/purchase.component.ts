@@ -37,6 +37,7 @@ interface adstkpurFrom {
   files:string;
   advndBilldate1:Date;
   adLoc1:string;
+  itemDesc:string;
 
 
 }
@@ -85,6 +86,7 @@ pipe = new DatePipe('en-US');
   allcitylist:any=[];
   gstperList:any;
   displayGstper:Array<boolean>=[];
+  displayDesc:Array<boolean>=[];
   displayGstTaxType:Array<boolean>=[];
   igst:number;
   cgst:number;
@@ -119,6 +121,11 @@ pipe = new DatePipe('en-US');
   sgst1 :number;
   igst1:number;
   advndBilldate1:Date;
+  itemDesc:string;
+  erpvendorId:number;
+  erpsuppNo:number;
+  lineValidation1=false;
+  lineValidation2=false;
 
   constructor(private fb: FormBuilder, private router: Router, private service: AdminTransactionService,private router1: ActivatedRoute) { 
   this.Date = formatDate( this.date, 'dd-MM-yyyy', 'en-US'); 
@@ -138,6 +145,8 @@ pipe = new DatePipe('en-US');
   advendId:[],
   advend:[],
   totalAmt:[0],
+  // totalAmt:[{ value: '0', }],
+  //     totalTax:[{ value: '0',  }],
   remark:[],
   createdBy:[],
   totalTax:[0],
@@ -148,8 +157,11 @@ pipe = new DatePipe('en-US');
   podocName:[],
   files :[],
   file:[],
+  addiscAmt:[],
   advndBilldate1:[],
   adLoc1:[],
+  erpvendorId:[],
+  erpsuppNo:[],
 
   stkLines:this.fb.array([this.AdstkLinesGroup()]),
 })
@@ -170,14 +182,15 @@ pipe = new DatePipe('en-US');
       adtaxAmt :[{ value: '', disabled: true }],
       sgst1:[{ value: '0', disabled: true }],
       igst1:[{ value: '0', disabled: true }],
-      adtotalAmt :[{ value: '', disabled: true }],
+      adtotalAmt:[{ value: '', disabled: true }],  
       forloc:[],
       igst:[{ value: '0', disabled: true }],
       cgst:[{ value: '0', disabled: true }],
       sgst:[{ value: '0', disabled: true }],
-      totalAmt:[{ value: '0', disabled: true }],
-      totalTax:[{ value: '0', disabled: true }],
+      // totalAmt:[{ value: '0', }],
+      // totalTax:[{ value: '0',  }],
       adstklinsts:[],
+      itemDesc:[],
 
     })}
 
@@ -197,6 +210,7 @@ pipe = new DatePipe('en-US');
     this.displayRequItem[0]=true;
     this.displayBillType1[0]=true;
     this.displayGstper[0]=true;
+    this.displayDesc[0]=true;
     this.displayGstTaxType[0]=true;
     this.displayAmount[0]=true;
     var loginName =(sessionStorage.getItem('tktNo'));
@@ -280,8 +294,8 @@ pipe = new DatePipe('en-US');
     this.adstkPucahseFrom.get('adheaderId')?.disable();
     this.adstkPucahseFrom.get('adBuyer')?.disable();
     this.adstkPucahseFrom.get('adtktNo')?.disable();
-    this.adstkPucahseFrom.get('totalTax')?.disable();
-    this.adstkPucahseFrom.get('totalAmt')?.disable();
+    // this.adstkPucahseFrom.get('totalTax')?.disable();
+    // this.adstkPucahseFrom.get('totalAmt')?.disable();
     this.adstkPucahseFrom.get('adDivision')?.disable();
     // this.adstkPucahseFrom.get('advndBilldate1')?.disable();
     // this.adstkPucahseFrom.get('totalAmt')?.disable();
@@ -301,10 +315,11 @@ pipe = new DatePipe('en-US');
 
 
   addRow(i:number) {    
-  
+    this.CheckLineValidationstaxtyp();
     this.displayRequItem[i]=false;
     this.displayBillType1[i]=false;
     this.displayGstper[i] = false;
+    this.displayDesc[i]=true;
     this.displayGstTaxType[i]=false;
     this.orderlineDetailsArray().push(this.AdstkLinesGroup());
     var len = this.orderlineDetailsArray().length;
@@ -323,11 +338,61 @@ pipe = new DatePipe('en-US');
    this.displayGstper[len-1]=true;
    this.displayGstTaxType[len-1]=true;
     this.displayAmount[len-1]=true;
+    this.displayDesc[len-1]=false;
   }
 
+  CheckLineValidationstaxtyp() {
+   
+    var advend = this.adstkPucahseFrom.get('advend')?.value;
+    if (advend === undefined || advend === null || advend === '') {
+      alert('Please Select Vendor Name');
+      this.lineValidation1=false;
+    return;
+      
+      
+    }
+    var advendBillno = this.adstkPucahseFrom.get('advendBillno')?.value;
+    if (advendBillno === undefined || advendBillno === null || advendBillno === '') {
+      alert('Please Enter Invoice Number ');
+      this.lineValidation1=false;
+    return;  
+    }
+    var advndBilldate = this.adstkPucahseFrom.get('advndBilldate')?.value;
+    if (advndBilldate === undefined || advndBilldate === null || advndBilldate  === '') {
+      alert('Please Select Invoice Date ');
+      this.lineValidation1=false;
+    return;
+      
+      
+    }
+    var taxType = this.adstkPucahseFrom.get('adtaxCat')?.value;
+    if (taxType === undefined || taxType === null || taxType === '') {
+      alert('Please Select First Tax Type ');
+      this.lineValidation1=false;
+      return;
+      
+      
+    }
+    this.lineValidation1=true
+    return;
+  }
+
+  // CheckLineValidationsaddrow() {
+  //   var adstkQty = this.adstkPucahseFrom.get('adstkQty')?.value;
+  //   if (adstkQty === undefined || adstkQty === null || adstkQty === '0') {
+  //     alert('Please Select Stock Quntity ');
+  //     this.lineValidation2=false;
+  //     return;
+      
+      
+  //   }
+  //   this.lineValidation2=true
+  //   return;
+  // }
 
 
   onSelectItemType(event:any,i:number){
+    this.CheckLineValidationstaxtyp();
     var itemType=event.target.value;
     var itemType1 = itemType.substr(itemType.indexOf(': ') + 1, itemType.length);
     var itemType12=trim(itemType1);
@@ -341,23 +406,53 @@ pipe = new DatePipe('en-US');
       data => {
         this.onSelectItemNameFnList = data.obj;
         console.log(this.onSelectItemNameFnList);
+        
       }
     );
+
+    if (codeType == 'OTHERS') {
+      this.displayDesc[i]=false;
+     
+    }
+    if (codeType !== 'OTHERS') {
+     
+      this.displayDesc[i]=true;
+     
+    }
     
    }
 
-
-   onSelectItemName(event:any,i:number){
+  onSelectItemName(event:any,i:number){
     this.displayCSVUpload=false;
     var item=event.target.value;
     var itemLi = this.onSelectItemNameFnList.find((itemList:any) => itemList.codeName === item);
     console.log(itemLi);
-    var budget = this.onSelectItemNameFnList.find((itemList:any )=> itemList.codeName === item);
+    var budget = this.onSelectItemNameFnList.find((itemList:any)=> itemList.codeName === item);
     console.log(budget);
+    var Desc = this.onSelectItemNameFnList.find((itemList:any)=> itemList.itemDescription ===item );
+    console.log(Desc);
     var patch = this.adstkPucahseFrom.get('stkLines') as FormArray;
-   
+    this.orderlineDetailsArray().controls[i].patchValue({itemDesc:Desc.itemDescription})
+
+    // this.orderlineDetailsArray().controls[i].patchValue({adstkItem:item})
+    // this.service.onSelectReqItemNameFn(item)
+    // .subscribe(
+    //   data => {
+    //     this.onSelectItemNameFnList = data.obj;
+    //     console.log(this.onSelectItemNameFnList);   
+    //   }
+    // );
+    // this.orderlineDetailsArray().controls[i].patchValue({itemDesc:itemLi.itemDescription})
+     
    }
 
+   onKey1(event:any) { 
+    var disamt =event.target.value;
+    var amunt = this.adstkPucahseFrom.get('totalAmt')?.value;
+    var totdisamt=amunt-disamt;
+    this.adstkPucahseFrom.patchValue({'totalAmt':totdisamt.toFixed(2),})
+
+   }
 
    onKey(i:number, event:any) {  
     // alert(i)    
@@ -368,8 +463,10 @@ pipe = new DatePipe('en-US');
     var gstPer = arrayControl[i].adstkTax;
     var addsbttl = arrayControl[i].adsubTotal;
     var discAmt = arrayControl[i].addiscAmt;
+    // var discAmt  = (Math.round(((discper/100) + Number.EPSILON)*100)/100);
     var subTot = Math.round(((pricingQty* rate-discAmt )+Number.EPSILON) * 100) / 100;
     var todisAmt =Math.round((subTot + Number.EPSILON)*100)/100;
+    
           var gstType = this.adstkPucahseFrom.get('adtaxCat')?.value;
           if (gstType==='S-C-GST'){
             if (gstPer==='18' || gstPer===18){
@@ -388,7 +485,9 @@ pipe = new DatePipe('en-US');
             if (gstPer==='0'){
               this.sgst1=0;
             }
+           
           }
+          
           if (gstType==='IGST'){
             this.igst1  = Math.round(((todisAmt*gstPer/100) + Number.EPSILON)*100)/100;
             this.igst1 = Math.ceil(this.igst1);
@@ -519,6 +618,8 @@ trxArr.controls[i].patchValue({ 'adstkTax': 0, 'adstkQty': 0, 'adunitRate': 0, '
     console.log(selectedValue.suppId);
     // alert(selectedValue.suppNo);
    this.adstkPucahseFrom.patchValue({advendId:selectedValue.suppNo});
+   this.adstkPucahseFrom.patchValue({erpsuppNo  :selectedValue.erpsuppNo});
+   this.adstkPucahseFrom.patchValue({erpvendorId:selectedValue.erpvendorId});
  
   }
 
@@ -544,7 +645,7 @@ trxArr.controls[i].patchValue({ 'adstkTax': 0, 'adstkQty': 0, 'adunitRate': 0, '
    this.adstkPucahseFrom.patchValue({ adstkTax: sessionStorage.getItem('code') });
     var patch = this.adstkPucahseFrom.get('stkLines') as FormArray;
     patch.controls[0].patchValue({ adstkTax: 'code' });
-      this.service.adheaderIdFindFN(adheaderId1)
+      this.service.adheaderIdFindFN1(adheaderId1,sessionStorage.getItem('locId'))
         .subscribe(
           data => {
             if (data.code === 400) {
@@ -556,7 +657,6 @@ trxArr.controls[i].patchValue({ 'adstkTax': 0, 'adstkQty': 0, 'adunitRate': 0, '
             if (data.code === 200) {
               this.isVisiblePouploaded=true;
               this.displayremovebutton=false;
-            //  this.isVisiblePurchaseord=true;
               this.orderlineDetailsArray().clear();
               this.dataDisplay = 'Data Display Successfully....';
               this.adstkPucahseFrom.patchValue(data.obj);
@@ -568,6 +668,7 @@ trxArr.controls[i].patchValue({ 'adstkTax': 0, 'adstkQty': 0, 'adunitRate': 0, '
                 this.displayRequItem[i] = false;
                 this.displayBillType1[i] = false;
                 this.displayGstper[i] = false;
+                this.displayDesc[i]=false;
                 
                 if (data.obj.stkLines[i].adstklinsts == 'BOOKED') {
                   this.displayLineflowStatusCode[i]=false;
@@ -584,6 +685,7 @@ trxArr.controls[i].patchValue({ 'adstkTax': 0, 'adstkQty': 0, 'adunitRate': 0, '
                 this.displayBillType1[i]=false;
                 this.displayGstper[i]=false;
                   this.displayAmount[i]=false;
+                  this.displayDesc[i]=false;
                 }
                 if (data.obj.stkLines[i].adstklinsts == 'CLOSED') {
                   this.displayLineflowStatusCode[i]=true;
@@ -591,6 +693,7 @@ trxArr.controls[i].patchValue({ 'adstkTax': 0, 'adstkQty': 0, 'adunitRate': 0, '
                 this.displayBillType1[i]=false;
                 this.displayGstper[i]=false;
                   this.displayAmount[i]=false;
+                  this.displayDesc[i]=false;
                 }
               }
               if (data.obj.adstatus == 'APPROVED') {
@@ -614,7 +717,7 @@ trxArr.controls[i].patchValue({ 'adstkTax': 0, 'adstkQty': 0, 'adunitRate': 0, '
               this.adstkPucahseFrom.patchValue({advendId:data.obj.advendId});
               this.adstkPucahseFrom.patchValue({advend:data.obj.vendorName});
               
-              this.adstkPucahseFrom.disable();
+              // this.adstkPucahseFrom.disable();
 
               let selectedValue = this.AllAdminvendornameList.find((v:any) => v.vendorName === data.obj.vendorName);
               console.log(selectedValue);
@@ -626,8 +729,7 @@ trxArr.controls[i].patchValue({ 'adstkTax': 0, 'adstkQty': 0, 'adunitRate': 0, '
   }
 
   
-
-  uploadCSVFile(event:any){
+    uploadCSVFile(event:any){
     this.closeResetButton=false;
     this.progress = 0;
     this.dataDisplay ='File Upload in progress....Do not refresh the Page'
@@ -740,4 +842,10 @@ nonNegativeIntegerValidator(): ValidatorFn {
     this.orderlineDetailsArray().removeAt(i);
   }
 
+
+
+
+  
+  
+  
 }

@@ -78,11 +78,11 @@ export class MiscellaneousTrascComponent {
       headerId:[],
       itemCategory:[],
       quantity:[],
-      price:[],
+      price:[{ value: '0'}],
       itemName:[],
       createdBy:[],
       updatedBy:[],
-      avlQty:[{ value: '', disabled: true }],
+      avlQty:[{ value: '0', disabled: true }],
     }
   )
   }

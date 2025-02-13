@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule ,FormsModule} from '@angular/forms';
-import { AssetDiscardComponent } from './asset-discard.component';
+import { AssetDiscardComponent } from './asset-discard.component';  
+// import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 describe('AssetDiscardComponent', () => {
   let component: AssetDiscardComponent;

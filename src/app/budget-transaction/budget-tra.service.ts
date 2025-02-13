@@ -65,4 +65,29 @@ export class BudgetTraService {
   AllbudgetitemList(): Observable<any> {
     return this.http.get(this.ServerUrl + `/BudgetEntry/BudgetItems`);
   }
+
+  BudgetSummuryReport(finyear:any,cityid:any,locId:any,deptid:any){
+    const REQUEST_URI = this.ServerUrl +`/ItemInvReports/BudgetSummary?finYear=${finyear}&cityId=${cityid}&locationId=${locId}&deptId${deptid}`;
+    return this.http.get(REQUEST_URI, {
+      // params: REQUEST_PARAMS,
+      responseType: 'arraybuffer',
+      headers: this.headers,
+    });
+  }
+  
+  AlllocationitemList(): Observable<any> {
+    return this.http.get(this.ServerUrl + `/ouMst/Active`);
+  }
+
+  getAllOuLocationId(ouId:any): Observable<any> {
+    return this.http.get(this.ServerUrl + `/locationMst/loc/${ouId}`);
+  }
+
+  public budgetmstLikeSearchFn(content:any) {
+    const options = {
+      headers: this.headers
+    };
+    const url = this.ServerUrl + '/BudgetEntry/BudgetLikeSearch'; 
+    return this.http.post(url,content, options);     
+  }
 }

@@ -1,0 +1,48 @@
+/* sai-service.component.css */
+.bg-image {
+    background-size: cover;
+    background-position: center;
+  }
+  
+  img {
+    max-height: 100px;
+  }
+  
+  form input {
+    background-color: #f9f9f9;
+    font-weight: bold;
+  }
+  
+  marquee {
+    font-size: 14px;
+  }
+  
+  .btn-warning {
+    text-transform: uppercase;
+  }
+  
+  header {
+    background-color: #ffffff;
+    border-bottom: 2px solid #007bff;
+  }
+  
+  header.ss {
+    background-color: #ffffff;
+    border-bottom: 2px solid #007bff;
+  }
+  
+  main img {
+    max-height: 350px;
+    object-fit: cover;
+  }
+  
+  marquee {
+    font-family: 'Verdana', sans-serif;
+  }
+  
+  footer {
+    border-top: 2px solid #007bff;
+  }
+  
+  
+  

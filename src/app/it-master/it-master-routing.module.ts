@@ -12,6 +12,7 @@ import { VendorComponent } from './vendor/vendor.component';
 import { VendorItemComponent } from './vendor-item/vendor-item.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { CodeTypeComponent } from './code-type/code-type.component';
+import { FAupdateFormComponent } from './faupdate-form/faupdate-form.component';
 
 const routes: Routes = [
   { path:'budgetMaster',component:BudgetMasterComponent},
@@ -26,6 +27,7 @@ const routes: Routes = [
   {path:'vendoritemMaster',component:VendorItemComponent},
   {path:'Dashboard',component:DashboardComponent},
   {path:'CodetypeMaster',component:CodeTypeComponent},
+  {path:'FAupdationForm',component:FAupdateFormComponent},
   { path : '' ,redirectTo: 'Dashboard', pathMatch: 'full' }
 ];
 

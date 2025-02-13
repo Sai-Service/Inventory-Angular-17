@@ -33,6 +33,33 @@ export class ItTransService {
   }    
 
 
+
+
+  AssetDiscardPrintForm(transDate:any,city:any,locname:any,vendorName:any){
+    const REQUEST_URI = this.ServerUrl +`/ItemInvReports/AssetScrap?transDate=${transDate}&city=${city}&locname=${locname}&vendorName=${vendorName}`;
+    return this.http.get(REQUEST_URI, {
+      responseType: 'arraybuffer',
+      headers: this.headers,
+    });
+  }
+
+  AssetTransPrintForm(transferDate:any,city:any,locname:any,OldLoId:any){
+    const REQUEST_URI = this.ServerUrl +`/ItemInvReports/AssetTransfer?transferDate=${transferDate}&newcityId=${city}&newlocId=${locname}&oldlocId=${OldLoId}`;
+    return this.http.get(REQUEST_URI, {
+      responseType: 'arraybuffer',
+      headers: this.headers,
+    });
+  }
+
+  AssetRecievdPrintForm(transferDate:any,city:any,locname:any,OldLoId:any){
+    const REQUEST_URI = this.ServerUrl +`/ItemInvReports/AssetReceived?receivedDate=${transferDate}&newcityId=${city}&newlocId=${locname}&oldlocId=${OldLoId}`;
+    return this.http.get(REQUEST_URI, {
+      responseType: 'arraybuffer',
+      headers: this.headers,
+    });
+  }
+
+
   TranstypList(): Observable<any> {
     return this.http.get(this.ServerUrl + '/CodeMst/dept/TRANSTYPE');
   }
@@ -143,11 +170,15 @@ export class ItTransService {
     return this.http.get(this.ServerUrl + `/DocUpload/AllDocuments?attribute1=${headerId}`);
   }
 
+  
+
   UpoadDocument1(formData: FormData ,file:any,docType:any,docName:any,loginName:any,headerId:any) {
     formData.append('file', file);
     const REQUEST_URI = this.ServerUrl + `/DocUpload/imgUpload?docType=${docType}&loginName=${loginName}&attribute1=${headerId}`;
     return this.http.post(REQUEST_URI, formData);
   }
+
+
   UpdateBillRecorder(UpdateCounterSaleInvRecord:any) {
     const options = {
       headers: this.headers
@@ -182,6 +213,9 @@ export class ItTransService {
     return this.http.get(this.ServerUrl + `/ItemMst/itc?city=${City}&itemCode=${itemCode}`);
   }
 
+  AllotteditemcodeFindFN(City:any,itemCode:any): Observable<any> {
+    return this.http.get(this.ServerUrl + `/ItemMst/Alloted?city=${City}&itemCode=${itemCode}`);
+  }
   onSelectItemTypeFn(prodType:any): Observable<any> {
     // if(prodType === 200){
     return this.http.get(this.ServerUrl + `/InvSubMst/${prodType}`);}
@@ -330,6 +364,24 @@ export class ItTransService {
       const url = this.ServerUrl + '/ItemMst/AllOULikeSearch';
       return this.http.post(url,content, options);      //content,
     }
+
+
+    // public itemMasterAllottedlistSearchFn(content:any) {
+    //   const options = {
+    //     headers: this.headers
+    //   };
+    //   const url = this.ServerUrl + '/ItemMst/AllotedItemOuWise?city=${sdsd}&status=Allocate';
+    //   return this.http.post(url,content, options);      //content,
+    // }
+
+
+    itemMasterAllottedlistSearchFn(Cityid:any): Observable<any> {
+      return this.http.get(this.ServerUrl + `/ItemMst/AllotedItemOuWise?city=${Cityid}&status=Allocate`);
+    }
+
+
+
+
   
     AcknowledgementForm(ouId:any,itemcode:any){
       // http://localhost:8081/SalesReports/ChetakPendingBooking
@@ -358,7 +410,7 @@ export class ItTransService {
     }
 
     ItemCodeGetSearchFn(City:any,gpitemCode:any): Observable<any> {
-      return this.http.get(this.ServerUrl + `/ItemMst/itc?city=${City}&itemCode=${gpitemCode}`);
+      return this.http.get(this.ServerUrl + `/ItemMst/Gatepassitc?city=${City}&itemCode=${gpitemCode}`);
     }
 
     AllsuppBillvendornameList(): Observable<any> {
@@ -394,11 +446,19 @@ export class ItTransService {
     
     
     
+    // public GatepasssgenForm(Assetinstallationgen:any) {
+    //   const options = {
+    //     headers: this.headers
+    //   };
+    //   const url = this.ServerUrl + '/GatePass/addGatePass';
+    //   return this.http.post(url, Assetinstallationgen, options);
+    // }
+
     public GatepasssgenForm(Assetinstallationgen:any) {
       const options = {
         headers: this.headers
       };
-      const url = this.ServerUrl + '/GatePass/addGatePass';
+      const url = this.ServerUrl + '/GatePass/addGatepassNew';
       return this.http.post(url, Assetinstallationgen, options);
     }
      
@@ -416,8 +476,8 @@ export class ItTransService {
       return this.http.get(this.ServerUrl + `/GatePass/AllGatepassOuWise?gpouId=${ouid}`);
     }
     
-    gpCodeFindFN(ouid:any,gpcode:any): Observable<any> {
-      return this.http.get(this.ServerUrl + `/GatePass/Gpass?gpouId=${ouid}&gatepassNo=${gpcode}`);
+    gpCodeFindFN(gpcode:any,gpouId:any): Observable<any> {
+      return this.http.get(this.ServerUrl + `/GatePass/GatepassNo?gatepassNo=${gpcode}&gpouId=${gpouId}`);
     }
     
     //////////////////////////////////////////ASSET TRANSFER FORM////////////////////////////////////////
@@ -516,5 +576,17 @@ export class ItTransService {
       return this.http.put(url, TransctionitemMasterRecord, options);
     }
     
+
+    finYearFn(year:any): Observable<any> {
+      return this.http.get(this.ServerUrl + `/CodeMst/CurrYear?currentYear=${year} `);
+    }
+    
+
+
+
+    AssetissuseitemcodeFN(City:any,itemCode:any): Observable<any> {
+      return this.http.get(this.ServerUrl + `/ItemMst/itc?city=${City}&itemCode=${itemCode}`);
+    }
+  
 }
 

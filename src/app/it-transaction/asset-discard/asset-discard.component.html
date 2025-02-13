@@ -66,9 +66,9 @@
                     </select>
                 </td>
                 <td style="width: 15%" class="LabelFontStyle1">Discard&nbsp;date&nbsp;: </td>
-                <td> <input type='date' formControlName="transDate" class="form-control" [(ngModel)]='transDate'
-                        value={{transDate}} style="background-color: yellow;" max="{{maxDate | date:'yyyy-MM-dd'}}">
-                </td> <!--  (change)="validateStrtDate(transDate)"-->
+                <td> <input type='date' formControlName="transDate" class="form-control" 
+                    value={{transDate}} style="background-color: yellow;" max="{{maxDate | date:'yyyy-MM-dd'}}" min="{{minDate | date:'yyyy-MM-dd'}}" >
+                </td> <!--  (change)="validateStrtDate(transDate)"/[(ngModel)]='transDate' / value={{transDate}}/max="{{maxDate | date:'yyyy-MM-dd'}}"-->
 
                 <td style="width: 15%" class="LabelFontStyle1">Reason&nbsp;&nbsp;: </td>
                 <td>
@@ -147,6 +147,7 @@
                 <td> <input type='text'  formControlName="divName" class="form-control"></td>
                 <td style="width: 15%" class="LabelFontStyle">&nbsp;User&nbsp;Name: </td>
                 <td> <input type='text'  formControlName="userName" class="form-control"></td>
+                <td> <input type='text' hidden formControlName="userName" class="form-control"></td>
             </tr>
           
             <tr>
@@ -158,6 +159,8 @@
                 <td> <input type='text'  formControlName="deptName" class="form-control"></td>
                 <td style="width: 15%" class="LabelFontStyle">&nbsp;Status&nbsp;: </td>
                 <td> <input  type='text' uppercase formControlName="status" class="form-control"></td>
+
+                <td> <input hidden  type='text' uppercase formControlName="division" class="form-control"></td>
             </tr>
             <!-- <tr>
                 <td></td>
@@ -198,8 +201,47 @@
 
             </tr>
         </table><BR>
-
     </fieldset>
+
+    <fieldset class="RFS">
+        <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px;color: black;font-weight: bold;"> Asset
+            Discard Print</legend>
+        <table class="center">
+            <tr>
+                <td style="width: 15%" class="LabelFontStyle1">Discard&nbsp;date&nbsp;: </td>
+                 <td><input type="date" class="form-control" formControlName="DisDate"
+                max="{{minDate | date:'yyyy-MM-dd'}}"></td>
+
+
+                <td style="width: 15%" class="LabelFontStyle1">&nbsp;Location&nbsp;&nbsp;: </td>
+                <td>
+                    <!-- <select  type='number' formControlName="newlocId" id="newlocId" class="form-control" style="background-color: yellow;" > -->
+                    <select formControlName="DislocId" id="DislocId" class="form-control"
+                        style="background-color: yellow;">
+                        <option *ngFor="let subType of getAllOuLocationIdFn" [ngValue]="subType.locName">
+                            {{subType.locId}}-{{subType.locName}}
+                        </option>
+                    </select>
+                </td>
+                <td style="width: 15%" class="LabelFontStyle">&nbsp;Vendor&nbsp;Name&nbsp;:</td>
+                <td><select formControlName="DisvendName" id="DisvendName" class="form-control"
+                        style="background-color: yellow;">
+                        <option *ngFor="let sc of  AllvendornameList" [ngValue]="sc.vendorName">
+                            {{sc.vendorName}}
+                        </option>
+                    </select></td>
+                <td></td>
+                <td hidden style="width: 15%" class="LabelFontStyle">&nbsp;Vendor&nbsp;Name&nbsp;:</td>
+                <td>
+                    <button class="btn-primary" style="width: 100px; background-color: green;"
+                        (click)="DiscardPrint()">GENRATE PRINT</button>
+                </td>
+
+
+            </tr>
+        </table>
+    </fieldset>
+
     <fieldset class="RFS">
 
         <br>
@@ -223,7 +265,7 @@
             </thead>
             <tbody>
                 <tr *ngFor="let com of allassetdiscardeSearch" class="ItemStyle" style="text-decoration:none;">
-                    <!-- *ngFor="let com of allCompList" class="ItemStyle" style="text-decoration:none;"-->
+
                     <td style="border: 1px solid black;padding-left: 15px;">{{com.ditemId}}</td>
                     <td style="border: 1px solid black;padding-left: 15px;">{{com.itemCode}}</td>
                     <td style="border: 1px solid black;padding-left: 15px;">{{com.itemType}}</td>

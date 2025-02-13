@@ -107,7 +107,7 @@
                     <div *ngIf="displayStatus; then statusLovNo; else statusLovYes"></div>
                     <ng-template #statusLovNo>
                         <!-- disabled -->
-                        <input type='text' formControlName="status" class="form-control">
+                        <input type='text' readonly formControlName="status" class="form-control">
                     </ng-template>
                     <ng-template #statusLovYes>
 
@@ -133,7 +133,7 @@
                     </td>
                     <td>
                         <!-- disabled -->
-                        <input type='date' formControlName="endDate" class="form-control"
+                        <input readonly type='date' formControlName="endDate" class="form-control"
                             [ngModel]="endDate | date:'yyyy-MM-dd'">
                     </td>
                 </ng-template>
@@ -198,6 +198,8 @@
                     <input type="text" formControlName="assetItem"  class="form-control" style="width: 40px;" >
                 </td>
             </tr>
+            <input hidden type='text'formControlName="createdBy" class="form-control">
+            <input hidden type='text'formControlName="attribute1" class="form-control">
 
         </table>
     </fieldset>

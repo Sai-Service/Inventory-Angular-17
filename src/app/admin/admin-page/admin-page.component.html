@@ -46,6 +46,8 @@
         <li><a class="dropdown-submenu" [routerLink]="['/admin/itMaster/budgetMaster']">Budget Master</a></li>
         <!-- </div> -->
 
+        <li><a class="dropdown-submenu" [routerLink]="['/admin/itMaster/FAupdationForm']">FA Updation Master</a></li>
+
       </ul>
 
     </li>
@@ -68,10 +70,12 @@
               [routerLink]="['/admin/itTransaction/Billrcdsrchfrm']">Supplier/Vendor&nbsp;Purchae/Bill&nbsp;Search&nbsp;Form</a>
           </li>
           <li><a class="dropdown-submenu" [routerLink]="['/admin/itTransaction/AseetDiscard']">Asset Discard</a></li>
-          <!-- <li><a class="dropdown-submenu" [routerLink]="['/admin/itTransaction/requisionForm']">Requisition Form</a></li> -->
+         
           <li><a class="dropdown-submenu" [routerLink]="['/admin/itTransaction/GatePasGen']">Gate Pass</a></li>
-          <!-- <li><a class="dropdown-submenu" [routerLink]="['/admin/itTransaction/AdminReqFormNew']">Admin Requision Form</a></li> -->
 
+           <!-- <li><a class="dropdown-submenu" [routerLink]="['/admin/itTransaction/AssetIssues']">Asset Issues Form</a></li> -->
+         
+          
 
         </ul>
       </li>
@@ -86,6 +90,9 @@
 
   <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
     <li><a class="dropdown-submenu" [routerLink]="['/admin/budgetTransaction/BudgetTransaction']">Budget Entry</a></li>
+
+    <li><a class="dropdown-submenu" [routerLink]="['/admin/budgetTransaction/SummaryRepo']">Budget Summary Form</a></li>
+    <!-- <li><a class="dropdown-submenu" [routerLink]="['/admin/budgetTransaction/BudgetTransaction']">Budget Se</a></li> -->
   </ul>
 </li>
  
@@ -110,9 +117,16 @@
 
         <li><a class="dropdown-submenu" [routerLink]="['/admin/itReports/AssetScrapReport']">Asset Scrap Report</a></li>
 
-        <!-- <li><a class="dropdown-submenu" [routerLink]="['/admin/Report/FAGen']">FA DETAILS REPORT</a></li> -->
+        <li><a class="dropdown-submenu" [routerLink]="['/admin/itReports/ITFacsvFile']">FA CSV UPLOAD FORM</a></li>
 
-        <!-- <li><a class="dropdown-submenu" [routerLink]="['/admin/Report/itemTranHistory']">ITEM WITH TRANSFER DETAILS REPORT</a></li> -->
+         <li><a class="dropdown-submenu" [routerLink]="['/admin/itReports/GpReport']">Gate Pass Details & Summury Report</a></li>
+
+         <li><a class="dropdown-submenu" [routerLink]="['/admin/itReports/PMReport']">PM Reports</a></li>
+
+         <li><a class="dropdown-submenu" [routerLink]="['/admin/itReports/AssetHstFrm']">Asset History Form</a></li>
+
+         
+          <li><a class="dropdown-submenu" [routerLink]="['/admin/itReports/docform']">IT INVENTORY DOCUMENT</a></li>
 
       </ul>
     </li>
@@ -134,7 +148,7 @@
         <li class="nav-item dropdown"><a class="dropdown-submenu" [routerLink]="['/admin/itMaster/empMaster']">Employee Master</a></li>
         <li><a class="dropdown-submenu" [routerLink]="['/admin/adminMaster/itemMaster']">Item Master</a></li>
         <li><a class="dropdown-submenu" [routerLink]="['/admin/adminMaster/DocMaster']">Document Master</a></li>
-        <li><a class="dropdown-submenu" [routerLink]="['/admin/adminMaster/NewVendorMst']">Vendor Master</a></li>
+        <li><a class="dropdown-submenu" [routerLink]="['/admin/adminMaster/adminsupp']">supplier Master</a></li>
       </ul>
     </li>
 
@@ -184,10 +198,11 @@
     <li><a class="dropdown-submenu" [routerLink]="['/admin/adminReports/miscellReport']">Miscellaneous Report</a></li>
     <li><a class="dropdown-submenu" [routerLink]="['/admin/adminReports/purchaseReport']">Purchase Report</a></li>
     <li><a class="dropdown-submenu" [routerLink]="['/admin/adminReports/requitionReport']">Requision Report</a></li>
-    <li><a class="dropdown-submenu" [routerLink]="['/admin/adminReports/directreq']">Direct Requision Report</a></li>
+    <li><a class="dropdown-submenu" [routerLink]="['/admin/adminReports/adDirectReqRepo']">Direct Requision Report</a></li>
     <li><a class="dropdown-submenu" [routerLink]="['/admin/adminReports/stockTransReport']">Stock Transfer Received Report</a></li>
     <li><a class="dropdown-submenu" [routerLink]="['/admin/adminReports/Adstktrnsrepo']">Stock Transfer Report</a></li>
     <li><a class="dropdown-submenu" [routerLink]="['/admin/adminReports/allStockReport']">All Stock Report</a></li>
+    <li><a class="dropdown-submenu" [routerLink]="['/admin/adminReports/Stkldger']">Stock Ledger</a></li>
     <li><a class="dropdown-submenu" [routerLink]="['/admin/adminReports/manualGatePassReport']">Manual Gate Pass Report</a></li>
     
   </ul>
@@ -204,6 +219,18 @@
     <li><a class="dropdown-submenu" [routerLink]="['/admin/adminReports/requitionReport']">Requision Report</a></li>
   </ul>
 </li>
+
+<li class="nav-item dropdown" [style.display]="isVisibleAccountAllReport ? 'block' : 'none' ">
+  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+    aria-haspopup="true" aria-expanded="false"> ACCOUNTS REPORT </a>
+    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+    <li><a class="dropdown-submenu" [routerLink]="['/admin/itReports/ITFacsvFile']">FA CSV UPLOAD FORM</a></li>
+
+    <li><a class="dropdown-submenu" [routerLink]="['/admin/itReports/FAreport']">FA REPORT</a></li>
+
+    <li><a class="dropdown-submenu" [routerLink]="['/admin/itReports/FacomRepo']">FA COMMON REPORT</a></li>
+  </ul>
+  </li>
 
     <div class="list-group list-group-flush">
       <a hidden href="#" class="list-group-item list-group-item-action bg-light">Status</a>

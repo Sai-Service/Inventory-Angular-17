@@ -10,6 +10,8 @@ import { TranasferFormComponent } from './tranasfer-form/tranasfer-form.componen
 import { TrasListFormComponent } from './tras-list-form/tras-list-form.component';
 import { RecievedListFormComponent } from './recieved-list-form/recieved-list-form.component';
 import { RecievdListComponent } from './recievd-list/recievd-list.component';
+import { ItassetissueFormComponent } from './itassetissue-form/itassetissue-form.component';
+import { SaiItTestComponent } from './sai-it-test/sai-it-test.component';
 
 const routes: Routes = [
   {path : '' ,redirectTo: 'Dashboard', pathMatch: 'full'},
@@ -26,7 +28,10 @@ const routes: Routes = [
   {path:'tranaList',component:TrasListFormComponent},
   {path:'recvdForm',component:RecievedListFormComponent},
   {path:'recvdForm/:transId',component:RecievedListFormComponent},
-  {path:'recvdList',component:RecievdListComponent}
+  {path:'recvdList',component:RecievdListComponent},
+  {path:'AssetIssues',component:ItassetissueFormComponent},
+  {path:'Testing',component:SaiItTestComponent}
+  
 ];
 
 @NgModule({

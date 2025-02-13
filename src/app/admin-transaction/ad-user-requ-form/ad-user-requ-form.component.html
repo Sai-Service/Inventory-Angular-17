@@ -26,6 +26,7 @@
                 <input  type="text" formControlName="loginArray1" id="loginArray1" [(ngModel)]="loginArray1" class="form-control" >
               <input hidden type='number' formControlName="city"  class="form-control">
               <input hidden type='number' formControlName="location"  class="form-control">
+              <input hidden type='number' formControlName="attribute1"  class="form-control">
             </td>
             <td style="width: 15%" class="LabelFontStyle"> Requisition&nbsp;Number&nbsp;:&nbsp; </td>
             <td>  <input  type="text" class="form-control" formControlName="reqhdNo" [(ngModel)]="reqhdNo"> </td>
@@ -136,9 +137,10 @@
                         </td>
                         <td>
                             <!-- [disabled]="isDisabled(i)" -->
-                            <input  type="text" formControlName="userstatus" name="userstatus" 
+                            <input readonly type="text" formControlName="userstatus" name="userstatus" 
                             class="form-control" style="height: 20px;width:100px;" min="0">
                         </td>
+                        
                         <td>
                             <button type="button" class="btn btn-primary" (click)="addRow(i)"
                                 style="width: min-content;"><i class="fa fa-plus"></i></button>
@@ -155,33 +157,33 @@
                                 <input type='number'  formControlName="srlNo" class="form-control" style="width:2rem;height: 23px;font-size: 10px;" (keyup)="onKey(i,$event)">
                             </td>
                             <td>
-                                <input type='text'    [disabled]="true" formControlName="itemcat" class="form-control" >
+                                <input type='text' readonly [disabled]="true" formControlName="itemcat" class="form-control" >
                                
                             </td>
                           
                                 <td>
-                                    <input type='text'  formControlName="itemName" class="form-control" >
+                                    <input type='text' readonly formControlName="itemName" class="form-control" >
                                    
                                 </td>
                          
-                            <td>
+                            <!-- <td>
                                 <input type='text' hidden readonly formControlName="avlQty" class="form-control" >
                               
-                            </td>
+                            </td> -->
                             <td>
-                                <input type='text'  formControlName="qty" class="form-control" >
+                                <input type='text' readonly formControlName="qty" class="form-control" >
                                
                             </td>
                             <td>
 
-                                <input type='number'  formControlName="issuedQty" class="form-control"  >
+                                <input type='number' readonly formControlName="issuedQty" class="form-control"  >
                             </td>
                             <td>
-                                <input  type="text" formControlName="adminstatus" name="userstatus"
+                                <input readonly type="text" formControlName="adminstatus" name="userstatus"
                                 class="form-control" style="height: 20px;" min="0">
                             </td>
                             <td>
-                                <input  type="text" formControlName="userstatus"  class="form-control" style="height: 20px;" min="0">
+                                <input readonly type="text" formControlName="userstatus"  class="form-control" style="height: 20px;" min="0">
                             </td>
                         </tr>
                     </ng-template>
@@ -194,7 +196,7 @@
                 <tr>
                     <td>
                         <button type="submit" class="btn btn-primary" id="saveBtn" data-toggle="modal" style="width: fit-content;"  [style.display]="isVisibleUserRequitionSaveSave ? 'block' : 'none'"
-                        data-target="#confirmAlert" (click)="getMessage('Save')" >Save</button>
+                        data-target="#confirmAlert" [disabled]="isButtonDisabled" (click)="getMessage('Save')" >Save</button>
                     </td>
                     <td>
                         <button type="submit" class="btn btn-primary" id="updateBtn" data-toggle="modal" style="width: fit-content;"  [style.display]="isVisibleUserRequitionupdate ? 'block' : 'none'"

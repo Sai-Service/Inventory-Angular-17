@@ -272,4 +272,38 @@ transDatad(val:any) {
     xlsx.utils.book_append_sheet(wb, ws, 'Sheet1');
     xlsx.writeFile(wb, 'CounterSaleOrderList.xlsx');
   }
+
+
+  Allotteddata(){
+    this.closeResetButton=false;
+    this.progress = 0;
+    this.dataDisplay ='Data Searching in progress....Do not refresh the Page'
+    this.service.itemMasterAllottedlistSearchFn(sessionStorage.getItem('ouId'))
+    .subscribe(
+      (res: any) => {
+        if (res.code==200){
+          alert(res.message)
+        this.allitemMasterList = res.obj;
+        this.closeResetButton=true;
+        this.progress = 0;
+        this.dataDisplay ='Data Displaye Succefully'
+     
+      if (res.obj.length !=0){
+        
+      }
+      for (let x=0; x<this.allitemMasterList.length; x++){
+        this.totInvAmt = Math.round(((this.totInvAmt += (this.allitemMasterList[x].orAmt)) + Number.EPSILON) * 100) / 100;
+        // console.log(this.totInvAmt);
+    }}
+    else {
+      if (res.code === 400) {
+        alert(res.message);
+        this.closeResetButton=true;
+        this.progress = 0;
+        this.dataDisplay ='Data Not Found !!!! '
+      }
+    }
+      });
+  }
+
 }

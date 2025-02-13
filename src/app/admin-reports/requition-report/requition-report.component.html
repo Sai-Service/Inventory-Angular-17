@@ -26,6 +26,41 @@
     <fieldset class="RFS">
         <table class="center">
             <tr>
+                <div *ngIf="isVisibletoadmin; then thenadmin; else elseadmin"></div>
+                <ng-template #thenadmin>
+                    <td style="width: 15%; " class="LabelFontStyle">
+                        &nbsp;Loaction&nbsp;Name:&nbsp;
+                    </td>
+                    <td>
+                        <select id="locName" class="form-control" formControlName="locName"
+                            (change)="onlocationissueselect($event)">
+                            <option>--Select--</option>
+                            <option *ngFor="let sc of locIdList" [value]="sc.locName">
+                                {{sc.locName}}
+                            </option>
+                        </select>
+                    </td>
+
+                    <!-- <td style="width: 15%; " class="LabelFontStyle">
+ &nbsp;Department&nbsp;Name:&nbsp;
+ </td>
+ <td>
+ <select id="deptName" class="form-control" formControlName="deptName" (change)="onselectDepartment($event)" >
+ <option>--Select--</option>
+ <option *ngFor="let sc of DepartmentList" [Value]="sc.cmntypeId" >
+ {{sc.codeDesc}}
+ </option>
+ </select>
+ </td> -->
+                    <input type="number" hidden formControlName="locationId" class="form-control">
+                    <input type="number" hidden formControlName="deptId" class="form-control">
+                </ng-template>
+                <ng-template #elseadmin>
+
+                </ng-template>
+
+
+
                 <td style="width: 15%" class="LabelFontStyle">
                     &nbsp;From&nbsp;Date&nbsp;:&nbsp;
                 </td>
@@ -40,17 +75,27 @@
                     <input type="date" class="form-control" formControlName="toDate"
                         max="{{maxDate | date:'yyyy-MM-dd'}}">
                 </td>
-                
+
             </tr>
         </table>
-    </fieldset>  
+    </fieldset>
     <fieldset class="RFS">
         <table class="center">
             <tr>
+                <div *ngIf="isVisibletocmn; then thenad; else elsead"></div>
+                <ng-template #thenad>
                 <td>
                     <button class="btn-primary" style="width: 100px; background-color: green;"
-                        (click)="reportDetails()">View Reports</button>
+                        (click)="reportDetailsAdmin()">View Reports</button>
                 </td>
+                </ng-template>
+                <ng-template #elsead>
+                    <td>
+                        <button class="btn-primary" style="width: 100px; background-color: green;"
+                            (click)="reportDetailsuser()">View Reports</button>
+                    </td>
+                </ng-template>
+                
                 <td>
                     <button type="submit" class="btn btn-primary" id="register" (click)="refresh()" style="width:90PX">
                         Clear
@@ -61,7 +106,7 @@
                 </td>
             </tr>
         </table>
-    </fieldset> 
+    </fieldset>
 
 
 

@@ -30,7 +30,9 @@ city:string;
 reqUsertktno:string;
 itemcat:string|null;
 itemName:string;
-reqhdNo1:number
+reqhdNo1:number;
+lineValidation = false;
+BilllineValidation=false;
 
 
 
@@ -38,7 +40,7 @@ Asigntolocadmin:any=[];
 AllreqItemCatagList:any=[];
 onhandQtyList:any=[];
 onSelectItemNameFnList:any=[];
-
+attribute1:string;
 public itemMap:any = new Map<string, any[]>();
 public itemMap2 = new Map<number, any[]>();
 invType: string;
@@ -49,6 +51,7 @@ isVisibleuserRequitionDisable=true;
 isVisibleuserRequitionDisable1=false;
 isVisibleGetqtydisable=true;
 isDisabled = false;
+isButtonDisabled=false;
 
   constructor(private fb: FormBuilder, private router: Router, private service: AdminTransactionService,private router1: ActivatedRoute,private adminServiceService: AdminTransactionService,private location1: Location) {
     this.requisisionForm = fb.group({
@@ -64,6 +67,7 @@ isDisabled = false;
       city:[],
       reqhdNo1:[],
       reqUsertktno:[],
+      attribute1:[],
       reqLines: this.fb.array([this.reqitemLinesGroup()]),
     })
    }
@@ -103,7 +107,8 @@ isDisabled = false;
     this.requisisionForm.patchValue({reqUsername:sessionStorage.getItem('empName'),city : Number(sessionStorage.getItem('ouId')) });
     this.requisisionForm.patchValue({dept:sessionStorage.getItem('deptName'),location:sessionStorage.getItem('locId') });
     this.requisisionForm.patchValue({loginArray:loginArray });
-
+    this.requisisionForm.patchValue({attribute1:sessionStorage.getItem('tktNo') });
+    
 
     var patch = this.requisisionForm.get('reqLines') as FormArray
     (patch.controls[0]).patchValue(
@@ -113,7 +118,7 @@ isDisabled = false;
       }
     );
 
-    this.service.Asigntolocadmin(sessionStorage.getItem('ouId'))
+    this.service.Asigntolocadmin(sessionStorage.getItem('ouId'),sessionStorage.getItem('locId'))
     .subscribe(
       data => {
         this.Asigntolocadmin = data.obj;
@@ -144,9 +149,7 @@ isDisabled = false;
   }
 
   
-  // isDisabled(index: number): boolean {
-  //   return index % 2 === 0;
-  // }
+
 
 
   requisision(requisisionForm: any) { }
@@ -175,10 +178,20 @@ isDisabled = false;
           for (let i = 0; i < data.obj.reqLines.length; i++){
             var BillLinesAllList1: FormGroup = this.reqitemLinesGroup();
             control.push(BillLinesAllList1);
-            if (data.obj.reqLines[i].adminstatus==='ISSUE'){
+            if (data.obj.reqLines[i].adminstatus==='ISSUE' ){
+            
               if (data.obj.reqLines[i].userstatus==='PENDING'){
                 this.isVisibleUserRequitionupdate=true;
               }
+          
+            }
+
+            if (data.obj.reqLines[i].adminstatus==='REJECT' ){
+            
+              if (data.obj.reqLines[i].userstatus==='PENDING'){
+                this.isVisibleUserRequitionupdate=true;
+              }
+          
             }
           //   if (data.obj.reqLines[i].adminstatus !='ISSUE'){
           //     alert('Admin Status not Issue. Please Contact Your Admin Head.!');
@@ -213,7 +226,11 @@ isDisabled = false;
     this.service.onSelectReqItemNameFn(codeType)
     .subscribe(
       data => {
+        // if (Array.isArray(data.obj)) {   .sort((a:any, b:any) => a.name.localeCompare(b.name));
+          this.onSelectItemNameFnList = data.obj;
+        // } else {
         this.onSelectItemNameFnList = data.obj;
+        // }
         console.log(this.onSelectItemNameFnList);
         this.itemMap.set(itemType, data.obj);
           this.itemMap2.set(i, this.itemMap.get(itemType));
@@ -228,18 +245,34 @@ isDisabled = false;
     var itemName = event.target.value;
     // alert(itemName);
    
-    this.adminServiceService.onhandQtyFn(itemName,sessionStorage.getItem('locId'))
+    this.adminServiceService.onhandQtyFn(itemName,sessionStorage.getItem('locId')) //,sessionStorage.getItem('locId')
     .subscribe(
       data => {
         this.onhandQtyList = data.obj;
         console.log(this.onhandQtyList);
         if (data.obj.length===0){
-          // alert('Selected Item Stock Not Available. Please Check.!')
+       
         }
         else{
         var patch = this.requisisionForm.get('reqLines') as FormArray;
-        // patch.controls[i].patchValue({ avlQty: data.obj[0].onhandqty,adunitRate:data.obj[0].price});
+       
       }
+      var patch1 = this.requisisionForm.get('reqLines')?.value;
+      var itemType1 = itemName.substr(itemName.indexOf(': ') + 1, itemName.length);
+      for (let k = 0; k < patch1.length;k++){
+        if (i != k){
+          if (patch1[k].itemName === itemType1){
+            alert('Same Item Present In Line no : '+ (k+1));
+            this.requestlineDetailsArray().controls[i].patchValue({ itemName:null})
+            return;
+          }
+        }
+      }
+      
+
+
+
+
       }
     );
    }
@@ -312,6 +345,7 @@ isDisabled = false;
     // this.closeResetButton = false;
     // this.progress = 0;
     // this.dataDisplay = 'Receipt Saving in progress....Do not refresh the Page';
+    this.isButtonDisabled = true;
     var orderLines1 = this.requisisionForm.get('reqLines') as FormArray;
     var orderLines = orderLines1.getRawValue();
     console.log(orderLines); 
@@ -404,5 +438,22 @@ isDisabled = false;
 }
 
 onKey(i:any,event:any){}
+
+
+
+CheckLineValidations(i: number) {
+  var prcLineArr1 = this.requisisionForm.get('reqLines')?.value;
+  var lineValue1 = prcLineArr1[i].itemcat;
+  var lineValue2 = prcLineArr1[i].itemName;
+  var lineValue3 = prcLineArr1[i].qty;
+
+  var j = i + 1;
+  if (lineValue1 === undefined || lineValue1 === null || lineValue1 === '') {
+    alert("Line-" + j + " BILL TYPE :  should not be null value");
+    this.lineValidation = false;
+    return;
+  }
+
+}
 
 }

@@ -3,7 +3,9 @@ import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Validators } from '@angular/forms';
 import { ItTransService } from '../it-trans.service';
-import { ItmasterService } from 'D:/Jyotik/itinventory/newe/angular/itInvenoryAndAdmin/src/app/it-master/itmaster.service';
+import { saveAs } from 'file-saver';
+// import { ItmasterService } from 'D:/Jyotik/itinventory/newe/angular/itInvenoryAndAdmin/src/app/it-master/itmaster.service';
+// import { ItTransService } from '../it-trans.service';
 import { style } from '@angular/animations';
 import { NgModule } from '@angular/core';
 import { NgForm } from '@angular/forms';
@@ -12,6 +14,12 @@ import * as xlsx from 'xlsx';
 import { TypeofExpr } from '@angular/compiler';
 import { HttpClient } from '@angular/common/http';
 
+
+const MIME_TYPES:any = {
+  pdf: 'application/pdf',
+  xls: 'application/vnd.ms-excel',
+  xlsx: 'application/vnc.openxmlformats-officedocument.spreadsheetxml.sheet'
+};
 
 interface Assetdiscard {
 
@@ -105,21 +113,30 @@ export class AssetDiscardComponent {
   public DvendorList: any=[];
   public allassetdiscardeSearch: any=[];
   maxDate = new Date();
+  minDate = new Date();
  displayGstper =true;
   gstperList:any;
   createdBy:string;
   lastupdatedBy:string;
+  today:string;
+  DisDate:Date;
+  DislocId:string;
+  DisvendName:string;
+  getAllOuLocationIdFn:any=[];
+  AllvendornameList: any = [];
+  public now = new Date();
+  // private service1: ItmasterService,
 
-
-  constructor(private fb: FormBuilder, private router: Router, private service1: ItmasterService, private service : ItTransService) {
+  constructor(private fb: FormBuilder, private router: Router,  private service : ItTransService) {
     this.Date = formatDate(
       this.date,
-      'dd-MM-yyyy hh:mm:ss a',
+      'dd-MMM-yyyy',
       'en-US',
       '+0530'
     );
 
-
+    const currentDate = new Date();
+    this.today = currentDate.toISOString().split('T')[0];
 
 
     this.aseetDiscardForm = fb.group({
@@ -128,7 +145,7 @@ export class AssetDiscardComponent {
       itemId: [],
       date: [],
       transType: [],
-      transDate: [],
+      transDate: [ ],
       value: [],
       reasonId: [],
       itemTypeId: [],
@@ -156,20 +173,22 @@ export class AssetDiscardComponent {
       dvendorlist: [],
       createdBy:[],
       lastupdatedBy:[],
-
+      DisDate:[],
+      DislocId:[],
+      DisvendName:[]
 
     })
   }
 
 
   AssetitemcodeFindFN(itemCode:any) {
-    // alert(itemCode)
     this.displayButton = false;
     this.displaystartDate = false;
     this.service.AssetitemcodeFindFN(itemCode)
       .subscribe(
         data => {
           this.aseetDiscardForm.patchValue(data.obj);
+          alert(data.message)
         
         }
       )
@@ -226,11 +245,12 @@ export class AssetDiscardComponent {
   ngOnInit(): void {
     $("#wrapper").toggleClass("toggled");
     this.aseetDiscardForm.patchValue({ ditemId: sessionStorage.getItem("ditemId") });
-    this.aseetDiscardForm.patchValue({ status: 'Discard' })
+    this.aseetDiscardForm.patchValue({ status:'Discard' })
     this.aseetDiscardForm.patchValue({ ouId: sessionStorage.getItem('ouId') });
     this.aseetDiscardForm.patchValue({createdBy:sessionStorage.getItem('loginName')});
     this.aseetDiscardForm.patchValue({lastupdatedBy:sessionStorage.getItem('loginName')})
     this.displayGstper = true;
+    
 
     this.service.TranstypList()
       .subscribe(
@@ -263,6 +283,23 @@ export class AssetDiscardComponent {
           console.log(this.gstperList);
         }
       );
+      this.service.getAllOuLocationId(sessionStorage.getItem('ouId'))
+  .subscribe(
+    data => {
+      this.getAllOuLocationIdFn = data.obj;
+      console.log(this.getAllOuLocationIdFn);
+    }
+  );
+
+     this.service.AllvendornameList()
+      .subscribe(
+        data => {
+          this.AllvendornameList = data.obj;
+          console.log(this.AllvendornameList);
+        }
+      );
+
+  
 
       if(  sessionStorage.getItem('role')==='Admin') {
 
@@ -271,7 +308,6 @@ export class AssetDiscardComponent {
       if(sessionStorage.getItem('role')==='User'){}
       this.aseetDiscardForm.get('ditemId')?.disable();
       this.aseetDiscardForm.get('valueGst')?.disable();
-      // this.aseetDiscardForm.get('itemCode')?.disable();
       this.aseetDiscardForm.get('itemType')?.disable();
       this.aseetDiscardForm.get('productMake')?.disable();
       this.aseetDiscardForm.get('productserialNo')?.disable();
@@ -373,14 +409,13 @@ export class AssetDiscardComponent {
     // if (isvaliddata1 === false) {
     //   return;
     // }
-    const formValue: Assetdiscard = this.transData(this.aseetDiscardForm.value);
+    const formValue: Assetdiscard = this.transData(this.aseetDiscardForm.getRawValue());
     formValue.productMake=this.aseetDiscardForm.get('productMake')?.value;
     console.log(formValue);
     this.service.AssetdiscrdSubmit(formValue).subscribe((res: any) => {
       if (res.code === 200) {
         alert(res.message);
         this.aseetDiscardForm.disable();
-      
         this.aseetDiscardForm.patchValue({ ditemId: res.obj.ditemId });
         this.displayButton = false;
 
@@ -405,7 +440,27 @@ export class AssetDiscardComponent {
   }
 
 
-
+  DiscardPrint(){
+    this.closeResetButton = false;
+    this.progress = 0;
+    this.dataDisplay = 'Report Is Running....Do not refresh the Page';
+    const fileName = 'Asset Discarded Print From Location-.pdf';
+    var transDate = this.aseetDiscardForm.get('DisDate')?.value;
+    var fromDate = this.pipe.transform(transDate, 'dd-MMM-yyyy');
+    var city = sessionStorage.getItem('ouId');
+    var locname = this.aseetDiscardForm.get('DislocId')?.value;
+    var vendorName = this.aseetDiscardForm.get('DisvendName')?.value;
+    // alert(itemcode);
+    
+    const EXT = fileName.substr(fileName.lastIndexOf('.') + 1);
+    this.service.AssetDiscardPrintForm(fromDate,city,locname,vendorName)
+      .subscribe(data => {
+        saveAs(new Blob([data], { type: MIME_TYPES[EXT] }), fileName);
+        this.closeResetButton = true;
+        this.dataDisplay = ''
+       
+      })
+  }
 
 }
 

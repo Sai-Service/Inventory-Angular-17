@@ -65,6 +65,7 @@ dataDisplay: any;
 progress = 0;
 closeResetButton = true;
 RejectreasonList:any=[];
+attribute5:number;
 
 pipe = new DatePipe('en-US');
   now = new Date();
@@ -109,6 +110,7 @@ pipe = new DatePipe('en-US');
       rejReason:[0],
       rejQty:[{ value: '', disabled: true }],
       avlQty:[{ value: '', disabled: true }],
+      attribute5:[],
     })
   }
 

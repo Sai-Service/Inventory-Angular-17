@@ -222,15 +222,15 @@ export class PurchaseReportComponent {
     var toDate = this.pipe.transform(pucDt2, 'dd-MMM-yyyy');
     const fileName = 'PURCHASE REPORT OF-' + fromDate + '-TO-' + toDate + '.xlsx';
     var exptypText = this.purchaseReportForm.get('expType')?.value;
-    alert(exptypText);
+    // alert(exptypText);
     var locId = this.purchaseReportForm.get('locId')?.value;
-    var ouId = this.purchaseReportForm.get('ouId')?.value;
+    var ouId = this.purchaseReportForm.get('ouCity')?.value;
     var vendorId = this.purchaseReportForm.get('vendorId')?.value;
     if (locId === null) { locId = '' }
     if (vendorId === null) { vendorId = '' }
     if (exptypText === null) { exptypText = '' }
     if (ouId === null) { ouId = '' }
-    alert(vendorId + '---locId' + locId);
+    // alert(vendorId + '---locId' + locId);
     const EXT = fileName.substr(fileName.lastIndexOf('.') + 1);
     this.reportService.AssetPurchaseReport(ouId,fromDate, toDate, locId, vendorId, exptypText)
       .subscribe(data => {

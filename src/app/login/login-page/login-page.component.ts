@@ -51,7 +51,6 @@ export class LoginPageComponent {
 
 
   login() {
-
     if (this.username == undefined || this.username == "") {
       alert('Please enter valid Username !');
       return;
@@ -63,7 +62,7 @@ export class LoginPageComponent {
     }
     this.loginService.login(this.username, this.password).subscribe((res: any) => {
       console.log('Res', res);
-          if (res.code === 200) {  
+          if (res.code === 200) { 
        this.router.navigate(['/admin']);
        sessionStorage.setItem('loginName', res.obj.loginName);
        sessionStorage.setItem('deptId', res.obj.deptId);
@@ -83,8 +82,6 @@ export class LoginPageComponent {
        sessionStorage.setItem('deptName', res.obj.deptName);
        sessionStorage.setItem('tktNo', res.obj.tktNo);
        sessionStorage.setItem('empId', res.obj.empId);
-
-
        var deptId = Number(sessionStorage.getItem('deptId'));
        var ouId = Number(sessionStorage.getItem('ouId'));
          var tktNo =(sessionStorage.getItem('tktNo')) ;
@@ -92,7 +89,7 @@ export class LoginPageComponent {
          this.service.viewReqisisionListFn(ouId,deptId,tktNo,stsreq)
          .subscribe((res: any) => {
            if (res.code === 200) {
-           if(sessionStorage.getItem('role')==='Admin' || this.pendingCount > 0  ){
+           if(sessionStorage.getItem('role')==='Admin' && sessionStorage.getItem('deptName')!=='IT DEPARTMNET' && this.pendingCount > 0 ){
                this.viewAllReqisision=res.obj;
                this.pendingCount = res.obj.filter((item:any) => item.reqstatus === 'OPEN').length;
                alert(this.pendingCount+'-'+"User Requsition Pending On Your Location Please Check Pending Requisitions List Form.");
@@ -104,17 +101,15 @@ export class LoginPageComponent {
        })
        
       } 
+      
       else if (res.code === 400) {
         alert('Incorrect Username or Password');
       } else {
         alert('Login Error - Application is not responsding properly!');
       }
+      
     });
+    
 
-  }
-
-
-
-
-}
+}}
 

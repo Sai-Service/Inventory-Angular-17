@@ -3,11 +3,15 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule ,FormsModule,Validators} from '@angular/forms';
 import { BudgetTransactionRoutingModule } from './budget-transaction-routing.module';
 import { BudgetTransactionComponent } from './budget-transaction/budget-transaction.component';
+import { BudgetSummaryRepoComponent } from './budget-summary-repo/budget-summary-repo.component';
+import { BudgetSearchFormComponent } from './budget-search-form/budget-search-form.component';
 
 
 @NgModule({
   declarations: [
-    BudgetTransactionComponent
+    BudgetTransactionComponent,
+    BudgetSummaryRepoComponent,
+    BudgetSearchFormComponent
   ],
   imports: [
     CommonModule,

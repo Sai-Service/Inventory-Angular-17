@@ -13,6 +13,8 @@ import { DirectReqFormComponent } from '../admin-transaction/direct-req-form/dir
 import { DirectreqRepoComponent } from './directreq-repo/directreq-repo.component';
 import { StockTransReceComponent } from './stock-trans-rece/stock-trans-rece.component';
 import { AdminStktrnsReportComponent } from './admin-stktrns-report/admin-stktrns-report.component';
+import { AddirectReqReportComponent } from './addirect-req-report/addirect-req-report.component';
+import { StockLdgerRepoComponent } from './stock-ldger-repo/stock-ldger-repo.component';
 
 const routes: Routes = [
   {path: 'miscellReport',component:MiscellReportComponent},
@@ -27,6 +29,8 @@ const routes: Routes = [
   {path:'Dashboard',component:DashboardComponent},
   {path:'Stkrecipt',component:StockTransReceComponent},
   {path:'Adstktrnsrepo',component:AdminStktrnsReportComponent},
+  {path:'adDirectReqRepo',component:AddirectReqReportComponent},
+{path:'Stkldger',component:StockLdgerRepoComponent},
   { path : '' ,redirectTo: 'Dashboard', pathMatch: 'full' }
 ];
 

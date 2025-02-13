@@ -1,0 +1,180 @@
+<form [formGroup]="budgetsrchform" (ngSubmit)="BudgetserchformMaster(budgetsrchform.value)">       
+    <table style="width: 100%;background-color: white;" class="center">
+        <tr>
+            <td class="PageHeader">
+                &nbsp;Budget&nbsp;Search&nbsp;Form
+            </td>
+               
+        </tr>
+    </table>
+    <fieldset>
+    <table class="center" style="width: 100%;background-color: #FFE4B5;">
+        <tr>
+            <td>
+                <table class="center">
+
+                    <tr>
+                        <td style="width: 15%" class="LabelFontStyle"> &nbsp;Budget&nbsp;Header&nbsp;Id&nbsp;:&nbsp;</td>
+                        <td><input type="text" class="form-control"  formControlName="budgetheaderId" style="width: 220px;" ></td>
+                        
+                        <div *ngIf="isVisibleLocList; then thenLocList; else elseLocList"></div>
+                        <ng-template #thenLocList>
+                        <td style="width: 15%" class="LabelFontStyle">&nbsp;City&nbsp;&nbsp;: </td>
+                       <td>
+                    <select type='number' formControlName="cityId" id="cityId" class="form-control"
+                        (change)="onSelectOuCity($event)" >
+                        <!-- <option></option> -->
+                        <option *ngFor="let sc of  AlllocationitemList" [ngValue]="sc.ouId">
+                            {{sc.ouName}}
+                        </option>
+                    </select>
+                </td>
+                <td style="width: 15%" class="LabelFontStyle">&nbsp;Location&nbsp;&nbsp;: </td>
+                <td>
+                    <!-- <select  type='number' formControlName="newlocId" id="newlocId" class="form-control" style="background-color: yellow;" > -->
+                    <select formControlName="locName" id="locName" class="form-control"
+                        >
+                        <option *ngFor="let subType of getAllOuLocationIdFn" [ngValue]="subType.locName">
+                            {{subType.locId}}-{{subType.locName}}
+                        </option>
+                    </select>
+                </td>
+                </ng-template>
+                <ng-template #elseLocList>
+                        <td style="width: 15%" class="LabelFontStyle">
+                            Location&nbsp;:&nbsp;
+                          </td>
+                        <td>
+                        <select id="locName" class="form-control" formControlName="locName" >
+                            <option>--Select--</option>
+                            <option *ngFor="let sc of  locIdList" [value]="sc.locName" >
+                                {{sc.locName}}
+                            </option>
+                        </select>
+                        </td>
+                </ng-template>
+
+                        <td style="width: 15%" class="LabelFontStyle">
+                            Division&nbsp;:&nbsp;
+                          </td>
+                        <td> <select id="divName" class="form-control" formControlName="divName" >
+                            <option>--Select--</option>
+                            <option *ngFor="let sc of  divIdlist" [value]="sc.codeDesc" >
+                                {{sc.codeDesc}}
+                            </option>
+                        </select></td>
+
+                    </tr>
+                    <tr>
+                        <td style="width: 15%" class="LabelFontStyle">
+                            OP&nbsp;Unit:&nbsp;
+                          </td>
+                          <td>
+                          <select id="companyName" class="form-control" formControlName="companyName" >
+                                  <option>--Select--</option>
+                                  <option *ngFor="let sc of  opunitList" [value]="sc.compName" >
+                                      {{sc.compName}}
+                                  </option>
+                              </select> 
+                          </td>
+
+                          <td style="width: 15%" class="LabelFontStyle">
+                            Department&nbsp;:&nbsp;
+                          </td>
+                          <td>
+                             <select id="deptName" class="form-control" formControlName="deptName" >
+                                  <option>--Select--</option>
+                                  <option *ngFor="let sc of  DepartmentList" [value]="sc.codeDesc" >
+                                      {{sc.codeDesc}}
+                                  </option>
+                              </select>
+                          </td>
+
+                          <td style="width: 15%" class="LabelFontStyle">
+                            Financial&nbsp;Year:&nbsp;
+                          </td>
+                          <td>
+                           
+                             <select id="finYear" class="form-control" formControlName="finYear" >
+                                  <option>--Select--</option>
+                                  <option *ngFor="let sc of  FainancialyearList" [value]="sc.codeDesc" >
+                                      {{sc.codeDesc}}
+                                  </option>
+                              </select> 
+                          </td>
+                        
+                    </tr>
+
+                </table>
+            </td>
+        </tr>
+    </table>   
+    </fieldset>
+    <fieldset class="RFS">
+        <!-- <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px;color: black;font-weight: bold;">
+            SEARCH</legend> -->
+        <table class="center">
+            <div *ngIf="isVisibleAdmorsup; then thenLocListA; else elseLocListA"></div>
+            <ng-template #thenLocListA>
+            <td >
+                <button type="submit" style="width: fit-content;" class="btn btn-primary" id="register" (click)="dataSearch()">
+                  Search
+                </button>
+            </td>
+            </ng-template>
+            <ng-template #elseLocListA>
+            <td >
+                <button type="submit" style="width: fit-content;" class="btn btn-primary" id="register" (click)="dataSearchSuper()">
+                  Search
+                </button>
+            </td>
+            </ng-template>
+            <td>
+                <button type="submit" class="btn btn-primary" id="resetBtn"  
+                (click)="Reset()" style="width: fit-content;">Reset</button>
+             </td>
+            <td>
+                <button type="submit" class="btn btn-primary" id="closeBtn"
+                 (click)="Close()" style="width: fit-content;">Close</button>
+            </td>
+
+        </table>
+    </fieldset>
+
+    <table class="GridFont" cellspacing="0" cellpadding="15"
+    style="border-color:#959595;border-collapse:collapse;width: 100%; ">
+    <thead>
+        <tr class="GridHeader">
+            <th scope="col" style="border: 1px solid black; width: 30px;"> Budget Header Id</th>
+            <th scope="col" style="border: 1px solid black; width: 30px;">City Name</th>
+            <th scope="col" style="border: 1px solid black; width: 30px;"> Financial Year</th>
+            <th scope="col" style="border: 1px solid black; width: 30px;"> Location Name</th>
+            <th scope="col" style="border: 1px solid black; width: 30px;"> Division Name</th>
+            <th scope="col" style="border: 1px solid black; width: 30px;"> company Name</th>
+            <!-- <th scope="col" style="border: 1px solid black; width: 30px;"> Budget Amount</th>
+            <th scope="col" style="border: 1px solid black; width: 30px;"> Actual Amount</th> -->
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let com of allbudgetmstList" class="ItemStyle" style="text-decoration:none;">           
+        <!-- <td  style="border: 1px solid black;padding-left: 15px;">{{com.budgetheaderId}}</td> -->
+        <td style="padding-left: 5px;padding-top: 10px; border: 1px solid black;padding-left: 15px;">
+            <a [routerLink]="['/admin/BudgetTransaction/budgetentry',com.budgetheaderId]" href="{{budgetheaderId}}">{{com.budgetheaderId}}</a>
+        </td>
+        <td  style="border: 1px solid black;padding-left: 15px;">{{com.finYear}}</td>
+        <td  style="border: 1px solid black;padding-left: 15px;">{{com.cityName}}</td>
+        <td  style="border: 1px solid black;padding-left: 15px;">{{com.locName}}</td>
+        <td  style="border: 1px solid black;padding-left: 15px;">{{com.divName}}</td>
+        <td  style="border: 1px solid black;padding-left: 15px;">{{com.companyName}}</td>
+        <!-- <td hidden style="border: 1px solid black;padding-left: 15px;">{{com.status}}</td>
+        <td hidden style="border: 1px solid black;padding-left: 15px;">{{com.status}}</td> -->
+        </tr>
+    </tbody>
+    </table>
+    
+
+
+
+
+
+</form>

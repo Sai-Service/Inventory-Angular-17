@@ -64,7 +64,7 @@ export class LocationComponent {
   panNo:string;
   tanNo:string;
   cinNo:string;
-  status:string;
+  // status:string;
   region:string;
   registeredAdd:string;
   locFooter:string;
@@ -72,17 +72,22 @@ export class LocationComponent {
   startDate:string|null;
   ouCity:string;
   erpLocId:number;
-
+  displayEndDate=false;
+  displaystartDate=true;
+  displayInactive = true;
   checkValidation=false;
   pipe = new DatePipe('en-US');
     lstcomments: any[];
     allLocList:any[];
-    displayEndDate=false;
-    displaystartDate=true;
     displayButton=true;
     public loactionouNameList:any=[];
     isVisibleadminSearch:boolean=true;
     isVisibleSuperSearch:boolean=true;
+    displayStatus = true;
+    endDate: Date;
+    showLoginDetails = false;
+    statusList:any[];
+    public status = "Active";
     
     public loactionoucityList:any=[];
     constructor(private fb: FormBuilder, private router: Router, private service: ItmasterService) {
@@ -113,6 +118,7 @@ export class LocationComponent {
   status:[],
   startDate:[],
   erpLocId:[],
+  endDate:[],
   
       })
     }
@@ -151,6 +157,14 @@ export class LocationComponent {
       data => {
         this.loactionoucityList = data.obj;
         console.log(this.loactionoucityList);
+      }
+    );
+
+    this.service.statusList()
+    .subscribe(
+      data => {
+        this.statusList = data.obj;
+        console.log(this.statusList);
       }
     );
     
@@ -192,6 +206,8 @@ export class LocationComponent {
     // alert(locId)
     this.displayButton=false;
     this.displaystartDate=false;
+    this.displaystartDate=false;
+    this.displayStatus = false;
     this.locationMasterForm.get('startDate')?.disable();
     this.locationMasterForm.get('locId')?.disable();
     this.locationMasterForm.get('locCode')?.disable();
@@ -208,7 +224,7 @@ export class LocationComponent {
     this.locationMasterForm.get('gstNo')?.disable();
     this.locationMasterForm.get('panNo')?.disable();
     this.locationMasterForm.get('registeredAdd')?.disable();
-    this.locationMasterForm.get('status')?.disable();
+    // this.locationMasterForm.get('status')?.disable();
     this.locationMasterForm.get('region')?.disable();
     this.locationMasterForm.get('phone1')?.disable();
     this.locationMasterForm.get('erpLocId')?.disable();
@@ -229,6 +245,24 @@ export class LocationComponent {
     );
   }
 
+
+  onOptionsSelectede(event: any) {
+    this.status = this.locationMasterForm.get('status')?.value;
+    // alert(this.status);
+    if (this.status === 'Inactive') {
+      this.displayInactive = false;
+    this.locationMasterForm.get('endDate')?.disable();
+      this.displaystartDate = false;
+      this.showLoginDetails = false;
+      this.endDate = new Date();
+      // this.loginYN = 'N';
+      
+    
+    }
+    else if (this.status === 'Active') {
+      this.locationMasterForm.get('endDate')?.reset();
+    }
+    }
 
 
   // VALIDATION PART
