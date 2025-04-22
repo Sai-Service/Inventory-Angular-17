@@ -469,7 +469,7 @@ pipe = new DatePipe('en-US');
    }
 
    onKey(i:number, event:any) {  
-    // alert(i)    
+    alert(i);      
     var arrayControlNew = this.adstkPucahseFrom.get('stkLines') as FormArray;
     var arrayControl = arrayControlNew.getRawValue();
     var pricingQty = arrayControl[i].adstkQty;
