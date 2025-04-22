@@ -20,7 +20,9 @@ const MIME_TYPES :any= {
 })
 export class FAassetreportsComponent {
   FAReportForm:FormGroup;
-  closeResetButton = true;
+  closeResetButton=true;
+  oufieldvisible:boolean=true;
+  oufieldvisibleOu:boolean=true;
   dataDisplay: any;
   progress = 0;
   locId:number;
@@ -28,6 +30,7 @@ export class FAassetreportsComponent {
   batchName:string;
   public AccRepLocationList: any = [];
   BatchnameList:any=[];
+  public AlllocationitemList:any=[];
 
   constructor(private fb: FormBuilder, private router: Router, private location1: Location, private router1: ActivatedRoute, private reportService: ItReportService) {
     this.FAReportForm = this.fb.group({
@@ -39,15 +42,13 @@ export class FAassetreportsComponent {
       bathSts:[],
       batchName:[],
 
-
     })
 
   }
 
   ngOnInit(): void {
     $("#wrapper").toggleClass("toggled");
-    
-    
+      
     this.reportService.getAccLocationSearch(sessionStorage.getItem('ouId'))
       .subscribe(
         data => {
@@ -55,12 +56,35 @@ export class FAassetreportsComponent {
           console.log(this.AccRepLocationList);
         }
       );
+  
+    if(sessionStorage.getItem('attribute3')==='ALLFA'){
+      this.oufieldvisibleOu=true;
+      this.oufieldvisible=false;
+      // this.FAReportForm.get('bathSts')?.disable();
+      // this.FAReportForm.get('batchName')?.disable();
+      // this.FAReportForm.get('locId')?.disable();
+    }
+    if(sessionStorage.getItem('attribute3')!=='ALLFA'){   
+      this.oufieldvisibleOu=false;
+      this.oufieldvisible=true;
+      // this.FAReportForm.get('ouId')?.disable();
+     
+    }
+
+    
 
      
       var locId=this.FAReportForm.get('locId')?.value;
       var btchsts=this.FAReportForm.get('bathSts')?.value;
      
-  
+      this.reportService.AlllocationitemList()
+      .subscribe(
+        data => {
+          this.AlllocationitemList = data.obj;
+          console.log(this.AlllocationitemList);
+        }
+      );
+
   }
 
 
@@ -79,7 +103,7 @@ export class FAassetreportsComponent {
 
 
 
-  onSelectOuCity(event:any) {
+  onSelectBatchName(event:any) {
     var locId = event.target.value;
     var btchsts = event.target.value;
     // var itemType1 = itemType.substr(itemType.indexOf(': ') + 1, itemType.length);
@@ -96,6 +120,19 @@ export class FAassetreportsComponent {
   }
   
 
+  onSelectOuCity(event:any) {
+    var itemType = event.target.value;
+    var itemType1 = itemType.substr(itemType.indexOf(': ') + 1, itemType.length);
+    var itemType12 = trim(itemType1);
+    this.reportService.getAllOuLocationId(itemType12)
+      .subscribe(
+        data => {
+          this.AccRepLocationList = data.obj;
+          console.log(this.AccRepLocationList);
+        }
+      );
+  }
+
 
   FABatchWiseRepo() {
     this.closeResetButton = false;
@@ -104,10 +141,15 @@ export class FAassetreportsComponent {
     var locId=this.FAReportForm.get('locId')?.value;
     var btchsts=this.FAReportForm.get('bathSts')?.value;
     var batchName=this.FAReportForm.get('batchName')?.value;
-      alert(batchName);
+    var oucId=this.FAReportForm.get('ouId')?.value;
+    if(oucId===null){ locId = sessionStorage.getItem('ouId') }
+    if (locId === null) { locId = '' }
+    if (batchName === null) { batchName = '' }
+    if (btchsts === null) { btchsts = '' }
+    alert(batchName);
     const fileName = 'FA BATCH WISE REPORT OF-' + batchName + '.xlsx';
     const EXT = fileName.substr(fileName.lastIndexOf('.') + 1);
-    this.reportService.FAssetBatchWiseReport( locId, btchsts,batchName )
+    this.reportService.FAssetBatchWiseReport(oucId,batchName,locId,btchsts )
       .subscribe(data => {
         saveAs(new Blob([data], { type: MIME_TYPES[EXT] }), fileName);
         this.closeResetButton = true;

@@ -39,7 +39,7 @@ export class VendorItemComponent {
   displayInactive = true;
   displayStatus = true;
   public status = "Active";
-  endDate:string;
+  endDate:Date;
   loginYN:string;
   compName:string;
   code:string;
@@ -49,7 +49,7 @@ export class VendorItemComponent {
 
 
  
-
+  showLoginDetails = false;
   public DivisionIDList: any=[];
   public locIdList: any=[];
   public OuCityList: any=[];
@@ -83,6 +83,7 @@ export class VendorItemComponent {
   code:[],
   itemName:[],
   budgetType:[],
+  endDate:[],
 
 
     })  }
@@ -132,6 +133,13 @@ export class VendorItemComponent {
 
 
     }
+    this.service.statusList()
+      .subscribe(
+        ( data:any) => {
+          this.statusList = data.obj;
+          console.log(this.statusList);
+        }
+      );
 
 
   }
@@ -277,7 +285,20 @@ export class VendorItemComponent {
       );
   }
   
-
+  onOptionsSelectede(event: any) {
+    this.status = this.vendoritemMasterForm.get('status')?.value;
+    // alert(this.status);
+    if (this.status === 'Inactive') {
+      this.displayInactive = false;
+      this.displaystartDate = false;
+      this.showLoginDetails = false;
+      this.endDate = new Date();
+    
+    }
+    else if (this.status === 'Active') {
+      this.vendoritemMasterForm.get('endDate')?.reset();
+    }
+  }
 
 
 }

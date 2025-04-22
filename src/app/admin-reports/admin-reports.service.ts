@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Attribute, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { from, Observable } from 'rxjs';
 import { AppConst } from '../app-const'
@@ -44,8 +44,8 @@ export class AdminReportsService {
   }
   
 
-  AdminRequsitionReport(ouId:any,fromDate:any,toDate:any,location:any,cmntypeId:any){
-    const REQUEST_URI = this.ServerUrl +`/ReqReports/Req?city=${ouId}&fromDt=${fromDate}&toDt=${toDate}&location=${location}&cmntypeId=${cmntypeId}`;
+  AdminRequsitionReport(ouId:any,fromDate:any,toDate:any,location:any,cmntypeId:any,attribute:any){
+    const REQUEST_URI = this.ServerUrl +`/ReqReports/Req?city=${ouId}&fromDt=${fromDate}&toDt=${toDate}&location=${location}&cmntypeId=${cmntypeId}&attribute1=${attribute}`;
     return this.http.get(REQUEST_URI, {
       responseType: 'arraybuffer',
       headers: this.headers,

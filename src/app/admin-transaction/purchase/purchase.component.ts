@@ -18,6 +18,7 @@ import { saveAs } from 'file-saver';
 import { AdminTransactionService } from '../admin-transaction.service';
 // import{PurchaseComponent}from'../purchase';
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { Alert } from 'selenium-webdriver';
 
 
 
@@ -94,7 +95,7 @@ pipe = new DatePipe('en-US');
   displayButton=true;
   userList1: any[] = [];
   lastkeydown1: number = 0;
-  AllAdminvendornameList:any=[];
+  AllAdminvendornameList1:any=[];
   advendBillno:string;
   advndBilldate:string|null;
   totalAmt:number;
@@ -274,7 +275,9 @@ pipe = new DatePipe('en-US');
       this.service.adminDeptVendorListFn()
     .subscribe(
       data => {
-        this.AllAdminvendornameList =data;
+        this.AllAdminvendornameList1=data;
+        console.log(this.AllAdminvendornameList1);
+     
       }
     );
     
@@ -318,9 +321,9 @@ pipe = new DatePipe('en-US');
     this.CheckLineValidationstaxtyp();
     this.displayRequItem[i]=false;
     this.displayBillType1[i]=false;
-    this.displayGstper[i] = false;
+    // this.displayGstper[i] = false;
     this.displayDesc[i]=true;
-    this.displayGstTaxType[i]=false;
+    // this.displayGstTaxType[i]=false;
     this.orderlineDetailsArray().push(this.AdstkLinesGroup());
     var len = this.orderlineDetailsArray().length;
 
@@ -401,7 +404,7 @@ pipe = new DatePipe('en-US');
     var codeType=itemcat.category;
 
     this.orderlineDetailsArray().controls[i].patchValue({adstkItem:codeType})
-    this.service.onSelectReqItemNameFn(codeType)
+    this.service.onSelectReqItemNameFn1(codeType,sessionStorage.getItem('ouId'))
     .subscribe(
       data => {
         this.onSelectItemNameFnList = data.obj;
@@ -409,6 +412,16 @@ pipe = new DatePipe('en-US');
         
       }
     );
+  //   const ouId = sessionStorage.getItem('ouId');
+  //   this.service.onSelectReqItemNameFn1(codeType, ouId)
+  // .subscribe(data => {
+  //   this.onSelectItemNameFnList = data.obj.filter((item:any) => {
+  //     return ['mumbai', 'pune', 'kolhapur', 'goa', 'cochin', 'hyderabad']
+  //       .some(city => item[city] === ouId);
+  //   });
+
+  //   console.log(this.onSelectItemNameFnList);
+  // });
 
     if (codeType == 'OTHERS') {
       this.displayDesc[i]=false;
@@ -450,6 +463,7 @@ pipe = new DatePipe('en-US');
     var disamt =event.target.value;
     var amunt = this.adstkPucahseFrom.get('totalAmt')?.value;
     var totdisamt=amunt-disamt;
+    // Math.ceil(totdisamt);
     this.adstkPucahseFrom.patchValue({'totalAmt':totdisamt.toFixed(2),})
 
    }
@@ -462,9 +476,16 @@ pipe = new DatePipe('en-US');
     var rate = arrayControl[i].adunitRate;
     var gstPer = arrayControl[i].adstkTax;
     var addsbttl = arrayControl[i].adsubTotal;
-    var discAmt = arrayControl[i].addiscAmt;
-    // var discAmt  = (Math.round(((discper/100) + Number.EPSILON)*100)/100);
-    var subTot = Math.round(((pricingQty* rate-discAmt )+Number.EPSILON) * 100) / 100;
+    // var discAmt = arrayControl[i].addiscAmt;
+    var discAmt = arrayControl[i].addiscAmt || this.adstkPucahseFrom.get('addiscAmt')?.value;
+    // if(this.adstkPucahseFrom.get('addiscAmt')?.value==null){ var discAmt = arrayControl[i].addiscAmt}
+    // else{}
+    // alert(this.adstkPucahseFrom.get('addiscAmt')?.value)
+    // let discountAmount = Math.round(((rate * discAmt / 100) + Number.EPSILON) * 100) / 100;
+    let discountAmount = ((rate * discAmt / 100) + Number.EPSILON);
+    // alert(discountAmount+'---Calculate ');
+    var subTot = Math.round(((pricingQty*(rate-discountAmount) )+Number.EPSILON) * 100) / 100;
+    // alert(rate-discountAmount+'----calculate---rate');
     var todisAmt =Math.round((subTot + Number.EPSILON)*100)/100;
     
           var gstType = this.adstkPucahseFrom.get('adtaxCat')?.value;
@@ -505,20 +526,95 @@ pipe = new DatePipe('en-US');
           // alert(this.sgst1+'-----'+'-----'+this.igst1)
           var gstTot1 = ( this.sgst1+ this.sgst1+this.igst1);
           // alert(gstTot1)
-          var gstTot= gstTot1;
+          var gstTot= gstTot1;   //Math.round(((gstTot) + Number.EPSILON)*100)/100 
           Math.ceil(gstTot1);
           // alert(gstTot+'---gstTot')
           var totAmt=todisAmt+gstTot;  ///subTot
+          var TotalAmt = Math.round(((totAmt) + Number.EPSILON)*100)/100;
+          Math.ceil(TotalAmt);
+          
           var patch = this.adstkPucahseFrom.get('stkLines') as FormArray;
-          patch.controls[i].patchValue({ adtaxAmt: gstTot });
+          patch.controls[i].patchValue({ adtaxAmt: gstTot});
           patch.controls[i].patchValue({ adsubTotal: subTot });
-          patch.controls[i].patchValue({ adtotalAmt: totAmt.toFixed(2)});
+          patch.controls[i].patchValue({ adtotalAmt: TotalAmt.toFixed(2)});
           patch.controls[i].patchValue({ discAmt: todisAmt});
           patch.controls[i].patchValue({ sgst: this.sgst1});
           patch.controls[i].patchValue({ cgst: this.sgst1});
           patch.controls[i].patchValue({ igst: this.igst1});
           this.updateTotAmtPerline(0)
   }
+
+
+// onKey(i:number, event:any) {  
+//     // alert(i)    
+//     var arrayControlNew = this.adstkPucahseFrom.get('stkLines') as FormArray;
+//     var arrayControl = arrayControlNew.getRawValue();
+//     var pricingQty = arrayControl[i].adstkQty;
+//     var rate = arrayControl[i].adunitRate;
+//     var gstPer = arrayControl[i].adstkTax;
+//     var addsbttl = arrayControl[i].adsubTotal;
+ 
+//     var discAmt = arrayControl[i].addiscAmt || this.adstkPucahseFrom.get('addiscAmt')?.value;;
+ 
+//     var subTot = Math.round(((pricingQty* rate-discAmt )+Number.EPSILON) * 100) / 100;
+//     var todisAmt =Math.round((subTot + Number.EPSILON)*100)/100;
+    
+//           var gstType = this.adstkPucahseFrom.get('adtaxCat')?.value;
+//           if (gstType==='S-C-GST'){
+//             if (gstPer==='18' || gstPer===18){
+//               this.sgst1  = (Math.round(((todisAmt*9/100) + Number.EPSILON)*100)/100);
+//             }
+//             if (gstPer==='12' || gstPer===12){
+//               this.sgst1  = (Math.round(((todisAmt*6/100) + Number.EPSILON)*100)/100);
+//             }
+//             if (gstPer==='5' || gstPer===5){
+//               this.sgst1  = (Math.round(((todisAmt*2.5/100) + Number.EPSILON)*100)/100); 
+//             }
+//             if (gstPer === '28' || gstPer === 28){
+             
+//               this.sgst1 = Math.round(((todisAmt*14/100) + Number.EPSILON)*100)/100;
+//             }
+//             if (gstPer==='0'){
+//               this.sgst1=0;
+//             }
+           
+//           }
+          
+//           if (gstType==='IGST'){
+//             this.igst1  = Math.round(((todisAmt*gstPer/100) + Number.EPSILON)*100)/100;
+//             this.igst1 = Math.ceil(this.igst1);
+
+//           }
+//         //   alert(this.igst1)
+//         //  debugger;
+//           if (this.igst1===undefined){
+//             this.igst1=0;
+//           }
+//           if (this.sgst1===undefined){
+//             this.sgst1=0;
+//           }
+        
+//           // alert(this.sgst1+'-----'+'-----'+this.igst1)
+//           var gstTot1 = ( this.sgst1+ this.sgst1+this.igst1);
+//           // alert(gstTot1)
+//           var gstTot= gstTot1;
+//           Math.ceil(gstTot1);
+//           // alert(gstTot+'---gstTot')
+//           var totAmt=todisAmt+gstTot;  ///subTot
+//           var patch = this.adstkPucahseFrom.get('stkLines') as FormArray;
+//           patch.controls[i].patchValue({ adtaxAmt: gstTot });
+//           patch.controls[i].patchValue({ adsubTotal: subTot });
+//           patch.controls[i].patchValue({ adtotalAmt: totAmt.toFixed(2)});
+//           patch.controls[i].patchValue({ discAmt: todisAmt});
+//           patch.controls[i].patchValue({ sgst: this.sgst1});
+//           patch.controls[i].patchValue({ cgst: this.sgst1});
+//           patch.controls[i].patchValue({ igst: this.igst1});
+//           this.updateTotAmtPerline(0)
+//   }
+
+
+
+
 
   updateLineOnCancel(i:number,event:any){
     var lineStatus1 = event.target.value;
@@ -541,6 +637,7 @@ trxArr.controls[i].patchValue({ 'adstkTax': 0, 'adstkQty': 0, 'adunitRate': 0, '
 
       } else {
         adtotalAmt1 = adtotalAmt1 + Number(formVal[i].adtotalAmt);
+        // var totalAmount =Math.ceil(adtotalAmt1);
       }
       if (formVal[i].adtaxAmt == undefined || formVal[i].adtaxAmt == null || formVal[i].adtaxAmt == '') {
 
@@ -549,8 +646,9 @@ trxArr.controls[i].patchValue({ 'adstkTax': 0, 'adstkQty': 0, 'adunitRate': 0, '
       }
         
     }
-
-    this.adstkPucahseFrom.patchValue({ 'totalAmt':adtotalAmt1.toFixed(2),'totalTax':adtaxAmt1.toFixed(2)});
+ var totalAmount =Math.ceil(adtotalAmt1);
+ var totalTxAmount =Math.ceil(adtaxAmt1);
+    this.adstkPucahseFrom.patchValue({ 'totalAmt':totalAmount.toFixed(2),'totalTax':totalTxAmount.toFixed(2)});
     // adtaxAmt1.toFixed(0)
     // adtotalAmt1.toFixed(0)
    }
@@ -591,37 +689,47 @@ trxArr.controls[i].patchValue({ 'adstkTax': 0, 'adstkQty': 0, 'adunitRate': 0, '
   }
 
 
-  getUserIdsFirstWay($event:any) {
-    let userId = (<HTMLInputElement>document.getElementById('userIdFirstWay')).value;
+  getUserIdsFirstWay($event: any) {
+    const userId = (document.getElementById('userIdFirstWay') as HTMLInputElement).value;
     this.userList1 = [];
-
+  
     if (userId.length > 2) {
       if ($event.timeStamp - this.lastkeydown1 > 200) {
-        this.userList1 = this.searchFromArray(this.AllAdminvendornameList, userId);
+        this.userList1 = this.searchFromArray(this.AllAdminvendornameList1, userId);
       }
     }
+  
+    this.lastkeydown1 = $event.timeStamp;
   }
 
-  searchFromArray(arr: any, regex: any) {
-    let matches: any = [], i;
-    for (i = 0; i < arr.length; i++) {
 
+  onSelectVendorNameFN(event: any) {
+    const suppName = event.target.value;
+    const selectedValue = this.AllAdminvendornameList1.find((v: any) => v.name === suppName);
+  
+    if (selectedValue) {
+      this.adstkPucahseFrom.patchValue({
+        advendId: selectedValue.suppNo,
+        erpsuppNo: selectedValue.erpsuppNo,
+        erpvendorId: selectedValue.erpvendorId
+      });
+    } else {
+      console.warn('Vendor not found in the list');
+    }}
+
+
+  searchFromArray(arr: any[], searchText: string): any[] {
+    let matches: any[] = [];
+    const regex = new RegExp(searchText, 'i'); // case-insensitive
+    for (let item of arr) {
+      if (regex.test(item.name)) {
+        matches.push(item);
+      }
     }
     return matches;
-  };
-
-
-  onSelectVendorNameFN(event:any){
-    var suppName = event.target.value;
-    console.log(this.AllAdminvendornameList);
-    let selectedValue = this.AllAdminvendornameList.find((v:any) => v.name == suppName);
-    console.log(selectedValue.suppId);
-    // alert(selectedValue.suppNo);
-   this.adstkPucahseFrom.patchValue({advendId:selectedValue.suppNo});
-   this.adstkPucahseFrom.patchValue({erpsuppNo  :selectedValue.erpsuppNo});
-   this.adstkPucahseFrom.patchValue({erpvendorId:selectedValue.erpvendorId});
- 
   }
+
+
 
   purcahseorder(){
     var poord=this.adstkPucahseFrom.get('adheaderId')?.value;
@@ -644,7 +752,7 @@ trxArr.controls[i].patchValue({ 'adstkTax': 0, 'adstkQty': 0, 'adunitRate': 0, '
    this.displayCSVUpload=false;
    this.adstkPucahseFrom.patchValue({ adstkTax: sessionStorage.getItem('code') });
     var patch = this.adstkPucahseFrom.get('stkLines') as FormArray;
-    patch.controls[0].patchValue({ adstkTax: 'code' });
+    // patch.controls[0].patchValue({ adstkTax: 'code' });
       this.service.adheaderIdFindFN1(adheaderId1,sessionStorage.getItem('locId'))
         .subscribe(
           data => {
@@ -667,8 +775,11 @@ trxArr.controls[i].patchValue({ 'adstkTax': 0, 'adstkQty': 0, 'adunitRate': 0, '
                 control.push(BillLinesAllList1);
                 this.displayRequItem[i] = false;
                 this.displayBillType1[i] = false;
-                this.displayGstper[i] = false;
+                this.displayGstper[i] = true;
                 this.displayDesc[i]=false;
+                BillLinesAllList1.patchValue({
+                  adstkTax: data.obj.stkLines[i].adstkTax
+                });
                 
                 if (data.obj.stkLines[i].adstklinsts == 'BOOKED') {
                   this.displayLineflowStatusCode[i]=false;
@@ -682,17 +793,17 @@ trxArr.controls[i].patchValue({ 'adstkTax': 0, 'adstkQty': 0, 'adunitRate': 0, '
                 if (data.obj.stkLines[i].adstklinsts == 'CANCELLED') {
                   this.displayLineflowStatusCode[i]=true;
                   this.displayRequItem[i]=false;
-                this.displayBillType1[i]=false;
-                this.displayGstper[i]=false;
-                  this.displayAmount[i]=false;
+                  this.displayBillType1[i]=false;
+                  this.displayGstper[i]=false;
+                  this.displayAmount[i]=true;
                   this.displayDesc[i]=false;
                 }
                 if (data.obj.stkLines[i].adstklinsts == 'CLOSED') {
                   this.displayLineflowStatusCode[i]=true;
                   this.displayRequItem[i]=false;
-                this.displayBillType1[i]=false;
-                this.displayGstper[i]=false;
-                  this.displayAmount[i]=false;
+                  this.displayBillType1[i]=false;
+                  this.displayGstper[i]=false;
+                  this.displayAmount[i]=true;
                   this.displayDesc[i]=false;
                 }
               }
@@ -719,9 +830,10 @@ trxArr.controls[i].patchValue({ 'adstkTax': 0, 'adstkQty': 0, 'adunitRate': 0, '
               
               // this.adstkPucahseFrom.disable();
 
-              let selectedValue = this.AllAdminvendornameList.find((v:any) => v.vendorName === data.obj.vendorName);
+              let selectedValue = this.AllAdminvendornameList1.find((v:any) => v.vendorName === data.obj.vendorName);
               console.log(selectedValue);
              this.adstkPucahseFrom.patchValue({advend:selectedValue.vendorName,advendId:selectedValue.advendId});
+           
             
             }
           }

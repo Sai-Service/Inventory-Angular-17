@@ -49,13 +49,15 @@
                 <td style="width: 15%" class="LabelFontStyle1">&nbsp;Vendor&nbsp;Name :&nbsp;</td>
                 <td colspan="3">
                     <input type="text" formControlName="advend" style="background-color: yellow; width: 100%;"
-                        (keyup)="getUserIdsFirstWay($event)" id="userIdFirstWay" list="dynmicUserIds"
-                        class="form-control" placeholder="Vendor details" (change)="onSelectVendorNameFN($event)" />
+                    (keyup)="getUserIdsFirstWay($event)" id="userIdFirstWay" list="dynmicUserIds"
+                    class="form-control" placeholder="Vendor details" (change)="onSelectVendorNameFN($event)" />
                     <datalist id="dynmicUserIds">
-                        <option *ngFor="let sc of AllAdminvendornameList" [value]="sc.name">
-                            {{sc.name}}</option>
-                    </datalist>
-                    <input type="text" hidden formControlName="advendId">
+                        <option *ngFor="let sc of userList1.length > 0 ? userList1 : AllAdminvendornameList1" [value]="sc.name">
+                          {{ sc.name }}
+                        </option>
+                      </datalist>
+                 
+                    <input type="text" hidden  formControlName="advendId">
                     <input type="text" hidden formControlName="erpvendorId">
                     <input type="text" hidden formControlName="erpsuppNo">
                 </td>
@@ -107,7 +109,7 @@
 
             </tr>
             <tr>
-                <td style="width: 15%" class="LabelFontStyle">&nbsp;Discount&nbsp;Amount:</td>
+                <td style="width: 15%" class="LabelFontStyle">&nbsp;Discount&nbsp;Per:</td>
                 <td> <input type="text" style="width: 220px;" formControlName="addiscAmt" (keydown.tab)="onKey1($event)"
                         (input)="onKey1($event)" class="form-control"></td>
 
@@ -144,7 +146,7 @@
                     <th style="width:6rem" scope="col">Tax %</th>
                     <th style="width:6rem" scope="col">Qty</th>
                     <th style="width:6rem" scope="col">Rate</th>
-                    <th style="width:6rem" scope="col">Disc Amt</th>
+                    <th style="width:6rem" scope="col">Disc Per</th>
                     <th style="width:6rem" scope="col">Sub Total</th>
                     <th style="width:4rem" scope="col">S-GST</th>
                     <th style="width:4rem" scope="col">C-GST</th>
@@ -184,7 +186,6 @@
                                 </ng-template>
 
                             </td>
-
                             <td>
                                 <div *ngIf="displayRequItem[i]; then thenRequItem; else elseRequItem"> </div>
                                 <ng-template #thenRequItem>
@@ -217,15 +218,15 @@
                             <td>
                                 <div *ngIf="displayGstper[i]; then thenGstper; else elseGstper"> </div>
                                 <ng-template #thenGstper>
-                                    <select type='number' formControlName="adstkTax" id="adstkTax" class="form-control"
-                                        style="background-color: yellow; width: 8rem;height: 25px;font-size: 10px;">
+                                    <select type='text' formControlName="adstkTax" id="adstkTax" class="form-control"
+                                        style="background-color: yellow; width: 8rem;height: 25px;font-size: 10px;"  (input)="onKey1($event)">
                                         <!---  (keydown.tab)="NumberkeyUp(i,event)"-->
-                                        <option *ngFor="let sc of gstperList" [ngValue]="sc.code">
+                                        <option *ngFor="let sc of gstperList" [value]="sc.code">
                                             {{sc.code}}
                                         </option>
                                     </select>
-                                </ng-template>
-                                <ng-template #elseGstper>
+                               </ng-template>
+                                <ng-template #elseGstper> 
                                     <input type='number' [disabled]="isDisabled(i)" readonly formControlName="adstkTax"
                                         class="form-control" style="width: 8rem;height: 25px;font-size: 10px;">
                                 </ng-template>
@@ -235,39 +236,39 @@
                                 <td>
                                     <input type='number' formControlName="adstkQty" class="form-control"
                                         style="width: 4rem;height: 25px;font-size: 10px;" name="adstkQty{{i}}"
-                                        (keydown.tab)="onKey(i,$event)" min="0">
+                                        (keydown.tab)="onKey(i,$event)" min="0"  (input)="onKey1($event)">
                                     <!----(Keydown.tab)="validNumber($event)"-->
                                 </td>
                                 <td>
                                     <input type='number' formControlName="adunitRate" class="form-control"
                                         style="width: 6rem;height: 25px;font-size: 10px;" name="adunitRate{{i}}"
-                                        (keydown.tab)="onKey(i,$event)" min="0">
+                                        (keydown.tab)="onKey(i,$event)" min="0"  (input)="onKey1($event)">
                                     <!---(Keydown.tab)="validNumber($event)"   / [disabled]="isDisableunitrate"-->
                                 </td>
                                 <td>
                                     <input type='number' formControlName="addiscAmt" class="form-control"
                                         style="width: 4rem;height: 25px;font-size: 10px;" name="addiscAmt{{i}}" main="0"
-                                        (keydown.tab)="onKey(i,$event)">
+                                        (keydown.tab)="onKey(i,$event)"  (input)="onKey1($event)">
                                 </td>
                             </ng-template>
                             <ng-template #elseAmount>
                                 <td>
                                     <input type='number' [disabled]="isDisabled(i)" readonly formControlName="adstkQty"
                                         class="form-control" style="width: 4rem;height: 25px;font-size: 10px;"
-                                        name="adstkQty{{i}}" (keydown.tab)="onKey(i,$event)" min="0">
+                                        name="adstkQty{{i}}" (keydown.tab)="onKey(i,$event)" min="0"  (input)="onKey1($event)">
                                     <!----(Keydown.tab)="validNumber($event)"-->
                                 </td>
                                 <td>
                                     <input type='number' [disabled]="isDisabled(i)" readonly
                                         formControlName="adunitRate" class="form-control"
                                         style="width: 6rem;height: 25px;font-size: 10px;" name="adunitRate{{i}}"
-                                        (keydown.tab)="onKey(i,$event)" min="0">
+                                        (keydown.tab)="onKey(i,$event)" min="0"  (input)="onKey1($event)">
                                     <!---(Keydown.tab)="validNumber($event)"   / [disabled]="isDisableunitrate"-->
                                 </td>
                                 <td>
                                     <input type='number' [disabled]="isDisabled(i)" readonly formControlName="addiscAmt"
                                         class="form-control" style="width: 4rem;height: 25px;font-size: 10px;"
-                                        name="addiscAmt{{i}}" main="0" (keydown.tab)="onKey(i,$event)">
+                                        name="addiscAmt{{i}}" main="0" (keydown.tab)="onKey(i,$event)"  (input)="onKey1($event)">
                                 </td>
                             </ng-template>
                             <td>

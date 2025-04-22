@@ -45,8 +45,41 @@
                 <td> <input type='text' uppercase formControlName="codeDetails"  class="form-control" style="width: 100%;"   placeholder="Enter Code Details" ></td>  <!-- (keyup)="onKey($event )"-->
                 <td style="width: 15%" class="LabelFontStyle1"> Start&nbsp;&nbsp;Date:</td>
                 <td> <input type='date'  formControlName="startDate"  class="form-control"    ></td> 
+                <!-- <td style="width: 15%" class="LabelFontStyle1"> Status&nbsp;&nbsp;: </td>
+                <td> <input type='text' readonly uppercase formControlName="status"  class="form-control"    ></td>  -->
+
                 <td style="width: 15%" class="LabelFontStyle1"> Status&nbsp;&nbsp;: </td>
-                <td> <input type='text' readonly uppercase formControlName="status"  class="form-control"    ></td> 
+                <div *ngIf="displayStatus; then statusLovNo; else statusLovYes"></div>
+                <ng-template #statusLovNo> 
+                <td > <input readonly  type='text' formControlName="status" [(ngModel)]='status' value={{status}} class="form-control" ></td>
+                </ng-template>
+                <ng-template #statusLovYes> 
+                        <td>
+                            <select formControlName="status" id="status" class="form-control"  
+                            [(ngModel)]="status" (change)='onOptionsSelectede($event)'>
+                            <option disabled>--Select--</option>
+                            <option *ngFor="let sc of  statusList" [ngValue] ="sc.codeDesc">
+                                {{sc.codeDesc}}
+                            </option>
+                        </select>
+                        </td>
+                </ng-template>
+            </tr>
+            <tr>
+            <div *ngIf="displayInactive; then thenBlockInactive; else elseBlockInactive"></div>
+                        <ng-template #thenBlockInactive>
+                        </ng-template>
+                        <ng-template #elseBlockInactive>
+                            <tr>
+                                <td hidden style="width: 10%" class="LabelFontStyle1">
+                                    Inactive&nbsp;Date:&nbsp;
+                                </td>
+                                <td>
+                                    <input hidden type='date' formControlName="endDate" class="form-control"
+                                        [ngModel]="endDate | date:'yyyy-MM-dd'">
+                                </td>
+                            </tr>
+                        </ng-template>
             </tr>
             
         </table>    

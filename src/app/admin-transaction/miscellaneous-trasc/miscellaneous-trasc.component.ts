@@ -197,7 +197,7 @@ export class MiscellaneousTrascComponent {
     console.log(itemcat);
     var codeType=itemcat.category
     this.miscLinesArray().controls[i].patchValue({itemCategory:itemcat.category})
-    this.adminServiceService.onSelectReqItemNameFn(codeType)
+    this.adminServiceService.onSelectReqItemNameFn1(codeType,sessionStorage.getItem('ouId'))
     .subscribe(
       data => {
         this.onSelectItemNameFnList = data.obj;

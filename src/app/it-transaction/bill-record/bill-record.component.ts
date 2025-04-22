@@ -17,6 +17,7 @@ import { disableDebugTools } from '@angular/platform-browser';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { saveAs } from 'file-saver'
 import { ALL } from 'node:dns';
+import { Alert } from 'selenium-webdriver';
 
 const MIME_TYPES = {
   pdf: 'application/pdf',
@@ -298,16 +299,47 @@ export class BillRecordComponent {
     this.locId = Number(sessionStorage.getItem('locId'));
     console.log(this.locId);
     this.billLinesGroup();
-
+ 
     var patch = this.billRecorderForm.get('billLines') as FormArray
-    (patch.controls[0]).patchValue(
+    this.billRecorderForm.get('expType')?.valueChanges.subscribe((expType) => {
+      console.log("expType changed:", expType);
+
+      if (!expType || expType === "--Select--") {
+          return;
+      }
+
+      // Define patch object based on expType
+      // const linePatch: any = {
+      //     srlNo: 1,
+      //     linestatus: 'BOOKED',
+      //     finYear: expType === 'IT' ? '2024-2025' : ''
+      // };
+
+   (patch.controls[0]).patchValue(
       {
         srlNo: 1,
         linestatus: 'BOOKED',
+        finYear: expType === 'IT' ? '2024-2025' : ''
         
         
       }
     );
+
+  });
+
+  const currentExpType = this.billRecorderForm.get('expType')?.value;
+  if (currentExpType && currentExpType !== "--Select--") {
+      this.billRecorderForm.get('expType')?.setValue(currentExpType, { emitEvent: true });
+  }
+    // (patch.controls[0]).patchValue(
+    //   {
+    //     srlNo: 1,
+    //     linestatus: 'BOOKED',
+    //     finYear:'2024-2025',
+        
+        
+    //   }
+    // );
 
     this.loginArray1 = sessionStorage.getItem('ouCity');
     this.service.AllvendornameList()
@@ -488,7 +520,9 @@ export class BillRecordComponent {
         data => {
           this.finYearFnList = data.obj;
           this.currantYear = data.obj[0].code;
+          alert()
           this.orderlineDetailsArray().controls[0].patchValue({finYear:this.currantYear})
+          alert(this.currantYear)
         }
       );
 
@@ -520,6 +554,26 @@ export class BillRecordComponent {
   isDisabled(index: number): boolean {
     return index % 2 === 0;
   }
+
+
+  getFinancialYear(): string {
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+    const month = currentDate.getMonth(); 
+
+    let startYear = currentYear;
+    let endYear = currentYear + 1;
+
+    
+    if (month < 3) {
+      startYear = currentYear - 1;
+      endYear = currentYear;
+    }
+
+    return `${startYear}-${endYear}`;
+    
+  }
+
 
 
   billNoFindFN(billNo: any) {
@@ -736,14 +790,51 @@ export class BillRecordComponent {
       var len = this.orderlineDetailsArray().length;
 
       var patch = this.billRecorderForm.get('billLines') as FormArray;
-
-      (patch.controls[len - 1]).patchValue(
+      this.billRecorderForm.get('expType')?.valueChanges.subscribe((expType) => {
+        console.log("expType changed:", expType);
+  
+        if (!expType || expType === "--Select--") {
+            return;
+        }
+    //  (patch.controls[0]).patchValue(
+    //     {
+    //       srlNo: 1,
+    //       linestatus: 'BOOKED',
+    //       finYear: expType === 'IT' ? '2024-2025' : ''
+          
+          
+    //     }
+    //   );
+    (patch.controls[len - 1]).patchValue(
+        
         {
           srlNo: len,
           linestatus: 'BOOKED',
-          finYear:this.currantYear  , 
-        }
-      );
+          finYear: expType === 'IT' ? '2024-2025' : ''
+        })
+  
+    });
+  
+    const currentExpType = this.billRecorderForm.get('expType')?.value;
+    if (currentExpType && currentExpType !== "--Select--") {
+        this.billRecorderForm.get('expType')?.setValue(currentExpType, { emitEvent: true });
+    }
+      // var expType = this.billRecorderForm.get('expType')?.value;
+      // if(expType==='IT'){ (patch.controls[len - 1]).patchValue(
+        
+      //   {
+      //     srlNo: len,
+      //     linestatus: 'BOOKED',
+      //     finYear:'2024-2025',
+      //   }
+      // );}
+      // else{(patch.controls[len - 1]).patchValue(
+        
+      //   {
+      //     srlNo: len,
+      //     linestatus: 'BOOKED',
+      //   }
+      // );}
       this.displayBillType[len - 1] = true;
       this.displayitemdesc[len - 1] = true;
       this.displayLineflowStatusCode[len - 1] = true;
@@ -1221,7 +1312,6 @@ export class BillRecordComponent {
     var orderLinesNew = this.billRecorderForm.get('billLines') as FormArray;
     const formValue: billsuppform = this.transData(this.billRecorderForm.getRawValue());
     formValue.cityId = Number(sessionStorage.getItem('ouId'));
-    formValue.divisionId = Number(sessionStorage.getItem('divisionId'));
     console.log(formValue);
      
     this.service.BillrecoderSubmit(formValue).subscribe((res: any) => {
@@ -1292,7 +1382,7 @@ export class BillRecordComponent {
 
 
 
-  onKey(i: number, event: any) {  
+  onKey(i: number, event: any) {
     var arrayControlNew = this.billRecorderForm.get('billLines') as FormArray;
     var arrayControl = arrayControlNew.getRawValue();
     var pricingQty = arrayControl[i].qty;
@@ -1450,7 +1540,6 @@ export class BillRecordComponent {
       alert('First Select CSV & Then Click upload Button !..');
       return;
     }
-    debugger
     this.closeResetButton = false;
     this.progress = 0;
     this.dataDisplay = 'File Upload in progress....Do not refresh the Page'

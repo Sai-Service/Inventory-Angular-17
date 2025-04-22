@@ -107,11 +107,12 @@ if( sessionStorage.getItem('role') ==='Admin')  {
     var ouId = sessionStorage.getItem('ouId');
     var cmntypeId=this.AdminReqReportForm.get('deptId')?.value;   
     var locId = this.AdminReqReportForm.get('locationId')?.value;
+    var attribute='';
     if (locId === null) { ouId = sessionStorage.getItem('ouId'); locId=''}
     if (cmntypeId === null) { cmntypeId = '' }
     const fileName = 'ADMIN REQUSISION REPORT OF-' + fromDate + '-TO-' + toDate + '.xlsx';
     const EXT = fileName.substr(fileName.lastIndexOf('.') + 1);
-    this.service.AdminRequsitionReport(ouId,fromDate,toDate,locId,cmntypeId)
+    this.service.AdminRequsitionReport(ouId,fromDate,toDate,locId,cmntypeId,attribute)
       .subscribe(data => {
         saveAs(new Blob([data]), fileName);
         this.closeResetButton = true;
@@ -134,11 +135,12 @@ if( sessionStorage.getItem('role') ==='Admin')  {
     var ouId = sessionStorage.getItem('ouId');
    var cmntypeId =sessionStorage.getItem('deptId')
    var locId = sessionStorage.getItem('locId')
+   var attribute = sessionStorage.getItem('tktNo')
     if (locId === null) { ouId = sessionStorage.getItem('ouId'); locId=''}
     if (cmntypeId === null) { cmntypeId = '' }
     const fileName = 'ADMIN REQUSISION REPORT OF-' + fromDate + '-TO-' + toDate + '.xlsx';
     const EXT = fileName.substr(fileName.lastIndexOf('.') + 1);
-    this.service.AdminRequsitionReport(ouId,fromDate,toDate,locId,cmntypeId)
+    this.service.AdminRequsitionReport(ouId,fromDate,toDate,locId,cmntypeId,attribute)
       .subscribe(data => {
         saveAs(new Blob([data]), fileName);
         this.closeResetButton = true;

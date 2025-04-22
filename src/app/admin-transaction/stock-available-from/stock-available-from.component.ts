@@ -54,7 +54,7 @@ export class StockAvailableFromComponent {
 
   onSelectItemType(event:any){
     var codeType=event.target.value;
-    this.service.onSelectReqItemNameFn(codeType)
+    this.service.onSelectReqItemNameFn1(codeType,sessionStorage.getItem('ouId'))
     .subscribe(
       data => {
         this.onSelectItemNameFnList = data.obj;

@@ -193,15 +193,6 @@
                     </select>
                     </td>
             </ng-template>
-            
-            <!-- <div *ngIf="displayEndDate; then thenEndDate; else elseEndDate"></div>
-            <ng-template #thenEndDate> 
-            <td style="width: 15%" class="LabelFontStyle"> End&nbsp;&nbsp;Date: </td>
-            <td > <input  type='date' formControlName="endDt" [(ngModel)]='endDt' value={{endDt}} 
-                class="form-control" ></td>
-            </ng-template>
-            <ng-template #elseEndDate> 
-            </ng-template> -->
         </tr>
         <div *ngIf="displayInactive; then thenBlockInactive; else elseBlockInactive"></div>
                     <ng-template #thenBlockInactive>

@@ -520,7 +520,9 @@ export class ItemMasterComponent {
               else{
                 this.displayMonitor=false;
               }
-             
+              // if (data.obj.status == 'InActive'){
+              //   this.isVisibleupdateBIM=false;
+              // }
           }
           this.itemMasterForm.patchValue({attribute5: sessionStorage.getItem('loginName') });
           this.itemMasterForm.patchValue({ lastUpdatedBy:sessionStorage.getItem('loginName') });
@@ -634,6 +636,9 @@ export class ItemMasterComponent {
                   console.log(this.onSelectItemTypeFnList);
                 }
               );
+              // if (data.obj.status == 'InActive'){
+              //   this.isVisibleupdateBIM=false;
+              // }
               // if (data.obj.status = 'Alloted'){
               //   this.isVisibleupdateBIM=true;
               // }
@@ -691,6 +696,9 @@ export class ItemMasterComponent {
                   console.log(this.onSelectItemTypeFnList);
                 }
               );
+              if (data.obj.status == 'InActive'){
+                this.isVisibleupdateBIM=false;
+              }
           }
          } )
          this.itemMasterForm.patchValue({ lastUpdatedBy:sessionStorage.getItem('loginName') });
@@ -739,6 +747,9 @@ export class ItemMasterComponent {
                   console.log(this.onSelectItemTypeFnList);
                 }
               );
+              if (data.obj.status == 'InActive'){
+                this.isVisibleupdateBIM=false;
+              }
           }
     })
     this.itemMasterForm.patchValue({ lastUpdatedBy:sessionStorage.getItem('loginName') });
@@ -785,6 +796,9 @@ export class ItemMasterComponent {
                   console.log(this.onSelectItemTypeFnList);
                 }
               );
+              if (data.obj.status == 'InActive'){
+                this.isVisibleupdateBIM=false;
+              }
           }
          } )
          this.itemMasterForm.patchValue({ lastUpdatedBy:sessionStorage.getItem('loginName') });
@@ -830,6 +844,10 @@ export class ItemMasterComponent {
                   console.log(this.onSelectItemTypeFnList);
                 }
               );
+
+              // if (data.obj.status == 'InActive'){
+              //   this.isVisibleupdateBIM=false;
+              // }
           }
          })
          this.itemMasterForm.patchValue({ lastUpdatedBy:sessionStorage.getItem('loginName') });
@@ -949,7 +967,7 @@ export class ItemMasterComponent {
             this.itemMasterForm.get('itemId')?.disable();
             this.itemMasterForm.get('division')?.disable();
             this.itemMasterForm.get('legalEntity')?.disable();
-            this.itemMasterForm.get('location')?.disable();
+            // this.itemMasterForm.get('location')?.disable();
             this.itemMasterForm.get('itemTypeId')?.disable();
         this.itemMasterForm.patchValue({ startDt: this.pipe.transform(data.obj.startDt, 'yyyy-MM-dd') });
 
@@ -976,6 +994,9 @@ export class ItemMasterComponent {
          this.itemMasterForm.patchValue({ lastUpdatedBy:sessionStorage.getItem('loginName') });
          if (data.obj.status == 'Alloted' && sessionStorage.getItem('role') ==='User'){
           this.isVisibleupdateBIM=true;
+        }
+        if (data.obj.status == 'InActive'){
+          this.isVisibleupdateBIM=false;
         }
       }
 
@@ -1541,10 +1562,10 @@ if (itemsubType==='LAPTOP'){
 
   updateMast() {
     // alert("Done !!")
-    var isvaliddata1 = this.validation();
-    // if (isvaliddata1 === false) {
-    //   return;
-    // }
+      // var isvaliddata1 = this.validation();
+      // if (isvaliddata1 === false) {
+      //   return;
+      // }
     const formValue: ItrnsitemMaster = this.itemMasterForm.getRawValue();
     // this.itemMasterForm.patchValue({ lastUpdatedBy:sessionStorage.getItem('loginName') });
     this.service.UpdateTransactionitemMasterById(formValue, formValue.itemCode).subscribe((res: any) => {
@@ -1578,10 +1599,11 @@ if (itemsubType==='LAPTOP'){
           console.log(this.onSelectItemTypeFnList);
         }
       );
-    // alert(itemType12);
+    alert(itemType12);
     if (itemType12 == '120') {
       // alert('inMoni')
       this.displayMonitor = true;
+      this.displayButton4=false;
     }
     if(itemType12 == '152'){
       // alert('printer');
@@ -1631,14 +1653,11 @@ if (itemsubType==='LAPTOP'){
     if (fanoYN === 'PENDING') {
       this.showFADetails = false;
       this.itemMasterForm.patchValue({ faNo: 'PENDING FROM ACCOUNT' })
-      // this.fanoYN = 'YES';
       
     }
    if (fanoYN==='GENRATE') {
       this.showFADetails = true;
       this.itemMasterForm.patchValue({ faNo: '' })
-      // this.fanoYN = 'NO';
-     
       
     }
   }
@@ -1794,7 +1813,7 @@ if (itemsubType==='LAPTOP'){
   onInputChange() {
     const inputValue = this.itemMasterForm.get('faNo')?.value || '';
     this.itemMasterForm.patchValue({
-      attribute3: inputValue.slice(-5)
+      attribute3: inputValue.slice(-6)
     });
   }
 
@@ -1815,7 +1834,6 @@ if (itemsubType==='LAPTOP'){
     this.dataDisplay = 'Data Searching in progress....Do not refresh the Page';
     var searchText = this.itemMasterForm.get('status')?.value;
     var locId = this.itemMasterForm.get('location1')?.value;
-    
     this.service.allitemMasterLocationSearch(sessionStorage.getItem('ouId'),locId)
       .subscribe(
         data => {

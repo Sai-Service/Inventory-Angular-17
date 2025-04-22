@@ -65,7 +65,7 @@ export class ITFAcsvUploadFormComponent{
      var ceatedby=sessionStorage.getItem('tktNo');
      console.log(file);
      
-    this.reportService.FACsvaccUpoadDocument(formData,file,ceatedby).subscribe((res: any) => {  
+    this.reportService.FACsvaccUpoadDocument(formData,file,ceatedby,sessionStorage.getItem('ouId')).subscribe((res: any) => {  
       if (res.code === 200) {        
         alert(res.message);
          this.dataDisplay ='File Uploaded Successfully....'
@@ -99,7 +99,7 @@ export class ITFAcsvUploadFormComponent{
     this.displayButton=false;
     var file=this.fileInput.nativeElement.files[0];
      var ceatedby=sessionStorage.getItem('tktNo');
-      this.reportService.FACsvaccassetUpoadDocument(formData,file,ceatedby).subscribe((res: any) => {  
+      this.reportService.FACsvaccassetUpoadDocument(formData,file,ceatedby,sessionStorage.getItem('ouId')).subscribe((res: any) => {  
         if (res.code === 200) {        
           alert(res.message);
            this.dataDisplay ='File Uploaded Successfully....'

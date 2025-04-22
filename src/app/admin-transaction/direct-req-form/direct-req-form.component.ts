@@ -191,7 +191,7 @@ export class DirectReqFormComponent {
       console.log(itemcat);
       var codeType=itemcat.category
       this.requestlineDetailsArray().controls[i].patchValue({adstkItem:itemcat.category})
-      this.service.onSelectReqItemNameFn(codeType)
+      this.service.onSelectReqItemNameFn1(codeType,sessionStorage.getItem('ouId'))
       .subscribe(
         data => {
           this.onSelectItemNameFnList = data.obj;

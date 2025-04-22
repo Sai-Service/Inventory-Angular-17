@@ -63,7 +63,7 @@
                         <input   type="text" class="form-control" formControlName="locName" >
                     </ng-template>
                   </td>
-                  <input type="number" hidden formControlName="locationId"class="form-control" >
+                  <input type="number" hidden  formControlName="locationId"class="form-control" >
 
 <!------------------------------------------------------------------------------------------------------------------------->
 
@@ -239,9 +239,12 @@
                                     <select type="text" formControlName="buditemName" id="buditemName" class="form-control"
                                 style="background-color: yellow;" (change)="onslectlistitem(i,$event)" >
                                    
-                                    <option>--Select--</option>
+                                    <!-- <option>--Select--</option>
                                      <option *ngFor="let sc of AllbudgetitementyList" [value]="sc.buditemName">
-                                        {{sc.buditemName}}</option>
+                                        {{sc.buditemName}}</option> -->
+                                        <option>--Select--</option>
+                                        <option *ngFor="let sc of AllbudgetitementyList" [value]="sc.itemName">
+                                           {{sc.itemName}}</option>
                               
                                     </select>
                                 <input type="text" hidden formControlName="itemId">

@@ -51,7 +51,7 @@ isVisibleuserRequitionDisable=true;
 isVisibleuserRequitionDisable1=false;
 isVisibleGetqtydisable=true;
 isDisabled = false;
-isButtonDisabled=false;
+isButtonDisabled=true;
 
   constructor(private fb: FormBuilder, private router: Router, private service: AdminTransactionService,private router1: ActivatedRoute,private adminServiceService: AdminTransactionService,private location1: Location) {
     this.requisisionForm = fb.group({
@@ -223,7 +223,7 @@ isButtonDisabled=false;
     console.log(itemcat);
     var codeType=itemcat.category
     this.requestlineDetailsArray().controls[i].patchValue({itemCategory:itemcat.category})
-    this.service.onSelectReqItemNameFn(codeType)
+    this.service.onSelectReqItemNameFn1(codeType,sessionStorage.getItem('ouId'))
     .subscribe(
       data => {
         // if (Array.isArray(data.obj)) {   .sort((a:any, b:any) => a.name.localeCompare(b.name));
@@ -234,7 +234,7 @@ isButtonDisabled=false;
         console.log(this.onSelectItemNameFnList);
         this.itemMap.set(itemType, data.obj);
           this.itemMap2.set(i, this.itemMap.get(itemType));
-       
+       this.isButtonDisabled=false;
       }
     );
     

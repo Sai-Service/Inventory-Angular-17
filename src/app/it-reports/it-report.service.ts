@@ -194,29 +194,31 @@ GatePassSummuryReport(fromDate:any,toDate:any,ouId:any){
 
 
 
-FACsvaccUpoadDocument(formData:any,file:any,createdBY:any ) {
+FACsvaccUpoadDocument(formData:any,file:any,createdBY:any,ouId:any) {
   formData.append('file', file);
   // formData.append('headerId',headerId)
-  const REQUEST_URI = this.ServerUrl + `/AccountAsset/UploadAsset?createdBy=${createdBY}`;
+  const REQUEST_URI = this.ServerUrl + `/AccountAsset/UploadAsset?createdBy=${createdBY}&ouId=${ouId}`;     ///&ouId=${ouId}
   return this.http.post(REQUEST_URI, formData);
 }
 
 
-FACsvaccassetUpoadDocument(formData:any ,file:any,createdBY:any ) {
+FACsvaccassetUpoadDocument(formData:any ,file:any,createdBY:any,ouId:any) {
   formData.append('file', file);
   // formData.append('headerId',headerId)
-  const REQUEST_URI = this.ServerUrl + `/AccountAsset/UploadFA?createdBy=${createdBY}`;
+  const REQUEST_URI = this.ServerUrl + `/AccountAsset/UploadFA?createdBy=${createdBY}&ouId=${ouId}`;  ////&ouId=${ouId}
   return this.http.post(REQUEST_URI, formData);
 }
 
-FAssetBatchWiseReport(locId:any, btchsts:any,batchName:any){
-  const REQUEST_URI = this.ServerUrl +`/ItemInvReports/FaAssetReport?batchName=${batchName}&erplocId=${locId}&batchStatus=${btchsts}`;
+FAssetBatchWiseReport(ouId:any,batchName:any,locId:any,btchsts:any){
+  const REQUEST_URI = this.ServerUrl +`/ItemInvReports/FaAssetReport?ouId=${ouId}&batchName=${batchName}&erplocId=${locId}&batchStatus=${btchsts}`;
   return this.http.get(REQUEST_URI, {
     // params: REQUEST_PARAMS,
     responseType: 'arraybuffer',
     headers: this.headers,
   });
 }
+
+////http://localhost:8080/ItemInvReports/FaAssetReport?ouId=108&batchName=&erplocId=&batchStatus=
 
 FAssetCommonReport(login:any){
   const REQUEST_URI = this.ServerUrl +`/ItemInvReports/FaAssetNoCommon?createdBy=${login}`;

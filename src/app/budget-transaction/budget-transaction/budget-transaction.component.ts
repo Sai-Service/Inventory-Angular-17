@@ -212,13 +212,19 @@ this.service.FainancialyearList().subscribe(data => {
   this.FainancialyearList=FainancialyearListfn;
 })
 
-this.service.AllbudgetitemList()
+// this.service.AllbudgetitemList()
+//     .subscribe(
+//       data => {
+//         this.AllbudgetitementyList=data.obj;
+//       }
+//     );
+
+this.service.allbudgetmstSearch()
     .subscribe(
       data => {
         this.AllbudgetitementyList=data.obj;
       }
     );
-
 
 
     this.sub = this.router1.params.subscribe((params:any) => {
@@ -283,6 +289,7 @@ this.service.AllbudgetitemList()
     var locNameList = this.locIdList.find((d:any) => d.locName === locName)
     console.log(locNameList);
     var locId=locNameList.locId;
+    alert(locNameList.locId)
     this.budgetTrns.patchValue({locationId:locNameList.locId});
    
   }
@@ -321,7 +328,7 @@ this.service.AllbudgetitemList()
         }
       }
     }
-    var itemLi = this.AllbudgetitementyList.find((itemName:any) => itemName.buditemName === itemType1);
+    var itemLi = this.AllbudgetitementyList.find((itemName:any) => itemName.itemName === itemType1);
     console.log(itemLi);
     this.orderlineDetailsArray().controls[i].patchValue({ budgetlineId:itemLi.itemId,
       itemId:itemLi.itemId,

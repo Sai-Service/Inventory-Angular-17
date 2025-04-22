@@ -79,6 +79,10 @@ export class BudgetTraService {
     return this.http.get(this.ServerUrl + `/ouMst/Active`);
   }
 
+  allbudgetmstSearch(): Observable<any> {
+    return this.http.get(this.ServerUrl + `/BudgetMst/BudgetAll`);
+  }
+
   getAllOuLocationId(ouId:any): Observable<any> {
     return this.http.get(this.ServerUrl + `/locationMst/loc/${ouId}`);
   }

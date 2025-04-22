@@ -30,9 +30,18 @@
         <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px; color: black;font-weight: bold;">FA REPORT BATCH WISE
         </legend>
         <table>
-            <tr style="width: fit-content;">
-                  <td></td>
-                  <td></td>
+            <tr [style.display]="oufieldvisibleOu ? 'block' : 'none' ">
+                <td style="width: 15%" class="LabelFontStyle">
+                    &nbsp;Select&nbsp;Ou&nbsp;City:&nbsp;
+                </td>
+                  <td style="width: fit-content;">
+                    <select type='number' formControlName="ouId" id="ouId" class="form-control" (change)="onSelectOuCity($event)" style="background-color: yellow;">
+                        <option *ngFor="let sc of  AlllocationitemList" [ngValue]="sc.ouId">
+                            {{sc.ouName}}
+                        </option>
+                    </select>
+                </td>
+          
                 <td style="width: 15%" class="LabelFontStyle">
                     &nbsp;Location&nbsp;Code&nbsp;:&nbsp;
                 </td>
@@ -45,10 +54,9 @@
                     </select>
                 </td>
 
-
                 <td style="width: 15%" class="LabelFontStyle">Batch&nbsp;Status</td>
                             <td>
-                                <select formControlName="bathSts" id="bathSts" class="form-control" (change)="onSelectOuCity($event)" >
+                                <select formControlName="bathSts" id="bathSts" class="form-control" (change)="onSelectBatchName($event)" >
                                     <option ngValue="open">OPEN</option>
                                     <option ngValue="Closed">CLOSE</option>
                                 </select>
@@ -67,6 +75,60 @@
                 </select>
             </td>
         </tr>
+
+
+        <!-- ///////////////////////////////////////////////////////////////////////////////////// -->
+
+        <tr [style.display]="oufieldvisible ? 'block' : 'none' ">
+            <td>
+
+            </td>
+            <td>
+
+            </td>
+            <!-- <td style="width: 15%" class="LabelFontStyle">
+                &nbsp;Select&nbsp;Ou&nbsp;City:&nbsp;
+            </td>
+              <td style="width: fit-content;">
+                <select type='number' formControlName="ouId" id="ouId" class="form-control"  style="background-color: yellow;">
+                    <option *ngFor="let sc of  AlllocationitemList" [ngValue]="sc.ouId">
+                        {{sc.ouName}}
+                    </option>
+                </select>
+            </td> -->
+      
+            <td style="width: 15%" class="LabelFontStyle">
+                &nbsp;Location&nbsp;Code&nbsp;:&nbsp;
+            </td>
+            <td>
+                <select formControlName="locId" id="locId" class="form-control">
+                    <option *ngFor="let sc of AccRepLocationList" [ngValue]="sc.erpLocId">
+                        {{sc.locName}}
+                    </option>
+                </select>
+            </td>
+
+            <td style="width: 15%" class="LabelFontStyle">Batch&nbsp;Status</td>
+                        <td>
+                            <select formControlName="bathSts" id="bathSts" class="form-control" (change)="onSelectBatchName($event)" >
+                                <option ngValue="open">OPEN</option>
+                                <option ngValue="Closed">CLOSE</option>
+                            </select>
+                        </td>
+        
+        
+        <td style="width: 15%" class="LabelFontStyle">
+            &nbsp;Batch&nbsp;Name&nbsp;:&nbsp;
+        </td>
+        <td>
+            <select formControlName="batchName" id="batchName" class="form-control">
+
+                <option *ngFor="let sc of BatchnameList" [value]="sc.batchName">
+                    {{sc.batchName}}
+                </option>
+            </select>
+        </td>
+    </tr>
 
         </table>
         

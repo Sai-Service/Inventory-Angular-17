@@ -5,8 +5,8 @@ import { AdminTransactionService } from '../../admin-transaction/admin-transacti
 
 
 export interface IItem {
-  username: string;
-  password: string;
+  // username: string;
+  // password: string;
 }
 @Component({
   selector: 'app-login-page',
@@ -82,6 +82,7 @@ export class LoginPageComponent {
        sessionStorage.setItem('deptName', res.obj.deptName);
        sessionStorage.setItem('tktNo', res.obj.tktNo);
        sessionStorage.setItem('empId', res.obj.empId);
+       sessionStorage.setItem('attribute3', res.obj.attribute3);
        var deptId = Number(sessionStorage.getItem('deptId'));
        var ouId = Number(sessionStorage.getItem('ouId'));
          var tktNo =(sessionStorage.getItem('tktNo')) ;

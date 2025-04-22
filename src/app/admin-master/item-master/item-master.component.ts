@@ -208,10 +208,24 @@ export class ItemMasterComponent {
   itemMaster(itemMasterForm: any) { }
 
 
-  onSelectItemType(event:any){
+  // onSelectItemType(event:any){
+  //   var itemType=event.target.value;
+  //   alert(itemType)
+  //   this.service.onSelectReqItemNameFn(itemType)
+  //   .subscribe(
+  //     data => {
+  //       this.onSelectItemNameFnList = data.obj;  
+  //       console.log(data.obj);
+             
+  //     }
+  //   );
+    
+  //  }
+
+   onSelectItemType(event:any){
     var itemType=event.target.value;
     alert(itemType)
-    this.service.onSelectReqItemNameFn(itemType)
+    this.service.onSelectReqItemNameFn1(itemType,sessionStorage.getItem('ouId'))
     .subscribe(
       data => {
         this.onSelectItemNameFnList = data.obj;  
