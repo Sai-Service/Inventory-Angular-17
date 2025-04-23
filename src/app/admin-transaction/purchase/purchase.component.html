@@ -119,6 +119,31 @@
                     <input type="text" class="form-control" formControlName="remark" style="width: 100%;">
                 </td>
             </tr>
+
+            <tr>
+                <td style="width: 15%" class="LabelFontStyle">&nbsp;GST&nbsp;No&nbsp;:&nbsp;</td>
+                <td>
+                     <input formControlName="gstNo" value={{gstNo}} [(ngModel)]='gstNo' class="form-control" placeholder="Enter GST no" readonly>  
+                </td>
+                
+                <td style="width: 15%" class="LabelFontStyle">&nbsp;PAN&nbsp;No&nbsp;:&nbsp;</td>
+                <td>
+                     <input  formControlName="panNo" value={{panNo}} class="form-control" placeholder="Enter PAN NO" readonly>  
+                </td>
+
+                 
+                <td style="width: 15%" class="LabelFontStyle">&nbsp;MSME&nbsp;No&nbsp;:&nbsp;</td>
+                <td>
+                     <input  formControlName="msmeNo" value={{msmeNo}} class="form-control" placeholder="Enter MSME NO" readonly>  
+                </td>
+
+                <td style="width: 15%" class="LabelFontStyle">&nbsp;PO&nbsp;Status&nbsp;:&nbsp;</td>
+                <td>
+                     <input  formControlName="adstatus" value={{adstatus}} class="form-control" readonly>  
+                </td>
+
+            </tr>
+
         </table>
     </fieldset>
     <fieldset class="RFS">

@@ -19,6 +19,7 @@ export class AdRequsitionComponent {
 reqlnNo:number;
 reqhdNo:number;
 srlNo:number;	
+reqstatus:string;
 city:number;
 location:number;
 dept:number;
@@ -86,6 +87,7 @@ pipe = new DatePipe('en-US');
         reqUsername:[], 
         admintktNo:[],
         reqUsertktno:[],
+        reqstatus:[],
         attribute1:[],
         reqLines: this.fb.array([this.reqitemLinesGroup()]),
     })

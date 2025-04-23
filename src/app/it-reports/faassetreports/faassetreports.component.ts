@@ -141,15 +141,15 @@ export class FAassetreportsComponent {
     var locId=this.FAReportForm.get('locId')?.value;
     var btchsts=this.FAReportForm.get('bathSts')?.value;
     var batchName=this.FAReportForm.get('batchName')?.value;
-    var oucId=this.FAReportForm.get('ouId')?.value;
-    if(oucId===null){ locId = sessionStorage.getItem('ouId') }
+    var ouId=this.FAReportForm.get('ouId')?.value;
+    if(ouId===null){ ouId = sessionStorage.getItem('ouId') }
     if (locId === null) { locId = '' }
     if (batchName === null) { batchName = '' }
     if (btchsts === null) { btchsts = '' }
     alert(batchName);
     const fileName = 'FA BATCH WISE REPORT OF-' + batchName + '.xlsx';
     const EXT = fileName.substr(fileName.lastIndexOf('.') + 1);
-    this.reportService.FAssetBatchWiseReport(oucId,batchName,locId,btchsts )
+    this.reportService.FAssetBatchWiseReport(ouId,batchName,locId,btchsts )
       .subscribe(data => {
         saveAs(new Blob([data], { type: MIME_TYPES[EXT] }), fileName);
         this.closeResetButton = true;

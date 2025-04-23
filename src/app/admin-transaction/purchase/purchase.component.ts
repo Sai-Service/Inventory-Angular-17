@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, Pipe } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
+import { FormGroup, FormControl, FormBuilder,PatternValidator } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Validators } from '@angular/forms';
 import { FormArray } from '@angular/forms';
@@ -39,7 +39,10 @@ interface adstkpurFrom {
   advndBilldate1:Date;
   adLoc1:string;
   itemDesc:string;
-
+  gstNo:string;
+  panNo: string;
+  msmeNo:string;
+  state:string;
 
 }
 
@@ -73,6 +76,10 @@ export class PurchaseComponent {
   adtaxAmt :number;
   adtotalAmt :number;
   forloc:number;
+  gstNo:string;
+  panNo: string;
+  msmeNo:string;
+  state:string;
   adstkTax:number;
   closeResetButton = true;
   dataDisplay: any;
@@ -145,6 +152,9 @@ pipe = new DatePipe('en-US');
   advendBillno:[],
   advendId:[],
   advend:[],
+  gstNo:[],
+  panNo:[],
+  msmeNo:[],
   totalAmt:[0],
   // totalAmt:[{ value: '0', }],
   //     totalTax:[{ value: '0',  }],
@@ -673,7 +683,8 @@ trxArr.controls[i].patchValue({ 'adstkTax': 0, 'adstkQty': 0, 'adunitRate': 0, '
       if (res.code === 200) {
          alert(res.message);
         this.dataDisplay = 'Stock Added Successfully';
-        this.adstkPucahseFrom.disable();
+        // this.adstkPucahseFrom.disable();
+        this.adstkPucahseFrom.enable();
         this.adstkPucahseFrom.patchValue({adheaderId1: res.obj.adheaderId });
         this.adstkPucahseFrom.patchValue({adheaderId: res.obj.adheaderId });
         this.displayButton = false;
@@ -706,12 +717,15 @@ trxArr.controls[i].patchValue({ 'adstkTax': 0, 'adstkQty': 0, 'adunitRate': 0, '
   onSelectVendorNameFN(event: any) {
     const suppName = event.target.value;
     const selectedValue = this.AllAdminvendornameList1.find((v: any) => v.name === suppName);
-  
+  alert(selectedValue.suppNo)
     if (selectedValue) {
       this.adstkPucahseFrom.patchValue({
         advendId: selectedValue.suppNo,
         erpsuppNo: selectedValue.erpsuppNo,
-        erpvendorId: selectedValue.erpvendorId
+        erpvendorId: selectedValue.erpvendorId,
+        gstNo:selectedValue.gstNo,
+        panNo:selectedValue.panNo,
+        msmeNo:selectedValue.msmeNo
       });
     } else {
       console.warn('Vendor not found in the list');
@@ -884,6 +898,8 @@ trxArr.controls[i].patchValue({ 'adstkTax': 0, 'adstkQty': 0, 'adunitRate': 0, '
 
   updateMast1(){
     this.closeResetButton = false;
+
+    this.adstkPucahseFrom.enable();
     this.progress = 0;
     this.dataDisplay = 'Order Update in progress....Do not refresh the Page';
     var orderLines1 = this.adstkPucahseFrom.get('stkLines') as FormArray;
@@ -895,7 +911,7 @@ trxArr.controls[i].patchValue({ 'adstkTax': 0, 'adstkQty': 0, 'adunitRate': 0, '
         alert(res.message);
         this.closeResetButton = true;
         this.progress = 0;
-        this.dataDisplay = res.message;
+        this.dataDisplay = res.messagse;
       }
       else{
         alert(res.message);
@@ -955,8 +971,171 @@ nonNegativeIntegerValidator(): ValidatorFn {
   }
 
 
+  enableSpecificFields(index: number) {
+    const stkLine = this.adstkPucahseFrom.get('stkLines') as FormArray;
+    const lineGroup = stkLine.at(index) as FormGroup;
 
+    lineGroup.get('adstkQty')?.enable();
+    lineGroup.get('adunitRate')?.enable();
+    lineGroup.get('adsubTotal')?.enable();
+    lineGroup.get('adtaxAmt')?.enable();
+}
 
+gstVerification(event: any) {
+  
+  var gstno = this.adstkPucahseFrom.get('gstNo')?.value
+  // alert(gstno+'gst');
+  // var sGstnoVal = this.customerMasterForm.get('sGstNo').value
+  if (gstno === '') {
+    this.adstkPucahseFrom.patchValue({ 'gstNo': 'GSTUNREGISTERED' });
+    return;
+  }
+  else {
+    // var regex: string = "{2}[A-Z]{5}\d{4}[A-Z]{1}[A-Z\d]{1}[Z]{1}[A-Z\d]{1}";
+    var regex: string = "[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[0-9]{1}[A-Z]{1}[A-Z0-9]{1}";
+    var p = new PatternValidator();
+    var patt = new RegExp('[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[0-9]{1}[A-Z]{1}[A-Z0-9]{1}');
+    //  alert(gstno.length+'gstno.length');
+    var validgst = patt.test(gstno);
+    if (validgst === false && gstno.length == 15) {
+      alert('Please enter valid GST Number');
+    }
+
+    else {
+      // alert('Please enter valid GST Number');
+      return ;
+    }
+    // return validgst;
+
+    const gstNo1 = gstno.substr(2, 10);
+    // this.panNo = gstNo1;
+    alert('Gst verificaition' + gstNo1);
+    this.adstkPucahseFrom.patchValue({ panNo: gstNo1 });
+    var res = gstno.substr(0, 2);
+    console.log(res);
+    // alert(res+'res');
+    const state = (this.adstkPucahseFrom.get('state')?.value).toUpperCase();
+    console.log(state);
+    console.log(this.state === 'MAHARASHTRA' && res === 27);
+    switch (state) {
+      case 'MAHARASHTRA':
+        if (res != 27) {
+          alert('Kindly entered correct GST No Start with 27');
+          this.adstkPucahseFrom.get('gstNo')?.reset();
+        }
+        break;
+      case 'GOA':
+        if (res != 30) {
+          alert('Kindly entered correct GST No Start with 30');
+          this.adstkPucahseFrom.get('gstNo')?.reset();
+        }
+        break;
+      case 'ANDHRA PRADESH':
+        if (res != 28) {
+          alert('Kindly entered correct GST No Start with 28');
+          this.adstkPucahseFrom.get('gstNo')?.reset();
+        }
+        break;
+      case 'KARNATAKA':
+        if (res != 29) {
+          alert('Kindly entered correct GST No Start with 29');
+          this.adstkPucahseFrom.get('gstNo')?.reset();
+        }
+        break;
+      case 'KERALA':
+        if (res != 32) {
+          alert('Kindly entered correct GST No Start with 32');
+          this.adstkPucahseFrom.get('gstNo')?.reset();
+        }
+        break;
+      case 'TELANGANA':
+        if (res != 36) {
+          alert('Kindly entered correct GST No Start with 36');
+          this.adstkPucahseFrom.get('gstNo')?.reset();
+        }
+        break;
+    }
+
+  }
+
+}
+
+gstVerification1(event: any) {
+  var gstno = this.adstkPucahseFrom.get('sGstNo')?.value
+  // var sGstnoVal = this.customerMasterForm.get('sGstNo').value
+  if (gstno === '') {
+    this.adstkPucahseFrom.patchValue({ 'sGstNo': 'GSTUNREGISTERED' });
+    return;
+  }
+  else {
+    // var regex: string = "{2}[A-Z]{5}\d{4}[A-Z]{1}[A-Z\d]{1}[Z]{1}[A-Z\d]{1}";
+    var regex: string = "[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[0-9]{1}[A-Z]{1}[A-Z0-9]{1}";
+    var p = new PatternValidator();
+    var patt = new RegExp('[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[0-9]{1}[A-Z]{1}[A-Z0-9]{1}');
+    //  alert(gstno.length+'gstno.length');
+    var validgst = patt.test(gstno);
+    if (validgst === false && gstno.length == 15) {
+      alert('Please enter valid GST Number');
+    }
+
+    else {
+      // alert('Please enter valid GST Number');
+      return ;
+    }
+    // return validgst;
+
+    const gstNo1 = gstno.substr(2, 10);
+    // this.panNo = gstNo1;
+    // alert('Gst verificaition'+ gstNo1);
+    this.adstkPucahseFrom.patchValue({ 'spanNo': gstNo1 });
+    var res = gstno.substr(0, 2);
+    console.log(res);
+    // alert(res+'res');
+    const state = (this.adstkPucahseFrom.get('sstate')?.value).toUpperCase();
+    console.log(state);
+    console.log(this.state === 'MAHARASHTRA' && res === 27);
+    switch (state) {
+      case 'MAHARASHTRA':
+        if (res != 27) {
+          alert('Kindly entered correct GST No Start with 27');
+          this.adstkPucahseFrom.get('sGstNo')?.reset();
+        }
+        break;
+      case 'GOA':
+        if (res != 30) {
+          alert('Kindly entered correct GST No Start with 30');
+          this.adstkPucahseFrom.get('sGstNo')?.reset();
+        }
+        break;
+      case 'ANDHRA PRADESH':
+        if (res != 28) {
+          alert('Kindly entered correct GST No Start with 28');
+          this.adstkPucahseFrom.get('sGstNo')?.reset();
+        }
+        break;
+      case 'KARNATAKA':
+        if (res != 29) {
+          alert('Kindly entered correct GST No Start with 29');
+          this.adstkPucahseFrom.get('sGstNo')?.reset();
+        }
+        break;
+      case 'KERALA':
+        if (res != 32) {
+          alert('Kindly entered correct GST No Start with 32');
+          this.adstkPucahseFrom.get('sGstNo')?.reset();
+        }
+        break;
+      case 'TELANGANA':
+        if (res != 36) {
+          alert('Kindly entered correct GST No Start with 36');
+          this.adstkPucahseFrom.get('sGstNo')?.reset();
+        }
+        break;
+    }
+
+  }
+
+}
   
   
   

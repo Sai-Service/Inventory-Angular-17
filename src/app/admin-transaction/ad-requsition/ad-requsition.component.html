@@ -42,6 +42,12 @@
         </td> <td style="width: 15%" class="LabelFontStyle"> &nbsp;Asign&nbsp;To&nbsp;Admin&nbsp;:&nbsp;</td>
         <td><input  type="text" class="form-control" formControlName="admintktNo" style="width: 220px;"> </td>
         </tr>
+       <tr>
+        <td style="width: 15%" class="LabelFontStyle">&nbsp;&nbsp;Status&nbsp;:&nbsp;</td>
+        <td>
+             <input  formControlName="reqstatus" value={{reqstatus}} class="form-control" readonly>  
+        </td>
+
         <td style="width: 15%" class="LabelFontStyle"> &nbsp;Remark&nbsp;: </td>
             <td colspan="5">
                 <textarea id="reqRemarks" formControlName="reqRemarks" rows="2"
@@ -49,6 +55,7 @@
             </td>
             <input hidden type="text" class="form-control" formControlName="reqUsertktno"
             style="width: 220px;">
+        </tr>
             </table>
     </fieldset>
     <div class="grid_scroll">
