@@ -261,39 +261,39 @@
                                 <td>
                                     <input type='number' formControlName="adstkQty" class="form-control"
                                         style="width: 4rem;height: 25px;font-size: 10px;" name="adstkQty{{i}}"
-                                        (keydown.tab)="onKey(i,$event)" min="0"  (input)="onKey1($event)">
+                                        (keydown.tab)="onKey(i,$event)" min="0"  (input)="onKey1($event)"  (keydown)="blockInvalidKeys($event)">
                                     <!----(Keydown.tab)="validNumber($event)"-->
                                 </td>
                                 <td>
                                     <input type='number' formControlName="adunitRate" class="form-control"
                                         style="width: 6rem;height: 25px;font-size: 10px;" name="adunitRate{{i}}"
-                                        (keydown.tab)="onKey(i,$event)" min="0"  (input)="onKey1($event)">
+                                        (keydown.tab)="onKey(i,$event)" min="0"  (input)="onKey1($event)"   (keydown)="blockInvalidKeys($event)">
                                     <!---(Keydown.tab)="validNumber($event)"   / [disabled]="isDisableunitrate"-->
                                 </td>
                                 <td>
                                     <input type='number' formControlName="addiscAmt" class="form-control"
                                         style="width: 4rem;height: 25px;font-size: 10px;" name="addiscAmt{{i}}" main="0"
-                                        (keydown.tab)="onKey(i,$event)"  (input)="onKey1($event)">
+                                        (keydown.tab)="onKey(i,$event)"  (input)="onKey1($event)"  (keydown)="blockInvalidKeys($event)">
                                 </td>
                             </ng-template>
                             <ng-template #elseAmount>
                                 <td>
                                     <input type='number' [disabled]="isDisabled(i)" readonly formControlName="adstkQty"
                                         class="form-control" style="width: 4rem;height: 25px;font-size: 10px;"
-                                        name="adstkQty{{i}}" (keydown.tab)="onKey(i,$event)" min="0"  (input)="onKey1($event)">
+                                        name="adstkQty{{i}}" (keydown.tab)="onKey(i,$event)" min="0"  (input)="onKey1($event)"  (keydown)="blockInvalidKeys($event)" >
                                     <!----(Keydown.tab)="validNumber($event)"-->
                                 </td>
                                 <td>
                                     <input type='number' [disabled]="isDisabled(i)" readonly
                                         formControlName="adunitRate" class="form-control"
                                         style="width: 6rem;height: 25px;font-size: 10px;" name="adunitRate{{i}}"
-                                        (keydown.tab)="onKey(i,$event)" min="0"  (input)="onKey1($event)">
+                                        (keydown.tab)="onKey(i,$event)" min="0"  (input)="onKey1($event)"   (keydown)="blockInvalidKeys($event)">
                                     <!---(Keydown.tab)="validNumber($event)"   / [disabled]="isDisableunitrate"-->
                                 </td>
                                 <td>
                                     <input type='number' [disabled]="isDisabled(i)" readonly formControlName="addiscAmt"
                                         class="form-control" style="width: 4rem;height: 25px;font-size: 10px;"
-                                        name="addiscAmt{{i}}" main="0" (keydown.tab)="onKey(i,$event)"  (input)="onKey1($event)">
+                                        name="addiscAmt{{i}}" main="0" (keydown.tab)="onKey(i,$event)"  (input)="onKey1($event)"  (keydown)="blockInvalidKeys($event)">
                                 </td>
                             </ng-template>
                             <td>

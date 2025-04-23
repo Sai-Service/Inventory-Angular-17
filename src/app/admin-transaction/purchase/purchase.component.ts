@@ -1137,6 +1137,14 @@ gstVerification1(event: any) {
 
 }
   
+
+blockInvalidKeys(event: KeyboardEvent): void {
+  const invalidChars = ['-', '+', 'e', 'E', '!', '@', '?'];
+
+  if (invalidChars.includes(event.key)) {
+    event.preventDefault();
+  }
+}
   
   
 }
