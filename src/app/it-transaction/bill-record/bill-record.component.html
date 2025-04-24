@@ -280,18 +280,18 @@
                             <td>
                                 <input type='number' formControlName="qty" class="form-control"
                                     style="width: 4rem;height: 25px;font-size: 10px;" name="qty{{i}}"
-                                    (input)="onKey(i,$event)" (keydown.tab)="onKey(i,$event)" min="0">
+                                    (input)="onKey(i,$event)" (keydown.tab)="onKey(i,$event)" min="0" (keydown)="blockInvalidKeys($event)">
                                 <!----(Keydown.tab)="validNumber($event)"-->
                             </td>
                             <td>
                                 <input type='number' formControlName="unitRate" class="form-control"
                                     style="width: 6rem;height: 25px;font-size: 10px;" name="unitRate{{i}}"
-                                    (input)="onKey(i,$event)"  (keydown.tab)="onKey(i,$event)" min="0"> <!---(Keydown.tab)="validNumber($event)"-->
+                                    (input)="onKey(i,$event)"  (keydown.tab)="onKey(i,$event)" min="0" (keydown)="blockInvalidKeys($event)"> <!---(Keydown.tab)="validNumber($event)"-->
                             </td>
                             <td>
                                 <input type='number' formControlName="discAmt" class="form-control"
                                     style="width: 4rem;height: 25px;font-size: 10px;" name="discAmt{{i}}" main="0"
-                                    (input)="onKey(i,$event)" (keydown.tab)="onKey(i,$event)">
+                                    (input)="onKey(i,$event)" (keydown.tab)="onKey(i,$event)" (keydown)="blockInvalidKeys($event)">
                             </td>
                             <td>
                                 <input type='number' formControlName="subTotal" class="form-control"

@@ -68,7 +68,7 @@
                 <td [style.display]="isVisibleSupAdminloc ? 'block' : 'none' ">
                     <select type='number' formControlName="locId" id="locId" class="form-control" style="background-color: yellow;">
                         <!-- <option>ALLlocIdList</option> -->
-                        <option *ngFor="let sc of  ALLlocIdList" [ngValue]="sc.locId" >
+                        <option *ngFor="let sc of  ALLlocIdList" [value]="sc.locId" >
                             {{sc.locName}}
                         </option>
                     </select>

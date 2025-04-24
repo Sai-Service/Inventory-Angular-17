@@ -34,7 +34,7 @@ export class LoginPageComponent {
   compCode:string;
   empId:number;
   pendingCount:number=(0);
- 
+  contactError:string='';
   currentDateList: any = [];
   viewAllReqisision:any=[];
 
