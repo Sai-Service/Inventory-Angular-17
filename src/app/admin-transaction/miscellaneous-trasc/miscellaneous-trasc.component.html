@@ -135,12 +135,28 @@
                         </select>
                 </td>
                 <td>
-                    <select formControlName="itemName" class="form-control"  style="background-color: yellow; width: 18rem;;" (change)="onSelectItemName($event,i)" > 
+                    <!-- <select formControlName="itemName" class="form-control"  style="background-color: yellow; width: 18rem;;" (change)="onSelectItemName($event,i)" > 
                         <option value="--Select--">--Select--</option>
                         <option *ngFor="let item of  itemMap2.get(i) | keyvalue"  [value]="item.value.item">
                         {{item.value.item}}
                          </option>
-                    </select>
+                    </select> -->
+                    <input type="text"
+       formControlName="itemName"
+       style="background-color: yellow; height: 25px; width: 18rem; font-size: 10px;"
+       (keyup)="onSearchItemName($event, i)"
+       (change)="onSelectItemName($event, i)"
+       [attr.list]="'itemListDynamic' + i"
+       id="itemInput{{i}}"
+       class="form-control"
+       placeholder="--Select--" />
+
+<datalist [id]="'itemListDynamic' + i">
+  <option *ngFor="let item of itemMap2.get(i) | keyvalue" [value]="item.value.item">
+    {{ item.value.item }}
+  </option>
+</datalist>
+
                 </td>
                 <td>
                     <input type='number' [disabled]="isDisabled(i)"  formControlName="avlQty" class="form-control" style="height: 23px;">

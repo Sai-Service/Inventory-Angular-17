@@ -16,6 +16,7 @@ import { disableDebugTools } from '@angular/platform-browser';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { saveAs } from 'file-saver';
 import { AdminTransactionService } from '../admin-transaction.service';
+// import { NgSelectModule } from '@ng-select/ng-select';
 // import{PurchaseComponent}from'../purchase';
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { Alert } from 'selenium-webdriver';
@@ -413,7 +414,7 @@ pipe = new DatePipe('en-US');
     console.log(itemcat);
     var codeType=itemcat.category;
 
-    this.orderlineDetailsArray().controls[i].patchValue({adstkItem:codeType})
+    // this.orderlineDetailsArray().controls[i].patchValue({adstkItem:codeType})  
     this.service.onSelectReqItemNameFn1(codeType,sessionStorage.getItem('ouId'))
     .subscribe(
       data => {
@@ -469,6 +470,20 @@ pipe = new DatePipe('en-US');
      
    }
 
+
+   onSearchItemName(event: Event) {
+    const input = (event.target as HTMLInputElement).value;
+    console.log('User is typing:', input);
+  
+  }
+  
+  onSelectItemName1(event: Event, index: number) {
+    const selectedValue = (event.target as HTMLInputElement).value;
+    console.log('Selected item:', selectedValue);
+   
+  }
+
+
    onKey1(event:any) { 
     var disamt =event.target.value;
     var amunt = this.adstkPucahseFrom.get('totalAmt')?.value;
@@ -479,7 +494,7 @@ pipe = new DatePipe('en-US');
    }
 
    onKey(i:number, event:any) {  
-    alert(i);      
+    // alert(i);      
     var arrayControlNew = this.adstkPucahseFrom.get('stkLines') as FormArray;
     var arrayControl = arrayControlNew.getRawValue();
     var pricingQty = arrayControl[i].adstkQty;
@@ -685,6 +700,7 @@ trxArr.controls[i].patchValue({ 'adstkTax': 0, 'adstkQty': 0, 'adunitRate': 0, '
         this.dataDisplay = 'Stock Added Successfully';
         // this.adstkPucahseFrom.disable();
         this.adstkPucahseFrom.enable();
+        this.adstkPucahseFrom.get('adheaderId1')?.disable();
         this.adstkPucahseFrom.patchValue({adheaderId1: res.obj.adheaderId });
         this.adstkPucahseFrom.patchValue({adheaderId: res.obj.adheaderId });
         this.displayButton = false;
@@ -717,7 +733,7 @@ trxArr.controls[i].patchValue({ 'adstkTax': 0, 'adstkQty': 0, 'adunitRate': 0, '
   onSelectVendorNameFN(event: any) {
     const suppName = event.target.value;
     const selectedValue = this.AllAdminvendornameList1.find((v: any) => v.name === suppName);
-  alert(selectedValue.suppNo)
+  // alert(selectedValue.suppNo)
     if (selectedValue) {
       this.adstkPucahseFrom.patchValue({
         advendId: selectedValue.suppNo,

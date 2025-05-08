@@ -203,6 +203,13 @@ export class DirectReqFormComponent {
       );
       
      }
+
+
+
+     onSearchItemName(event: Event, i: number) {
+      const input = (event.target as HTMLInputElement).value;
+      console.log(`User typing at index ${i}:`, input);
+    }
   
      onSelectItemName(event:any,i:any){
       var itemName = event.target.value;

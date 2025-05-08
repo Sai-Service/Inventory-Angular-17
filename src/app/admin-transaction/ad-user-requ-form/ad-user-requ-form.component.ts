@@ -241,10 +241,13 @@ isButtonDisabled=true;
    }
 
 
+   onSearchItemName(event: Event, index: number) {
+    const searchValue = (event.target as HTMLInputElement).value;
+    console.log('Search input for index', index, ':', searchValue);
+  }
+
    onSelectItemName(event:any,i:any){
-    var itemName = event.target.value;
-    // alert(itemName);
-   
+    var itemName = event.target.value; 
     this.adminServiceService.onhandQtyFn(itemName,sessionStorage.getItem('locId')) //,sessionStorage.getItem('locId')
     .subscribe(
       data => {

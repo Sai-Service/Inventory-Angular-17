@@ -159,14 +159,31 @@
                             <td>
                                 <div *ngIf="displayItemName[i]; then thenItemName; else elseItemName"></div>
                                 <ng-template #thenItemName>
-                                <select formControlName="itemName" class="form-control"
+
+                                    <input type="text"
+       formControlName="itemName"
+       class="form-control"
+       placeholder="--Select--"
+       style="background-color: yellow; height: 25px; width: 18rem; font-size: 10px;"
+       (keyup)="onSearchItemName($event, i)"
+       (change)="onSelectItemName($event, i)"
+       id="itemNameInput{{i}}"
+       [attr.list]="'itemNameList' + i" />
+
+<datalist [id]="'itemNameList' + i">
+  <option *ngFor="let item of itemMap2.get(i) | keyvalue" [value]="item.value.item">
+    {{ item.value.item }}
+  </option>
+</datalist>
+
+                                <!-- <select formControlName="itemName" class="form-control"
                                     (change)="onSelectItemName($event,i)">
                                     <option value="--Select--">--Select--</option>
                                     <option *ngFor="let item of  itemMap2.get(i) | keyvalue"
                                         [value]="item.value.item">
                                         {{item.value.item}}
                                     </option>
-                                </select>
+                                </select> -->
                                 </ng-template>
                                 <ng-template #elseItemName>
                                     <input type='text'  [disabled]="isDisabled(i)" formControlName="itemName" class="form-control"

@@ -44,7 +44,7 @@
         <table class="center">
             <tr>
                 <td style="width: 15%" class="LabelFontStyle"> &nbsp;&nbsp;Purchase&nbsp;No :&nbsp;</td>
-                <td><input type="number" class="form-control" formControlName="adheaderId" style="width: 220px;"></td>
+                <td><input type="number" class="form-control" formControlName="adheaderId" readonly style="width: 220px;"></td>
 
                 <td style="width: 15%" class="LabelFontStyle1">&nbsp;Vendor&nbsp;Name :&nbsp;</td>
                 <td colspan="3">
@@ -66,17 +66,17 @@
             </tr>
             <tr>
                 <td style="width: 15%" class="LabelFontStyle"> &nbsp;&nbsp;Buyer&nbsp;Name&nbsp;:&nbsp;</td>
-                <td><input type="text" class="form-control" formControlName="adBuyer" style="width: 220px;">
+                <td><input type="text" class="form-control" readonly formControlName="adBuyer" style="width: 220px;">
                 </td>
                 <td style="width: 15%" class="LabelFontStyle"> &nbsp;Buyer&nbsp;Ticket&nbsp;No&nbsp;:&nbsp;</td>
-                <td><input type="text" class="form-control" formControlName="adtktNo" style="width: 220px;">
+                <td><input type="text" class="form-control" readonly formControlName="adtktNo" style="width: 220px;">
                 </td>
                 <td style="width: 15%" class="LabelFontStyle"> &nbsp;Division&nbsp;Name:&nbsp;</td>
-                <td><input type="text" class="form-control" formControlName="adDivision" style="width: 220px;">
+                <td><input type="text" class="form-control" readonly formControlName="adDivision" style="width: 220px;">
                 </td>
 
                 <td style="width: 15%" class="LabelFontStyle"> &nbsp;Location&nbsp;Name:&nbsp;</td>
-                <td><input readonly type="text" class="form-control" formControlName="adLoc1" style="width: 220px;">
+                <td><input readonly type="text" class="form-control" readonly formControlName="adLoc1" style="width: 220px;">
                 </td>
                 <!-- <td><select type="text" formControlName="adLoc" id="adLoc" class="form-control"
                                 style="width: 9rem; background-color: yellow;">
@@ -214,14 +214,31 @@
                             <td>
                                 <div *ngIf="displayRequItem[i]; then thenRequItem; else elseRequItem"> </div>
                                 <ng-template #thenRequItem>
-                                    <select formControlName="adstkItem" class="form-control"
+                                    <input type="text"
+       formControlName="adstkItem"
+       style="background-color: yellow; height: 25px; width: 18rem; font-size: 10px;"
+       (keyup)="onSearchItemName($event)"
+       (change)="onSelectItemName1($event, i)"
+       (change)="onSelectItemName($event,i)"
+       id="itemListInput"
+       list="dynamicItemList"
+       class="form-control"
+       placeholder="--Select--" />
+
+<datalist id="dynamicItemList">
+  <option *ngFor="let itemN of onSelectItemNameFnList" [value]="itemN.item">
+    {{ itemN.item }}
+  </option>
+</datalist>
+                                    <!-- <select formControlName="adstkItem" class="form-control"
                                         style="background-color: yellow; height: 25px;width: 18rem;font-size: 10px;"
                                         (change)="onSelectItemName($event,i)">
                                         <option value="--Select--">--Select--</option>
                                         <option *ngFor="let itemN of  onSelectItemNameFnList" [value]="itemN.item">
                                             {{itemN.item}}
                                         </option>
-                                    </select>
+                                    </select> -->
+                                    
                                 </ng-template>
                                 <ng-template #elseRequItem>
                                     <input type='text' [disabled]="isDisabled(i)" readonly formControlName="adstkItem"

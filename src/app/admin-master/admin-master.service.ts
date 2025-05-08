@@ -373,6 +373,10 @@ AllreqItemCatagList1(): Observable<any> {
   return this.http.get(this.ServerUrl + `/CodeTypeMst/AllAdmin?attribute4=${attribute1}&status=${sts} `);  ////http://localhost:8080/CodeTypeMst/AllAdmin?attribute4=ADMIN&status=Active    
 }
 
+msmebussubtype(): Observable<any> {
+  return this.http.get(this.ServerUrl + '/CodeMst/dept/BUSINESSTYPE');
+}
+
 
 onSelectReqItemNameFn(codeType:any): Observable<any> {
   return this.http.get(this.ServerUrl + `/AdminItem/AllItems?category=${codeType}`); ////CodeTypeMst/REQ/REQ

@@ -458,31 +458,32 @@
                               placeholder="Enter Aadhar no" #tanno>  <!--[ngClass]="{ 'is-invalid': submitted && f.aadharNo.errors }"-->
                           </td>
                       </tr>
-                        <tr>
+
+                        <tr style="width: 100%; border-top-style: ridge;border-top-color: #92a8d1;">
                             
                             <td style="width: 15%" class="LabelFontStyle1">&nbsp;MSME&nbsp;Applicable&nbsp;:&nbsp;</td>
                             <td>
-                                <select formControlName="msmeYN" id="msmeYN"  [ngModel]="msmeYN" (ngModelChange)='onMSMESelected($event)' class="form-control">
+                                <select formControlName="msmeYN" id="msmeYN" [ngModel]="msmeYN" (ngModelChange)='onMSMESelected($event)' class="form-control">
                                     <option>--Select--</option>
                                     
                                     <option value="Y">Yes</option>
                                     <option value="N">No</option>
                                 </select>
                             </td>
-                            <div *ngIf="displayMsmeNo;then showMsmeY;else showMsmeN"></div>
-                                  <ng-template #showMsmeY>
-                                    
-
+                         </tr>
+                         <div *ngIf="displayMsmeNo; then showMsmeY; else showMsmeN"></div>
+                         <ng-template #showMsmeY>
+                         <tr >
                                     <td style="width: 15%" class="LabelFontStyle1">&nbsp;MSME&nbsp;No&nbsp;:&nbsp;</td>
                                     <td>
-                                        <input  formControlName="msmeNo"  [(ngModel)]='msmeNo' class="form-control"
+                                        <input  formControlName="msmeNo" [(ngModel)]='msmeNo' class="form-control"
                                         placeholder="Enter MSME No">
                                     </td>
 
                                     <td  class="LabelFontStyle1">&nbsp;Business&nbsp;type&nbsp;:&nbsp;</td>
                                     <td>
                                         <select formControlName="MSMETYPE" id="MSMETYPE" class="form-control"
-                                        style="background-color: yellow; width: 7rem;"
+                                        style="background-color: yellow;"
                                         (change)="onSelectItemType($event)">
                                         <option value="--Select--">--Select--</option>
                                         <option *ngFor="let sc of  AllmsmesupptypeList" [value]="sc.codeType">
@@ -493,26 +494,71 @@
                                     </td>
 
                                     <td  class="LabelFontStyle1">&nbsp;Business&nbsp;SubType&nbsp;:&nbsp;</td>
-                                    <td>
-              
+                               
+                                   <td>
                                         <select formControlName="MSMESUBTYPE" id="MSMESUBTYPE" class="form-control"
-                                        style="background-color: yellow; width: 7rem;">
+                                        style="background-color: yellow;">
                                         <option value="--Select--">--Select--</option>
-                                        <option *ngFor="let sc of  onSelectItemNameFnList" [value]="sc.codeType">
-                                            {{sc.codeType}}
+                                        <option *ngFor="let sc of  msmebussubtype" [value]="sc.codeDesc">
+                                            {{sc.codeDesc}}
                                         </option>
                                     </select>
                                     </td>
+                            
+                         </tr>
+                         <tr>
+                                  
+                                    <td  class="LabelFontStyle1">&nbsp;MSME&nbsp;Start&nbsp;Date:&nbsp;</td>
+                                    <td>
+                                        <input type="date" id="msmestartdate" name="msmestartdate" formControlName="msmestartdate" required class="form-control">   
+                                    </td>
+    
+                                    <td  class="LabelFontStyle1">&nbsp;MSME&nbsp;End&nbsp;Date:&nbsp;</td>
+                                    <td>
+                                        <input type="date" id="msmeenddate" name="msmeenddate" formControlName="msmeenddate" required class="form-control" max="{{minDate | date:'yyyy-MM-dd'}}">   
+                                    </td>          
+                           
+                               
+                         </tr>
+                         <tr>
+                            <td  class="LabelFontStyle1">&nbsp;Agreement&nbsp;Start&nbsp;Date:&nbsp;</td>
+                            <td>
+                                <input type="date" id="agrestartdate" name="agrestartdate" formControlName="agrestartdate" required class="form-control">   
+                            </td>
 
-                                </ng-template>
-                                 <ng-template #showMsmeN>
-                                   
-                                </ng-template>
-                               </tr>
-                        <tr>
-                            <tr>
-                            </tr>
-                        <tr>
+                            <td  class="LabelFontStyle1">&nbsp;Agreement&nbsp;End&nbsp;Date:&nbsp;</td>
+                            <td>
+                                <input type="date" id="toDate" name="agreenddate" formControlName="agreenddate" required class="form-control" max="{{minDate | date:'yyyy-MM-dd'}}">   
+                                <!-- <input type="date"
+                                id="toDate"
+                                name="toDate"
+                                [(ngModel)]="toDate"
+                                (change)="onAgreementEndDateChange(toDate)"
+                                required>  -->
+                            </td>  
+                        </tr>
+                    </ng-template>
+
+                    <ng-template #showMsmeN>
+                    </ng-template>
+                       <tr>
+                                 <!-- <tr *ngIf="showNewMsmeDateRow" style="background-color: #f5f5f5;">
+                                    <td class="LabelFontStyle1">New MSME Start Date:</td>
+                                    <td><input type="date" [(ngModel)]="newMsmeStartDate" class="form-control"></td>
+                                  
+                                    <td class="LabelFontStyle1">New MSME End Date:</td>
+                                    <td><input type="date" [(ngModel)]="newMsmeEndDate" class="form-control"></td>
+                                  
+                                    <td class="LabelFontStyle1">New Agreement Start Date:</td>
+                                    <td><input type="date" [(ngModel)]="newAgreementStartDate" class="form-control"></td>
+                                  
+                                    <td class="LabelFontStyle1">New Agreement End Date:</td>
+                                    <td><input type="date" [(ngModel)]="newAgreementEndDate" class="form-control"></td>
+                                 </tr> -->
+                               
+                        </tr>
+                              
+                        <tr style="width: 100%; border-top-style: ridge;border-top-color: #92a8d1;">
                             <td><input hidden formControlName="suppId" [(ngModel)]='suppId'></td>
                             <td><input hidden formControlName="suppSiteId" [(ngModel)]='suppSiteId'></td>
                         </tr>

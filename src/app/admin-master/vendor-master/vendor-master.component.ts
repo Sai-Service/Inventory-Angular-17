@@ -50,6 +50,8 @@ interface IsupplierMaster {
   sstatus: string;
   emplId: number;
   aadharNo: string;
+  msmestartdate:Date;
+  msmeenddate:Date;
   // ticketNo:string;
   Ename: string;
   type: string;
@@ -86,6 +88,8 @@ interface IsupplierMaster {
   MSMETYPE:String;
   code:string|null;
   codeDesc:string|null;
+  agrestartdate:Date;
+  agreenddate:Date;
 }
 
 
@@ -124,7 +128,16 @@ export class VendorMasterComponent {
   tanNo: string;
   msmeYN = '';
   msmeNo: string
+  msmestartdate:Date;
+  msmeenddate:Date;
+  agrestartdate:Date;
+  agreenddate:Date;
   displayMsmeNo = false;
+  showNewMsmeDateRow: boolean = false;
+  newMsmeStartDate: string = '';
+  newMsmeEndDate: string = '';
+  newAgreementStartDate: string = '';
+  newAgreementEndDate: string = '';
   public status = 'Active';
   supplierSiteMasterList: any[];
   lstcomments: any;
@@ -153,6 +166,8 @@ export class VendorMasterComponent {
   type: string;
   Status1: any;
   code:string;
+  fromDate: string = '';
+  toDate: string = '';
   // aadharNo:string;
   ouIdSelected: number;
   emplId: number;
@@ -230,6 +245,9 @@ export class VendorMasterComponent {
   MSMESUBTYPE:String;
   public tdsSectionList: any = [];
   public AllmsmesupptypeList :any=[];
+  public msmebussubtype :any=[];
+  public minDate = new Date();
+  public maxDate = new Date();
   onSelectItemNameFnList:any=[];
   AbstractControl:any;
   codeDesc:string[];
@@ -328,8 +346,11 @@ export class VendorMasterComponent {
       sifscCode: [],
       MSMETYPE:[],
       MSMESUBTYPE:[],
-      
-
+      msmestartdate:[],
+      msmeenddate:[],
+      agrestartdate:[],
+      agreenddate:[],
+    
     });
   }
 
@@ -400,6 +421,23 @@ export class VendorMasterComponent {
         console.log(this.AllmsmesupptypeList);
       }
     )
+
+    this.service.msmebussubtype()
+    .subscribe(
+      data => {
+        this.msmebussubtype = data.obj;
+        console.log(this.msmebussubtype);
+      }
+    )
+
+  }
+
+  private formatDate(date: string): string {
+    const d = new Date(date); 
+    const day = d.getDate(); 
+    const month = d.toLocaleString('default', { month: 'short' }); 
+    const year = d.getFullYear(); 
+    return `${day}-${month}-${year}`; 
   }
 
   supplierMaster(supplierMaster: any) {
@@ -532,7 +570,7 @@ export class VendorMasterComponent {
     return val;
   }
   updatesupplierMast() {
-    
+    debugger;
     const formValue: IsupplierMaster = this.transDataSupp(this.supplierMasterForm.getRawValue());
    
     this.service.UpdateSupliMasterById(formValue).subscribe((res: any) => {
@@ -1059,6 +1097,15 @@ export class VendorMasterComponent {
     }
   }
 
+  // onAgreementEndDateChange(selectedDate: string) {
+  //   const today = new Date().toISOString().split('T')[0];
+  
+  //   if (selectedDate === today) {
+  //     this.showNewMsmeDateRow = true;
+  //   } else {
+  //     this.showNewMsmeDateRow = false;
+  //   }
+  // }
 
   message: string = "Please Fix the Errors !";
   msgType: string = "Close";

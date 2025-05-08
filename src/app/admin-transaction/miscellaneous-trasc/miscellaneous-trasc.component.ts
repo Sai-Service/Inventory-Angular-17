@@ -214,6 +214,14 @@ export class MiscellaneousTrascComponent {
     return index % 2 === 0;
   }
 
+
+
+  onSearchItemName(event: Event, i: number) {
+    const value = (event.target as HTMLInputElement).value;
+    console.log(`User typing for row ${i}:`, value);
+  }
+  
+
    onSelectItemName(event:any,i:any){
     var itemName = event.target.value;
     var transType = this.miscellaneousForm.get('transactionType')?.value;

@@ -231,7 +231,7 @@ export class StockTransferComponent {
     var itemcat = this.AllreqItemCatagList.find((itemcat:any) => itemcat.category === itemType);
     console.log(itemcat);
     var codeType=itemcat.category
-    this.orderlineDetailsArray().controls[i].patchValue({adstkItem:itemcat.category})
+    // this.orderlineDetailsArray().controls[i].patchValue({adstkItem:itemcat.category})
     this.service.onSelectReqItemNameFn1(codeType,sessionStorage.getItem('ouId'))
     .subscribe(
       data => {
@@ -278,7 +278,12 @@ export class StockTransferComponent {
 
 
 
-
+  onSearchItemName(event: Event, i: number) {
+    const value = (event.target as HTMLInputElement).value;
+    // You can use this to trigger dynamic filtering if needed
+    console.log(`Typing in adstkItem[${i}]:`, value);
+  }
+  
 
    onSelectItemName(event:any,i:any){
     var itemName = event.target.value;
