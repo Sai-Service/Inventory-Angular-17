@@ -329,9 +329,7 @@ export class ItemMasterComponent {
   isVisibleupdateB:Boolean=true;
  
   isVisibleupdateBIM:boolean=true;
- 
- 
-
+ contactError:string='';
   isDisabled = false;
   ipAddressD:string;
 
@@ -871,8 +869,7 @@ export class ItemMasterComponent {
     this.itemMasterForm.patchValue({ division: sessionStorage.getItem('divisionId') });
     this.itemMasterForm.patchValue({createdBy:sessionStorage.getItem('loginName')}); 
     this.itemMasterForm.patchValue({lastUpdatedBy:sessionStorage.getItem('loginName')});
-    // this.itemMasterForm.patchValue({ attribute5:sessionStorage.getItem('loginName') });
-   
+
     const todaysDataTime = new Date();
 
     this.todayData = this.data.filter(item => {
@@ -919,7 +916,7 @@ export class ItemMasterComponent {
             this.itemMasterForm.patchValue({ startDt: this.pipe.transform(data.obj.startDt, 'yyyy-MM-dd') });
 
             this.itemMasterForm.patchValue({ purchaseDt: this.pipe.transform(data.obj.purchaseDt, 'yyyy-MM-dd') });
-
+          
             this.itemMasterForm.patchValue({ warrntyDt: this.pipe.transform(data.obj.warrntyDt, 'yyyy-MM-dd') });
 
             this.itemMasterForm.patchValue({ weDt: this.pipe.transform(data.obj.weDt, 'yyyy-MM-dd') });
@@ -1003,7 +1000,6 @@ export class ItemMasterComponent {
 )
 }  
       
-
     });
 
 
@@ -1429,7 +1425,7 @@ if (myear ===undefined || myear === null || myear===''){
   this.closeResetButton = false;
   this.progress = 0;
   this.dataDisplay = 'Please Select Manufacturing Year.!';
-  return;
+ return;
   if (myear.length !=4){
     alert('Please Select Manufacturing Year more than 4 No.!');
     this.closeResetButton = false;
@@ -1635,8 +1631,15 @@ if (itemsubType==='LAPTOP'){
       this.displaywarrantydate=true
       this.displayButton4=true
     }
+    if(itemType12 == '129'){
+      // alert('printer');
+      this. displaypurchasedate=true;
+      this.displayvendoraname=true;
+      this.displaywarrantydate=true
+      this.displayButton4=true
+    }
     
-    else if (itemType12 != '120' && itemType12 != '152' && itemType12 != '157' && itemType12 != '211' && itemType12 != '213'){
+    else if (itemType12 != '120' && itemType12 != '152' && itemType12 != '157' && itemType12 != '211' && itemType12 != '213' && itemType12 != '129'){
       this.displayMonitor = false;
       this. displaypurchasedate=false;
       this.displayvendoraname=false;
@@ -1676,7 +1679,6 @@ if (itemsubType==='LAPTOP'){
       this.itemMasterForm.patchValue({ ipAddress: '' })
       // this.fanoYN = 'NO'; 
     }
-
     if (ipAddressD ==='NOTAPP') {
       this.showIPDetails = false;
       this.itemMasterForm.patchValue({ ipAddress: 'NOT APLLICABLE' })
@@ -1748,7 +1750,7 @@ if (itemsubType==='LAPTOP'){
 
   exportToExcel1() {
     const ws: xlsx.WorkSheet =
-      xlsx.utils.table_to_sheet(this.itemMtable1.nativeElement);
+    xlsx.utils.table_to_sheet(this.itemMtable1.nativeElement);
     const wb: xlsx.WorkBook = xlsx.utils.book_new();
     xlsx.utils.book_append_sheet(wb, ws, 'Sheet1');
     xlsx.writeFile(wb, 'ITEM MASTER Data.xlsx');
@@ -1777,12 +1779,10 @@ if (itemsubType==='LAPTOP'){
 
 
   purchaseNoSearch(purchaseInvNo:any){
- 
     this.service.purchaseNoSearcheFn(sessionStorage.getItem('ouId'),purchaseInvNo)
     .subscribe(
       data => {
-        this.itemMasterForm.patchValue({purchaserefNo:data.obj.headerId,purchaseDt:this.pipe.transform(data.obj.billDate, 'yyyy-MM-dd'),vendorName:data.obj.suppName,warrntyDt:this.pipe.transform(data.obj.serviceTo, 'yyyy-MM-dd')})
-     
+        this.itemMasterForm.patchValue({purchaserefNo:data.obj.headerId,purchaseDt:this.pipe.transform(data.obj.billDate, 'yyyy-MM-dd'),vendorName:data.obj.suppName,warrntyDt:this.pipe.transform(data.obj.serviceTo, 'yyyy-MM-dd')})    
       }
     );
   }
@@ -1892,6 +1892,21 @@ if (itemsubType==='LAPTOP'){
           }
           return;
         }
+
+
+
+
+         validateContact(value: string) {
+    const contactPattern = /^[0-9]{10}$/; // 10-digit number validation
+    // if (!value) {
+    //   this.contactError = 'Contact number is required.';
+    // } else
+     if (!contactPattern.test(value)) {
+      this.contactError = 'Enter a valid 10-digit number.';
+    } else {
+      this.contactError = ''; // No error
+    }
+  }
 
 }
 

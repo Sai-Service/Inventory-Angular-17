@@ -150,7 +150,6 @@
                 </td>
 
                 <td>
-                    <!-- [formControl]="stockable" (change)="stockableEvent($event)" -->
                     <input type="text" formControlName="stockable"  class="form-control" style="width: 40px;">
                 </td>
                 <td style="width: 12%" class="LabelFontStyle">
@@ -158,16 +157,12 @@
                 </td>
 
                 <td>
-                    <!-- [formControl]="purchasable" -->
-                    <!-- <input type="checkbox" formControlName="purchasable" (change)="PurchasableEvent($event)"> -->
                     <input type="text" formControlName="purchasable"  class="form-control" style="width: 40px;" >
                 </td>
                 <td style="width: 12%" class="LabelFontStyle">
                     Costing&nbsp;:&nbsp;
                 </td>
                 <td>
-                    <!-- [(ngModel)]='costing' -->
-                    <!-- <input type="checkbox"  formControlName="costing" (change)="CostingEvent($event)" > -->
                     <input type="text" formControlName="costing"  class="form-control" style="width: 40px;" >
                 </td>
                 <td style="width: 12%" class="LabelFontStyle">
@@ -175,8 +170,6 @@
                 </td>
 
                 <td>
-                    <!-- [formControl]="internalOrder" -->
-                    <!-- <input type="checkbox" formControlName="internalOrder" (change)="InternalOrderEvent($event)"> -->
                     <input type="text" formControlName="internalOrder"  class="form-control" style="width: 40px;" >
                 </td>
                 <td style="width: 12%" class="LabelFontStyle">
@@ -184,8 +177,6 @@
                 </td>
 
                 <td>
-                    <!-- [formControl]="isTaxable"  -->
-                    <!-- <input type="checkbox" formControlName="isTaxable" (change)="Istaxable($event)" > -->
                     <input type="text" formControlName="isTaxable"  class="form-control" style="width: 40px;" >
                 </td>
                 <td style="width: 12%" class="LabelFontStyle">
@@ -193,20 +184,49 @@
                 </td>
 
                 <td>
-                    <!-- [formControl]="assetItem" -->
-                    <!-- <input type="checkbox" (change)="AssetItem($event)" formControlName="assetItem" > -->
                     <input type="text" formControlName="assetItem"  class="form-control" style="width: 40px;" >
                 </td>
             </tr>
-            <input hidden type='text'formControlName="createdBy" class="form-control">
-            <input hidden type='text'formControlName="attribute1" class="form-control">
-
-        </table>
+   </table>
     </fieldset>
+         
+ <fieldset class="RFS">
+        <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px;color: black;font-weight: bold;">City Apply
+        </legend>
+        <table class="center">
+<tr style="align-items: center;">
+<div class="option-container">
+    <div
+      *ngFor="let option of options"
+      class="option"
+      [class.selected]="selectedOptions.includes(option)"
+      [class.disabled]="!canSelectCities"
+      (click)="selectOption(options.indexOf(option))"
+    >
+      {{ option }}
+      <span *ngIf="selectedOptions.includes(option)">✔</span>
+    </div>
+  </div>
+
+</tr>
+  
+<tr>
+  <input type="text" hidden formControlName="mumbai" >
+  <input type="text" hidden formControlName="pune"  >
+  <input type="text" hidden formControlName="kolhapur"  >
+  <input type="text" hidden formControlName="goa" >
+  <input type="text" hidden formControlName="cochin" >
+  <input type="text" hidden formControlName="hyderabad"  >
+  </tr>
+  
+        </table>
+ </fieldset>
+
+
+     
     <fieldset class="RFS">
         <table class="center">
             <tr>
-
                 <div *ngIf="displayButtonCondition; then thenButtonCondition; else elseButtonCondition"></div>
                 <ng-template #thenButtonCondition>
                     <td>
@@ -263,9 +283,11 @@
                         </option>
                     </select>
                 </td>
-
-                <button type="button" class="btn-primary" (click)="searchMast()"><i class="fa fa-search"
-                        aria-hidden="true"></i></button><!-- (click)="compIdFind(cmnTypeId)"-->
+                <td>
+                     <button type="button" class="btn-primary" (click)="searchMast()"><i class="fa fa-search"
+                        aria-hidden="true"></i></button>
+                </td>
+               <!-- (click)="compIdFind(cmnTypeId)"-->
 
             </tr>
         </table>
@@ -294,7 +316,7 @@
                 <td style="border: 1px solid black;padding-left: 15px;">{{com.item}}</td>
                 <td style="border: 1px solid black;padding-left: 15px;"> <button type="button"
                         style="width: fit-content;" class="btn btn-primary" data-dismiss="modal"
-                        (click)="itemNamesearchFind()">Select</button></td>
+                        (click)="itemNamesearchFind(com.itemId)">Select</button></td>
             </tr>
         </tbody>
 

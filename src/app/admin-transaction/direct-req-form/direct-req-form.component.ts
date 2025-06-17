@@ -175,45 +175,95 @@ export class DirectReqFormComponent {
       return Math.floor((Date.UTC(dt2.getFullYear(), dt2.getMonth(), dt2.getDate()) - Date.UTC(dt1.getFullYear(), dt1.getMonth(), dt1.getDate())) / (2002 * 60 * 60 * 24));
     }
 
-    onSelectItemType(event:any,i:any){
-      var itemType=event.target.value;
-      this.invType = itemType;
-      if (this.itemMap.has(itemType)) {
-        var itemsList = this.itemMap.get(itemType);
-        this.itemMap2.set(i, this.itemMap.get(itemType));
-      } else {
-      }
+  //   onSelectItemType(event:any,i:any){
+  //     var itemType=event.target.value;
+  //     this.invType = itemType;
+  //     if (this.itemMap.has(itemType)) {
+  //       var itemsList = this.itemMap.get(itemType);
+  //       this.itemMap2.set(i, this.itemMap.get(itemType));
+  //     } else {
+  //     }
   
-      this.onSelectItemNameFnList = this.itemMap.get(itemType);
+  //     this.onSelectItemNameFnList = this.itemMap.get(itemType);
   
-      var itemType1 = (itemType.substr(itemType.indexOf(': ') + 1, itemType.length)).trim();
-      var itemcat = this.AllreqItemCatagList.find((itemcat:any) => itemcat.category === itemType);
-      console.log(itemcat);
-      var codeType=itemcat.category
-      this.requestlineDetailsArray().controls[i].patchValue({adstkItem:itemcat.category})
-      this.service.onSelectReqItemNameFn1(codeType,sessionStorage.getItem('ouId'))
-      .subscribe(
-        data => {
-          this.onSelectItemNameFnList = data.obj;
-          console.log(this.onSelectItemNameFnList);
-          this.itemMap.set(itemType, data.obj);
-            this.itemMap2.set(i, this.itemMap.get(itemType));
+  //     var itemType1 = (itemType.substr(itemType.indexOf(': ') + 1, itemType.length)).trim();
+  //     var itemcat = this.AllreqItemCatagList.find((itemcat:any) => itemcat.category === itemType);
+  //     console.log(itemcat);
+  //     var codeType=itemcat.category
+  //     // this.requestlineDetailsArray().controls[i].patchValue({adstkItem:itemcat.category})
+  //     // this.service.onSelectReqItemNameFn1(codeType)
+  //     // .subscribe(
+  //     //   data => {
+  //     //     this.onSelectItemNameFnList = data.obj;
+  //     //     console.log(this.onSelectItemNameFnList);
+  //     //     this.itemMap.set(itemType, data.obj);
+  //     //       this.itemMap2.set(i, this.itemMap.get(itemType));
          
-        }
-      );
+  //     //   }
+  //     // );
+
+  //      const ouId = sessionStorage.getItem('ouId');
+  //   this.service.onSelectReqItemNameFn1(codeType)
+  // .subscribe(data => {
+  //   this.onSelectItemNameFnList = data.obj.filter((item:any) => {
+  //     return ['mumbai', 'pune', 'kolhapur', 'goa', 'cochin', 'hyderabad']
+  //       .some(city => item[city] === ouId);
+  //   });
+
+  //   console.log(this.onSelectItemNameFnList);
+  // });
       
-     }
+      
+  //    }
 
 
 
-     onSearchItemName(event: Event, i: number) {
-      const input = (event.target as HTMLInputElement).value;
-      console.log(`User typing at index ${i}:`, input);
-    }
   
-     onSelectItemName(event:any,i:any){
-      var itemName = event.target.value;
-     
+  onSelectItemType(event:any,i:number){
+    var itemType=event.target.value;
+    var itemType1 = itemType.substr(itemType.indexOf(': ') + 1, itemType.length);
+    var itemType12=trim(itemType1);
+    var itemcat = this.AllreqItemCatagList.find((itemcat:any) => itemcat.category === itemType);
+    console.log(itemcat);
+    var codeType=itemcat.category;
+
+    // this.orderlineDetailsArray().controls[i].patchValue({adstkItem:codeType})  
+    // this.service.onSelectReqItemNameFn1(codeType,sessionStorage.getItem('ouId'))
+    // .subscribe(
+    //   data => {
+    //     this.onSelectItemNameFnList = data.obj;
+    //     console.log(this.onSelectItemNameFnList);
+        
+    //   }
+    // );
+    const ouId = sessionStorage.getItem('ouId');
+    this.service.onSelectReqItemNameFn1(codeType)
+  .subscribe(data => {
+    this.onSelectItemNameFnList = data.obj.filter((item:any) => {
+      return ['mumbai', 'pune', 'kolhapur', 'goa', 'cochin', 'hyderabad']
+        .some(city => item[city] === ouId);
+    });
+
+    console.log(this.onSelectItemNameFnList);
+  });
+
+
+    
+   }
+
+
+
+    onSelectItemName(event:any,i:number){
+    this.displayCSVUpload=false;
+    var item=event.target.value;
+    var itemLi = this.onSelectItemNameFnList.find((itemList:any) => itemList.codeName === item);
+    console.log(itemLi);
+    var budget = this.onSelectItemNameFnList.find((itemList:any)=> itemList.codeName === item);
+    console.log(budget);
+    var Desc = this.onSelectItemNameFnList.find((itemList:any)=> itemList.itemDescription ===item );
+    console.log(Desc);
+    var patch = this.directRequionForm.get('stkLines') as FormArray;
+    var itemName = event.target.value;    
       this.adminServiceService.onhandQtyFn(itemName,sessionStorage.getItem('locId'))
       .subscribe(
         data => {
@@ -228,8 +278,67 @@ export class DirectReqFormComponent {
         }
         }
       );
+    // this.orderlineDetailsArray().controls[i].patchValue({itemDesc:Desc.itemDescription})
+
+    // this.orderlineDetailsArray().controls[i].patchValue({adstkItem:item})
+    // this.service.onSelectReqItemNameFn(item)
+    // .subscribe(
+    //   data => {
+    //     this.onSelectItemNameFnList = data.obj;
+    //     console.log(this.onSelectItemNameFnList);   
+    //   }
+    // );
+    // this.orderlineDetailsArray().controls[i].patchValue({itemDesc:itemLi.itemDescription})
+     
+   }
+
+
+   onSearchItemName(event: Event) {
+    const input = (event.target as HTMLInputElement).value;
+    console.log('User is typing:', input);
+  
+  }
+  
+  onSelectItemName1(event: Event, index: number) {
+    const selectedValue = (event.target as HTMLInputElement).value;
+    console.log('Selected item:', selectedValue);
+   
+  }
+
+
+
+  //    onSearchItemName(event: Event, i: number) {
+  //     const input = (event.target as HTMLInputElement).value;
+  //     console.log(`User typing at index ${i}:`, input);
+  //   }
+  
+  //    onSelectItemName(event:any,i:any){
+  //     debugger;
+  //     var itemName = event.target.value;
+     
+  //     this.adminServiceService.onhandQtyFn(itemName,sessionStorage.getItem('locId'))
+  //     .subscribe(
+  //       data => {
+  //         this.onhandQtyList = data.obj;
+  //         console.log(this.onhandQtyList);
+  //         if (data.obj.length===0){
+  //           alert('Selected Item Stock Not Available. Please Check.!')
+  //         }
+  //         else{
+  //           var patch = this.directRequionForm.get('reqLines') as FormArray
+  //         patch.controls[i].patchValue({ avlQty: data.obj[0].onhandqty});
+  //       }
+  //       }
+  //     );
       
-     }
+  //    }
+
+
+  //    onSelectItemName1(event: Event, index: number) {
+  //   const selectedValue = (event.target as HTMLInputElement).value;
+  //   console.log('Selected item:', selectedValue);
+   
+  // }
 
     issueQty(i:any,event:any){
       var adstkQty = event.target.value;

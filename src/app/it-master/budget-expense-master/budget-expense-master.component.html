@@ -1,0 +1,21 @@
+<form [formGroup]="BudgetExpenMasterForm"  (ngSubmit)="budgetexpenseMaster(BudgetExpenMasterForm.value)" >
+    <table style="width: 100%;background-color: white;" class="center">
+        <tr>
+            <td class="PageHeader">
+                &nbsp;&nbsp;BUDGET&nbsp;MASTER
+            </td>
+            <td colspan="2" align="right" style="background-color: #FFE4B5;text-align: right;width: 100%;">
+                Budget&nbsp;Item&nbsp;&nbsp;Id&nbsp;
+            </td>
+            <td style="background-color: #FFE4B5;">
+                <input   class="form-control" formControlName="itemId" >
+                <!--[style.display]="isVisibleOrderFind ? 'block' : 'none'"      value={{itemId}}  [(ngModel)]='itemId' >-->
+            </td>
+            
+            <td style="background-color: #FFE4B5;" >
+                <button type="button" class="btn-primary"  ><i class="fa fa-search"
+                       aria-hidden="true"></i></button><!-- (click)="compIdFind(cmnTypeId)"-->
+            </td>
+        </tr>
+    </table>
+</form>

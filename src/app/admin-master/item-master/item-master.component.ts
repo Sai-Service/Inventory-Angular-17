@@ -75,6 +75,13 @@ interface IItemMaster {
   taxCategorySale: number;
   createdBy:string;
   attribute1:string;
+  mumbai:string;
+      pune:string;
+      kolhapur:string;
+      goa:string;
+      cochin:string;
+      hyderabad:number;
+  
 }
 
 @Component({
@@ -119,6 +126,19 @@ export class ItemMasterComponent {
   displayCosting = true;
   createdBy:string;
   attribute1:string;
+  mumbai:string;
+      pune:string;
+      kolhapur:string;
+      goa:string;
+      cochin:string;
+      hyderabad:number;
+
+      canSelectCities = true;
+      // options: string[] = ['Mumbai', 'Pune', 'Kolhapur', 'Goa', 'Cochin', 'Hyderabad'];
+      // selectedIndex: any= [];
+
+      options: string[] = ['Mumbai', 'Pune', 'Kolhapur', 'Goa', 'Cochin', 'Hyderabad'];
+selectedOptions: string[] = [];
 
   constructor(private fb: FormBuilder, private router: Router,private router1:ActivatedRoute,private service: AdminMasterService, private location: Location,
     private AdminMasterService:AdminMasterService) {
@@ -141,6 +161,12 @@ export class ItemMasterComponent {
       assetItem:[],
       createdBy:[],
       attribute1:[],
+      mumbai:[],
+      pune:[],
+      kolhapur:[],
+      goa:[],
+      cochin:[],
+      hyderabad:[],
 
     })
   }
@@ -150,6 +176,26 @@ export class ItemMasterComponent {
     this.itemMasterForm.patchValue({status:'Active'});
     this.itemMasterForm.patchValue({createdBy:sessionStorage.getItem('tktNo')});
     this.itemMasterForm.patchValue({attribute1:sessionStorage.getItem('ouId')});
+    // if('104'===sessionStorage.getItem('ouId')){
+    //   this.itemMasterForm.patchValue({mumbai:sessionStorage.getItem('ouId')});
+
+    // }
+    // if('106'===sessionStorage.getItem('ouId')){
+    //   this.itemMasterForm.patchValue({goa:sessionStorage.getItem('ouId')});
+
+    // }
+    // if('107'===sessionStorage.getItem('ouId')){
+    //   this.itemMasterForm.patchValue({cochin:sessionStorage.getItem('ouId')});
+
+    // }
+    // if('105'===sessionStorage.getItem('ouId')){
+    //   this.itemMasterForm.patchValue({kolhapur:sessionStorage.getItem('ouId')});
+
+    // }
+    // if('108'===sessionStorage.getItem('ouId')){
+    //   this.itemMasterForm.patchValue({hyderabad:sessionStorage.getItem('ouId')});
+
+    // }
 
     this.service.AllreqItemCatagList()
     .subscribe(
@@ -200,32 +246,59 @@ export class ItemMasterComponent {
     this.itemMasterForm.get('costing')?.disable();
     this.itemMasterForm.get('internalOrder')?.disable();
     this.itemMasterForm.get('isTaxable')?.disable();
-    // this.itemMasterForm.get('assetItem')?.disable();
+    this.itemMasterForm.get('assetItem')?.disable();
   }
 
 
 
   itemMaster(itemMasterForm: any) { }
 
+  selectOption(optionIndex: number) {
+    const selectedCity = this.options[optionIndex];
+  
+    const index = this.selectedOptions.indexOf(selectedCity);
+  
+    if (index > -1) {
+      this.selectedOptions.splice(index, 1);
+      this.clearCityField(selectedCity);
+    } else {
+      this.selectedOptions.push(selectedCity);
+      this.setCityField(selectedCity);
+    }
+  }
+  
+  setCityField(city: string) {
+    const patch: any = {};
+    switch (city) {
+      case 'Mumbai': patch.mumbai = '104'; break;
+      case 'Pune': patch.pune = '81'; break;
+      case 'Kolhapur': patch.kolhapur = '105'; break;
+      case 'Goa': patch.goa = '106'; break;
+      case 'Cochin': patch.cochin = '107'; break;
+      case 'Hyderabad': patch.hyderabad = '108'; break;
+    }
+    this.itemMasterForm.patchValue(patch);
+  }
+  
 
-  // onSelectItemType(event:any){
-  //   var itemType=event.target.value;
-  //   alert(itemType)
-  //   this.service.onSelectReqItemNameFn(itemType)
-  //   .subscribe(
-  //     data => {
-  //       this.onSelectItemNameFnList = data.obj;  
-  //       console.log(data.obj);
-             
-  //     }
-  //   );
-    
-  //  }
+  clearCityField(city: string) {
+    const patch: any = {};
+    switch (city) {
+      case 'Mumbai': patch.mumbai = ''; break;
+      case 'Pune': patch.pune = ''; break;
+      case 'Kolhapur': patch.kolhapur = ''; break;
+      case 'Goa': patch.goa = ''; break;
+      case 'Cochin': patch.cochin = ''; break;
+      case 'Hyderabad': patch.hyderabad = ''; break;
+    }
+    this.itemMasterForm.patchValue(patch);
+  }
+
 
    onSelectItemType(event:any){
     var itemType=event.target.value;
     alert(itemType)
-    this.service.onSelectReqItemNameFn1(itemType,sessionStorage.getItem('ouId'))
+    this.service.onSelectReqItemNameFn(itemType)
     .subscribe(
       data => {
         this.onSelectItemNameFnList = data.obj;  
@@ -241,11 +314,30 @@ export class ItemMasterComponent {
     
    }
 
-   itemNameFind(){
-    var itemname = this.itemMasterForm.get('itemName')?.value;
-    let select = this.onSelectItemNameFnList.find((d:any) => d.item === itemname);
-    console.log(select);
-    this.AdminMasterService.findByItemDetails(select.itemId)
+  //  itemNameFind(){
+  //   var itemname = this.itemMasterForm.get('itemName')?.value;
+  //   let select = this.onSelectItemNameFnList.find((d:any) => d.item === itemname);
+  //   console.log(select);
+  //   this.AdminMasterService.findByItemDetails(select.itemId)
+  //   .subscribe(
+  //     data => {
+  //       if (data.code===200){
+  //         alert(data.message);
+  //         this.itemMasterForm.patchValue(data.obj);
+  //         this.displayStatus=false;
+  //         this.displayButtonCondition=false;
+  //         this.afterSearchDisable();
+  //       }
+  //       else{
+  //         alert(data.message);
+  //       }    
+  //     }
+  //   );    
+  //  }
+
+
+   itemNamesearchFind(itemId:any){
+    this.AdminMasterService.findByItemDetails(itemId)
     .subscribe(
       data => {
         if (data.code===200){
@@ -253,7 +345,7 @@ export class ItemMasterComponent {
           this.itemMasterForm.patchValue(data.obj);
           this.displayStatus=false;
           this.displayButtonCondition=false;
-          this.afterSearchDisable();
+            this.autoSelectCitiesFromForm();
         }
         else{
           alert(data.message);
@@ -269,25 +361,61 @@ export class ItemMasterComponent {
     // this.itemMasterForm.get('category')?.disable();
    }
 
-   itemNamesearchFind(){
-    var itemname = this.itemMasterForm.get('com.item')?.value;
-    // let select = this.onSelectItemNameFnList.find(d => d.item === itemname);
-    // console.log(select);
-    this.AdminMasterService.findByItemDetails(itemname)
-    .subscribe(
-      data => {
-        if (data.code===200){
-          alert(data.message);
-          this.itemMasterForm.patchValue(data.obj);
-          this.displayStatus=false;
-          this.displayButtonCondition=false;
-        }
-        else{
-          alert(data.message);
-        }    
-      }
-    );    
-   }
+ 
+
+
+
+itemNameFind(){
+  var itemname = this.itemMasterForm.get('itemName')?.value;
+   let select = this.onSelectItemNameFnList.find((d:any) => d.item === itemname);
+    console.log(select);
+  this.AdminMasterService.findByItemDetails(select.itemId).subscribe(data => {
+    if (data.code === 200) {
+      alert(data.message);
+
+      // 1. Patch all fields
+      this.itemMasterForm.patchValue(data.obj);
+
+      // 2. Auto-select cities based on non-null values
+      this.autoSelectCitiesFromForm();
+
+      this.displayStatus = false;
+      this.displayButtonCondition = false;
+    } else {
+      alert(data.message);
+    }
+  });
+}
+
+
+
+autoSelectCitiesFromForm() {
+  const formValue = this.itemMasterForm.value;
+
+  const cityMap = {
+    Mumbai: 'mumbai',
+    Pune: 'pune',
+    Kolhapur: 'kolhapur',
+    Goa: 'goa',
+    Cochin: 'cochin',
+    Hyderabad: 'hyderabad'
+  };
+
+  this.selectedOptions = []; // Clear previous selections
+
+  for (const [cityName, formControl] of Object.entries(cityMap)) {
+    const value = formValue[formControl];
+
+    // Check for valid (non-empty, non-null, non-"null")
+    if (value && value !== 'null') {
+      this.selectedOptions.push(cityName); // Visually select
+
+      // Also ensure form control value is properly set
+      this.setCityField(cityName);
+    }
+  }
+}
+
 
    
 
@@ -360,6 +488,7 @@ export class ItemMasterComponent {
         this.dataDisplay = res.message;
         this.itemMasterForm.disable();
         this.displayButtonCondition = false;
+        this.canSelectCities = false;
       } else {
         if (res.code === 400) {
           alert(res.message);
@@ -382,6 +511,7 @@ export class ItemMasterComponent {
         this.dataDisplay = res.message;
         this.itemMasterForm.disable();
         this.displayButtonCondition = false;
+        this.canSelectCities = false;
       } else {
         if (res.code === 400) {
           alert(res.message);

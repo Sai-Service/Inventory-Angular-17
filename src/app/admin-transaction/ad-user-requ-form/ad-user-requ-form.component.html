@@ -250,6 +250,41 @@
 </form>
 
 
+<div class="custom-modal-overlay" *ngIf="isModalOpen">
+    <div class="custom-modal">
+      <div class="custom-modal-header">
+        <h2>Pending Requisition List</h2>
+      </div>
+  
+      <div class="custom-modal-body">
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>Req ID</th>
+              <th>Req Date</th>
+              <th>Admin Ticket</th>
+              <th>Req Status</th>
+              <!-- <th>Location</th> -->
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let com of PendingReqList">
+              <td><a (click)="navigateToRequisition(com.reqhdNo)"  style="color: blue; text-decoration: underline; cursor: pointer;">{{com.reqhdNo}}</a></td>
+              <td>{{ com.reqDate }}</td>
+              <td>{{ com.admintktNo }}</td>
+              <td>{{ com.requisitionStatus }}</td>
+              <!-- <td>{{ com.locCode }}</td> -->
+            </tr>
+          </tbody>
+        </table>
+      </div>
+  
+      <div class="custom-modal-footer">
+        <button class="btn-close"  [routerLink]="['/admin']" >Close</button>
+      </div>
+    </div>
+  </div>
+
 <div class="modal fade" id="confirmAlert" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true" style="width: 30%;margin-left: 35%;">
     <div class="modal-dialog modal-sm" role="document">

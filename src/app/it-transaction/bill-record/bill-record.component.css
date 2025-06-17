@@ -138,6 +138,12 @@
     background-color: #5c9bda;
   }
 
+  .btn-primary.disabled {
+  pointer-events: none;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
    
 
     legend {

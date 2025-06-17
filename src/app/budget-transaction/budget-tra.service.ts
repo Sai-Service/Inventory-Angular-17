@@ -38,8 +38,13 @@ export class BudgetTraService {
   } 
 
 
-  ProceedbyFindFN(cityId:any,compId:any,divId:any,fyr:any,loId:any): Observable<any> {
-    return this.http.get(this.ServerUrl + `/BudgetEntry/Loc?cityId=${cityId}&companyId=${compId}&divisionId=${divId}&finYear=${fyr}&locationId=${loId}`);
+  ProceedbyFindFN(cityId:any,compId:any,divId:any,fyr:any,loId:any,budgId:any): Observable<any> {
+    return this.http.get(this.ServerUrl + `/BudgetEntry/Loc?cityId=${cityId}&companyId=${compId}&divisionId=${divId}&finYear=${fyr}&locationId=${loId}&budgetTypeId=${budgId}`);
+  }
+
+
+   ApplicableatoList(): Observable<any> {
+    return this.http.get(this.ServerUrl + `/CodeMst/dept/LOCATIONTYPE`);
   }
 
   public BudgetrecoderSubmit(BudgetRecorder:any) {

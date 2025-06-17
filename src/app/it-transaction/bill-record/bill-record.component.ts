@@ -138,6 +138,8 @@ export class BillRecordComponent {
   displayGstper: Array<boolean> = [];
   displayBillType1: Array<boolean> = [];
   displayBillType: Array<boolean> = [];
+  displayLoc:Array<boolean>=[];
+  displayDept:Array<boolean>=[];
   isDisableqty: Array<boolean> = [];
   viewAllDoucmnet: any = [];
   AllBilltypeList: any = [];
@@ -186,6 +188,7 @@ export class BillRecordComponent {
   finYear:string;
   finYearFnList:any=[];
   currantYear:string;
+  isInvoiceValid:boolean;
   
 
 
@@ -292,6 +295,8 @@ export class BillRecordComponent {
     this.billRecorderForm.patchValue({ createdBy: sessionStorage.getItem('loginName') });
     this.billRecorderForm.patchValue({ lastupdatedBy: sessionStorage.getItem('loginName') })
     this.displayBillType[0] = true;
+    this.displayLoc[0]=true;
+     this.displayDept[0]=true;
     this.displayitemdesc[0] = true;
     this.displayBillType1[0] = true;
     this.displayGstper[0] = true;
@@ -312,14 +317,14 @@ export class BillRecordComponent {
       // const linePatch: any = {
       //     srlNo: 1,
       //     linestatus: 'BOOKED',
-      //     finYear: expType === 'IT' ? '2024-2025' : ''
+      //     finYear: expType === 'IT' ? '2025-2026' : ''
       // };
 
    (patch.controls[0]).patchValue(
       {
         srlNo: 1,
         linestatus: 'BOOKED',
-        finYear: expType === 'IT' ? '2024-2025' : ''
+        finYear: expType === 'IT' ? '2025-2026' : ''
         
         
       }
@@ -335,7 +340,7 @@ export class BillRecordComponent {
     //   {
     //     srlNo: 1,
     //     linestatus: 'BOOKED',
-    //     finYear:'2024-2025',
+    //     finYear:'2025-2026',
         
         
     //   }
@@ -459,6 +464,8 @@ export class BillRecordComponent {
                 control.push(BillLinesAllList1);
                 this.displayBillType1[i] = false;
                 this.displayBillType[i] = false;
+                 this.displayLoc[0]=false;
+                 this.displayDept[0]=false;
                 this.displayitemdesc[i] = false;
                 this.displayGstper[i] = false;
                 this.isDisableqty[i] = false;
@@ -474,6 +481,8 @@ export class BillRecordComponent {
                   this.displayLineflowStatusCode[i] = true;
                   this.displayBillType1[i] = false;
                   this.displayBillType[i] = false;
+                    this.displayLoc[i]=false;
+                 this.displayDept[i]=false;
                   this.displayitemdesc[i] = false;
                   this.displayGstper[i] = false;
                   this.isDisableqty[i] = false;
@@ -520,9 +529,8 @@ export class BillRecordComponent {
         data => {
           this.finYearFnList = data.obj;
           this.currantYear = data.obj[0].code;
-          alert()
           this.orderlineDetailsArray().controls[0].patchValue({finYear:this.currantYear})
-          alert(this.currantYear)
+         
         }
       );
 
@@ -612,6 +620,8 @@ export class BillRecordComponent {
                 control.push(BillLinesAllList1);
                 this.displayBillType1[i] = false;
                 this.displayBillType[i] = false;
+                  this.displayLoc[i]=false;
+                 this.displayDept[i]=false;
                 this.displayitemdesc[i] = false;
                 this.displayGstper[i] = false;
                 this.isDisableqty[i] = false;
@@ -627,6 +637,8 @@ export class BillRecordComponent {
                   this.displayLineflowStatusCode[i] = true;
                   this.displayBillType1[i] = false;
                   this.displayBillType[i] = false;
+                    this.displayLoc[i]=false;
+                 this.displayDept[i]=false;
                   this.displayitemdesc[i] = false;
                   this.displayGstper[i] = true;
                   this.isDisableqty[i] = false;
@@ -658,8 +670,7 @@ export class BillRecordComponent {
         .subscribe(
           data => {
 
-            if (data.code === 400) {
-              // alert("This Item Code Not Found/This Asset Allready Discarded !!!");
+            if (data.code === 400) {       
               this.closeResetButton = false;
               this.progress = 0;
               this.dataDisplay = 'Purchase Number Not Found ';
@@ -677,6 +688,8 @@ export class BillRecordComponent {
                 control.push(BillLinesAllList1);
                 this.displayBillType1[i] = false;
                 this.displayBillType[i] = false;
+                  this.displayLoc[i]=false;
+                 this.displayDept[i]=false;
                 this.displayitemdesc[i] = false;
                 this.displayGstper[i] = false;
                 this.isDisableqty[i] = false;
@@ -692,6 +705,8 @@ export class BillRecordComponent {
                   this.displayLineflowStatusCode[i] = true;
                   this.displayBillType1[i] = false;
                   this.displayBillType[i] = false;
+                    this.displayLoc[i]=false;
+                 this.displayDept[i]=false;
                   this.displayitemdesc[i] = false;
                   this.displayGstper[i] = false;
                   this.isDisableqty[i] = false;
@@ -706,7 +721,7 @@ export class BillRecordComponent {
               this.billRecorderForm.patchValue({ docName: data.obj.headerId });
               let selectedValue = this.AllvendornameList.find((v: any) => v.vendorName == data.obj.suppName);
               console.log(selectedValue);
-              this.billRecorderForm.patchValue({ suppId: selectedValue.vendorId, suppId1: selectedValue.vendorName })
+              this.billRecorderForm.patchValue({ suppId:selectedValue.vendorId, suppId1:selectedValue.vendorName })
             }
           })
     }
@@ -727,7 +742,6 @@ export class BillRecordComponent {
     var lineValue6 = prcLineArr1[i].gstPer;
     var lineValue7 = prcLineArr1[i].qty;
     var lineValue8 = prcLineArr1[i].unitRate;
-
 
     var j = i + 1;
     if (lineValue1 === undefined || lineValue1 === null || lineValue1 === '') {
@@ -761,7 +775,7 @@ export class BillRecordComponent {
       this.lineValidation = false;
       return;
     }
-    ////|| lineValue7 !=='0'
+  
     if (lineValue7 === undefined || lineValue7 === null ) {
       alert("Line-" + j + " Item Quntity :  should not be null value");
       this.lineValidation = false;
@@ -783,6 +797,8 @@ export class BillRecordComponent {
       this.displayGstper[i] = false;
       this.isDisableqty[i] = true;
       this.displayBillType[i] = false;
+        this.displayLoc[i]=false;
+                 this.displayDept[i]=false;
       this.displayitemdesc[i] = false;
       this.displayLineflowStatusCode[i] = true;
 
@@ -800,7 +816,7 @@ export class BillRecordComponent {
     //     {
     //       srlNo: 1,
     //       linestatus: 'BOOKED',
-    //       finYear: expType === 'IT' ? '2024-2025' : ''
+    //       finYear: expType === 'IT' ? '2025-2026' : ''
           
           
     //     }
@@ -810,7 +826,7 @@ export class BillRecordComponent {
         {
           srlNo: len,
           linestatus: 'BOOKED',
-          finYear: expType === 'IT' ? '2024-2025' : ''
+          finYear: expType === 'IT' ? '2025-2026' : ''
         })
   
     });
@@ -825,7 +841,7 @@ export class BillRecordComponent {
       //   {
       //     srlNo: len,
       //     linestatus: 'BOOKED',
-      //     finYear:'2024-2025',
+      //     finYear:'2025-2026',
       //   }
       // );}
       // else{(patch.controls[len - 1]).patchValue(
@@ -836,6 +852,8 @@ export class BillRecordComponent {
       //   }
       // );}
       this.displayBillType[len - 1] = true;
+        this.displayLoc[len - 1]=true;
+                 this.displayDept[len - 1]=true;
       this.displayitemdesc[len - 1] = true;
       this.displayLineflowStatusCode[len - 1] = true;
       this.displayBillType1[len - 1] = true;
@@ -986,6 +1004,81 @@ export class BillRecordComponent {
 
       });
   }
+   
+  // invoNoValidation(event:any){
+  //   var invoNo = event.target.value;
+  //   this.service.viewInvoiceFn(invoNo).subscribe((res: any) => {
+  //     if (res.code === 200) {
+  //       } 
+  //      if (res.code === 400) {
+  //       alert(res.message);}
+
+  //     });
+  // }
+
+invoNoValidation(event: any) {
+  const invoNo = event.target.value;
+
+  if (!invoNo) {
+    this.isInvoiceValid = false;
+    return;
+  }
+
+  this.service.viewInvoiceFn(invoNo).subscribe(
+    (res: any) => {
+      if (res.code === 200) {
+        // // Invoice exists
+        // alert("Invoice number already exists. Please enter a unique number.");
+        // this.isInvoiceValid = true;
+        this.isInvoiceValid = true;
+
+       
+      } else if (res.code === 400) {
+         alert("Invoice number already exists. Please enter a unique number.");
+        this.isInvoiceValid = false;
+         this.billRecorderForm.get('billNo')?.setValue('');
+      }
+    },
+    (error) => {
+      console.error("Validation error:", error);
+      this.isInvoiceValid = false;
+    }
+  );
+}
+
+
+
+//   invoNoValidation(event: any) {
+//   const invoNo = event.target.value;
+
+//   // Check if invoice number is not empty
+//   if (!invoNo) {
+//     return;
+//   }
+
+//   this.service.viewInvoiceFn(invoNo).subscribe(
+//     (res: any) => {
+//       if (res.code === 200) {
+//         // Invoice number exists - stop further action
+//         alert("Invoice number already exists: " + res.message);
+        
+//         // Optional: Clear the input field
+//         event.target.value = '';
+
+//         // Optional: Set a validation flag to prevent next step
+//         this.isInvoiceValid = false;
+//       } else if (res.code === 400) {
+//         // Invoice number does not exist - allow next step
+//         this.isInvoiceValid = true;
+//       }
+//     },
+//     (err) => {
+//       console.error("Error while validating invoice number", err);
+//       this.isInvoiceValid = false;
+//     }
+//   );
+// }
+
 
   viewDocument() {
     var headerId = this.billRecorderForm.get('headerId')?.value;
@@ -1465,6 +1558,7 @@ export class BillRecordComponent {
     }
     this.updateTotAmtPerline(i)
   }
+  
 
 
 
@@ -1584,5 +1678,7 @@ blockInvalidKeys(event: KeyboardEvent): void {
   }
 }
 
+
+isLockedStatus(){}
 
 }

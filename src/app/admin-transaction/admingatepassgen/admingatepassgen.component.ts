@@ -231,12 +231,23 @@ GatepassidFind(gatePassId:any){
   
   onSelectItemType(event:any){
     var itemType=event.target.value;
-    this.adminSer.onSelectReqItemNameFn(itemType)
-    .subscribe(
-      data => {
-        this.onSelectItemNameFnList = data.obj;       
-      }
-    );
+    // this.adminSer.onSelectReqItemNameFn1(itemType)
+    // .subscribe(
+    //   data => {
+    //     this.onSelectItemNameFnList = data.obj;       
+    //   }
+    // );
+  const ouId = sessionStorage.getItem('ouId');
+    this.adminSer.onSelectReqItemNameFn1(itemType)
+  .subscribe(data => {
+    this.onSelectItemNameFnList = data.obj.filter((item:any) => {
+      return ['mumbai', 'pune', 'kolhapur', 'goa', 'cochin', 'hyderabad']
+        .some(city => item[city] === ouId);
+    });
+
+    console.log(this.onSelectItemNameFnList);
+  });
+    
     
    }
 

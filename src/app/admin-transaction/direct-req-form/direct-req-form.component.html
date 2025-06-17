@@ -157,7 +157,7 @@
                             </ng-template>
                             </td>
                             <td>
-                                <div *ngIf="displayItemName[i]; then thenItemName; else elseItemName"></div>
+                                <!-- <div *ngIf="displayItemName[i]; then thenItemName; else elseItemName"></div>
                                 <ng-template #thenItemName>
 
                                     <input type="text"
@@ -165,14 +165,28 @@
        class="form-control"
        placeholder="--Select--"
        style="background-color: yellow; height: 25px; width: 18rem; font-size: 10px;"
-       (keyup)="onSearchItemName($event, i)"
+       (keyup)="onSearchItemName($event)"
+         (change)="onSelectItemName1($event, i)"
        (change)="onSelectItemName($event, i)"
        id="itemNameInput{{i}}"
-       [attr.list]="'itemNameList' + i" />
+       [attr.list]="'itemNameList' + i" /> -->
 
-<datalist [id]="'itemNameList' + i">
-  <option *ngFor="let item of itemMap2.get(i) | keyvalue" [value]="item.value.item">
-    {{ item.value.item }}
+
+       <div *ngIf="displayItemName[i]; then thenRequItem; else elseItemName"> </div>
+                                <ng-template #thenRequItem>
+                                    <input type="text"
+       formControlName="itemName"
+       style="background-color: yellow; height: 25px; width: 18rem; font-size: 10px;"
+       (keyup)="onSearchItemName($event)"
+       (change)="onSelectItemName1($event, i)"
+       (change)="onSelectItemName($event,i)"
+       id="itemListInput"
+       list="dynamicItemList"
+       class="form-control"
+       placeholder="--Select--" />
+<datalist id="dynamicItemList">
+  <option *ngFor="let itemN of onSelectItemNameFnList" [value]="itemN.item">
+    {{ itemN.item }}
   </option>
 </datalist>
 

@@ -42,7 +42,7 @@
     </fieldset>
 
     <fieldset class="RFS">
-        <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px;color: black;font-weight: bold;">BILL HEADER
+        <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px;color: black;font-weight: bold;">Bill Header
         </legend>
         <table class="center">
             <tr>
@@ -77,9 +77,22 @@
                         </option>
                     </select>
                 </td>
-                <td style="width: 15%" class="LabelFontStyle1">Bill&nbsp;No&nbsp;: </td>
+                <!-- <td style="width: 15%" class="LabelFontStyle1">Bill&nbsp;No&nbsp;: </td>
                 <td> <input type='text' uppercase formControlName="billNo" class="form-control"
-                        style="background-color: yellow;"></td>
+                        style="background-color: yellow;" (change)="invoNoValidation($event)"></td> -->
+
+                        <td style="width: 15%" class="LabelFontStyle1">Bill&nbsp;No&nbsp;:</td>
+<td>
+  <input
+    type="text"
+    formControlName="billNo"
+    class="form-control"
+    style="background-color: yellow;"
+    [ngClass]="{'is-invalid': !isInvoiceValid}"
+    (change)="invoNoValidation($event)"
+  >
+</td>
+
 
                 <td style="width: 15%" class="LabelFontStyle">Today&nbsp;Date:</td>
                 <td class="form-control" style="background-color: rgb(238, 238, 238);"> {{Date}}</td>
@@ -125,21 +138,21 @@
                 </td>
             </tr>
             <tr>
-                <td style="width: 15%" class="LabelFontStyle1">Service&nbsp;From&nbsp;:</td>
+                <td style="width: 15%" class="LabelFontStyle">Service&nbsp;From&nbsp;:</td>
                 <td>
                     <input type="date" formControlName="serviceFrom" max="{{minDate | date:'yyyy-MM-dd'}}"
-                        [(ngModel)]="serviceFrom" class="form-control" style="background-color:  rgb(248, 252, 17);">
+                        [(ngModel)]="serviceFrom" class="form-control" >            <!---style="background-color:  rgb(248, 252, 17);"-->
                 </td>
-                <td style="width: 15%" class="LabelFontStyle1">Service&nbsp;To&nbsp;:</td>
+                <td style="width: 15%" class="LabelFontStyle">Service&nbsp;To&nbsp;:</td>
                 <td>
                     <input type="date" formControlName="serviceTo" [(ngModel)]="serviceTo" class="form-control"
-                        style="background-color: yellow;"> <!--max="{{minDate | date:'yyyy-MM-dd'}}"-->
+                       > <!--max="{{minDate | date:'yyyy-MM-dd'}}"-->
                 </td>
             </tr>
         </table>
     </fieldset>
     <fieldset class="RFS">
-        <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px; color: black;font-weight: bold;">LINE HEADER
+        <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px; color: black;font-weight: bold;">Line Header
         </legend>
         <table class="ceneter">
             <tr>
@@ -160,11 +173,12 @@
                     <th style="width:4rem" scope="col">Srl No.</th>
                     <th style="width:5rem" scope="col">Bill Type</th>
                     <th style="width:4rem" scope="col">location name</th>
+                    <th style="width:4rem" scope="col">location name</th>
                     <th style="width:6rem" scope="col">Department Name</th>
                     <th style="width:6rem" scope="col">Item Name</th>
                     <th style="width:4rem" scope="col">Warranty Period</th>
                     <th style="width:4rem" scope="col">GST%</th>
-                    <th style="width:3rem" scope="col">Qunatity</th>
+                    <th style="width:3rem" scope="col">Quantity</th>
                     <th style="width:6rem" scope="col">Unit Rate</th>
                     <th style="width:4rem" scope="col">Discount Amount</th>
                     <th style="width:4rem" scope="col">Sub Total</th>
@@ -212,6 +226,8 @@
 
                             </td>
                             <td>
+                                  <div *ngIf="displayLoc[i]; then thenLoc; else elseLoc"> </div>
+                                <ng-template #thenLoc>
                                 <select formControlName="locId" id="locId" class="form-control"
                                     style="width: 9rem; background-color: yellow;">
                                     <option>--Select--</option>
@@ -219,8 +235,17 @@
                                         {{sc.locName}}
                                     </option>
                                 </select>
+                                </ng-template>
+                                <ng-template #elseLoc>
+                                     <input readonly type='text' formControlName="locName" class="form-control"
+                                        style="width: 8rem;height: 25px;font-size: 10px;">
+                                        <input hidden type='text' formControlName="locId" class="form-control"
+                                        style="width: 8rem;height: 25px;font-size: 10px;">
+                                </ng-template>
                             </td>
                             <td>
+                                 <div *ngIf="displayDept[i]; then thenDept; else elseDept"> </div>
+                                <ng-template #thenDept>
                                 <select formControlName="deptId" id="deptId" class="form-control"
                                     style="width: 9rem; background-color: yellow;">
                                     <option>--Select--</option>
@@ -228,6 +253,13 @@
                                         {{sc.codeDesc}}
                                     </option>
                                 </select>
+                                </ng-template>
+                                <ng-template #elseDept>
+                                     <input readonly type='text' formControlName="deptName" class="form-control"
+                                        style="width: 8rem;height: 25px;font-size: 10px;">
+                                         <input hidden type='text' formControlName="deptId" class="form-control"
+                                        style="width: 8rem;height: 25px;font-size: 10px;">
+                                </ng-template>
                             </td>
 
                             <td>
@@ -352,7 +384,7 @@
                             </td>
                             <td>
                                 <button type="button" class="btn btn-primary" (click)="addRow(i)"
-                                    style="width: min-content;"><i class="fa fa-plus"></i></button>
+                                    style="width: min-content;" [class.disabled]="isLockedStatus()" ><i class="fa fa-plus"></i></button>
                             </td>
 
                         </tr>
@@ -364,7 +396,7 @@
                 id="register" style="width: 100px;" (click)="LineupdateMast()">Line Upadate</button></td>
     </fieldset>
     <fieldset class="RFS">
-        <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px; color: black;font-weight: bold; ">REMARK &
+        <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px; color: black;font-weight: bold; ">Remark &
             Total Amount
         </legend>
         <table class="center">

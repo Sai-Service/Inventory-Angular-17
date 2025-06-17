@@ -25,8 +25,8 @@ export class AdminReportsService {
     return this.http.get(this.ServerUrl + `/locationMst/loc/${ouId}`);
   }
 
-  AdminMisscellReport(ouId:any,locId:any){
-    const REQUEST_URI = this.ServerUrl +`/ReqReports/Misscellenous?ouId=${ouId}&locationId=${locId}`;
+  AdminMisscellReport(ouId:any,locId:any,fromDt:any,toDt:any){
+    const REQUEST_URI = this.ServerUrl +`/ReqReports/Misscellenous?ouId=${ouId}&locationId=${locId}&fromDt=${fromDt}&toDt=${toDt}`;
     return this.http.get(REQUEST_URI, {
       // params: REQUEST_PARAMS,
       responseType: 'arraybuffer',
@@ -145,9 +145,14 @@ export class AdminReportsService {
   }
 
 
-  onSelectReqItemNameFn(codeType:any): Observable<any> {
-    return this.http.get(this.ServerUrl + `/AdminItem/AllItems?category=${codeType}`); ////CodeTypeMst/REQ/REQ
-  }
+  // onSelectReqItemNameFn(codeType:any): Observable<any> {
+  //   return this.http.get(this.ServerUrl + `/AdminItem/AllItems?category=${codeType}`); ////CodeTypeMst/REQ/REQ
+  // }
+
+
+  onSelectReqItemNameFn(codeType:any,ouId:any): Observable<any> {
+  return this.http.get(this.ServerUrl + `/AdminItem/AllItemsWithOu?category=${codeType}&attribute1=${ouId}`); ////CodeTypeMst/REQ/REQ
+}
 
   
   AllreqItemCatagList(): Observable<any> {

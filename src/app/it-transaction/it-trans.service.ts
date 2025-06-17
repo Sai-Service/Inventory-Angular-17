@@ -170,6 +170,9 @@ export class ItTransService {
     return this.http.get(this.ServerUrl + `/DocUpload/AllDocuments?attribute1=${headerId}`);
   }
 
+   viewInvoiceFn(BillNo:any): Observable<any> {
+    return this.http.get(this.ServerUrl + `/BillHeader/BillNo?billNo=${BillNo}`);
+  }
   
 
   UpoadDocument1(formData: FormData ,file:any,docType:any,docName:any,loginName:any,headerId:any) {

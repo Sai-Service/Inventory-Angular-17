@@ -95,7 +95,7 @@ export class LoginPageComponent {
                this.pendingCount = res.obj.filter((item:any) => item.reqstatus === 'OPEN').length;
                alert(this.pendingCount+'-'+"User Requsition Pending On Your Location Please Check Pending Requisitions List Form.");
                console.log(this.pendingCount);
-           }
+           } 
            else{}
            }
            else{}

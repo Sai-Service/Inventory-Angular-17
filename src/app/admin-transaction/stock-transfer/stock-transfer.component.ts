@@ -232,16 +232,31 @@ export class StockTransferComponent {
     console.log(itemcat);
     var codeType=itemcat.category
     // this.orderlineDetailsArray().controls[i].patchValue({adstkItem:itemcat.category})
-    this.service.onSelectReqItemNameFn1(codeType,sessionStorage.getItem('ouId'))
-    .subscribe(
-      data => {
-        this.onSelectItemNameFnList = data.obj;
-        console.log(this.onSelectItemNameFnList);
-        this.itemMap.set(itemType, data.obj);
-          this.itemMap2.set(i, this.itemMap.get(itemType));
+    // this.service.onSelectReqItemNameFn1(codeType,sessionStorage.getItem('ouId'))
+    // .subscribe(
+    //   data => {
+    //     this.onSelectItemNameFnList = data.obj;
+    //     console.log(this.onSelectItemNameFnList);
+    //     this.itemMap.set(itemType, data.obj);
+    //       this.itemMap2.set(i, this.itemMap.get(itemType));
        
-      }
-    );
+    //   }
+    // );
+
+    const ouId = sessionStorage.getItem('ouId');
+    this.adminServiceService.onSelectReqItemNameFn1(codeType).subscribe(data => {
+      this.onSelectItemNameFnList = data.obj.filter((item: any) => {
+        return ['mumbai', 'pune', 'kolhapur', 'goa', 'cochin', 'hyderabad'].some(city => {
+          return item[city] === ouId;
+        });
+        
+      });
+    
+      console.log(this.onSelectItemNameFnList);
+      this.itemMap.set(itemType, this.onSelectItemNameFnList);
+      this.itemMap2.set(i, this.onSelectItemNameFnList);
+      // this.isButtonDisabled = false;
+    });
     
    }
 
@@ -280,7 +295,6 @@ export class StockTransferComponent {
 
   onSearchItemName(event: Event, i: number) {
     const value = (event.target as HTMLInputElement).value;
-    // You can use this to trigger dynamic filtering if needed
     console.log(`Typing in adstkItem[${i}]:`, value);
   }
   

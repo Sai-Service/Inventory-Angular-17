@@ -39,6 +39,20 @@
                         </option>
                     </select>
                 </td>
+                <td style="width: 15%" class="LabelFontStyle">
+                    &nbsp;From&nbsp;Date&nbsp;:&nbsp;
+                </td>
+                <td>
+                    <input type="date" class="form-control" formControlName="fromDt"
+                        max="{{minDate | date:'yyyy-MM-dd'}}">
+                </td>
+                <td style="width: 15%" class="LabelFontStyle">
+                    &nbsp;To&nbsp;Date&nbsp;:&nbsp;
+                </td>
+                <td>
+                    <input type="date" class="form-control" formControlName="toDt"
+                        max="{{maxDate | date:'yyyy-MM-dd'}}">
+                </td>
             </tr>
         </table>
     </fieldset>  

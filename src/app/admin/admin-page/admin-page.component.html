@@ -64,10 +64,10 @@
           <li><a class="dropdown-submenu" [routerLink]="['/admin/itTransaction/recvdList']">Received List</a></li>
           <li><a class="dropdown-submenu" [routerLink]="['/admin/itTransaction/recvdForm']">Received Form</a></li>
           <li><a class="dropdown-submenu"
-              [routerLink]="['/admin/itTransaction/BillRecorder']">Supplier/Vendor&nbsp;Purchae/Bill&nbsp;Tracker</a>
+              [routerLink]="['/admin/itTransaction/BillRecorder']">Supplier/Vendor&nbsp;Purchase/Bill&nbsp;Tracker</a>
           </li>
           <li><a class="dropdown-submenu"
-              [routerLink]="['/admin/itTransaction/Billrcdsrchfrm']">Supplier/Vendor&nbsp;Purchae/Bill&nbsp;Search&nbsp;Form</a>
+              [routerLink]="['/admin/itTransaction/Billrcdsrchfrm']">Supplier/Vendor&nbsp;Purchase/Bill&nbsp;Search&nbsp;Form</a>
           </li>
           <li><a class="dropdown-submenu" [routerLink]="['/admin/itTransaction/AseetDiscard']">Asset Discard</a></li>
          
@@ -162,9 +162,9 @@
         <li><a class="dropdown-submenu" [routerLink]="['/admin/adminTransaction/AdminPurchase']">Purchase/Stock</a></li>
         <li><a class="dropdown-submenu" [routerLink]="['/admin/adminTransaction/StockTransfer']">Stock Transfer</a></li>
         <li><a class="dropdown-submenu" [routerLink]="['/admin/adminTransaction/ReceiptForm']">Receipt Creation</a></li>
-        <li><a class="dropdown-submenu" [routerLink]="['/admin/adminTransaction/Directreq']">Open Requisition</a></li>
+        <li ><a class="dropdown-submenu" [routerLink]="['/admin/adminTransaction/Directreq']">Open Requisition</a></li>
         <li><a class="dropdown-submenu" [routerLink]="['/admin/adminTransaction/StkAvailFrom']">Stock Availability</a></li>
-        <li><a class="dropdown-submenu" [routerLink]="['/admin/adminTransaction/miscellusform']">Miscellaneous Transaction</a></li>
+        <li *ngIf="isVisibleAdminMiscellTransaction"><a class="dropdown-submenu" [routerLink]="['/admin/adminTransaction/miscellusform']">Miscellaneous Transaction</a></li>
         <li><a class="dropdown-submenu" [routerLink]="['/admin/adminTransaction/AdREqList']">Pending Requisitions List</a></li>
         <li><a class="dropdown-submenu" [routerLink]="['/admin/adminTransaction/AdminRequForm']">Requisition Acknowledge</a></li>
         <li><a class="dropdown-submenu" [routerLink]="['/admin/adminTransaction/PendShipForm']">Pending Shipment List</a></li>
@@ -195,7 +195,7 @@
   </a>
 
   <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-    <li><a class="dropdown-submenu" [routerLink]="['/admin/adminReports/miscellReport']">Miscellaneous Report</a></li>
+    <li  *ngIf="isVisibleAdminMiscellTransaction"><a class="dropdown-submenu" [routerLink]="['/admin/adminReports/miscellReport']">Miscellaneous Report</a></li>
     <li><a class="dropdown-submenu" [routerLink]="['/admin/adminReports/purchaseReport']">Purchase Report</a></li>
     <li><a class="dropdown-submenu" [routerLink]="['/admin/adminReports/requitionReport']">Requision Report</a></li>
     <li><a class="dropdown-submenu" [routerLink]="['/admin/adminReports/adDirectReqRepo']">Direct Requision Report</a></li>
@@ -238,8 +238,8 @@
 
 
   </div>
-  <div id="page-content-wrapper" style="background-color: white;">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+  <div id="page-content-wrapper" style="background-color: white; height:3cm;" >
+    <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom" style="background-color: white; height:4.5cm;">
       <button id="menu-toggle">
         <i class="fa fa-hand-o-left" aria-hidden="true"></i>
       </button>
@@ -320,13 +320,13 @@
               </table>
             </td>
           </tr>
-          <tr>
+          <!-- <tr>
 
             <td class="center" colspan="2">
 
             </td>
 
-          </tr>
+          </tr> -->
         </table>
 
       </div>
@@ -345,6 +345,40 @@
   </div>
 </div>
 
+<div class="custom-modal-overlay" *ngIf="isModalOpen">
+  <div class="custom-modal">
+    <div class="custom-modal-header">
+      <h2>Pending Requisition List</h2>
+    </div>
+
+    <div class="custom-modal-body">
+      <table class="custom-table">
+        <thead>
+          <tr>
+            <th>Req ID</th>
+            <th>Req Date</th>
+            <th>Admin Ticket</th>
+            <th>Req Status</th>
+            <!-- <th>Location</th> -->
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let com of PendingReqList">
+            <td>{{ com.reqhdNo }}</td>
+            <td>{{ com.reqDate }}</td>
+            <td>{{ com.admintktNo }}</td>
+            <td>{{ com.requisitionStatus }}</td>
+            <!-- <td>{{ com.locCode }}</td> -->
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- <div class="custom-modal-footer">
+      <button class="btn-close" (click)="isModalOpen = false">Close</button>
+    </div> -->
+  </div>
+</div>
 
 
 
@@ -357,7 +391,7 @@
       </div>
       <div class="modal-body">
         <label style="font-size: small; color: black; font-weight: bold; text-align: center; vertical-align: middle;">
-          Testing
+          Testing 
         </label>
       </div>
       <div class="modal-footer">

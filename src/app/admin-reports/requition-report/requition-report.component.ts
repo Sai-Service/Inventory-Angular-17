@@ -64,6 +64,13 @@ if( sessionStorage.getItem('role') ==='Admin')  {
   this.isVisibletocmn=true;
  
   }
+  if( sessionStorage.getItem('role') ==='SupAdmin')  {
+
+    this.isVisibletoadmin=true;
+    this.isVisibleViewAdmin=true;
+    this.isVisibletocmn=true;
+   
+    }
   if(sessionStorage.getItem('role')  ==='User')  
   {
   this.isVisibletoadmin=false;

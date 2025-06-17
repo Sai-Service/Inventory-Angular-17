@@ -17,7 +17,7 @@ interface gatepasGenerator {
   gatepassId: number;
   gatepassNo: string;
   toDate: '';
-  createBy: string;
+  createdBy: string;
   gateType: string;
   gpitemType: string;
   gpDepName: string;
@@ -52,7 +52,7 @@ export class GatePassGenComponent {
   gatepassId: number;
   gatepassNo: string;
   toDate: '';
-  createBy: string;
+  createdBy: string;
   gateType: string;
   gpitemType: string;
   gpDepName: string;
@@ -97,7 +97,7 @@ export class GatePassGenComponent {
       gatepassId: [],
       gatepassNo: [],
       toDate: [],
-      createBy: [],
+      createdBy: [],
       gateType: [],
       gpRemark: [],
       gatepassLoc: [],
@@ -140,7 +140,7 @@ export class GatePassGenComponent {
     var loginName = (sessionStorage.getItem('empName'));
     var locName = (sessionStorage.getItem('locName'));
 
-    this.gatePassForm.patchValue({ createBy: loginName });
+    this.gatePassForm.patchValue({ createdBy:loginName });
     this.gatePassForm.patchValue({ loginLocation: locName });
     
     var ouID = (sessionStorage.getItem('ouId'));
@@ -173,7 +173,7 @@ export class GatePassGenComponent {
       );
 
     this.gatePassForm.get('gatepassId')?.disable();
-    this.gatePassForm.get('createBy')?.disable();
+    this.gatePassForm.get('createdBy')?.disable();
     this.gatePassForm.get('gpitemType')?.disable();
     this.gatePassForm.get('gitemSn')?.disable();
     this.gatePassForm.get('gatepassLoc')?.disable();

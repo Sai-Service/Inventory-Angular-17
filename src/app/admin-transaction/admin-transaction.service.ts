@@ -96,13 +96,13 @@ AllvendornameList(): Observable<any> {
   return this.http.get(this.ServerUrl + '/VendorMst/All');
 }
 
-onSelectReqItemNameFn(codeType:any): Observable<any> {
+onSelectReqItemNameFn1(codeType:any): Observable<any> {
   return this.http.get(this.ServerUrl + `/AdminItem/AllItems?category=${codeType}`); ////CodeTypeMst/REQ/REQ
 }
 
-onSelectReqItemNameFn1(codeType:any,ouId:any): Observable<any> {
-  return this.http.get(this.ServerUrl + `/AdminItem/AllItemsWithOu?category=${codeType}&attribute1=${ouId}`); ////CodeTypeMst/REQ/REQ
-}
+// onSelectReqItemNameFn1(codeType:any,ouId:any): Observable<any> {
+//   return this.http.get(this.ServerUrl + `/AdminItem/AllItemsWithOu?category=${codeType}&attribute1=${ouId}`); ////CodeTypeMst/REQ/REQ
+// }
 
 adheaderIdFindFN(headId:any): Observable<any> {
   return this.http.get(this.ServerUrl + `/AdminStock/PoNumber?adheaderId=${headId}`);
@@ -158,6 +158,11 @@ viewReqisisionListFn(ouid:any,dept:any,tkt:any,stsreq:any): Observable<any> {
   return this.http.get(this.ServerUrl + `/Requisition/Req?city=${ouid}&adminDept=${dept}&admintktNo=${tkt}&reqstatus=${stsreq}`);
 }
 
+
+viewUserReqisisionList(City:any,TktNo:any): Observable<any> {
+  // alert(headerId)
+  return this.http.get(this.ServerUrl + `/Requisition/Accept?city=${City}&attribute1=${TktNo}`);
+}
 
 RequAdminFindFN(billNo:any): Observable<any> {
   return this.http.get(this.ServerUrl + `/Requisition/ReqHd?reqhdNo=${billNo}`);

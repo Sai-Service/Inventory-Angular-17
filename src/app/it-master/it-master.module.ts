@@ -15,6 +15,7 @@ import { VendorComponent } from './vendor/vendor.component';
 import { VendorItemComponent } from './vendor-item/vendor-item.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { FAupdateFormComponent } from './faupdate-form/faupdate-form.component';
+import { BudgetExpenseMasterComponent } from './budget-expense-master/budget-expense-master.component';
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import { FAupdateFormComponent } from './faupdate-form/faupdate-form.component';
     VendorComponent,
     VendorItemComponent,
     DashboardComponent,
-    FAupdateFormComponent
+    FAupdateFormComponent,
+    BudgetExpenseMasterComponent
   ],
   imports: [
     CommonModule,

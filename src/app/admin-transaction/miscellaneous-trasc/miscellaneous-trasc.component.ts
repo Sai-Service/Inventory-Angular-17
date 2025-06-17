@@ -196,17 +196,32 @@ export class MiscellaneousTrascComponent {
     var itemcat = this.AllreqItemCatagList.find((itemcat:any) => itemcat.category === itemType);
     console.log(itemcat);
     var codeType=itemcat.category
-    this.miscLinesArray().controls[i].patchValue({itemCategory:itemcat.category})
-    this.adminServiceService.onSelectReqItemNameFn1(codeType,sessionStorage.getItem('ouId'))
-    .subscribe(
-      data => {
-        this.onSelectItemNameFnList = data.obj;
-        console.log(this.onSelectItemNameFnList);
-        this.itemMap.set(itemType, data.obj);
-          this.itemMap2.set(i, this.itemMap.get(itemType));
+    // this.miscLinesArray().controls[i].patchValue({itemCategory:itemcat.category})
+    // this.adminServiceService.onSelectReqItemNameFn1(codeType,sessionStorage.getItem('ouId'))
+    // .subscribe(
+    //   data => {
+    //     this.onSelectItemNameFnList = data.obj;
+    //     console.log(this.onSelectItemNameFnList);
+    //     this.itemMap.set(itemType, data.obj);
+    //       this.itemMap2.set(i, this.itemMap.get(itemType));
        
-      }
-    );
+    //   }
+    // );
+
+    const ouId = sessionStorage.getItem('ouId');
+this.adminServiceService.onSelectReqItemNameFn1(codeType).subscribe(data => {
+  this.onSelectItemNameFnList = data.obj.filter((item: any) => {
+    return ['mumbai', 'pune', 'kolhapur', 'goa', 'cochin', 'hyderabad'].some(city => {
+      return item[city] === ouId;
+    });
+    
+  });
+
+  console.log(this.onSelectItemNameFnList);
+  this.itemMap.set(itemType, this.onSelectItemNameFnList);
+  this.itemMap2.set(i, this.onSelectItemNameFnList);
+  // this.isButtonDisabled = false;
+});
     
    }
 

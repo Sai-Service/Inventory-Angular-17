@@ -21,6 +21,7 @@ const routes: Routes = [
   {path:'AdREqList',component:AdRequListComponent},
   {path:'AdminRequForm/:reqhdNo',component:AdRequsitionComponent},
   {path:'AdminUserRequ',component:AdUserRequFormComponent},
+  {path:'AdminUserRequ/:reqhdNo',component:AdUserRequFormComponent},
   {path:'StkAvailFrom',component:StockAvailableFromComponent},
   {path:'PendShipForm',component:PendingShipmentListComponent},
   {path:'StockTransfer',component:StockTransferComponent},

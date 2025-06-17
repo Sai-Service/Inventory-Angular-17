@@ -208,27 +208,27 @@ export class LocationComponent {
     this.displaystartDate=false;
     this.displaystartDate=false;
     this.displayStatus = false;
-    this.locationMasterForm.get('startDate')?.disable();
-    this.locationMasterForm.get('locId')?.disable();
-    this.locationMasterForm.get('locCode')?.disable();
-    this.locationMasterForm.get('locName')?.disable();
-    this.locationMasterForm.get('address1')?.disable();
-    this.locationMasterForm.get('city')?.disable();
-    this.locationMasterForm.get('state')?.disable();
-    this.locationMasterForm.get('country')?.disable();
-    this.locationMasterForm.get('emailId')?.disable();
-    this.locationMasterForm.get('cinNo')?.disable();
-    this.locationMasterForm.get('ouId')?.disable();
-    this.locationMasterForm.get('pinCd')?.disable();
-    this.locationMasterForm.get('tanNo')?.disable();
-    this.locationMasterForm.get('gstNo')?.disable();
-    this.locationMasterForm.get('panNo')?.disable();
-    this.locationMasterForm.get('registeredAdd')?.disable();
-    // this.locationMasterForm.get('status')?.disable();
-    this.locationMasterForm.get('region')?.disable();
-    this.locationMasterForm.get('phone1')?.disable();
-    this.locationMasterForm.get('erpLocId')?.disable();
-    this.locationMasterForm.get('startDate')?.disable();
+    // this.locationMasterForm.get('startDate')?.disable();
+    // this.locationMasterForm.get('locId')?.disable();
+    // this.locationMasterForm.get('locCode')?.disable();
+    // this.locationMasterForm.get('locName')?.disable();
+    // this.locationMasterForm.get('address1')?.disable();
+    // this.locationMasterForm.get('city')?.disable();
+    // this.locationMasterForm.get('state')?.disable();
+    // this.locationMasterForm.get('country')?.disable();
+    // this.locationMasterForm.get('emailId')?.disable();
+    // this.locationMasterForm.get('cinNo')?.disable();
+    // this.locationMasterForm.get('ouId')?.disable();
+    // this.locationMasterForm.get('pinCd')?.disable();
+    // this.locationMasterForm.get('tanNo')?.disable();
+    // this.locationMasterForm.get('gstNo')?.disable();
+    // this.locationMasterForm.get('panNo')?.disable();
+    // this.locationMasterForm.get('registeredAdd')?.disable();
+    // // this.locationMasterForm.get('status')?.disable();
+    // this.locationMasterForm.get('region')?.disable();
+    // this.locationMasterForm.get('phone1')?.disable();
+    // this.locationMasterForm.get('erpLocId')?.disable();
+    // this.locationMasterForm.get('startDate')?.disable();
     this.service.locIdFindFN(locId)
     .subscribe(
       data => {

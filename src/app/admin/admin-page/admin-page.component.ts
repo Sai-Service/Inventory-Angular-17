@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { formatDate } from '@angular/common';
 import { Location } from "@angular/common";
+import { AdminTransactionService } from '../../admin-transaction/admin-transaction.service'; 
 // import { AdminTransactionService } from '';
 
 @Component({
@@ -44,14 +45,17 @@ export class AdminPageComponent {
   isVisibletansaction:boolean=false;
   isVisibleItReports:boolean=false;
   isVisibleAdminTransaction:boolean=false;
+  isVisibleAdminMiscellTransaction:boolean=false;
   isVisibleAdminAllMaster:boolean=false;
   isVisibleAdminReports:boolean=false;
   isVisibleAdminUserTransaction:boolean=false;
   isVisibleAdminUserReport:boolean=false;
   isVisibleBudgetTransaction:boolean=false;
   isVisibleAccountAllReport:boolean=false
+  PendingReqList:any;
+  isModalOpen=false;
 
-  constructor(private fb: FormBuilder, private router: Router,) {
+  constructor(private fb: FormBuilder, private router: Router, private service :AdminTransactionService) {
     // constructor(private router: Router ) {
     this.todaysDataTime = formatDate(
       this.today,
@@ -147,6 +151,7 @@ export class AdminPageComponent {
      this.isVisibletansaction=true;
      this.isVisibleItReports=true;
      this.isVisibleAdminTransaction=false;
+     this.isVisibleAdminMiscellTransaction=false;
      this.isVisibleAdminAllMaster=false;
      this.isVisibleAdminReports=false;
      this.isVisibleAdminUserTransaction=false;
@@ -162,6 +167,7 @@ export class AdminPageComponent {
       this.isVisibletansaction=false;
       this.isVisibleItReports=false;
       this.isVisibleAdminTransaction=false;
+      this.isVisibleAdminMiscellTransaction=false;
       this.isVisibleAdminAllMaster=false;
       this.isVisibleAdminReports=false;
       this.isVisibleAdminUserTransaction=false;
@@ -184,6 +190,7 @@ export class AdminPageComponent {
         this.isVisibletansaction=true;
         this.isVisibleItReports=true;
         this.isVisibleAdminTransaction=false;
+        this.isVisibleAdminMiscellTransaction=false;
         this.isVisibleAdminAllMaster=false;
         this.isVisibleAdminReports=false;
         this.isVisibleAdminUserTransaction=false;
@@ -198,6 +205,25 @@ export class AdminPageComponent {
       this.isVisibletansaction=false;
       this.isVisibleItReports=false;
       this.isVisibleAdminTransaction=true;
+      this.isVisibleAdminMiscellTransaction=false;
+      this.isVisibleAdminAllMaster=true;
+      this.isVisibleAdminReports=true;
+      this.isVisibleAdminUserTransaction=false;
+      this.isVisibleAdminUserReport=false;
+      this.isVisibleBudgetTransaction=false;
+      }
+     
+    }
+
+    if  (sessionStorage.getItem('deptName')==='ADMIN'){
+      if ( sessionStorage.getItem('role')==='SupAdmin'){
+        alert(sessionStorage.getItem('role'))
+      this.isVisibleEmployeeMaster=false;
+      this.isVisibleAllMaster=false;
+      this.isVisibletansaction=false;
+      this.isVisibleItReports=false;
+      this.isVisibleAdminTransaction=true;
+      this.isVisibleAdminMiscellTransaction=true;
       this.isVisibleAdminAllMaster=true;
       this.isVisibleAdminReports=true;
       this.isVisibleAdminUserTransaction=false;
@@ -234,23 +260,28 @@ export class AdminPageComponent {
     this.router.navigate(['/admin']);
   }
 
-  // userCheck(role: string):  {
-  //   //alert(sessionStorage.getItem('roleId') +'--'+roleId );
-  //   if (sessionStorage.getItem('role') === 'undefined') {
-  //     // this.isVisible1 = false;
-  //     return true;
-  //   } else {
-  //     //alert("else");
-  //     if (sessionStorage.getItem('role') === role) {
-  //       //  alert("role -true");
-  //       return false;
-  //     }
-
-  //     if (sessionStorage.getItem('role') != role ){
   
-  //       return true;
-  //     }
-  //   }
-  // }
+
+
+
+  onselectUserReqForm(){
+   alert('list form display')
+   this.service.viewUserReqisisionList(sessionStorage.getItem('ouId'),sessionStorage.getItem('tktNo'))
+   .subscribe((res: any) => {
+     if (res.code === 200) {
+      if (res.obj && res.obj.length > 0) {
+        this.isModalOpen = true;
+        this.PendingReqList=res.obj;
+
+      } else {
+        this.isModalOpen = false;
+      };
+     }
+     else{
+
+     }
+ })
+
+  }
 
 }

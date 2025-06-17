@@ -415,24 +415,24 @@ pipe = new DatePipe('en-US');
     var codeType=itemcat.category;
 
     // this.orderlineDetailsArray().controls[i].patchValue({adstkItem:codeType})  
-    this.service.onSelectReqItemNameFn1(codeType,sessionStorage.getItem('ouId'))
-    .subscribe(
-      data => {
-        this.onSelectItemNameFnList = data.obj;
-        console.log(this.onSelectItemNameFnList);
+    // this.service.onSelectReqItemNameFn1(codeType,sessionStorage.getItem('ouId'))
+    // .subscribe(
+    //   data => {
+    //     this.onSelectItemNameFnList = data.obj;
+    //     console.log(this.onSelectItemNameFnList);
         
-      }
-    );
-  //   const ouId = sessionStorage.getItem('ouId');
-  //   this.service.onSelectReqItemNameFn1(codeType, ouId)
-  // .subscribe(data => {
-  //   this.onSelectItemNameFnList = data.obj.filter((item:any) => {
-  //     return ['mumbai', 'pune', 'kolhapur', 'goa', 'cochin', 'hyderabad']
-  //       .some(city => item[city] === ouId);
-  //   });
+    //   }
+    // );
+    const ouId = sessionStorage.getItem('ouId');
+    this.service.onSelectReqItemNameFn1(codeType)
+  .subscribe(data => {
+    this.onSelectItemNameFnList = data.obj.filter((item:any) => {
+      return ['mumbai', 'pune', 'kolhapur', 'goa', 'cochin', 'hyderabad']
+        .some(city => item[city] === ouId);
+    });
 
-  //   console.log(this.onSelectItemNameFnList);
-  // });
+    console.log(this.onSelectItemNameFnList);
+  });
 
     if (codeType == 'OTHERS') {
       this.displayDesc[i]=false;

@@ -13,7 +13,7 @@ import { Location } from "@angular/common";
 })
 export class AdUserRequFormComponent {
   requisisionForm:FormGroup;
-  reqhdNo:string;
+  reqhdNo:number;
   loginArray1:string | null;
   // reqDate:Date;
   pipe = new DatePipe('en-US');
@@ -52,6 +52,10 @@ isVisibleuserRequitionDisable1=false;
 isVisibleGetqtydisable=true;
 isDisabled = false;
 isButtonDisabled=true;
+isModalOpen=false;
+PendingReqList:any;
+public sub: any;
+
 
   constructor(private fb: FormBuilder, private router: Router, private service: AdminTransactionService,private router1: ActivatedRoute,private adminServiceService: AdminTransactionService,private location1: Location) {
     this.requisisionForm = fb.group({
@@ -109,6 +113,33 @@ isButtonDisabled=true;
     this.requisisionForm.patchValue({loginArray:loginArray });
     this.requisisionForm.patchValue({attribute1:sessionStorage.getItem('tktNo') });
     
+    this.service.viewUserReqisisionList(sessionStorage.getItem('ouId'),sessionStorage.getItem('tktNo'))
+  .subscribe((res: any) => {
+    if (res.code === 200) {
+     if (res.obj && res.obj.length > 0) {
+       this.isModalOpen = true;
+       this.PendingReqList=res.obj;
+
+     } else {
+       this.isModalOpen = false;
+     };
+    }
+    else{
+
+    }
+})
+
+
+
+this.sub = this.router1.params.subscribe(params => {
+  this.reqhdNo = params['reqhdNo'];
+  if (this.reqhdNo != undefined) {
+    this.ReqHedIdFindFN(this.reqhdNo);
+    this.requisisionForm.get('reqhdNo')?.disable();
+    // this.isVisibleOrderFind = false;
+  }
+});
+
 
     var patch = this.requisisionForm.get('reqLines') as FormArray
     (patch.controls[0]).patchValue(
@@ -155,7 +186,7 @@ isButtonDisabled=true;
   requisision(requisisionForm: any) { }
 
   ReqHedIdFindFN(reqhdNo:any){
-    alert(reqhdNo)
+    alert('Requsition No -'+reqhdNo)
     this.service.RequAdminFindFN(reqhdNo).subscribe(
       data => {
           this.requestlineDetailsArray().clear();
@@ -222,21 +253,31 @@ isButtonDisabled=true;
     var itemcat = this.AllreqItemCatagList.find((itemcat:any) => itemcat.category === itemType);
     console.log(itemcat);
     var codeType=itemcat.category
-    this.requestlineDetailsArray().controls[i].patchValue({itemCategory:itemcat.category})
-    this.service.onSelectReqItemNameFn1(codeType,sessionStorage.getItem('ouId'))
-    .subscribe(
-      data => {
-        // if (Array.isArray(data.obj)) {   .sort((a:any, b:any) => a.name.localeCompare(b.name));
-          this.onSelectItemNameFnList = data.obj;
-        // } else {
-        this.onSelectItemNameFnList = data.obj;
-        // }
-        console.log(this.onSelectItemNameFnList);
-        this.itemMap.set(itemType, data.obj);
-          this.itemMap2.set(i, this.itemMap.get(itemType));
-       this.isButtonDisabled=false;
-      }
-    );
+    // this.requestlineDetailsArray().controls[i].patchValue({itemCategory:itemcat.category})
+    // this.service.onSelectReqItemNameFn1(codeType,sessionStorage.getItem('ouId'))
+    // .subscribe(
+    //   data => {
+    //       this.onSelectItemNameFnList = data.obj;
+    //     console.log(this.onSelectItemNameFnList);
+    //     this.itemMap.set(itemType, data.obj);
+    //       this.itemMap2.set(i, this.itemMap.get(itemType));
+    //    this.isButtonDisabled=false;
+    //   }
+    // );
+const ouId = sessionStorage.getItem('ouId');
+this.service.onSelectReqItemNameFn1(codeType).subscribe(data => {
+  this.onSelectItemNameFnList = data.obj.filter((item: any) => {
+    return ['mumbai', 'pune', 'kolhapur', 'goa', 'cochin', 'hyderabad'].some(city => {
+      return item[city] === ouId;
+    });
+    
+  });
+
+  console.log(this.onSelectItemNameFnList);
+  this.itemMap.set(itemType, this.onSelectItemNameFnList);
+  this.itemMap2.set(i, this.onSelectItemNameFnList);
+  this.isButtonDisabled = false;
+});
     
    }
 
@@ -345,9 +386,6 @@ isButtonDisabled=true;
  
 
    receiptSave(){
-    // this.closeResetButton = false;
-    // this.progress = 0;
-    // this.dataDisplay = 'Receipt Saving in progress....Do not refresh the Page';
     this.isButtonDisabled = true;
     var orderLines1 = this.requisisionForm.get('reqLines') as FormArray;
     var orderLines = orderLines1.getRawValue();
@@ -444,19 +482,11 @@ onKey(i:any,event:any){}
 
 
 
-CheckLineValidations(i: number) {
-  var prcLineArr1 = this.requisisionForm.get('reqLines')?.value;
-  var lineValue1 = prcLineArr1[i].itemcat;
-  var lineValue2 = prcLineArr1[i].itemName;
-  var lineValue3 = prcLineArr1[i].qty;
-
-  var j = i + 1;
-  if (lineValue1 === undefined || lineValue1 === null || lineValue1 === '') {
-    alert("Line-" + j + " BILL TYPE :  should not be null value");
-    this.lineValidation = false;
-    return;
-  }
-
+navigateToRequisition(reqhdNo: string) {
+  this.isModalOpen = false;
+  this.router.navigate(['/admin/adminTransaction/AdminUserRequ', reqhdNo]);
 }
+
+
 
 }

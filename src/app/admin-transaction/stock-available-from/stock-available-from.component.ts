@@ -54,14 +54,35 @@ export class StockAvailableFromComponent {
 
   onSelectItemType(event:any){
     var codeType=event.target.value;
-    this.service.onSelectReqItemNameFn1(codeType,sessionStorage.getItem('ouId'))
-    .subscribe(
-      data => {
-        this.onSelectItemNameFnList = data.obj;
-      }
-    );
-    
-   }
+    // this.service.onSelectReqItemNameFn1(codeType,sessionStorage.getItem('ouId'))
+    // .subscribe(
+    //   data => {
+    //     this.onSelectItemNameFnList = data.obj;
+    //   }
+    // );
+
+    const ouId = sessionStorage.getItem('ouId');
+    this.service.onSelectReqItemNameFn1(codeType).subscribe(data => {
+      this.onSelectItemNameFnList = data.obj.filter((item: any) => {
+        return ['mumbai', 'pune', 'kolhapur', 'goa', 'cochin', 'hyderabad'].some(city => {
+          return item[city] === ouId;
+        });
+        
+      });
+   });
+  }
+
+   onSearchItemName(event: Event) {
+    const input = (event.target as HTMLInputElement).value;
+    console.log('User is typing:', input);
+  
+  }
+  
+  onSelectItemName1(event: Event) {
+    const selectedValue = (event.target as HTMLInputElement).value;
+    console.log('Selected item:', selectedValue);
+   
+  }
 
    getItemDetails(){
   var itemName=  this.availableQtyForm.get('itemName')?.value;

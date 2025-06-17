@@ -48,7 +48,7 @@
                    
                     <tr>
                         <td style="width: 15%" class="LabelFontStyle">Created By:</td>
-                        <td><input type="text" readonly class="form-control" formControlName="createBy"
+                        <td><input type="text" readonly class="form-control" formControlName="createdBy"
                                 style="width: 220px;">
                         </td>
                         <td style="width: 15%" class="LabelFontStyle">Location Name:</td>
@@ -106,6 +106,7 @@
                     </ng-template>
                     <td>
                         <input type="text" hidden class="form-control" formControlName="gpheaderId" style="width: 220px;">
+                        <input type="text" hidden class="form-control" formControlName="createdBy" style="width: 220px;">
                     </td>
 
                     
@@ -290,7 +291,7 @@
                 <tr class="GridHeader">
                     <th scope="col" style="border: 1px solid black;">Gate Pass Reg.No</th>
                     <th scope="col" style="border: 1px solid black;">Gate Code</th>
-                    <th scope="col" style="border: 1px solid black;">Created By</th>
+                    <!-- <th scope="col" style="border: 1px solid black;">Created By</th> -->
                     <th scope="col" style="border: 1px solid black;">Gate Pass Type</th>
                     <th scope="col" style="border: 1px solid black;">Item Code</th>
                     <th scope="col" style="border: 1px solid black;">Item Serial No/ Engine No</th>
@@ -300,8 +301,8 @@
             <tbody>
                 <tr *ngFor="let com of lstcomments" class="ItemStyle" style="text-decoration:none;">
                     <td style="border: 1px solid black;padding-left: 15px;">{{com.gatepassId}}</td>
-                    <td style="border: 1px solid black;padding-left: 15px;">{{com.gatepassNo}}</td>
-                    <td style="border: 1px solid black;padding-left: 15px;">{{com.createBy}}</td>
+                    <td style="border: 1px solid black;padding-left: 15px;">{{com.gpitemCode}}</td>
+                    <!-- <td style="border: 1px solid black;padding-left: 15px;">{{com.createdBy}}</td> -->
                     <td style="border: 1px solid black;padding-left: 15px;">{{com.gateType}}</td>
                     <td style="border: 1px solid black;padding-left: 15px;">{{com.gpitemCode}}</td>
                     <td style="border: 1px solid black;padding-left: 15px;">{{com.gitemSn}}</td>

@@ -36,6 +36,7 @@ interface budgetform{
   actualAmount:number;
   remark:string;
   buditemName1:string;
+  budgetTypeId:string;
 
 
 
@@ -70,6 +71,7 @@ export class BudgetTransactionComponent {
   deptName:string;
   finYear:string;
   locName:string;
+  budgetTypeId:string;
 
   ////////////////line///////////
   budgetlineId:number;
@@ -85,11 +87,13 @@ export class BudgetTransactionComponent {
   opunitList:any=[];
   DepartmentList:any=[];
   FainancialyearList:any=[];
+  ApplicableatoList:any=[];
   isVisibleLocList:boolean=true;
   isVisibleDivList:boolean=true;
   isVisibleOpunitList:boolean=true;
   isVisibleDeptList:boolean=true;
   isVisibleFynlyerList:boolean=true;
+  isVisibleApplicationto:boolean;
   pipe = new DatePipe('en-US');
   date = new Date()
   Date = '';
@@ -106,6 +110,9 @@ export class BudgetTransactionComponent {
   AllbudgetitementyListFN:any=[];
   isDisabled1 = false;
   private sub: any;
+  closeResetButton = true;
+  dataDisplay: any;
+  progress = 0;
 
 
 
@@ -133,6 +140,7 @@ export class BudgetTransactionComponent {
       finYear:[],
       locName:[],
       budgetheaderId:[],
+      budgetTypeId:[],
       totallines:[],
 
       budgetLines:this.fb.array([this.BdgetkLinesGroup()]),
@@ -164,6 +172,9 @@ export class BudgetTransactionComponent {
     this.isVisiblebudgetaddDisable=false;
     this.isVisiblebudgetalineDisable=false;
      this.isVisiblebudgetentyDisable[0]=true;
+     this.budgetTrns.patchValue({createdBy:sessionStorage.getItem('tktNo')});
+    //  this.budgetTrns.patchValue({locationId:selectedLocation.locId.toString()});
+    //  this.budgetTrns.patchValue({locationId:selectedLocation.locId.toString()});
     //  debugger;
      this.isDisabled1=false;
   var sss =sessionStorage.getItem("ouCity");
@@ -212,12 +223,13 @@ this.service.FainancialyearList().subscribe(data => {
   this.FainancialyearList=FainancialyearListfn;
 })
 
-// this.service.AllbudgetitemList()
-//     .subscribe(
-//       data => {
-//         this.AllbudgetitementyList=data.obj;
-//       }
-//     );
+  this.service.ApplicableatoList()
+    .subscribe(
+      data => {
+        this.ApplicableatoList = data.obj;
+        console.log(this.ApplicableatoList);
+      }
+    );
 
 this.service.allbudgetmstSearch()
     .subscribe(
@@ -284,15 +296,28 @@ this.service.allbudgetmstSearch()
   BudgetformMaster(budgetTrns: any) { }
 
 
-  onlocationissueselect(event:any){
-    var locName = event.target.value.trim();
-    var locNameList = this.locIdList.find((d:any) => d.locName === locName)
-    console.log(locNameList);
-    var locId=locNameList.locId;
-    alert(locNameList.locId)
-    this.budgetTrns.patchValue({locationId:locNameList.locId});
-   
+onLocationIssueSelect(event: any) {
+  const locName = event.target.value.trim();
+  const selectedLocation = this.locIdList.find((d: any) => d.locName === locName);
+ this.budgetTrns.patchValue({locationId:selectedLocation.locId.toString()});
+  if (!selectedLocation) {
+    console.warn('Location not found');
+    this.isVisibleApplicationto = false;
+    return;
   }
+
+  const locId = selectedLocation.locId.toString(); // Normalize to string
+  console.log('Selected locId:', locId);
+
+  if (locId === '120' || locId === '124') {
+    this.isVisibleApplicationto = true;
+  } else {
+    this.isVisibleApplicationto = false;
+     this.budgetTrns.patchValue({budgetTypeId:'179'});
+  }
+}
+
+
 
   onselectDivision(event:any){
     var codeDesc = event.target.value;
@@ -415,10 +440,11 @@ this.service.allbudgetmstSearch()
   var fyr = this.budgetTrns.get('finYear')?.value;
   var loId = this.budgetTrns.get('locationId')?.value;
   var deptId = this.budgetTrns.get('deptId')?.value;
+   var BudgetId = this.budgetTrns.get('budgetTypeId')?.value;
   
     var patch = this.budgetTrns.get('budgetLines') as FormArray;
     this.orderlineDetailsArray().clear();  
-      this.service.ProceedbyFindFN(cityId,compId,divId,fyr,loId)
+      this.service.ProceedbyFindFN(cityId,compId,divId,fyr,loId,BudgetId)
         .subscribe(
           data => {
             if (data.code === 400) {
@@ -453,17 +479,19 @@ this.service.allbudgetmstSearch()
        }
 
        newMast1() {
-  
+   this.closeResetButton = false;
+    this.progress = 0;
+    this.dataDisplay = 'Budget Save is progress....Do not refresh the Page';
           var orderLines = this.budgetTrns.get('budgetLines')?.value;
           var orderLinesNew = this.budgetTrns.get('budgetLines') as FormArray;
           const formValue = this.transData(this.budgetTrns.value);
-
           console.log(formValue);
           this.service.BudgetrecoderSubmit(formValue).subscribe((res: any) => {
             if (res.code === 200) {
-               alert(res.message);
-              
+               alert(res.message);    
               this.displayButton = false;
+               this.closeResetButton = true;
+               this.dataDisplay = 'Budget Save Successfully ';
               this.budgetheaderFN(res.obj.budgetheaderId)
 
             } else {

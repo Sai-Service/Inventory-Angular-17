@@ -27,12 +27,20 @@ export class MiscellReportComponent {
   dataDisplay: any;
   progress = 0;
   RepLocationList:any[];
+  fromDt: Date;
+  toDt: Date;
+  pipe = new DatePipe('en-US');
+  public minDate = new Date();
+  public maxDate = new Date();
 
   constructor(private fb: FormBuilder, private router: Router, private service: AdminReportsService,  private router1: ActivatedRoute) {
     this.AdminmiscellReport = this.fb.group({
       locId: [],
       ouId: [],
       city:[],
+      fromDt:[],
+      toDt:[],
+
         })
    }
 
@@ -72,9 +80,13 @@ export class MiscellReportComponent {
     this.dataDisplay = 'Report Is Running....Do not refresh the Page';
     const fileName = 'ADMIN STOCK MISSCELLANEOUS REPORT'+ '.xlsx';
     var locId = this.AdminmiscellReport.get('locId')?.value;
+    var pucDt1 = this.AdminmiscellReport.get('fromDt')?.value;
+    var fromDt = this.pipe.transform(pucDt1, 'dd-MMM-yyyy');
+    var pucDt2 = this.AdminmiscellReport.get('toDt')?.value;
+    var toDt = this.pipe.transform(pucDt2, 'dd-MMM-yyyy');
     if (locId === null) { locId = " " }
     const EXT = fileName.substr(fileName.lastIndexOf('.') + 1);
-    this.service.AdminMisscellReport(sessionStorage.getItem('ouId'),locId)
+    this.service.AdminMisscellReport(sessionStorage.getItem('ouId'),locId,fromDt,toDt)
       .subscribe(data => {
         saveAs(new Blob([data]), fileName);
         this.closeResetButton = true;

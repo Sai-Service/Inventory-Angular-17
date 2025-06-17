@@ -76,7 +76,7 @@ export class StockLdgerRepoComponent {
 
   onSelectItemType(event:any){
     var codeType=event.target.value;
-    this.service.onSelectReqItemNameFn(codeType)
+    this.service.onSelectReqItemNameFn(codeType,sessionStorage.getItem('ouId'))
     .subscribe(
       data => {
         this.onSelectItemNameFnList = data.obj;

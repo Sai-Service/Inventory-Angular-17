@@ -143,7 +143,7 @@
 
                 <fieldset class="RFS">
                     <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px;color: black;font-weight: bold;">
-                        Location/department details </legend>
+                        Location/Department Details </legend>
                     <table class="center">
                         <tr>
                             <td style="width: 15%" class="LabelFontStyle1"> City&nbsp;: </td>
@@ -263,7 +263,8 @@
                                 </select>
                             </td>
                             <td style="width: 15%" class="LabelFontStyle"> User&nbsp;Contact&nbsp;No: </td>
-                            <td> <input type='text' formControlName="usercontactNo" class="form-control"></td>
+                            <td> <input type='number' formControlName="usercontactNo" class="form-control" #usercontactNo  (change)="validateContact(usercontactNo.value)" maxlength="10"></td>
+                            <small *ngIf="contactError" style="color: red;">{{ contactError }}</small>
                             <td style="width: 15%" class="LabelFontStyle">Email&nbsp;Id&nbsp;: </td>
                             <td> <input type='text' uppercase formControlName="emailId" class="form-control"></td>
 
@@ -363,15 +364,15 @@
                             </td>
                         </tr>
                         <tr>
-                            <td style="width: 15%" class="LabelFontStyle1"> Config-4&nbsp;&nbsp;: </td>
+                            <td style="width: 15%" class="LabelFontStyle"> Config-4&nbsp;&nbsp;: </td>
                             <td> <input type='text' uppercase formControlName="config4" class="form-control"
                                     style="background-color: rgb(255, 255, 255);"></td>
 
                             <td style="width: 15%" class="LabelFontStyle1">Manufacturing&nbsp;Year&nbsp;: </td>
-                            <td> <input type='text' uppercase formControlName="myear" class="form-control"
-                                    style="background-color: yellow;" placeholder="YYYY"></td>
+                            <td> <input type='number' uppercase formControlName="myear" class="form-control"
+                                    style="background-color: yellow;" placeholder="YYYY" maxlength="4"></td>
 
-                            <td style="width: 15%" class="LabelFontStyle1">MTM&nbsp;No&nbsp;: </td>
+                            <td style="width: 15%" class="LabelFontStyle">MTM&nbsp;No&nbsp;: </td>
                             <td> <input type='text' uppercase formControlName="mtmNo" class="form-control"
                                     style="background-color: rgb(255, 255, 255);" placeholder="enter "></td>
                         </tr>
@@ -380,7 +381,7 @@
 
                 <fieldset class="RFS">
                     <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px;color: black;font-weight: bold;">
-                        S/W INFORMATION</legend>
+                        S/W Information</legend>
                     <table class="center">
                         <tr>
 
@@ -550,7 +551,7 @@
                             <td> <input type='date' formControlName="purchaseDt" class="form-control"></td>
                             </ng-template>
                             <ng-template #elsedateentr>
-                                <td> <input type='text' readonly uppercase formControlName="purchaseDt"
+                                <td> <input [(ngModel)]='purchaseInvNo' readonly uppercase formControlName="purchaseDt"
                                         class="form-control"></td>
                             </ng-template>
                             </td>
@@ -590,7 +591,7 @@
                             <td> <input type='date' formControlName="warrntyDt" class="form-control"></td>
                             </ng-template>
                             <ng-template #elsewarrantydte>
-                                <td> <input type='text' readonly uppercase formControlName="warrntyDt"
+                                <td> <input [(ngModel)]='warrntyDt'  readonly uppercase formControlName="warrntyDt"
                                         class="form-control"></td>
                             </ng-template>
                             </td>

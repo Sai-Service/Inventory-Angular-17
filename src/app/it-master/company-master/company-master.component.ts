@@ -31,6 +31,7 @@ status:string;
 website:String;
 createdBy:string;
 lastUpdatedBy:String;
+
 }
 
 @Component({
@@ -79,7 +80,6 @@ export class CompanyMasterComponent {
   showLoginDetails = false;
   statusList:any[];
   public status = "Active";
-  
 
   constructor(private fb: FormBuilder, private router: Router, private service: ItmasterService) {
     this.companyMasterForm = fb.group({
@@ -106,12 +106,7 @@ export class CompanyMasterComponent {
     endDate:[],
     createdBy:[],
     lastUpdatedBy:[],
-   
-
-
-
-     
-  
+    
     })
   } 
 
@@ -146,7 +141,7 @@ export class CompanyMasterComponent {
       data => {
         this.companyMasterForm.patchValue(data.obj);
         // alert(data.obj.startDt)
-        this.companyMasterForm.patchValue({ startDt: this.pipe.transform(data.obj.startDt, 'yyyy-MM-dd') });
+        this.companyMasterForm.patchValue({ startDt:this.pipe.transform(data.obj.startDt, 'yyyy-MM-dd') });
       }
     )
 
