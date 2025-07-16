@@ -148,6 +148,28 @@
                     <input type="date" formControlName="serviceTo" [(ngModel)]="serviceTo" class="form-control"
                        > <!--max="{{minDate | date:'yyyy-MM-dd'}}"-->
                 </td>
+<!-- ---------------------------------------CORPORATED FOR------------------------------------------------------------------ -->
+    <div *ngIf="displayBudget; then thenBudget; else elseBudget"> </div>
+                                <ng-template #thenBudget>
+                <td style="width:15%" class="LabelFontStyle1">&nbsp;Budget&nbsp;Type&nbsp;: </td>
+                <td>
+                     <select  type='number' formControlName="attribute3" id="attribute3" class="form-control" style="background-color: yellow;"
+                                 (change)="onselectBudgetType($event)" >
+                        <!-- <option></option> -->
+                        <option *ngFor="let sc of  ApplicableatoList" [ngValue]="sc.codeDesc"  >
+                           {{sc.codeDesc}}
+                        </option>
+                    </select>
+                </td>
+                 </ng-template>
+             <ng-template #elseBudget>
+                                     <input hidden type='text' formControlName="attribute3" class="form-control"
+                                        style="width: 8rem;height: 25px;font-size: 10px;">      
+                                </ng-template>
+                                     <input hidden  type='number' formControlName="attribute2" class="form-control"
+                                        style="width: 8rem;height: 25px;font-size: 10px;">
+<!-- ---------------------------------------CORPORATED FOR------------------------------------------------------------------ -->
+
             </tr>
         </table>
     </fieldset>
@@ -156,7 +178,7 @@
         </legend>
         <table class="ceneter">
             <tr>
-                <td style="width: 15%" class="LabelFontStyle1">Select&nbsp;Tax&nbsp;Type&nbsp;:</td>
+                <td style="width: 15%" class="LabelFontStyle1">Select&nbsp;TaxCType&nbsp;:</td>
                 <td> <select formControlName="taxType" id="taxType" class="form-control"
                         style="background-color: yellow;">
                         <option value="--Select--">--Select--</option>
@@ -172,7 +194,6 @@
                 <tr class="GridHeader">
                     <th style="width:4rem" scope="col">Srl No.</th>
                     <th style="width:5rem" scope="col">Bill Type</th>
-                    <th style="width:4rem" scope="col">location name</th>
                     <th style="width:4rem" scope="col">location name</th>
                     <th style="width:6rem" scope="col">Department Name</th>
                     <th style="width:6rem" scope="col">Item Name</th>
@@ -210,8 +231,8 @@
                                         style="background-color: yellow; width: 7rem;"
                                         (change)="onSelectItemType($event,i)">
                                         <option value="--Select--">--Select--</option>
-                                        <option *ngFor="let sc of  AllBilltypeList" [value]="sc.cmntypeId">
-                                            {{sc.codeDesc}}
+                                        <option *ngFor="let sc of  AllBilltypeList1" [value]="sc.expenseTypeId">
+                                            {{sc.expenseType}}
                                         </option>
                                     </select>
                                 </ng-template>

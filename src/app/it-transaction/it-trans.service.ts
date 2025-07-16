@@ -100,6 +100,10 @@ export class ItTransService {
   DivisionIDList(): Observable<any> {
     return this.http.get(this.ServerUrl + `/CodeMst/dept/DIV`);
   }
+
+    ApplicableatoList(): Observable<any> {
+    return this.http.get(this.ServerUrl + `/CodeMst/dept/LOCATIONTYPE`);
+  }
   
   AlldepartmentitemList(): Observable<any> {
     return this.http.get(this.ServerUrl + '/CodeMst/dept/DEPT');
@@ -113,6 +117,10 @@ export class ItTransService {
     return this.http.get(this.ServerUrl + '/CodeMst/dept/BILLTYPE');
   }
 
+   AllBilltypeListFn(ApplicId:any): Observable<any> {
+    return this.http.get(this.ServerUrl + `/BudgetMst/Budget?applicableToId=${ApplicId}`);
+  }
+
   getLocationId(ouId:any): Observable<any> {
     return this.http.get(this.ServerUrl + `/locationMst/loc/${ouId}`);
   }
@@ -122,8 +130,16 @@ export class ItTransService {
     return this.http.get(this.ServerUrl + `/locationMst/loc/${ouId}`);
   }
   
+getallcitylistfn1(ouId:any): Observable<any> {
+    return this.http.get(this.ServerUrl + `/locationMst/CorporateLoc?ouId=${ouId}&attribute3=Y`);
+  }
+
   AlldepartmentList(): Observable<any> {
     return this.http.get(this.ServerUrl + '/CodeMst/dept/DEPT');
+  }
+
+ AlldepartmentListFn(): Observable<any> {
+    return this.http.get(this.ServerUrl + '/CodeMst/Corporate?codeType=DEPT&attribute3=CORPORATE');
   }
   
   allbillrecorderList(ouID:any): Observable<any> {
@@ -205,9 +221,14 @@ export class ItTransService {
     return this.http.post(url, BillRecorderCopy, options);
   }
 
-  onSelectItemNameFn(expenseTypeId:any): Observable<any> {
+  onSelectItemNameFn1(expenseTypeId:any): Observable<any> {
     return this.http.get(this.ServerUrl + `/BudgetMst/billType?expenseTypeId=${expenseTypeId}`);
   }
+
+    onSelectItemNameFn(expenseTypeId:any,ApplicableTypeId:any): Observable<any> {
+    return this.http.get(this.ServerUrl + `/BudgetMst/billType?expenseTypeId=${expenseTypeId}&applicableToId=${ApplicableTypeId}`);
+  }
+
 
   //////////////////////////////////////////ITEM MASTER/////////////////////////////
 

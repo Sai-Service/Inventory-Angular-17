@@ -522,9 +522,10 @@
                         <tr>
                             <td style="width: 15%" class="LabelFontStyle1">Purchase&nbsp;Inv&nbsp;No: </td>
                             <td> <input type='text' formControlName="purchaseInvNo" class="form-control"
-                                    [(ngModel)]='purchaseInvNo' style="background-color:  yellow"
-                                    (keydown.tab)="purchaseNoSearch(purchaseInvNo)"></td>
+                                    [(ngModel)]='purchaseInvNo' (keydown.tab)="purchaseNoSearch(purchaseInvNo)" style="background-color:  yellow"
+                                   ></td>
                             <td style="width: 15%" class="LabelFontStyle"> Purchase&nbsp;Ref&nbsp;.Id: </td>
+                            <!--  (keydown.tab)="purchaseNoSearch(purchaseInvNo)" -->
                             <td>
                                 <table>
                                     <tr>
@@ -551,7 +552,7 @@
                             <td> <input type='date' formControlName="purchaseDt" class="form-control"></td>
                             </ng-template>
                             <ng-template #elsedateentr>
-                                <td> <input [(ngModel)]='purchaseInvNo' readonly uppercase formControlName="purchaseDt"
+                                <td> <input  [(ngModel)]='purchaseDt' readonly uppercase formControlName="purchaseDt"
                                         class="form-control"></td>
                             </ng-template>
                             </td>

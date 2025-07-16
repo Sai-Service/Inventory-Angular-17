@@ -262,6 +262,13 @@ export class EmployeeComponent {
         this.isVisibleSupAdminloc=true;
           
           }
+           if(  sessionStorage.getItem('role')==='SupAdmin') {
+          this.isVisibleSearch=false;
+        this.isVisibleSearchAllSsup=true;
+        this.isVisibleadminloc=false;
+        this.isVisibleSupAdminloc=true;
+          
+          }
         if(sessionStorage.getItem('role')==='User')
         {
           // this.purchaseReportForm.patchValue({ ouId: sessionStorage.getItem('ouId') })

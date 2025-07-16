@@ -1778,14 +1778,7 @@ if (itemsubType==='LAPTOP'){
 
 
 
-  purchaseNoSearch(purchaseInvNo:any){
-    this.service.purchaseNoSearcheFn(sessionStorage.getItem('ouId'),purchaseInvNo)
-    .subscribe(
-      data => {
-        this.itemMasterForm.patchValue({purchaserefNo:data.obj.headerId,purchaseDt:this.pipe.transform(data.obj.billDate, 'yyyy-MM-dd'),vendorName:data.obj.suppName,warrntyDt:this.pipe.transform(data.obj.serviceTo, 'yyyy-MM-dd')})    
-      }
-    );
-  }
+ 
 // ,emailId:data.obj.emailId
   TicketNoSearch(usertktNo:any){
     this.service.TicketNoSearchFn(sessionStorage.getItem('ouId'),usertktNo)
@@ -1819,15 +1812,25 @@ if (itemsubType==='LAPTOP'){
 
 
   purchaseRefNoSearch(purchaserefNo:any){
-
     this.service.purchaseRefNoSearchFn(sessionStorage.getItem('ouId'),purchaserefNo)
     .subscribe(
       data => {
-        this.itemMasterForm.patchValue({purchaserefNo:data.obj.headerId,purchaseDt:this.pipe.transform(data.obj.billDate, 'yyyy-MM-dd'),vendorName:data.obj.suppName,purchaseInvNo:data.obj.billNo,warrntyDt:this.pipe.transform(data.obj.serviceTo, 'yyyy-MM-dd')})
-      
+        this.itemMasterForm.patchValue({purchaseDt:this.pipe.transform(data.obj.billDate, 'yyyy-MM-dd'),vendorName:data.obj.suppName,purchaseInvNo:data.obj.billNo,warrntyDt:this.pipe.transform(data.obj.serviceTo, 'yyyy-MM-dd')})
       }
     );
   }
+
+
+
+   purchaseNoSearch(purchaseInvNo:any){
+    this.service.purchaseNoSearcheFn(sessionStorage.getItem('ouId'),purchaseInvNo)
+    .subscribe(
+      data => {
+        this.itemMasterForm.patchValue({purchaserefNo:data.obj.headerId,purchaseDt:this.pipe.transform(data.obj.billDate, 'yyyy-MM-dd'),vendorName:data.obj.suppName,warrntyDt:this.pipe.transform(data.obj.serviceTo, 'yyyy-MM-dd')})    
+      }
+    );
+  }
+
   searchLocWiseMast(){
     this.closeResetButton = false;
     this.progress = 0;

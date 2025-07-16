@@ -1,3 +1,4 @@
+
 import { Component, OnInit, ViewChild, ElementRef, Pipe } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -137,12 +138,14 @@ export class BillRecordComponent {
   displayitemdesc: Array<boolean> = [];
   displayGstper: Array<boolean> = [];
   displayBillType1: Array<boolean> = [];
+  //  displayBillType1:boolean;
   displayBillType: Array<boolean> = [];
   displayLoc:Array<boolean>=[];
   displayDept:Array<boolean>=[];
   isDisableqty: Array<boolean> = [];
   viewAllDoucmnet: any = [];
   AllBilltypeList: any = [];
+   AllBilltypeList1: any = [];
   uploadDataList: any = [];
   DivisionList: any = [];
   allcitylist: any = [];
@@ -153,6 +156,7 @@ export class BillRecordComponent {
   AllvendornameList: any = [];
   isDisableLineUpdtbutton: boolean = true;
   isDisableddeletebutton: boolean = false;
+  displayBudget:boolean;
   displayButton = true;
   locId: number;
   isVisibleupdateline: boolean = true;
@@ -189,7 +193,7 @@ export class BillRecordComponent {
   finYearFnList:any=[];
   currantYear:string;
   isInvoiceValid:boolean;
-  
+     ApplicableatoList:any=[];
 
 
   isModalOpen: boolean = false;
@@ -232,6 +236,8 @@ export class BillRecordComponent {
       taxType: [],
       createdBy: [],
       lastupdatedBy: [],
+      attribute3:[],
+      attribute2:[],
       billLines: this.fb.array([this.billLinesGroup(),
 
       ]),
@@ -294,6 +300,7 @@ export class BillRecordComponent {
     $("#wrapper").toggleClass("toggled");
     this.billRecorderForm.patchValue({ createdBy: sessionStorage.getItem('loginName') });
     this.billRecorderForm.patchValue({ lastupdatedBy: sessionStorage.getItem('loginName') })
+    this.displayBudget = true;
     this.displayBillType[0] = true;
     this.displayLoc[0]=true;
      this.displayDept[0]=true;
@@ -336,15 +343,25 @@ export class BillRecordComponent {
   if (currentExpType && currentExpType !== "--Select--") {
       this.billRecorderForm.get('expType')?.setValue(currentExpType, { emitEvent: true });
   }
-    // (patch.controls[0]).patchValue(
-    //   {
-    //     srlNo: 1,
-    //     linestatus: 'BOOKED',
-    //     finYear:'2025-2026',
-        
-        
-    //   }
-    // );
+
+
+  // if(sessionStorage.getItem('role')==='CORPORATE' || sessionStorage.getItem('attribute3')==='Y'){
+  //   this.displayBudget=true;
+  // }
+  // if(sessionStorage.getItem('role') != 'CORPORATE' || sessionStorage.getItem('attribute3')!= 'Y'){
+  //   this.displayBudget=false;
+  //    this.billRecorderForm.patchValue({ attribute3: 'LOCAL'  });
+  //    this.billRecorderForm.patchValue({ attribute2: 179  });
+  // }
+
+  if (sessionStorage.getItem('role') === 'CORPORATE' || sessionStorage.getItem('attribute3') === 'Y') {
+  this.displayBudget = true;
+} else {
+  this.displayBudget = false;
+  this.billRecorderForm.patchValue({ attribute3: 'LOCAL' });
+  this.billRecorderForm.patchValue({ attribute2: 179 });
+  this.loadCityAndBillTypeData();
+}
 
     this.loginArray1 = sessionStorage.getItem('ouCity');
     this.service.AllvendornameList()
@@ -404,21 +421,24 @@ export class BillRecordComponent {
         }
       );
 
-    this.service.getallcitylist(sessionStorage.getItem('ouId'))
-      .subscribe(
-        data => {
-          this.allcitylist = data.obj;
-          console.log(this.allcitylist);
-        }
-      );
 
-    this.service.AlldepartmentList()
-      .subscribe(
-        data => {
-          this.AlldepartmentList = data.obj;
-          console.log(this.AlldepartmentList);
-        }
-      );
+     
+
+    // this.service.getallcitylist(sessionStorage.getItem('ouId'))
+    //   .subscribe(
+    //     data => {
+    //       this.allcitylist = data.obj;
+    //       console.log(this.allcitylist);
+    //     }
+    //   );
+
+    // this.service.AlldepartmentList()
+    //   .subscribe(
+    //     data => {
+    //       this.AlldepartmentList = data.obj;
+    //       console.log(this.AlldepartmentList);
+    //     }
+    //   );
 
     this.service.DoctypeList()
       .subscribe(
@@ -435,6 +455,14 @@ export class BillRecordComponent {
           console.log(this.AllpaymentmodeList);
         }
       );
+
+        this.service.ApplicableatoList()
+    .subscribe(
+      data => {
+        this.ApplicableatoList = data.obj;
+        console.log(this.ApplicableatoList);
+      }
+    )
 
     this.service.gstperList()
       .subscribe(
@@ -464,8 +492,8 @@ export class BillRecordComponent {
                 control.push(BillLinesAllList1);
                 this.displayBillType1[i] = false;
                 this.displayBillType[i] = false;
-                 this.displayLoc[0]=false;
-                 this.displayDept[0]=false;
+                 this.displayLoc[i]=false;
+                 this.displayDept[i]=false;
                 this.displayitemdesc[i] = false;
                 this.displayGstper[i] = false;
                 this.isDisableqty[i] = false;
@@ -612,7 +640,7 @@ export class BillRecordComponent {
               this.dataDisplay = 'Data Display Sucessfully....';
               this.billRecorderForm.patchValue(data.obj);
               this.uploadDataList = data.obj;
-              console.log(this.AllBilltypeList);
+              console.log(this.AllBilltypeList1);
               this.isDisableLineUpdtbutton = false;
               let control = this.billRecorderForm.get('billLines') as FormArray;
               for (let i = 0; i < data.obj.billLines.length; i++) {
@@ -797,8 +825,8 @@ export class BillRecordComponent {
       this.displayGstper[i] = false;
       this.isDisableqty[i] = true;
       this.displayBillType[i] = false;
-        this.displayLoc[i]=false;
-                 this.displayDept[i]=false;
+        this.displayLoc[i]=true;
+                 this.displayDept[i]=true;
       this.displayitemdesc[i] = false;
       this.displayLineflowStatusCode[i] = true;
 
@@ -1438,6 +1466,28 @@ invoNoValidation(event: any) {
   }
 
   
+  // onSelectItemType(event: any, i: number) {
+  //   this.CheckLineValidationstaxtyp();
+  //   (this.billRecorderForm.get('headerDetails')?.valid);
+  //   var itemType = event.target.value;
+  //   var itemType1 = itemType.substr(itemType.indexOf(': ') + 1, itemType.length);
+  //   var itemType12 = trim(itemType1);
+  //   var billType = this.AllBilltypeList1.find((billType: any) => billType.codeDesc === itemType);
+  //   console.log(billType);
+  //   var billId = itemType;
+  //   this.orderlineDetailsArray().controls[i].patchValue({ billTypeId: itemType })
+  //   this.service.onSelectItemNameFn1(billId)
+  //     .subscribe(
+  //       data => {
+  //         this.onSelectItemNameFnList = data.obj;
+  //         console.log(this.onSelectItemNameFnList);
+  //       }
+  //     );
+    
+  // }
+
+
+
   onSelectItemType(event: any, i: number) {
     this.CheckLineValidationstaxtyp();
     (this.billRecorderForm.get('headerDetails')?.valid);
@@ -1447,8 +1497,13 @@ invoNoValidation(event: any) {
     var billType = this.AllBilltypeList.find((billType: any) => billType.codeDesc === itemType);
     console.log(billType);
     var billId = itemType;
+//      const currentLineGroup = this.orderlineDetailsArray().controls[i];
+// var prcLineArr1 = this.billRecorderForm.get('billLines')?.value;
+//  var lineValue1 = prcLineArr1[i].attribute2;
+var expenTypeId = this.billRecorderForm.get('attribute2')?.value;
+ 
     this.orderlineDetailsArray().controls[i].patchValue({ billTypeId: itemType })
-    this.service.onSelectItemNameFn(billId)
+    this.service.onSelectItemNameFn(billId,expenTypeId)
       .subscribe(
         data => {
           this.onSelectItemNameFnList = data.obj;
@@ -1679,6 +1734,153 @@ blockInvalidKeys(event: KeyboardEvent): void {
 }
 
 
-isLockedStatus(){}
+
+
+//  onselectBudgetType(event:any,){
+//     var codeDesc = event.target.value;
+//      const locNameId = codeDesc.split(':').pop()?.trim()
+//     // alert(locNameId)
+//     var BudgetList = this.ApplicableatoList.find((d:any) => d.code === locNameId)
+//     console.log(BudgetList);
+//     var locId=BudgetList.cmntypeId;
+//     alert(BudgetList.cmntypeId)
+//     this.billRecorderForm.patchValue({attribute2:BudgetList.cmntypeId});
+//  if(BudgetList.cmntypeId==='178'){
+//   const currentLineGroup = this.orderlineDetailsArray().controls[i];
+//   this.displayBillType1[i]=false;
+
+//  }
+
+//   }
+
+
+onselectBudgetType(event: any) {
+  const codeDesc = event.target.value;
+  const locNameId = codeDesc.split(':').pop()?.trim();
+  const BudgetList = this.ApplicableatoList.find((d: any) => d.code === locNameId);
+  if (!BudgetList) return;
+  const locId = BudgetList.cmntypeId;
+  // alert(locId);
+  this.billRecorderForm.patchValue({ attribute2: locId })
+
+// if( locId ==='178'){
+  
+//        this.service.getallcitylistfn1(sessionStorage.getItem('ouId'))
+//       .subscribe(
+//         data => {
+//           this.allcitylist = data.obj;
+//           console.log(this.allcitylist);
+//         }
+//       );
+// }
+// else{
+//   this.service.getallcitylist(sessionStorage.getItem('ouId'))
+//       .subscribe(
+//         data => {
+//           this.allcitylist = data.obj;
+//           console.log(this.allcitylist);
+//         }
+//       );
+// }
+var applicationid = this.billRecorderForm.get('attribute2')?.value;
+
+
+if (applicationid === 178) {
+  this.service.getallcitylistfn1(sessionStorage.getItem('ouId'))
+    .subscribe(data => {
+      this.allcitylist = data.obj;
+      console.log(this.allcitylist);
+    });
+} if (applicationid !== 178){
+  this.service.getallcitylist(sessionStorage.getItem('ouId'))
+    .subscribe(data => {
+      this.allcitylist = data.obj;
+      console.log(this.allcitylist);
+    });
+}
+
+ if (applicationid === 178) {
+      this.service.AlldepartmentListFn()
+      .subscribe(
+        data => {
+          this.AlldepartmentList = data.obj;
+          console.log(this.AlldepartmentList);
+        }
+      );
+
+
+  } else {
+      this.service.AlldepartmentList()
+      .subscribe(
+        data => {
+          this.AlldepartmentList = data.obj;
+          console.log(this.AlldepartmentList);
+        }
+      );
+    }
+ this.service.AllBilltypeListFn(applicationid)
+      .subscribe(
+        data => {
+          this.AllBilltypeList1 = data.obj;
+          console.log(this.AllBilltypeList1);
+        }
+      );
+}
+
+
+
+loadCityAndBillTypeData() {
+  const applicationid = Number(this.billRecorderForm.get('attribute2')?.value);
+
+  if (applicationid === 178) {
+    this.service.getallcitylistfn1(sessionStorage.getItem('ouId'))
+      .subscribe(data => {
+        this.allcitylist = data.obj;
+        console.log(this.allcitylist);
+      });
+
+  } else {
+    this.service.getallcitylist(sessionStorage.getItem('ouId'))
+      .subscribe(data => {
+        this.allcitylist = data.obj;
+        console.log(this.allcitylist);
+      });
+  }
+
+ if (applicationid === 178) {
+      this.service.AlldepartmentListFn()
+      .subscribe(
+        data => {
+          this.AlldepartmentList = data.obj;
+          console.log(this.AlldepartmentList);
+        }
+      );
+
+
+  } else {
+      this.service.AlldepartmentList()
+      .subscribe(
+        data => {
+          this.AlldepartmentList = data.obj;
+          console.log(this.AlldepartmentList);
+        }
+      );
+    }
+
+ 
+
+  this.service.AllBilltypeListFn(applicationid)
+    .subscribe(data => {
+      this.AllBilltypeList1 = data.obj;
+      console.log(this.AllBilltypeList1);
+    });
+}
+
+
+
+isLockedStatus() {
+   const applicationid = Number(this.billRecorderForm.get('attribute2')?.value);
+   return applicationid == 178;
+}
 
 }
