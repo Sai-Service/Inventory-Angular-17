@@ -263,16 +263,20 @@
               <th>Req ID</th>
               <th>Req Date</th>
               <th>Admin Ticket</th>
-              <th>Req Status</th>
+              <th>Req Status By Admin</th>
+               <th>Select</th>
               <!-- <th>Location</th> -->
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let com of PendingReqList">
-              <td><a (click)="navigateToRequisition(com.reqhdNo)"  style="color: blue; text-decoration: underline; cursor: pointer;">{{com.reqhdNo}}</a></td>
+                <!-- (click)="navigateToRequisition(com.reqhdNo)" -->
+                 <!-- [routerLink]="['/admin/adminTransaction/AdminUserRequ',com.reqhdNo]"  -->
+              <td><a (click)="openRequisition(com.reqhdNo)" (click)="isModalOpen = false"  style="color: blue; text-decoration: underline; font-weight: bold; cursor: pointer;">{{com.reqhdNo}}</a></td>
               <td>{{ com.reqDate }}</td>
               <td>{{ com.admintktNo }}</td>
               <td>{{ com.requisitionStatus }}</td>
+               <td style="padding-left: 15px;"> <button type="button" style="width: fit-content;"  class="btn btn-primary"  (click)="openRequisition(com.reqhdNo)" (click)="isModalOpen = false" >Select</button></td>
               <!-- <td>{{ com.locCode }}</td> -->
             </tr>
           </tbody>

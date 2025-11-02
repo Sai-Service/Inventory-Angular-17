@@ -44,20 +44,22 @@
         <table class="center">
             <tr>
                 <td style="width: 15%" class="LabelFontStyle"> &nbsp;&nbsp;Purchase&nbsp;No :&nbsp;</td>
-                <td><input type="number" class="form-control" formControlName="adheaderId" readonly style="width: 220px;"></td>
+                <td><input type="number" class="form-control" formControlName="adheaderId" readonly
+                        style="width: 220px;"></td>
 
                 <td style="width: 15%" class="LabelFontStyle1">&nbsp;Vendor&nbsp;Name :&nbsp;</td>
                 <td colspan="3">
                     <input type="text" formControlName="advend" style="background-color: yellow; width: 100%;"
-                    (keyup)="getUserIdsFirstWay($event)" id="userIdFirstWay" list="dynmicUserIds"
-                    class="form-control" placeholder="Vendor details" (change)="onSelectVendorNameFN($event)" />
+                        (keyup)="getUserIdsFirstWay($event)" id="userIdFirstWay" list="dynmicUserIds"
+                        class="form-control" placeholder="Vendor details" (change)="onSelectVendorNameFN($event)" />
                     <datalist id="dynmicUserIds">
-                        <option *ngFor="let sc of userList1.length > 0 ? userList1 : AllAdminvendornameList1" [value]="sc.name">
-                          {{ sc.name }}
+                        <option *ngFor="let sc of userList1.length > 0 ? userList1 : AllAdminvendornameList1"
+                            [value]="sc.name">
+                            {{ sc.name }}
                         </option>
-                      </datalist>
-                 
-                    <input type="text" hidden  formControlName="advendId">
+                    </datalist>
+
+                    <input type="text" hidden formControlName="advendId">
                     <input type="text" hidden formControlName="erpvendorId">
                     <input type="text" hidden formControlName="erpsuppNo">
                 </td>
@@ -76,7 +78,8 @@
                 </td>
 
                 <td style="width: 15%" class="LabelFontStyle"> &nbsp;Location&nbsp;Name:&nbsp;</td>
-                <td><input readonly type="text" class="form-control" readonly formControlName="adLoc1" style="width: 220px;">
+                <td><input readonly type="text" class="form-control" readonly formControlName="adLoc1"
+                        style="width: 220px;">
                 </td>
                 <!-- <td><select type="text" formControlName="adLoc" id="adLoc" class="form-control"
                                 style="width: 9rem; background-color: yellow;">
@@ -110,8 +113,8 @@
             </tr>
             <tr>
                 <td style="width: 15%" class="LabelFontStyle">&nbsp;Discount&nbsp;Per:</td>
-                <td> <input type="text" style="width: 220px;" formControlName="addiscAmt" (keydown.tab)="onKey1($event)"
-                        (input)="onKey1($event)" class="form-control"></td>
+                <td> <input type="number" style="width: 220px;" formControlName="addiscAmt"
+                        (keydown.tab)="onKey1($event)" (input)="onKey1($event)" class="form-control"></td>
 
                 <td style="width: 15%" class="LabelFontStyle"> &nbsp;Remark&nbsp;: </td>
                 <td colspan="5">
@@ -123,23 +126,26 @@
             <tr>
                 <td style="width: 15%" class="LabelFontStyle">&nbsp;GST&nbsp;No&nbsp;:&nbsp;</td>
                 <td>
-                     <input formControlName="gstNo" value={{gstNo}} [(ngModel)]='gstNo' class="form-control" placeholder="Enter GST no" readonly>  
-                </td>
-                
-                <td style="width: 15%" class="LabelFontStyle">&nbsp;PAN&nbsp;No&nbsp;:&nbsp;</td>
-                <td>
-                     <input  formControlName="panNo" value={{panNo}} class="form-control" placeholder="Enter PAN NO" readonly>  
+                    <input formControlName="gstNo" value={{gstNo}} [(ngModel)]='gstNo' class="form-control"
+                        placeholder="Enter GST no" readonly>
                 </td>
 
-                 
+                <td style="width: 15%" class="LabelFontStyle">&nbsp;PAN&nbsp;No&nbsp;:&nbsp;</td>
+                <td>
+                    <input formControlName="panNo" value={{panNo}} class="form-control" placeholder="Enter PAN NO"
+                        readonly>
+                </td>
+
+
                 <td style="width: 15%" class="LabelFontStyle">&nbsp;MSME&nbsp;No&nbsp;:&nbsp;</td>
                 <td>
-                     <input  formControlName="msmeNo" value={{msmeNo}} class="form-control" placeholder="Enter MSME NO" readonly>  
+                    <input formControlName="msmeNo" value={{msmeNo}} class="form-control" placeholder="Enter MSME NO"
+                        readonly>
                 </td>
 
                 <td style="width: 15%" class="LabelFontStyle">&nbsp;PO&nbsp;Status&nbsp;:&nbsp;</td>
                 <td>
-                     <input  formControlName="adstatus" value={{adstatus}} class="form-control" readonly>  
+                    <input formControlName="adstatus" value={{adstatus}} class="form-control" readonly>
                 </td>
 
             </tr>
@@ -214,22 +220,17 @@
                             <td>
                                 <div *ngIf="displayRequItem[i]; then thenRequItem; else elseRequItem"> </div>
                                 <ng-template #thenRequItem>
-                                    <input type="text"
-       formControlName="adstkItem"
-       style="background-color: yellow; height: 25px; width: 18rem; font-size: 10px;"
-       (keyup)="onSearchItemName($event)"
-       (change)="onSelectItemName1($event, i)"
-       (change)="onSelectItemName($event,i)"
-       id="itemListInput"
-       list="dynamicItemList"
-       class="form-control"
-       placeholder="--Select--" />
+                                    <input type="text" formControlName="adstkItem"
+                                        style="background-color: yellow; height: 25px; width: 18rem; font-size: 10px;"
+                                        (keyup)="onSearchItemName($event)" (change)="onSelectItemName1($event, i)"
+                                        (change)="onSelectItemName($event,i)" id="itemListInput" list="dynamicItemList"
+                                        class="form-control" placeholder="--Select--" />
 
-<datalist id="dynamicItemList">
-  <option *ngFor="let itemN of onSelectItemNameFnList" [value]="itemN.item">
-    {{ itemN.item }}
-  </option>
-</datalist>
+                                    <datalist id="dynamicItemList">
+                                        <option *ngFor="let itemN of onSelectItemNameFnList" [value]="itemN.item">
+                                            {{ itemN.item }}
+                                        </option>
+                                    </datalist>
                                     <!-- <select formControlName="adstkItem" class="form-control"
                                         style="background-color: yellow; height: 25px;width: 18rem;font-size: 10px;"
                                         (change)="onSelectItemName($event,i)">
@@ -238,7 +239,7 @@
                                             {{itemN.item}}
                                         </option>
                                     </select> -->
-                                    
+
                                 </ng-template>
                                 <ng-template #elseRequItem>
                                     <input type='text' [disabled]="isDisabled(i)" readonly formControlName="adstkItem"
@@ -261,14 +262,15 @@
                                 <div *ngIf="displayGstper[i]; then thenGstper; else elseGstper"> </div>
                                 <ng-template #thenGstper>
                                     <select type='text' formControlName="adstkTax" id="adstkTax" class="form-control"
-                                        style="background-color: yellow; width: 8rem;height: 25px;font-size: 10px;"  (input)="onKey1($event)">
+                                        style="background-color: yellow; width: 8rem;height: 25px;font-size: 10px;"
+                                        (input)="onKey1($event)">
                                         <!---  (keydown.tab)="NumberkeyUp(i,event)"-->
                                         <option *ngFor="let sc of gstperList" [value]="sc.code">
                                             {{sc.code}}
                                         </option>
                                     </select>
-                               </ng-template>
-                                <ng-template #elseGstper> 
+                                </ng-template>
+                                <ng-template #elseGstper>
                                     <input type='number' [disabled]="isDisabled(i)" readonly formControlName="adstkTax"
                                         class="form-control" style="width: 8rem;height: 25px;font-size: 10px;">
                                 </ng-template>
@@ -278,39 +280,45 @@
                                 <td>
                                     <input type='number' formControlName="adstkQty" class="form-control"
                                         style="width: 4rem;height: 25px;font-size: 10px;" name="adstkQty{{i}}"
-                                        (keydown.tab)="onKey(i,$event)" min="0"  (input)="onKey1($event)"  (keydown)="blockInvalidKeys($event)">
+                                        (keydown.tab)="onKey(i,$event)" min="0" (input)="onKey1($event)"
+                                        (keydown)="blockInvalidKeys($event)">
                                     <!----(Keydown.tab)="validNumber($event)"-->
                                 </td>
                                 <td>
                                     <input type='number' formControlName="adunitRate" class="form-control"
                                         style="width: 6rem;height: 25px;font-size: 10px;" name="adunitRate{{i}}"
-                                        (keydown.tab)="onKey(i,$event)" min="0"  (input)="onKey1($event)"   (keydown)="blockInvalidKeys($event)">
+                                        (keydown.tab)="onKey(i,$event)" min="0" (input)="onKey1($event)"
+                                        (keydown)="blockInvalidKeys($event)">
                                     <!---(Keydown.tab)="validNumber($event)"   / [disabled]="isDisableunitrate"-->
                                 </td>
                                 <td>
                                     <input type='number' formControlName="addiscAmt" class="form-control"
                                         style="width: 4rem;height: 25px;font-size: 10px;" name="addiscAmt{{i}}" main="0"
-                                        (keydown.tab)="onKey(i,$event)"  (input)="onKey1($event)"  (keydown)="blockInvalidKeys($event)">
+                                        (keydown.tab)="onKey(i,$event)" (input)="onKey1($event)"
+                                        (keydown)="blockInvalidKeys($event)">
                                 </td>
                             </ng-template>
                             <ng-template #elseAmount>
                                 <td>
                                     <input type='number' [disabled]="isDisabled(i)" readonly formControlName="adstkQty"
                                         class="form-control" style="width: 4rem;height: 25px;font-size: 10px;"
-                                        name="adstkQty{{i}}" (keydown.tab)="onKey(i,$event)" min="0"  (input)="onKey1($event)"  (keydown)="blockInvalidKeys($event)" >
+                                        name="adstkQty{{i}}" (keydown.tab)="onKey(i,$event)" min="0"
+                                        (input)="onKey1($event)" (keydown)="blockInvalidKeys($event)">
                                     <!----(Keydown.tab)="validNumber($event)"-->
                                 </td>
                                 <td>
                                     <input type='number' [disabled]="isDisabled(i)" readonly
                                         formControlName="adunitRate" class="form-control"
                                         style="width: 6rem;height: 25px;font-size: 10px;" name="adunitRate{{i}}"
-                                        (keydown.tab)="onKey(i,$event)" min="0"  (input)="onKey1($event)"   (keydown)="blockInvalidKeys($event)">
+                                        (keydown.tab)="onKey(i,$event)" min="0" (input)="onKey1($event)"
+                                        (keydown)="blockInvalidKeys($event)">
                                     <!---(Keydown.tab)="validNumber($event)"   / [disabled]="isDisableunitrate"-->
                                 </td>
                                 <td>
                                     <input type='number' [disabled]="isDisabled(i)" readonly formControlName="addiscAmt"
                                         class="form-control" style="width: 4rem;height: 25px;font-size: 10px;"
-                                        name="addiscAmt{{i}}" main="0" (keydown.tab)="onKey(i,$event)"  (input)="onKey1($event)"  (keydown)="blockInvalidKeys($event)">
+                                        name="addiscAmt{{i}}" main="0" (keydown.tab)="onKey(i,$event)"
+                                        (input)="onKey1($event)" (keydown)="blockInvalidKeys($event)">
                                 </td>
                             </ng-template>
                             <td>
@@ -371,7 +379,7 @@
                                     style="width: min-content;"><i class="fa fa-plus"></i></button>
                             </td>
                             <td>
-                                <div *ngIf="displayremovebutton; then thenremovebutton; else elseremovebutton"> </div>
+                                <div *ngIf="displayremovebutton; then thenremovebutton; else elseremovebutton"></div>
                                 <ng-template #thenremovebutton>
                                     <button type="button" class="btn btn-primary" (click)="RemoveRow(i)"
                                         style="width: min-content;"><i class="fa fa-trash"></i></button>
@@ -385,6 +393,54 @@
             </tbody>
         </table>
     </fieldset>
+    <!-- =-------==================================  DOC APPROVAL PROCESS ================================================================== -->
+    <fieldset class="RFS">
+        <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px; color: black;font-weight: bold;">Approval
+            Document Link
+        </legend>
+        <table>
+            <tr>
+                <td colspan="3" style="width: 100%;padding-top: 0px;">
+                    <table class="center">
+                        <tr>
+                            <td class="LabelFontStyle">
+                                &nbsp;&nbsp;Select&nbsp;Document&nbsp;Approval&nbsp;No:&nbsp;
+                            </td>
+                            <td>
+                                <input type="text" formControlName="docapprovalNo"
+                                    style="background-color: yellow; width: 100%;"
+                                    (keyup)="getDocApprovalNosFirstWay($event)" id="docApprovalNoInput"
+                                    class="form-control" placeholder="Document Approval No"
+                                    (change)="onSelectDocApprovalNoFN($event)" list="docApprovalNoList" />
+                                <datalist id="docApprovalNoList">
+                                    <option
+                                        *ngFor="let sc of (docApprovalFilteredList.length > 0 ? docApprovalFilteredList : onSelectDocNoFnList)"
+                                        [value]="sc.docapprovalNo">
+                                        {{ sc.docapprovalNo }}
+                                    </option>
+                                </datalist>
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>
+                                <button *ngIf="selectedDocApprovalNo" type="button" class="btn btn-primary"
+                                    style="width: fit-content;" (click)="viewDocument(selectedDocApprovalNo)">
+                                    View Document
+                                </button>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+
+
+
+
     <!----------------------------------------------------------CSV UPLOADED FILE----------------------------------->
     <div *ngIf="displayCSVUpload; then thenCSVUpload; else elseCSVUpload"></div>
     <ng-template #thenCSVUpload>
@@ -412,6 +468,7 @@
                                 </td>
                             </tr>
                         </table>
+                    </td>
                 </tr>
             </table>
         </fieldset>

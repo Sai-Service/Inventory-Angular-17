@@ -193,8 +193,7 @@ export class BillRecordComponent {
   finYearFnList:any=[];
   currantYear:string;
   isInvoiceValid:boolean;
-     ApplicableatoList:any=[];
-
+  ApplicableatoList:any=[];
 
   isModalOpen: boolean = false;
   selectedFile: File | null = null;
@@ -242,7 +241,6 @@ export class BillRecordComponent {
 
       ]),
     })
-  // })
   }
 
   billLinesGroup() {
@@ -286,7 +284,6 @@ export class BillRecordComponent {
       warntyPeriod: [],
       finYear:[],
       currantYear:[],
-
     });
   }
 
@@ -826,7 +823,7 @@ export class BillRecordComponent {
       this.isDisableqty[i] = true;
       this.displayBillType[i] = false;
         this.displayLoc[i]=true;
-                 this.displayDept[i]=true;
+      this.displayDept[i]=true;
       this.displayitemdesc[i] = false;
       this.displayLineflowStatusCode[i] = true;
 
@@ -880,8 +877,8 @@ export class BillRecordComponent {
       //   }
       // );}
       this.displayBillType[len - 1] = true;
-        this.displayLoc[len - 1]=true;
-                 this.displayDept[len - 1]=true;
+      this.displayLoc[len - 1]=true;
+      this.displayDept[len - 1]=true;
       this.displayitemdesc[len - 1] = true;
       this.displayLineflowStatusCode[len - 1] = true;
       this.displayBillType1[len - 1] = true;
@@ -1807,8 +1804,6 @@ if (applicationid === 178) {
           console.log(this.AlldepartmentList);
         }
       );
-
-
   } else {
       this.service.AlldepartmentList()
       .subscribe(
@@ -1839,6 +1834,7 @@ loadCityAndBillTypeData() {
         console.log(this.allcitylist);
       });
 
+    
   } else {
     this.service.getallcitylist(sessionStorage.getItem('ouId'))
       .subscribe(data => {

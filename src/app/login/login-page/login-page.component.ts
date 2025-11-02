@@ -83,6 +83,7 @@ export class LoginPageComponent {
        sessionStorage.setItem('tktNo', res.obj.tktNo);
        sessionStorage.setItem('empId', res.obj.empId);
        sessionStorage.setItem('attribute3', res.obj.attribute3);
+        sessionStorage.setItem('attribute5', res.obj.attribute5);
        var deptId = Number(sessionStorage.getItem('deptId'));
        var ouId = Number(sessionStorage.getItem('ouId'));
          var tktNo =(sessionStorage.getItem('tktNo')) ;

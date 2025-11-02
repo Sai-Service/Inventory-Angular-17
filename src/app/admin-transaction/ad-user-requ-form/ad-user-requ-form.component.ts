@@ -131,14 +131,25 @@ public sub: any;
 
 
 
-this.sub = this.router1.params.subscribe(params => {
-  this.reqhdNo = params['reqhdNo'];
-  if (this.reqhdNo != undefined) {
-    this.ReqHedIdFindFN(this.reqhdNo);
-    this.requisisionForm.get('reqhdNo')?.disable();
-    // this.isVisibleOrderFind = false;
-  }
-});
+// this.sub = this.router1.params.subscribe(params => {
+//   this.reqhdNo = params['reqhdNo'];
+//   if (this.reqhdNo != undefined) {
+//     this.ReqHedIdFindFN(this.reqhdNo);
+//     this.requisisionForm.get('reqhdNo')?.disable();
+//     // this.isVisibleOrderFind = false;
+//   }
+// });
+
+
+  this.sub = this.router1.params.subscribe(params => {
+    this.reqhdNo = params['reqhdNo'];
+    if (this.reqhdNo) {
+      this.ReqHedIdFindFN(this.reqhdNo);
+      this.requisisionForm.get('reqhdNo')?.disable();
+      this.isModalOpen=false;
+    }
+  });
+
 
 
     var patch = this.requisisionForm.get('reqLines') as FormArray
@@ -482,11 +493,21 @@ onKey(i:any,event:any){}
 
 
 
-navigateToRequisition(reqhdNo: string) {
+// navigateToRequisition(reqhdNo: string) {
+//   this.isModalOpen = false;
+//   this.router.navigate(['/admin/adminTransaction/AdminUserRequ', reqhdNo]);
+// }
+
+openRequisition(reqhdNo: string) {
+  // close modal
   this.isModalOpen = false;
-  this.router.navigate(['/admin/adminTransaction/AdminUserRequ', reqhdNo]);
+
+  // navigate
+  this.router.navigate(['/admin/adminTransaction/AdminUserRequ/:reqhdNo', reqhdNo]);
+
+  // call your function
+  this.ReqHedIdFindFN(reqhdNo);
+  this.requisisionForm.get('reqhdNo')?.disable();
 }
-
-
 
 }

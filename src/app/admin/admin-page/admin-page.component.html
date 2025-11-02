@@ -181,9 +181,19 @@
         aria-haspopup="true" aria-expanded="false">
         Transactions
       </a>
-
       <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
         <li><a class="dropdown-submenu" [routerLink]="['/admin/adminTransaction/AdminUserRequ']">Requisition Form</a></li>
+      </ul>
+    </li>
+
+
+     <li class="nav-item dropdown" [style.display]="isVisibleHODTransaction  ? 'block' : 'none'">
+      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="false">
+        TRANSACTIONS
+      </a>
+      <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+        <li><a class="dropdown-submenu" [routerLink]="['/admin/adminTransaction/HodApprovalForm']">Approval Pending Form</a></li>
       </ul>
     </li>
 

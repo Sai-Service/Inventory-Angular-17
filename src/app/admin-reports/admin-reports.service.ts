@@ -154,6 +154,10 @@ export class AdminReportsService {
   return this.http.get(this.ServerUrl + `/AdminItem/AllItemsWithOu?category=${codeType}&attribute1=${ouId}`); ////CodeTypeMst/REQ/REQ
 }
 
+onSelectReqItemNameFn1(codeType:any): Observable<any> {
+  return this.http.get(this.ServerUrl + `/AdminItem/AllItems?category=${codeType}`); ////CodeTypeMst/REQ/REQ
+}
+
   
   AllreqItemCatagList(): Observable<any> {
     return this.http.get(this.ServerUrl + `/AdminItem/DistinctItems`);  ////CodeMst/dept/STATIONARY

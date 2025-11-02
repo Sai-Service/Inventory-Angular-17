@@ -149,6 +149,22 @@ export class PurchaseReportComponent {
         this.isVisibleAdmin=true;
           
         }
+
+        if(  sessionStorage.getItem('role')==='CORPORATE') {
+        this.purchaseReportForm.patchValue({ ouId: sessionStorage.getItem('ouId') })
+         this.isVisibleOuReport=true;
+          this.isVisibleloactionReport=false;
+          this.isVisibleLocAdmin=false;
+        this.isVisibleLoclovAdmin=false;
+        this.isVisibleCitysupAdmin=true;
+        this.isVisiblelovCitysupAdmin=true;
+        this.isVisibleLocsupAdmin=true;
+        this.isVisibleLoclovsupAdmin=true;
+
+        this.isVisiblesupAdmin=true;
+        this.isVisibleAdmin=false;
+          
+        }
         if(  sessionStorage.getItem('role')==='SuperAdmin') {
           this.isVisibleOuReport=true;
           this.isVisibleloactionReport=false;

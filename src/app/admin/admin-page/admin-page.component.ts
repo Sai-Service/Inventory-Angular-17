@@ -49,6 +49,7 @@ export class AdminPageComponent {
   isVisibleAdminAllMaster:boolean=false;
   isVisibleAdminReports:boolean=false;
   isVisibleAdminUserTransaction:boolean=false;
+  isVisibleHODTransaction:Boolean=false;
   isVisibleAdminUserReport:boolean=false;
   isVisibleBudgetTransaction:boolean=false;
   isVisibleAccountAllReport:boolean=false
@@ -157,6 +158,7 @@ export class AdminPageComponent {
      this.isVisibleAdminUserTransaction=false;
      this.isVisibleAdminUserReport=false;
      this.isVisibleBudgetTransaction=true;
+     this.isVisibleHODTransaction=false;
     }
     
 
@@ -174,6 +176,7 @@ export class AdminPageComponent {
       this.isVisibleAdminUserReport=false;
       this.isVisibleBudgetTransaction=false;
       this.isVisibleAccountAllReport=true;
+      this.isVisibleHODTransaction=false;
       }
      }
 
@@ -196,6 +199,7 @@ export class AdminPageComponent {
         this.isVisibleAdminUserTransaction=false;
         this.isVisibleAdminUserReport=false;
         this.isVisibleBudgetTransaction=true;
+         this.isVisibleHODTransaction=false;
       }
     }
     if  (sessionStorage.getItem('deptName')==='ADMIN'){
@@ -211,6 +215,7 @@ export class AdminPageComponent {
       this.isVisibleAdminUserTransaction=false;
       this.isVisibleAdminUserReport=false;
       this.isVisibleBudgetTransaction=false;
+       this.isVisibleHODTransaction=false;
       }
      
     }
@@ -229,12 +234,31 @@ export class AdminPageComponent {
       this.isVisibleAdminUserTransaction=false;
       this.isVisibleAdminUserReport=false;
       this.isVisibleBudgetTransaction=false;
+       this.isVisibleHODTransaction=false;
       }
+     
+    }
+     if  (sessionStorage.getItem('role')==='HOD'){
+      // if ( sessionStorage.getItem('role')==='SupAdmin'){
+        // alert(sessionStorage.getItem('role'))
+      this.isVisibleEmployeeMaster=false;
+      this.isVisibleAllMaster=false;
+      this.isVisibletansaction=false;
+      this.isVisibleItReports=false;
+      this.isVisibleAdminTransaction=false;
+      this.isVisibleAdminMiscellTransaction=false;
+      this.isVisibleAdminAllMaster=false;
+      this.isVisibleAdminReports=false;
+      this.isVisibleAdminUserTransaction=false;
+      this.isVisibleAdminUserReport=false;
+      this.isVisibleBudgetTransaction=false;
+       this.isVisibleHODTransaction=true;
+      // }
      
     }
   
     if (sessionStorage.getItem('deptName') !='ADMIN'){
-      if (sessionStorage.getItem('deptName') !='IT DEPARTMENT' && sessionStorage.getItem('deptName') !='ACCOUNTS-DDL'){
+      if (sessionStorage.getItem('deptName') !='IT DEPARTMENT' && sessionStorage.getItem('deptName') !='ACCOUNTS-DDL' && sessionStorage.getItem('role') !='HOD'){
       this.isVisibleAdminUserTransaction=true;
       this.isVisibleAdminUserReport=true;
       }

@@ -13,6 +13,8 @@ import { ReceiptFormComponent } from './receipt-form/receipt-form.component';
 import { DirectReqFormComponent } from './direct-req-form/direct-req-form.component';
 import { MiscellaneousTrascComponent } from './miscellaneous-trasc/miscellaneous-trasc.component';
 import { AdmingatepassgenComponent } from './admingatepassgen/admingatepassgen.component';
+import { HodRequisionFormComponent } from './hod-requision-form/hod-requision-form.component';
+import { HodapprovalFormComponent } from './hodapproval-form/hodapproval-form.component';
 
 
 @NgModule({
@@ -28,7 +30,9 @@ import { AdmingatepassgenComponent } from './admingatepassgen/admingatepassgen.c
              ReceiptFormComponent,
              DirectReqFormComponent,
              MiscellaneousTrascComponent,
-             AdmingatepassgenComponent
+             AdmingatepassgenComponent,
+             HodRequisionFormComponent,
+             HodapprovalFormComponent
   ],
   imports: [
     CommonModule,

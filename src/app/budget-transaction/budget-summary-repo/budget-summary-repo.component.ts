@@ -111,6 +111,7 @@ export class BudgetSummaryRepoComponent {
   if(sessionStorage.getItem('role')==='Admin'){
     this.isVisibleLocList=false;
     var sss =sessionStorage.getItem("ouCity");
+    alert(sss)
     this.budgetsummryForm.patchValue({cityName:sss});
     var cityId = sessionStorage.getItem('ouId')
     this.budgetsummryForm.patchValue({cityId:cityId});

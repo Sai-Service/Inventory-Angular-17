@@ -357,9 +357,10 @@ export class EmployeeComponent {
           if (data.code == 200) {
             this.employeesMasterForm.patchValue(data.obj);
             this.employeesMasterForm.patchValue({ startDt: this.pipe.transform(data.obj.startDt, 'yyyy-MM-dd') });
-            console.log(this.locIdList);
-            let SelectLocCode = this.locIdList.find((locCode: any) => locCode.locId = data.obj.locId)
-            console.log(this.locIdList);
+            this.employeesMasterForm.patchValue({ locId: data.obj.locId });
+            // console.log(this.locIdList);
+            // let SelectLocCode = this.locIdList.find((locCode: any) => locCode.locId = data.obj.locId)
+            // console.log(this.locIdList);
             let selectDesignation = this.DesignationList.find((desCode: any) => desCode.codeDesc = data.obj.designation)
             console.log(selectDesignation + '------ +' + Number(selectDesignation.cmntypeId));
             this.employeesMasterForm.patchValue({ desgId: selectDesignation.cmntypeId })

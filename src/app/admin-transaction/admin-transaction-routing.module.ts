@@ -13,6 +13,8 @@ import { DirectReqFormComponent } from './direct-req-form/direct-req-form.compon
 import { MiscellaneousTrascComponent } from './miscellaneous-trasc/miscellaneous-trasc.component';
 import { GatePassGenComponent } from '../it-transaction/gate-pass-gen/gate-pass-gen.component';
 import { AdmingatepassgenComponent } from './admingatepassgen/admingatepassgen.component';
+import { HodRequisionFormComponent } from './hod-requision-form/hod-requision-form.component';
+import { HodapprovalFormComponent } from './hodapproval-form/hodapproval-form.component';
 
 const routes: Routes = [
 
@@ -31,6 +33,9 @@ const routes: Routes = [
   {path:'miscellusform',component:MiscellaneousTrascComponent},
   {path:'gatepassform',component:AdmingatepassgenComponent},
   {path:'Dashboard',component:DashboardComponent},
+  {path:'HodApprovalForm',component:HodRequisionFormComponent},
+ {path:'HodApprovalForm/:reqhdNo',component:HodRequisionFormComponent},
+  {path:'hodApproval/:reqhdNo', component:HodapprovalFormComponent},
   { path : '' ,redirectTo: 'Dashboard', pathMatch: 'full' }
 ];
 

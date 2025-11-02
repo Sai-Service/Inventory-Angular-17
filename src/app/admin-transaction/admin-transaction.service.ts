@@ -84,6 +84,13 @@ export class AdminTransactionService {
     return this.http.get(this.ServerUrl + `/AdminItem/DistinctItems`);  ////CodeMst/dept/STATIONARY
   }
 
+AllDocumentNoList():Observable<any> {
+    return this.http.get(this.ServerUrl + `/Upload/AllAprroved?ouId=104&filestatus=APPROVED`)
+  }
+
+  // AllDocumentNoList(ouId:any):Observable<any> {
+  //   return this.http.get(this.ServerUrl + `/Upload/AllAprroved?ouId=${ouId}&filestatus=APPROVED`)
+  // }
   
 getallcitylist(ouId:any): Observable<any> {
   return this.http.get(this.ServerUrl + `/locationMst/loc/${ouId}`);
@@ -95,6 +102,7 @@ gstperList(): Observable<any> {
 AllvendornameList(): Observable<any> {
   return this.http.get(this.ServerUrl + '/VendorMst/All');
 }
+
 
 onSelectReqItemNameFn1(codeType:any): Observable<any> {
   return this.http.get(this.ServerUrl + `/AdminItem/AllItems?category=${codeType}`); ////CodeTypeMst/REQ/REQ
@@ -158,6 +166,16 @@ viewReqisisionListFn(ouid:any,dept:any,tkt:any,stsreq:any): Observable<any> {
   return this.http.get(this.ServerUrl + `/Requisition/Req?city=${ouid}&adminDept=${dept}&admintktNo=${tkt}&reqstatus=${stsreq}`);
 }
 
+// hodApprovalReqListFn(ouid:any,locId:any,dept:any,stsreq:any): Observable<any> {
+//   // alert(headerId)
+//   return this.http.get(this.ServerUrl + `/Requisition/HodPending?city=${ouid}&location=${locId}&dept=${dept}&reqstatus=${stsreq}`);
+// }
+
+hodApprovalReqListFn(ouid:any,dept:any,attribute5:any,UserName:any): Observable<any> {
+  // alert(headerId)
+  return this.http.get(this.ServerUrl + `/Requisition/HodPending?city=${ouid}&locAccess=${attribute5}&dept=${dept}&reqstatus=PENDING&loginName=${UserName}`);
+}
+
 
 viewUserReqisisionList(City:any,TktNo:any): Observable<any> {
   // alert(headerId)
@@ -181,6 +199,15 @@ UpdateAdminReqBilllineRecorder(UpdateCounterSaleInvRecord:any) {
   };
   const url = (this.ServerUrl + `/Requisition/lineSave`);
   return this.http.put(url, UpdateCounterSaleInvRecord, options);
+}
+
+
+HodApprovalRecorde(UpdateRecord:any) {
+  const options = {
+    headers: this.headers
+  };
+  const url = (this.ServerUrl + `/Requisition/HodUpdate`);
+  return this.http.put(url, UpdateRecord, options);
 }
 
 // Asigntolocadmin(ouID:any): Observable<any> {
@@ -245,6 +272,15 @@ viewGRRNrecipetFn(receiptNumber:any){
     headers: this.headers,
   });
 }
+
+viewDocApprovalFn(aaprovalDocNo:any){
+const REQUEST_URI = this.ServerUrl + `/Upload/Docapprove?docapprovalNo=${aaprovalDocNo}`;
+  return this.http.get(REQUEST_URI, {
+    responseType: 'arraybuffer',
+    headers: this.headers,
+  });
+}
+
 onhandQtyFn1(itemName:any,locId:any): Observable<any> {
   return this.http.get(this.ServerUrl + `/OnHand/LocationWithPrice?itemName=${itemName}&fromLocation=${locId}`);
 }

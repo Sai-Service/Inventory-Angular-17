@@ -74,14 +74,55 @@ export class StockLdgerRepoComponent {
 
 
 
-  onSelectItemType(event:any){
-    var codeType=event.target.value;
-    this.service.onSelectReqItemNameFn(codeType,sessionStorage.getItem('ouId'))
-    .subscribe(
-      data => {
-        this.onSelectItemNameFnList = data.obj;
-      }
-    );
+  // onSelectItemType(event:any){
+  //   var codeType=event.target.value;
+  //   this.service.onSelectReqItemNameFn(codeType,sessionStorage.getItem('ouId'))
+  //   .subscribe(
+  //     data => {
+  //       this.onSelectItemNameFnList = data.obj;
+  //     }
+  //   );
+    
+  //  }
+
+   onSelectItemType(event:any){
+    // this.CheckLineValidationstaxtyp();
+    var itemType=event.target.value;
+    var itemType1 = itemType.substr(itemType.indexOf(': ') + 1, itemType.length);
+    var itemType12=trim(itemType1);
+    var itemcat = this.AllreqItemCatagList.find((itemcat:any) => itemcat.category === itemType);
+    console.log(itemcat);
+    var codeType=itemcat.category;
+
+    // this.orderlineDetailsArray().controls[i].patchValue({adstkItem:codeType})  
+    // this.service.onSelectReqItemNameFn1(codeType,sessionStorage.getItem('ouId'))
+    // .subscribe(
+    //   data => {
+    //     this.onSelectItemNameFnList = data.obj;
+    //     console.log(this.onSelectItemNameFnList);
+        
+    //   }
+    // );
+    const ouId = sessionStorage.getItem('ouId');
+    this.service.onSelectReqItemNameFn1(itemType)
+  .subscribe(data => {
+    this.onSelectItemNameFnList = data.obj.filter((item:any) => {
+      return ['mumbai', 'pune', 'kolhapur', 'goa', 'cochin', 'hyderabad']
+        .some(city => item[city] === ouId);
+    });
+
+    console.log(this.onSelectItemNameFnList);
+  });
+
+    // if (codeType == 'OTHERS') {
+    //   this.displayDesc[i]=false;
+     
+    // }
+    // if (codeType !== 'OTHERS') {
+     
+    //   this.displayDesc[i]=true;
+     
+    // }
     
    }
 

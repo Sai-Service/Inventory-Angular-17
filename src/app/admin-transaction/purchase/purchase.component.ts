@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, Pipe } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder,PatternValidator } from '@angular/forms';
+import { FormGroup, FormControl, FormBuilder, PatternValidator } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Validators } from '@angular/forms';
 import { FormArray } from '@angular/forms';
@@ -24,26 +24,26 @@ import { Alert } from 'selenium-webdriver';
 
 
 interface adstkpurFrom {
-  adheaderId:number;
-  advendId :number;
-  advend:string;
-  adDept :string;
-  adDivision :string;
-  adLoc :number;
-  adBuyer:number;
-  adDate:Date;
-  adouId:number;
-  adtktNo :string;
-  adstatus:string;
-  podocName:string; 
-  files:string;
-  advndBilldate1:Date;
-  adLoc1:string;
-  itemDesc:string;
-  gstNo:string;
+  adheaderId: number;
+  advendId: number;
+  advend: string;
+  adDept: string;
+  adDivision: string;
+  adLoc: number;
+  adBuyer: number;
+  adDate: Date;
+  adouId: number;
+  adtktNo: string;
+  adstatus: string;
+  podocName: string;
+  files: string;
+  advndBilldate1: Date;
+  adLoc1: string;
+  itemDesc: string;
+  gstNo: string;
   panNo: string;
-  msmeNo:string;
-  state:string;
+  msmeNo: string;
+  state: string;
 
 }
 
@@ -53,158 +53,169 @@ interface adstkpurFrom {
   styleUrl: './purchase.component.css'
 })
 export class PurchaseComponent {
-  adstkPucahseFrom:FormGroup;
-  adheaderId:number;
-  advendId :number;
-  advend:string;
-  adheaderId1:number;
-  adDept :string;
-  adDivision :string;
-  adLoc :number;
-  adBuyer:number;
-  adDate:Date;
-  adouId:number;
-  adtktNo :string;
-  adminStkId :number;
-  adstksrNo:number;
-  adstkCat :string;
-  adstkItem :string;
-  adunitRate :number;
-  adstkQty :number;
-  adtaxCat :string;
-  adsubTotal :number;
-  addiscAmt:number;
-  adtaxAmt :number;
-  adtotalAmt :number;
-  forloc:number;
-  gstNo:string;
+  adstkPucahseFrom: FormGroup;
+  adheaderId: number;
+  advendId: number;
+  advend: string;
+  adheaderId1: number;
+  adDept: string;
+  adDivision: string;
+  adLoc: number;
+  adBuyer: number;
+  adDate: Date;
+  adouId: number;
+  adtktNo: string;
+  adminStkId: number;
+  adstksrNo: number;
+  adstkCat: string;
+  adstkItem: string;
+  adunitRate: number;
+  adstkQty: number;
+  adtaxCat: string;
+  adsubTotal: number;
+  addiscAmt: number;
+  adtaxAmt: number;
+  adtotalAmt: number;
+  forloc: number;
+  gstNo: string;
   panNo: string;
-  msmeNo:string;
-  state:string;
-  adstkTax:number;
+  msmeNo: string;
+  state: string;
+  adstkTax: number;
   closeResetButton = true;
   dataDisplay: any;
-progress = 0;
-pipe = new DatePipe('en-US');
+  progress = 0;
+  pipe = new DatePipe('en-US');
   date = new Date()
   Date = '';
-  AllreqItemCatagList:any=[];
-  onSelectItemNameFnList:any=[];
-  displayRequItem:Array<boolean>=[];
-  displayBillType1:Array<boolean>=[];
-  allcitylist:any=[];
-  gstperList:any;
-  displayGstper:Array<boolean>=[];
-  displayDesc:Array<boolean>=[];
-  displayGstTaxType:Array<boolean>=[];
-  igst:number;
-  cgst:number;
-  sgst:number;
-  displayButton=true;
+  AllreqItemCatagList: any = [];
+  onSelectDocNoFnList: any[] = [];
+  onSelectItemNameFnList: any = [];
+  displayRequItem: Array<boolean> = [];
+  displayBillType1: Array<boolean> = [];
+  allcitylist: any = [];
+  gstperList: any;
+  displayGstper: Array<boolean> = [];
+  displayDesc: Array<boolean> = [];
+  displayGstTaxType: Array<boolean> = [];
+  igst: number;
+  cgst: number;
+  sgst: number;
+  displayButton = true;
   userList1: any[] = [];
+  userList2: any[] = [];
   lastkeydown1: number = 0;
-  AllAdminvendornameList1:any=[];
-  advendBillno:string;
-  advndBilldate:string|null;
-  totalAmt:number;
-  remark:string;
-  createdBy:string;
-  creationDate:Date;
-  lastUpdatedBy:string;
-  lastUpdationDate:Date;
-  totalTax:number;
-  adstatus:string;
+  AllAdminvendornameList1: any = [];
+  advendBillno: string;
+  advndBilldate: string | null;
+  totalAmt: number;
+  remark: string;
+  createdBy: string;
+  creationDate: Date;
+  lastUpdatedBy: string;
+  lastUpdationDate: Date;
+  totalTax: number;
+  adstatus: string;
   displayLineflowStatusCode: Array<boolean> = [];
-  displayAmount:Array<boolean>=[];
-  podocName:string;
-  files:string;
-  @ViewChild('fileInput') fileInput:any;
-  isVisiblePouploaded: boolean =false;
-  displayremovebutton:boolean=true;
-  isVisiblePoApprove:boolean = false;
-  isVisibleupdateMast1:boolean =false;
-  displayCSVUpload:boolean=true;
-  Linestatusist:any=[];
-  isVisiblePurchaseord:boolean=false;
-  adLoc1:string;
-  sgst1 :number;
-  igst1:number;
-  advndBilldate1:Date;
-  itemDesc:string;
-  erpvendorId:number;
-  erpsuppNo:number;
-  lineValidation1=false;
-  lineValidation2=false;
+  displayAmount: Array<boolean> = [];
+  podocName: string;
+  files: string;
+  @ViewChild('fileInput') fileInput: any;
+  isVisiblePouploaded: boolean = false;
+  displayremovebutton: boolean = true;
+  isVisiblePoApprove: boolean = false;
+  isVisibleupdateMast1: boolean = false;
+  displayCSVUpload: boolean = true;
+  Linestatusist: any = [];
+  isVisiblePurchaseord: boolean = false;
+  adLoc1: string;
+  sgst1: number;
+  igst1: number;
+  advndBilldate1: Date;
+  itemDesc: string;
+  erpvendorId: number;
+  erpsuppNo: number;
+  docapprovalNo: number
+  lineValidation1 = false;
+  lineValidation2 = false;
+  docApprovalFilteredList: any[] = [];
+  // selectedDocApprovalNo: string | null = null;
+  selectedDocApprovalNo: string | null = null;
+  // docApprovalFilteredList: { docapprovalNo: string }[] = [];
+  // onSelectDocNoFnList: { docapprovalNo: string }[] = [];
+  // lastkeydown1 = 0;
 
-  constructor(private fb: FormBuilder, private router: Router, private service: AdminTransactionService,private router1: ActivatedRoute) { 
-  this.Date = formatDate( this.date, 'dd-MM-yyyy', 'en-US'); 
-  this.adstkPucahseFrom = fb.group({
-  adheaderId:[],
-  adDept :[],
-  adheaderId1:[],
-  adDivision :[],
-  adLoc :[],
-  adBuyer:[],
-  adDate:[],
-  adouId:[],
-  adtktNo :[],
-  adtaxCat :[],
-  advndBilldate:[],
-  advendBillno:[],
-  advendId:[],
-  advend:[],
-  gstNo:[],
-  panNo:[],
-  msmeNo:[],
-  totalAmt:[0],
-  // totalAmt:[{ value: '0', }],
-  //     totalTax:[{ value: '0',  }],
-  remark:[],
-  createdBy:[],
-  totalTax:[0],
-  creationDate:[],
-  lastUpdatedBy:[],
-  lastUpdationDate:[],
-  adstatus:[],
-  podocName:[],
-  files :[],
-  file:[],
-  addiscAmt:[],
-  advndBilldate1:[],
-  adLoc1:[],
-  erpvendorId:[],
-  erpsuppNo:[],
+  constructor(private fb: FormBuilder, private router: Router, private service: AdminTransactionService, private router1: ActivatedRoute) {
+    this.Date = formatDate(this.date, 'dd-MM-yyyy', 'en-US');
+    this.adstkPucahseFrom = fb.group({
+      adheaderId: [],
+      adDept: [],
+      adheaderId1: [],
+      adDivision: [],
+      adLoc: [],
+      adBuyer: [],
+      adDate: [],
+      adouId: [],
+      adtktNo: [],
+      adtaxCat: [],
+      advndBilldate: [],
+      advendBillno: [],
+      advendId: [],
+      advend: [],
+      gstNo: [],
+      panNo: [],
+      msmeNo: [],
+      totalAmt: [0],
+      // totalAmt:[{ value: '0', }],
+      //     totalTax:[{ value: '0',  }],
+      remark: [],
+      createdBy: [],
+      totalTax: [0],
+      creationDate: [],
+      lastUpdatedBy: [],
+      lastUpdationDate: [],
+      adstatus: [],
+      podocName: [],
+      files: [],
+      file: [],
+      addiscAmt: [],
+      advndBilldate1: [],
+      adLoc1: [],
+      erpvendorId: [],
+      erpsuppNo: [],
+      docapprovalNo: [],
 
-  stkLines:this.fb.array([this.AdstkLinesGroup()]),
-})
-}
+      stkLines: this.fb.array([this.AdstkLinesGroup()]),
+    })
+  }
 
 
   AdstkLinesGroup() {
     return this.fb.group({
-      adminStkId :[],
-      adstksrNo:[{ value: '', disabled: true }],
-      adstkCat :[],
-      adstkItem :[],
-      adunitRate :[0],
-      adstkQty :[0],
-      adstkTax:[],
-      adsubTotal :[{ value: '0', disabled: true }],
-      addiscAmt:[0],
-      adtaxAmt :[{ value: '', disabled: true }],
-      sgst1:[{ value: '0', disabled: true }],
-      igst1:[{ value: '0', disabled: true }],
-      adtotalAmt:[{ value: '', disabled: true }],  
-      forloc:[],
-      igst:[{ value: '0', disabled: true }],
-      cgst:[{ value: '0', disabled: true }],
-      sgst:[{ value: '0', disabled: true }],
+      adminStkId: [],
+      adstksrNo: [{ value: '', disabled: true }],
+      adstkCat: [],
+      adstkItem: [],
+      adunitRate: [0],
+      adstkQty: [0],
+      adstkTax: [],
+      adsubTotal: [{ value: '0', disabled: true }],
+      addiscAmt: [0],
+      adtaxAmt: [{ value: '', disabled: true }],
+      sgst1: [{ value: '0', disabled: true }],
+      igst1: [{ value: '0', disabled: true }],
+      adtotalAmt: [{ value: '', disabled: true }],
+      forloc: [],
+      igst: [{ value: '0', disabled: true }],
+      cgst: [{ value: '0', disabled: true }],
+      sgst: [{ value: '0', disabled: true }],
       // totalAmt:[{ value: '0', }],
       // totalTax:[{ value: '0',  }],
-      adstklinsts:[],
-      itemDesc:[],
+      adstklinsts: [],
+      itemDesc: [],
 
-    })}
+    })
+  }
 
   orderlineDetailsArray(): FormArray {
     return <FormArray>this.adstkPucahseFrom.get('stkLines')
@@ -214,65 +225,78 @@ pipe = new DatePipe('en-US');
 
   get f() { return this.adstkPucahseFrom.controls; }
 
-  adstkpurchase(adstkPucahseFrom:any) {  }
+  adstkpurchase(adstkPucahseFrom: any) { }
 
 
   ngOnInit(): void {
     $("#wrapper").toggleClass("toggled");
-    this.displayRequItem[0]=true;
-    this.displayBillType1[0]=true;
-    this.displayGstper[0]=true;
-    this.displayDesc[0]=true;
-    this.displayGstTaxType[0]=true;
-    this.displayAmount[0]=true;
-    var loginName =(sessionStorage.getItem('tktNo'));
-    this.adstkPucahseFrom.patchValue({adtktNo:loginName });
+    this.displayRequItem[0] = true;
+    this.displayBillType1[0] = true;
+    this.displayGstper[0] = true;
+    this.displayDesc[0] = true;
+    this.displayGstTaxType[0] = true;
+    this.displayAmount[0] = true;
+    var loginName = (sessionStorage.getItem('tktNo'));
+    this.adstkPucahseFrom.patchValue({ adtktNo: loginName });
 
-    var loginDiv =(sessionStorage.getItem('divisionName'));
-    this.adstkPucahseFrom.patchValue({adDivision:loginDiv });
+    var loginDiv = (sessionStorage.getItem('divisionName'));
+    this.adstkPucahseFrom.patchValue({ adDivision: loginDiv });
 
-    var loginempName =(sessionStorage.getItem('empName'));
-    this.adstkPucahseFrom.patchValue({adBuyer:loginempName });
+    var loginempName = (sessionStorage.getItem('empName'));
+    this.adstkPucahseFrom.patchValue({ adBuyer: loginempName });
 
-    var logineptName =(sessionStorage.getItem('deptName'));
-    this.adstkPucahseFrom.patchValue({adDept:logineptName });
+    var logineptName = (sessionStorage.getItem('deptName'));
+    this.adstkPucahseFrom.patchValue({ adDept: logineptName });
 
-    
-    var loginouId =(sessionStorage.getItem('ouId'));
-    this.adstkPucahseFrom.patchValue({adouId:loginouId,advndBilldate:new Date() });
+    var loginouId = (sessionStorage.getItem('ouId'));
+    this.adstkPucahseFrom.patchValue({ adouId: loginouId, advndBilldate: new Date() });
 
-    var loginlocId =(sessionStorage.getItem('locId'));
-    this.adstkPucahseFrom.patchValue({adLoc:loginlocId });
+    var loginlocId = (sessionStorage.getItem('locId'));
+    this.adstkPucahseFrom.patchValue({ adLoc: loginlocId });
 
-    var loginlocname =(sessionStorage.getItem('locName'));
-    this.adstkPucahseFrom.patchValue({adLoc1:loginlocname });
-    
+    var loginlocname = (sessionStorage.getItem('locName'));
+    this.adstkPucahseFrom.patchValue({ adLoc1: loginlocname });
+
     var patch = this.adstkPucahseFrom.get('stkLines') as FormArray
     (patch.controls[0]).patchValue(
       {
         adstksrNo: 1,
-        adstklinsts:'BOOKED',
-        
-       
+        adstklinsts: 'BOOKED',
+
+
       }
     );
     var patch = this.adstkPucahseFrom.get('stkLines') as FormArray;
 
     this.service.AllreqItemCatagList()
-    .subscribe(
-      data => {
-        this.AllreqItemCatagList = data.obj;
-        console.log(this.AllreqItemCatagList);
-      }
-    )
+      .subscribe(
+        data => {
+          this.AllreqItemCatagList = data.obj;
+          console.log(this.AllreqItemCatagList);
+        }
+      )
+
+
+
+    this.service.AllDocumentNoList()
+      .subscribe((res: any) => {
+        if (res && res.code === 200) {
+          this.onSelectDocNoFnList = (res.obj || []).filter(
+            (item: any) => item && item.docapprovalNo
+          );
+        } else {
+          this.onSelectDocNoFnList = [];
+        }
+      });
+
 
     this.service.getallcitylist(sessionStorage.getItem('ouId'))
-    .subscribe(
-      data => {
-        this.allcitylist = data.obj;
-        console.log(this.allcitylist);
-      }
-    );
+      .subscribe(
+        data => {
+          this.allcitylist = data.obj;
+          console.log(this.allcitylist);
+        }
+      );
 
 
     this.service.gstperList()
@@ -283,28 +307,28 @@ pipe = new DatePipe('en-US');
         }
       );
 
-      this.service.adminDeptVendorListFn()
-    .subscribe(
-      data => {
-        this.AllAdminvendornameList1=data;
-        console.log(this.AllAdminvendornameList1);
-     
-      }
-    );
-    
-    
+    this.service.adminDeptVendorListFn()
+      .subscribe(
+        data => {
+          this.AllAdminvendornameList1 = data;
+          console.log(this.AllAdminvendornameList1);
+
+        }
+      );
+
+
     this.service.Linestatusist()
-    .subscribe(
-      data => {
-        this.Linestatusist = data.obj;
-      }
-    );
+      .subscribe(
+        data => {
+          this.Linestatusist = data.obj;
+        }
+      );
 
     this.disableFiled()
 
   }
 
-  disableFiled(){
+  disableFiled() {
     this.adstkPucahseFrom.get('adheaderId')?.disable();
     this.adstkPucahseFrom.get('adBuyer')?.disable();
     this.adstkPucahseFrom.get('adtktNo')?.disable();
@@ -324,70 +348,70 @@ pipe = new DatePipe('en-US');
     this.router.navigate(['admin']);
   }
 
-  
 
 
 
-  addRow(i:number) {    
+
+  addRow(i: number) {
     this.CheckLineValidationstaxtyp();
-    this.displayRequItem[i]=false;
-    this.displayBillType1[i]=false;
+    this.displayRequItem[i] = false;
+    this.displayBillType1[i] = false;
     // this.displayGstper[i] = false;
-    this.displayDesc[i]=true;
+    this.displayDesc[i] = true;
     // this.displayGstTaxType[i]=false;
     this.orderlineDetailsArray().push(this.AdstkLinesGroup());
     var len = this.orderlineDetailsArray().length;
 
     var patch = this.adstkPucahseFrom.get('stkLines') as FormArray;
-    (patch.controls[len-1]).patchValue(
+    (patch.controls[len - 1]).patchValue(
       {
-        adstksrNo:len, 
-        adstklinsts:'BOOKED',
-      
+        adstksrNo: len,
+        adstklinsts: 'BOOKED',
+
       }
     );
     // this.displayRequDep[len-1]=true;
-    this.displayRequItem[len-1]=true;
-   this.displayBillType1[len-1]=true;
-   this.displayGstper[len-1]=true;
-   this.displayGstTaxType[len-1]=true;
-    this.displayAmount[len-1]=true;
-    this.displayDesc[len-1]=false;
+    this.displayRequItem[len - 1] = true;
+    this.displayBillType1[len - 1] = true;
+    this.displayGstper[len - 1] = true;
+    this.displayGstTaxType[len - 1] = true;
+    this.displayAmount[len - 1] = true;
+    this.displayDesc[len - 1] = false;
   }
 
   CheckLineValidationstaxtyp() {
-   
+
     var advend = this.adstkPucahseFrom.get('advend')?.value;
     if (advend === undefined || advend === null || advend === '') {
       alert('Please Select Vendor Name');
-      this.lineValidation1=false;
-    return;
-      
-      
+      this.lineValidation1 = false;
+      return;
+
+
     }
     var advendBillno = this.adstkPucahseFrom.get('advendBillno')?.value;
     if (advendBillno === undefined || advendBillno === null || advendBillno === '') {
       alert('Please Enter Invoice Number ');
-      this.lineValidation1=false;
-    return;  
+      this.lineValidation1 = false;
+      return;
     }
     var advndBilldate = this.adstkPucahseFrom.get('advndBilldate')?.value;
-    if (advndBilldate === undefined || advndBilldate === null || advndBilldate  === '') {
+    if (advndBilldate === undefined || advndBilldate === null || advndBilldate === '') {
       alert('Please Select Invoice Date ');
-      this.lineValidation1=false;
-    return;
-      
-      
+      this.lineValidation1 = false;
+      return;
+
+
     }
     var taxType = this.adstkPucahseFrom.get('adtaxCat')?.value;
     if (taxType === undefined || taxType === null || taxType === '') {
       alert('Please Select First Tax Type ');
-      this.lineValidation1=false;
+      this.lineValidation1 = false;
       return;
-      
-      
+
+
     }
-    this.lineValidation1=true
+    this.lineValidation1 = true
     return;
   }
 
@@ -396,23 +420,21 @@ pipe = new DatePipe('en-US');
   //   if (adstkQty === undefined || adstkQty === null || adstkQty === '0') {
   //     alert('Please Select Stock Quntity ');
   //     this.lineValidation2=false;
-  //     return;
-      
-      
+  //     return;      
   //   }
   //   this.lineValidation2=true
   //   return;
   // }
 
 
-  onSelectItemType(event:any,i:number){
+  onSelectItemType(event: any, i: number) {
     this.CheckLineValidationstaxtyp();
-    var itemType=event.target.value;
+    var itemType = event.target.value;
     var itemType1 = itemType.substr(itemType.indexOf(': ') + 1, itemType.length);
-    var itemType12=trim(itemType1);
-    var itemcat = this.AllreqItemCatagList.find((itemcat:any) => itemcat.category === itemType);
+    var itemType12 = trim(itemType1);
+    var itemcat = this.AllreqItemCatagList.find((itemcat: any) => itemcat.category === itemType);
     console.log(itemcat);
-    var codeType=itemcat.category;
+    var codeType = itemcat.category;
 
     // this.orderlineDetailsArray().controls[i].patchValue({adstkItem:codeType})  
     // this.service.onSelectReqItemNameFn1(codeType,sessionStorage.getItem('ouId'))
@@ -420,43 +442,44 @@ pipe = new DatePipe('en-US');
     //   data => {
     //     this.onSelectItemNameFnList = data.obj;
     //     console.log(this.onSelectItemNameFnList);
-        
+
     //   }
     // );
+
     const ouId = sessionStorage.getItem('ouId');
     this.service.onSelectReqItemNameFn1(codeType)
-  .subscribe(data => {
-    this.onSelectItemNameFnList = data.obj.filter((item:any) => {
-      return ['mumbai', 'pune', 'kolhapur', 'goa', 'cochin', 'hyderabad']
-        .some(city => item[city] === ouId);
-    });
+      .subscribe(data => {
+        this.onSelectItemNameFnList = data.obj.filter((item: any) => {
+          return ['mumbai', 'pune', 'kolhapur', 'goa', 'cochin', 'hyderabad']
+            .some(city => item[city] === ouId);
+        });
 
-    console.log(this.onSelectItemNameFnList);
-  });
+        console.log(this.onSelectItemNameFnList);
+      });
 
     if (codeType == 'OTHERS') {
-      this.displayDesc[i]=false;
-     
+      this.displayDesc[i] = false;
+
     }
     if (codeType !== 'OTHERS') {
-     
-      this.displayDesc[i]=true;
-     
-    }
-    
-   }
 
-  onSelectItemName(event:any,i:number){
-    this.displayCSVUpload=false;
-    var item=event.target.value;
-    var itemLi = this.onSelectItemNameFnList.find((itemList:any) => itemList.codeName === item);
+      this.displayDesc[i] = true;
+
+    }
+
+  }
+
+  onSelectItemName(event: any, i: number) {
+    this.displayCSVUpload = false;
+    var item = event.target.value;
+    var itemLi = this.onSelectItemNameFnList.find((itemList: any) => itemList.codeName === item);
     console.log(itemLi);
-    var budget = this.onSelectItemNameFnList.find((itemList:any)=> itemList.codeName === item);
+    var budget = this.onSelectItemNameFnList.find((itemList: any) => itemList.codeName === item);
     console.log(budget);
-    var Desc = this.onSelectItemNameFnList.find((itemList:any)=> itemList.itemDescription ===item );
+    var Desc = this.onSelectItemNameFnList.find((itemList: any) => itemList.itemDescription === item);
     console.log(Desc);
     var patch = this.adstkPucahseFrom.get('stkLines') as FormArray;
-    this.orderlineDetailsArray().controls[i].patchValue({itemDesc:Desc.itemDescription})
+    this.orderlineDetailsArray().controls[i].patchValue({ itemDesc: Desc.itemDescription })
 
     // this.orderlineDetailsArray().controls[i].patchValue({adstkItem:item})
     // this.service.onSelectReqItemNameFn(item)
@@ -467,33 +490,41 @@ pipe = new DatePipe('en-US');
     //   }
     // );
     // this.orderlineDetailsArray().controls[i].patchValue({itemDesc:itemLi.itemDescription})
-     
-   }
+
+  }
 
 
-   onSearchItemName(event: Event) {
+  onSearchItemName(event: Event) {
     const input = (event.target as HTMLInputElement).value;
     console.log('User is typing:', input);
-  
+
   }
-  
+
+  onSearchItemName2(event: Event) {
+    const input = (event.target as HTMLInputElement).value;
+    console.log('User is typing:', input);
+
+  }
+
+
+
   onSelectItemName1(event: Event, index: number) {
     const selectedValue = (event.target as HTMLInputElement).value;
     console.log('Selected item:', selectedValue);
-   
+
   }
 
 
-   onKey1(event:any) { 
-    var disamt =event.target.value;
+  onKey1(event: any) {
+    var disamt = event.target.value;
     var amunt = this.adstkPucahseFrom.get('totalAmt')?.value;
-    var totdisamt=amunt-disamt;
+    var totdisamt = amunt - disamt;
     // Math.ceil(totdisamt);
-    this.adstkPucahseFrom.patchValue({'totalAmt':totdisamt.toFixed(2),})
+    this.adstkPucahseFrom.patchValue({ 'totalAmt': totdisamt.toFixed(2), })
 
-   }
+  }
 
-   onKey(i:number, event:any) {  
+  onKey(i: number, event: any) {
     // alert(i);      
     var arrayControlNew = this.adstkPucahseFrom.get('stkLines') as FormArray;
     var arrayControl = arrayControlNew.getRawValue();
@@ -509,150 +540,150 @@ pipe = new DatePipe('en-US');
     // let discountAmount = Math.round(((rate * discAmt / 100) + Number.EPSILON) * 100) / 100;
     let discountAmount = ((rate * discAmt / 100) + Number.EPSILON);
     // alert(discountAmount+'---Calculate ');
-    var subTot = Math.round(((pricingQty*(rate-discountAmount) )+Number.EPSILON) * 100) / 100;
+    var subTot = Math.round(((pricingQty * (rate - discountAmount)) + Number.EPSILON) * 100) / 100;
     // alert(rate-discountAmount+'----calculate---rate');
-    var todisAmt =Math.round((subTot + Number.EPSILON)*100)/100;
-    
-          var gstType = this.adstkPucahseFrom.get('adtaxCat')?.value;
-          if (gstType==='S-C-GST'){
-            if (gstPer==='18' || gstPer===18){
-              this.sgst1  = (Math.round(((todisAmt*9/100) + Number.EPSILON)*100)/100);
-            }
-            if (gstPer==='12' || gstPer===12){
-              this.sgst1  = (Math.round(((todisAmt*6/100) + Number.EPSILON)*100)/100);
-            }
-            if (gstPer==='5' || gstPer===5){
-              this.sgst1  = (Math.round(((todisAmt*2.5/100) + Number.EPSILON)*100)/100); 
-            }
-            if (gstPer === '28' || gstPer === 28){
-             
-              this.sgst1 = Math.round(((todisAmt*14/100) + Number.EPSILON)*100)/100;
-            }
-            if (gstPer==='0'){
-              this.sgst1=0;
-            }
-           
-          }
-          
-          if (gstType==='IGST'){
-            this.igst1  = Math.round(((todisAmt*gstPer/100) + Number.EPSILON)*100)/100;
-            this.igst1 = Math.ceil(this.igst1);
+    var todisAmt = Math.round((subTot + Number.EPSILON) * 100) / 100;
 
-          }
-        //   alert(this.igst1)
-        //  debugger;
-          if (this.igst1===undefined){
-            this.igst1=0;
-          }
-          if (this.sgst1===undefined){
-            this.sgst1=0;
-          }
-        
-          // alert(this.sgst1+'-----'+'-----'+this.igst1)
-          var gstTot1 = ( this.sgst1+ this.sgst1+this.igst1);
-          // alert(gstTot1)
-          var gstTot= gstTot1;   //Math.round(((gstTot) + Number.EPSILON)*100)/100 
-          Math.ceil(gstTot1);
-          // alert(gstTot+'---gstTot')
-          var totAmt=todisAmt+gstTot;  ///subTot
-          var TotalAmt = Math.round(((totAmt) + Number.EPSILON)*100)/100;
-          Math.ceil(TotalAmt);
-          
-          var patch = this.adstkPucahseFrom.get('stkLines') as FormArray;
-          patch.controls[i].patchValue({ adtaxAmt: gstTot});
-          patch.controls[i].patchValue({ adsubTotal: subTot });
-          patch.controls[i].patchValue({ adtotalAmt: TotalAmt.toFixed(2)});
-          patch.controls[i].patchValue({ discAmt: todisAmt});
-          patch.controls[i].patchValue({ sgst: this.sgst1});
-          patch.controls[i].patchValue({ cgst: this.sgst1});
-          patch.controls[i].patchValue({ igst: this.igst1});
-          this.updateTotAmtPerline(0)
+    var gstType = this.adstkPucahseFrom.get('adtaxCat')?.value;
+    if (gstType === 'S-C-GST') {
+      if (gstPer === '18' || gstPer === 18) {
+        this.sgst1 = (Math.round(((todisAmt * 9 / 100) + Number.EPSILON) * 100) / 100);
+      }
+      if (gstPer === '12' || gstPer === 12) {
+        this.sgst1 = (Math.round(((todisAmt * 6 / 100) + Number.EPSILON) * 100) / 100);
+      }
+      if (gstPer === '5' || gstPer === 5) {
+        this.sgst1 = (Math.round(((todisAmt * 2.5 / 100) + Number.EPSILON) * 100) / 100);
+      }
+      if (gstPer === '28' || gstPer === 28) {
+
+        this.sgst1 = Math.round(((todisAmt * 14 / 100) + Number.EPSILON) * 100) / 100;
+      }
+      if (gstPer === '0') {
+        this.sgst1 = 0;
+      }
+
+    }
+
+    if (gstType === 'IGST') {
+      this.igst1 = Math.round(((todisAmt * gstPer / 100) + Number.EPSILON) * 100) / 100;
+      this.igst1 = Math.ceil(this.igst1);
+
+    }
+    //   alert(this.igst1)
+    //  debugger;
+    if (this.igst1 === undefined) {
+      this.igst1 = 0;
+    }
+    if (this.sgst1 === undefined) {
+      this.sgst1 = 0;
+    }
+
+    // alert(this.sgst1+'-----'+'-----'+this.igst1)
+    var gstTot1 = (this.sgst1 + this.sgst1 + this.igst1);
+    // alert(gstTot1)
+    var gstTot = gstTot1;   //Math.round(((gstTot) + Number.EPSILON)*100)/100 
+    Math.ceil(gstTot1);
+    // alert(gstTot+'---gstTot')
+    var totAmt = todisAmt + gstTot;  ///subTot
+    var TotalAmt = Math.round(((totAmt) + Number.EPSILON) * 100) / 100;
+    Math.ceil(TotalAmt);
+
+    var patch = this.adstkPucahseFrom.get('stkLines') as FormArray;
+    patch.controls[i].patchValue({ adtaxAmt: gstTot });
+    patch.controls[i].patchValue({ adsubTotal: subTot });
+    patch.controls[i].patchValue({ adtotalAmt: TotalAmt.toFixed(2) });
+    patch.controls[i].patchValue({ discAmt: todisAmt });
+    patch.controls[i].patchValue({ sgst: this.sgst1 });
+    patch.controls[i].patchValue({ cgst: this.sgst1 });
+    patch.controls[i].patchValue({ igst: this.igst1 });
+    this.updateTotAmtPerline(0)
   }
 
 
-// onKey(i:number, event:any) {  
-//     // alert(i)    
-//     var arrayControlNew = this.adstkPucahseFrom.get('stkLines') as FormArray;
-//     var arrayControl = arrayControlNew.getRawValue();
-//     var pricingQty = arrayControl[i].adstkQty;
-//     var rate = arrayControl[i].adunitRate;
-//     var gstPer = arrayControl[i].adstkTax;
-//     var addsbttl = arrayControl[i].adsubTotal;
- 
-//     var discAmt = arrayControl[i].addiscAmt || this.adstkPucahseFrom.get('addiscAmt')?.value;;
- 
-//     var subTot = Math.round(((pricingQty* rate-discAmt )+Number.EPSILON) * 100) / 100;
-//     var todisAmt =Math.round((subTot + Number.EPSILON)*100)/100;
-    
-//           var gstType = this.adstkPucahseFrom.get('adtaxCat')?.value;
-//           if (gstType==='S-C-GST'){
-//             if (gstPer==='18' || gstPer===18){
-//               this.sgst1  = (Math.round(((todisAmt*9/100) + Number.EPSILON)*100)/100);
-//             }
-//             if (gstPer==='12' || gstPer===12){
-//               this.sgst1  = (Math.round(((todisAmt*6/100) + Number.EPSILON)*100)/100);
-//             }
-//             if (gstPer==='5' || gstPer===5){
-//               this.sgst1  = (Math.round(((todisAmt*2.5/100) + Number.EPSILON)*100)/100); 
-//             }
-//             if (gstPer === '28' || gstPer === 28){
-             
-//               this.sgst1 = Math.round(((todisAmt*14/100) + Number.EPSILON)*100)/100;
-//             }
-//             if (gstPer==='0'){
-//               this.sgst1=0;
-//             }
-           
-//           }
-          
-//           if (gstType==='IGST'){
-//             this.igst1  = Math.round(((todisAmt*gstPer/100) + Number.EPSILON)*100)/100;
-//             this.igst1 = Math.ceil(this.igst1);
+  // onKey(i:number, event:any) {  
+  //     // alert(i)    
+  //     var arrayControlNew = this.adstkPucahseFrom.get('stkLines') as FormArray;
+  //     var arrayControl = arrayControlNew.getRawValue();
+  //     var pricingQty = arrayControl[i].adstkQty;
+  //     var rate = arrayControl[i].adunitRate;
+  //     var gstPer = arrayControl[i].adstkTax;
+  //     var addsbttl = arrayControl[i].adsubTotal;
 
-//           }
-//         //   alert(this.igst1)
-//         //  debugger;
-//           if (this.igst1===undefined){
-//             this.igst1=0;
-//           }
-//           if (this.sgst1===undefined){
-//             this.sgst1=0;
-//           }
-        
-//           // alert(this.sgst1+'-----'+'-----'+this.igst1)
-//           var gstTot1 = ( this.sgst1+ this.sgst1+this.igst1);
-//           // alert(gstTot1)
-//           var gstTot= gstTot1;
-//           Math.ceil(gstTot1);
-//           // alert(gstTot+'---gstTot')
-//           var totAmt=todisAmt+gstTot;  ///subTot
-//           var patch = this.adstkPucahseFrom.get('stkLines') as FormArray;
-//           patch.controls[i].patchValue({ adtaxAmt: gstTot });
-//           patch.controls[i].patchValue({ adsubTotal: subTot });
-//           patch.controls[i].patchValue({ adtotalAmt: totAmt.toFixed(2)});
-//           patch.controls[i].patchValue({ discAmt: todisAmt});
-//           patch.controls[i].patchValue({ sgst: this.sgst1});
-//           patch.controls[i].patchValue({ cgst: this.sgst1});
-//           patch.controls[i].patchValue({ igst: this.igst1});
-//           this.updateTotAmtPerline(0)
-//   }
+  //     var discAmt = arrayControl[i].addiscAmt || this.adstkPucahseFrom.get('addiscAmt')?.value;;
 
+  //     var subTot = Math.round(((pricingQty* rate-discAmt )+Number.EPSILON) * 100) / 100;
+  //     var todisAmt =Math.round((subTot + Number.EPSILON)*100)/100;
 
+  //           var gstType = this.adstkPucahseFrom.get('adtaxCat')?.value;
+  //           if (gstType==='S-C-GST'){
+  //             if (gstPer==='18' || gstPer===18){
+  //               this.sgst1  = (Math.round(((todisAmt*9/100) + Number.EPSILON)*100)/100);
+  //             }
+  //             if (gstPer==='12' || gstPer===12){
+  //               this.sgst1  = (Math.round(((todisAmt*6/100) + Number.EPSILON)*100)/100);
+  //             }
+  //             if (gstPer==='5' || gstPer===5){
+  //               this.sgst1  = (Math.round(((todisAmt*2.5/100) + Number.EPSILON)*100)/100); 
+  //             }
+  //             if (gstPer === '28' || gstPer === 28){
+
+  //               this.sgst1 = Math.round(((todisAmt*14/100) + Number.EPSILON)*100)/100;
+  //             }
+  //             if (gstPer==='0'){
+  //               this.sgst1=0;
+  //             }
+
+  //           }
+
+  //           if (gstType==='IGST'){
+  //             this.igst1  = Math.round(((todisAmt*gstPer/100) + Number.EPSILON)*100)/100;
+  //             this.igst1 = Math.ceil(this.igst1);
+
+  //           }
+  //         //   alert(this.igst1)
+  //         //  debugger;
+  //           if (this.igst1===undefined){
+  //             this.igst1=0;
+  //           }
+  //           if (this.sgst1===undefined){
+  //             this.sgst1=0;
+  //           }
+
+  //           // alert(this.sgst1+'-----'+'-----'+this.igst1)
+  //           var gstTot1 = ( this.sgst1+ this.sgst1+this.igst1);
+  //           // alert(gstTot1)
+  //           var gstTot= gstTot1;
+  //           Math.ceil(gstTot1);
+  //           // alert(gstTot+'---gstTot')
+  //           var totAmt=todisAmt+gstTot;  ///subTot
+  //           var patch = this.adstkPucahseFrom.get('stkLines') as FormArray;
+  //           patch.controls[i].patchValue({ adtaxAmt: gstTot });
+  //           patch.controls[i].patchValue({ adsubTotal: subTot });
+  //           patch.controls[i].patchValue({ adtotalAmt: totAmt.toFixed(2)});
+  //           patch.controls[i].patchValue({ discAmt: todisAmt});
+  //           patch.controls[i].patchValue({ sgst: this.sgst1});
+  //           patch.controls[i].patchValue({ cgst: this.sgst1});
+  //           patch.controls[i].patchValue({ igst: this.igst1});
+  //           this.updateTotAmtPerline(0)
+  //   }
 
 
 
-  updateLineOnCancel(i:number,event:any){
+
+
+  updateLineOnCancel(i: number, event: any) {
     var lineStatus1 = event.target.value;
     var trxArrVal = this.adstkPucahseFrom.get('stkLines')?.value;
     var trxArr = this.adstkPucahseFrom.get('stkLines') as FormArray;
 
-   if (lineStatus1 === 'CANCELLED') {
-trxArr.controls[i].patchValue({ 'adstkTax': 0, 'adstkQty': 0, 'adunitRate': 0, 'igst':0, 'cgst':0,'sgst':0,'adsubTotal':0,'adtaxAmt':0,'adtotalAmt':0,'discAmt':0,'addiscAmt':0 },);  /////'qty': 0, 'rate': 0, 'subtotal': 0, 'gstAmount':0,'totalAmt':0,
+    if (lineStatus1 === 'CANCELLED') {
+      trxArr.controls[i].patchValue({ 'adstkTax': 0, 'adstkQty': 0, 'adunitRate': 0, 'igst': 0, 'cgst': 0, 'sgst': 0, 'adsubTotal': 0, 'adtaxAmt': 0, 'adtotalAmt': 0, 'discAmt': 0, 'addiscAmt': 0 },);  /////'qty': 0, 'rate': 0, 'subtotal': 0, 'gstAmount':0,'totalAmt':0,
+    }
+    this.updateTotAmtPerline(i)
   }
-   this.updateTotAmtPerline(i)
-}
 
-  updateTotAmtPerline(lineIndex:any) {
+  updateTotAmtPerline(lineIndex: any) {
     var formArr = this.adstkPucahseFrom.get('stkLines') as FormArray;
     var formVal = formArr.getRawValue();
     var adtotalAmt1 = 0;
@@ -669,19 +700,19 @@ trxArr.controls[i].patchValue({ 'adstkTax': 0, 'adstkQty': 0, 'adunitRate': 0, '
       } else {
         adtaxAmt1 = adtaxAmt1 + Number(formVal[i].adtaxAmt);
       }
-        
+
     }
- var totalAmount =Math.ceil(adtotalAmt1);
- var totalTxAmount =Math.ceil(adtaxAmt1);
-    this.adstkPucahseFrom.patchValue({ 'totalAmt':totalAmount.toFixed(2),'totalTax':totalTxAmount.toFixed(2)});
+    var totalAmount = Math.ceil(adtotalAmt1);
+    var totalTxAmount = Math.ceil(adtaxAmt1);
+    this.adstkPucahseFrom.patchValue({ 'totalAmt': totalAmount.toFixed(2), 'totalTax': totalTxAmount.toFixed(2) });
     // adtaxAmt1.toFixed(0)
     // adtotalAmt1.toFixed(0)
-   }
+  }
 
-  transData(val:any) {
-    
+  transData(val: any) {
+
     return val;
-}
+  }
 
 
   newMast() {
@@ -691,21 +722,21 @@ trxArr.controls[i].patchValue({ 'adstkTax': 0, 'adstkQty': 0, 'adunitRate': 0, '
     var orderLines = this.adstkPucahseFrom.get('stkLines')?.value;
     var orderLinesNew = this.adstkPucahseFrom.get('stkLines') as FormArray;
     const formValue = this.transData(this.adstkPucahseFrom.value);
-    formValue.transactionType='PO';
+    formValue.transactionType = 'PO';
     console.log(formValue);
     let jsonData = this.adstkPucahseFrom.getRawValue();
     this.service.StckRecordedSubmit(jsonData).subscribe((res: any) => {
       if (res.code === 200) {
-         alert(res.message);
+        alert(res.message);
         this.dataDisplay = 'Stock Added Successfully';
         // this.adstkPucahseFrom.disable();
         this.adstkPucahseFrom.enable();
         this.adstkPucahseFrom.get('adheaderId1')?.disable();
-        this.adstkPucahseFrom.patchValue({adheaderId1: res.obj.adheaderId });
-        this.adstkPucahseFrom.patchValue({adheaderId: res.obj.adheaderId });
+        this.adstkPucahseFrom.patchValue({ adheaderId1: res.obj.adheaderId });
+        this.adstkPucahseFrom.patchValue({ adheaderId: res.obj.adheaderId });
         this.displayButton = false;
-        this.isVisiblePoApprove=true;
-        this.isVisibleupdateMast1=true;
+        this.isVisiblePoApprove = true;
+        this.isVisibleupdateMast1 = true;
       } else {
         if (res.code === 400) {
           alert(res.message);
@@ -719,38 +750,41 @@ trxArr.controls[i].patchValue({ 'adstkTax': 0, 'adstkQty': 0, 'adunitRate': 0, '
   getUserIdsFirstWay($event: any) {
     const userId = (document.getElementById('userIdFirstWay') as HTMLInputElement).value;
     this.userList1 = [];
-  
+
     if (userId.length > 2) {
       if ($event.timeStamp - this.lastkeydown1 > 200) {
         this.userList1 = this.searchFromArray(this.AllAdminvendornameList1, userId);
       }
     }
-  
+
     this.lastkeydown1 = $event.timeStamp;
   }
+
+
 
 
   onSelectVendorNameFN(event: any) {
     const suppName = event.target.value;
     const selectedValue = this.AllAdminvendornameList1.find((v: any) => v.name === suppName);
-  // alert(selectedValue.suppNo)
+    // alert(selectedValue.suppNo)
     if (selectedValue) {
       this.adstkPucahseFrom.patchValue({
         advendId: selectedValue.suppNo,
         erpsuppNo: selectedValue.erpsuppNo,
         erpvendorId: selectedValue.erpvendorId,
-        gstNo:selectedValue.gstNo,
-        panNo:selectedValue.panNo,
-        msmeNo:selectedValue.msmeNo
+        gstNo: selectedValue.gstNo,
+        panNo: selectedValue.panNo,
+        msmeNo: selectedValue.msmeNo
       });
     } else {
       console.warn('Vendor not found in the list');
-    }}
+    }
+  }
 
 
   searchFromArray(arr: any[], searchText: string): any[] {
     let matches: any[] = [];
-    const regex = new RegExp(searchText, 'i'); // case-insensitive
+    const regex = new RegExp(searchText, 'i');
     for (let item of arr) {
       if (regex.test(item.name)) {
         matches.push(item);
@@ -761,166 +795,264 @@ trxArr.controls[i].patchValue({ 'adstkTax': 0, 'adstkQty': 0, 'adunitRate': 0, '
 
 
 
-  purcahseorder(){
-    var poord=this.adstkPucahseFrom.get('adheaderId')?.value;
-    const fileName = 'download.pdf';
-    const EXT = fileName.substr(fileName.lastIndexOf('.') + 1);
-    this.service.purchaseorderfn(poord)
-    .subscribe((data: any) => {
+  searchFromArray1(arr: any[], searchText: string, key: string): any[] {
+    let matches: any[] = [];
+    const regex = new RegExp(searchText, 'i');
+    for (let item of arr) {
+      if (regex.test(item[key])) {
+        matches.push(item);
+      }
+    }
+    return matches;
+  }
+
+
+  getDocApprovalNosFirstWay($event: any) {
+    debugger;
+    const inputValue = (document.getElementById('docApprovalNoInput') as HTMLInputElement).value;
+    this.docApprovalFilteredList = [];
+
+    if (inputValue.length > 1) {
+      if ($event.timeStamp - this.lastkeydown1 > 200) {
+        this.docApprovalFilteredList = this.searchFromArray(this.onSelectDocNoFnList, inputValue);
+      }
+    }
+    this.lastkeydown1 = $event.timeStamp;
+  }
+
+
+  onSelectDocApprovalNoFN(event: any) {
+    const selectedValue = event.target.value;
+    alert(selectedValue)
+    // this.onSelectDocNoFnList = (response.obj || []).filter((item: any) => item !== null);
+    const foundItem = this.onSelectDocNoFnList.find((item: any) => item.docapprovalNo === selectedValue);
+    if (foundItem) {
+      this.selectedDocApprovalNo = selectedValue;
+      // this.adstkPucahseFrom.patchValue({
+      //   adstklinsts: foundItem.docapprovalNo
+
+      // });
+    }
+    else {
+      console.warn('DocApprovalNo not found in the list');
+    }
+  }
+
+
+
+  // getDocApprovalNosFirstWay($event: any) {
+  //     const inputValue = (document.getElementById('docApprovalNoInput') as HTMLInputElement).value;
+  //     this.docApprovalFilteredList = [];
+
+  //     if (inputValue.length > 1) {
+  //       if ($event.timeStamp - this.lastkeydown1 > 200) {
+  //         this.docApprovalFilteredList = this.searchFromArray(this.onSelectDocNoFnList, inputValue);
+  //       }
+  //     }
+  //     this.lastkeydown1 = $event.timeStamp;
+  //   }
+
+  //   // 🔎 When user selects value
+  //   onSelectDocApprovalNoFN(event: any) {
+  //     const selectedValue = event.target.value;
+  //     alert('Selected: ' + selectedValue);
+
+  //     const foundItem = this.onSelectDocNoFnList.find((item: any) => item.docapprovalNo === selectedValue);
+
+  //     if (foundItem) {
+  //       // ✅ store full object
+  //       this.selectedDocApprovalNo = foundItem;
+
+  //       this.adstkPucahseFrom.patchValue({
+  //         adstklinsts: foundItem.docapprovalNo
+  //       });
+  //     } else {
+  //       console.warn('DocApprovalNo not found in the list');
+  //     }
+  //   }
+
+  // 🔎 Utility search
+  searchFromArray11(arr: any[], keyword: string) {
+    if (!arr) return [];
+    return arr.filter(item => item?.docapprovalNo?.toLowerCase().includes(keyword.toLowerCase()));
+  }
+
+
+
+  viewDocument(docApprovalNo: string) {
+
+    this.service.viewDocApprovalFn(docApprovalNo)
+      .subscribe(data => {
         var blob = new Blob([data], { type: 'application/pdf' });
         var url = URL.createObjectURL(blob);
         var printWindow = window.open(url, '', 'width=800,height=500');
         // printWindow.open
-    })
+      })
+  }
+
+
+
+  purcahseorder() {
+    var poord = this.adstkPucahseFrom.get('adheaderId')?.value;
+    const fileName = 'download.pdf';
+    const EXT = fileName.substr(fileName.lastIndexOf('.') + 1);
+    this.service.purchaseorderfn(poord)
+      .subscribe((data: any) => {
+        var blob = new Blob([data], { type: 'application/pdf' });
+        var url = URL.createObjectURL(blob);
+        var printWindow = window.open(url, '', 'width=800,height=500');
+        // printWindow.open
+      })
 
   }
 
-  adheaderIdFindFN(adheaderId1:any){
+  adheaderIdFindFN(adheaderId1: any) {
     this.closeResetButton = true;
     this.progress = 0;
     this.displayButton = false;
-   this.displayCSVUpload=false;
-   this.adstkPucahseFrom.patchValue({ adstkTax: sessionStorage.getItem('code') });
+    this.displayCSVUpload = false;
+    this.adstkPucahseFrom.patchValue({ adstkTax: sessionStorage.getItem('code') });
     var patch = this.adstkPucahseFrom.get('stkLines') as FormArray;
     // patch.controls[0].patchValue({ adstkTax: 'code' });
-      this.service.adheaderIdFindFN1(adheaderId1,sessionStorage.getItem('locId'))
-        .subscribe(
-          data => {
-            if (data.code === 400) {
-              this.closeResetButton = true;
-              this.progress = 0;
-              this.dataDisplay = 'Bill Number Not Found ';
-              return;
-            }
-            if (data.code === 200) {
-              this.isVisiblePouploaded=true;
-              this.displayremovebutton=false;
-              this.orderlineDetailsArray().clear();
-              this.dataDisplay = 'Data Display Successfully....';
-              this.adstkPucahseFrom.patchValue(data.obj);
-              console.log(this.AllreqItemCatagList);                 /////AllreqItemCatagList
-              let control = this.adstkPucahseFrom.get('stkLines') as FormArray;
-              for (let i = 0; i < data.obj.stkLines.length; i++) {
-                var BillLinesAllList1: FormGroup = this.AdstkLinesGroup();
-                control.push(BillLinesAllList1);
+    this.service.adheaderIdFindFN1(adheaderId1, sessionStorage.getItem('locId'))
+      .subscribe(
+        data => {
+          if (data.code === 400) {
+            this.closeResetButton = true;
+            this.progress = 0;
+            this.dataDisplay = 'Bill Number Not Found ';
+          }
+          if (data.code === 200) {
+            this.isVisiblePouploaded = true;
+            this.displayremovebutton = false;
+            this.orderlineDetailsArray().clear();
+            this.dataDisplay = 'Data Display Successfully....';
+            this.adstkPucahseFrom.patchValue(data.obj);
+            console.log(this.AllreqItemCatagList);
+            let control = this.adstkPucahseFrom.get('stkLines') as FormArray;
+            for (let i = 0; i < data.obj.stkLines.length; i++) {
+              var BillLinesAllList1: FormGroup = this.AdstkLinesGroup();
+              control.push(BillLinesAllList1);
+              this.displayRequItem[i] = false;
+              this.displayBillType1[i] = false;
+              this.displayGstper[i] = true;
+              this.displayDesc[i] = false;
+              this.adstkPucahseFrom.get('docapprovalNo')?.disable();
+              BillLinesAllList1.patchValue({
+                adstkTax: data.obj.stkLines[i].adstkTax
+              });
+              if (data.obj && data.obj.docapprovalNo) {
+                this.selectedDocApprovalNo = data.obj.docapprovalNo;
+              } else {
+                this.selectedDocApprovalNo = null;
+              }
+              if (data.obj.stkLines[i].adstklinsts == 'BOOKED') {
+                this.displayLineflowStatusCode[i] = false;
+                this.displayAmount[i] = false;
+                this.isVisiblePurchaseord = true;
+
+              }
+              else {
+                this.displayLineflowStatusCode[i] = true;
+              }
+              if (data.obj.stkLines[i].adstklinsts == 'CANCELLED') {
+                this.displayLineflowStatusCode[i] = true;
                 this.displayRequItem[i] = false;
                 this.displayBillType1[i] = false;
-                this.displayGstper[i] = true;
-                this.displayDesc[i]=false;
-                BillLinesAllList1.patchValue({
-                  adstkTax: data.obj.stkLines[i].adstkTax
-                });
-                
-                if (data.obj.stkLines[i].adstklinsts == 'BOOKED') {
-                  this.displayLineflowStatusCode[i]=false;
-                  this.displayAmount[i]=false;
-                  this.isVisiblePurchaseord=true;
-                  
-                }
-                else{
-                  this.displayLineflowStatusCode[i]=true; 
-                }
-                if (data.obj.stkLines[i].adstklinsts == 'CANCELLED') {
-                  this.displayLineflowStatusCode[i]=true;
-                  this.displayRequItem[i]=false;
-                  this.displayBillType1[i]=false;
-                  this.displayGstper[i]=false;
-                  this.displayAmount[i]=true;
-                  this.displayDesc[i]=false;
-                }
-                if (data.obj.stkLines[i].adstklinsts == 'CLOSED') {
-                  this.displayLineflowStatusCode[i]=true;
-                  this.displayRequItem[i]=false;
-                  this.displayBillType1[i]=false;
-                  this.displayGstper[i]=false;
-                  this.displayAmount[i]=true;
-                  this.displayDesc[i]=false;
-                }
+                this.displayGstper[i] = false;
+                this.displayAmount[i] = true;
+                this.displayDesc[i] = false;
               }
-              if (data.obj.adstatus == 'APPROVED') {
-                this.isVisiblePoApprove=false;
-                this.isVisibleupdateMast1=false;
-                this.adstkPucahseFrom.disable();
-                this.isVisiblePurchaseord=true;
+              if (data.obj.stkLines[i].adstklinsts == 'CLOSED') {
+                this.displayLineflowStatusCode[i] = true;
+                this.displayRequItem[i] = false;
+                this.displayBillType1[i] = false;
+                this.displayGstper[i] = false;
+                this.displayAmount[i] = true;
+                this.displayDesc[i] = false;
               }
-              // alert(data.obj.adstatus)
-              if(data.obj.adstatus == 'Active'){
-                this.isVisiblePoApprove=true;
-                this.isVisibleupdateMast1=true;
-                this.isVisiblePurchaseord=true;
-              }
-              this.adstkPucahseFrom.patchValue(data.obj);
-              var billDate1 = this.pipe.transform(data.obj.advndBilldate, 'yyyy-MM-dd');
-              this.advndBilldate = billDate1;
-              this.adstkPucahseFrom.patchValue({ advndBilldate1: this.pipe.transform(data.obj.advndBilldate, 'yyyy-MM-dd') });
-              this.adstkPucahseFrom.patchValue({ adheaderId: data.obj.adheaderId});
-              this.adstkPucahseFrom.patchValue({podocName:data.obj.adheaderId});
-              this.adstkPucahseFrom.patchValue({advendId:data.obj.advendId});
-              this.adstkPucahseFrom.patchValue({advend:data.obj.vendorName});
-              
-              // this.adstkPucahseFrom.disable();
-
-              let selectedValue = this.AllAdminvendornameList1.find((v:any) => v.vendorName === data.obj.vendorName);
-              console.log(selectedValue);
-             this.adstkPucahseFrom.patchValue({advend:selectedValue.vendorName,advendId:selectedValue.advendId});
-           
-            
             }
+            if (data.obj.adstatus == 'APPROVED') {
+              this.isVisiblePoApprove = false;
+              this.isVisibleupdateMast1 = false;
+              this.adstkPucahseFrom.disable();
+              this.isVisiblePurchaseord = true;
+            }
+            if (data.obj.adstatus == 'Active') {
+              this.isVisiblePoApprove = true;
+              this.isVisibleupdateMast1 = true;
+              this.isVisiblePurchaseord = true;
+            }
+            this.adstkPucahseFrom.patchValue(data.obj);
+            var billDate1 = this.pipe.transform(data.obj.advndBilldate, 'yyyy-MM-dd');
+            this.advndBilldate = billDate1;
+            this.adstkPucahseFrom.patchValue({ advndBilldate1: this.pipe.transform(data.obj.advndBilldate, 'yyyy-MM-dd') });
+            this.adstkPucahseFrom.patchValue({ adheaderId: data.obj.adheaderId });
+            this.adstkPucahseFrom.patchValue({ podocName: data.obj.adheaderId });
+            this.adstkPucahseFrom.patchValue({ advendId: data.obj.advendId });
+            this.adstkPucahseFrom.patchValue({ advend: data.obj.vendorName });
+
+
+            let selectedValue = this.AllAdminvendornameList1.find((v: any) => v.vendorName === data.obj.vendorName);
+            console.log(selectedValue);
+            this.adstkPucahseFrom.patchValue({ advend: selectedValue.vendorName, advendId: selectedValue.advendId });
+
+
           }
-        )
+        }
+      )
   }
 
-  
-    uploadCSVFile(event:any){
-    this.closeResetButton=false;
+
+  uploadCSVFile(event: any) {
+    this.closeResetButton = false;
     this.progress = 0;
-    this.dataDisplay ='File Upload in progress....Do not refresh the Page'
+    this.dataDisplay = 'File Upload in progress....Do not refresh the Page'
     let formData = new FormData();
     // this.isDisabledUpload=true;
-    this.displayButton=false;
-    var file=this.fileInput.nativeElement.files[0];
-     var venId=this.adstkPucahseFrom.get('advendId')?.value;
-     var addept=this.adstkPucahseFrom.get('adDept')?.value;
-     var div=this.adstkPucahseFrom.get('adDivision')?.value;
-     var locId=this.adstkPucahseFrom.get('adLoc')?.value;
-     var buyer=this.adstkPucahseFrom.get('adBuyer')?.value;
-     var adouid=this.adstkPucahseFrom.get('adouId')?.value;
-     var tktNo=this.adstkPucahseFrom.get('adtktNo')?.value;
-     var adbilno=this.adstkPucahseFrom.get('advendBillno')?.value;
-     var txct=this.adstkPucahseFrom.get('adtaxCat')?.value;
-     var tottax=this.adstkPucahseFrom.get('totalTax')?.value;
-     var totamt=this.adstkPucahseFrom.get('totalAmt')?.value;
-    this.service.PoUpoadDocument1(formData,file,venId,addept,div,locId,buyer,adouid,tktNo,adbilno,txct,tottax,totamt).subscribe((res: any) => {  
-      if (res.code === 200) {        
+    this.displayButton = false;
+    var file = this.fileInput.nativeElement.files[0];
+    var venId = this.adstkPucahseFrom.get('advendId')?.value;
+    var addept = this.adstkPucahseFrom.get('adDept')?.value;
+    var div = this.adstkPucahseFrom.get('adDivision')?.value;
+    var locId = this.adstkPucahseFrom.get('adLoc')?.value;
+    var buyer = this.adstkPucahseFrom.get('adBuyer')?.value;
+    var adouid = this.adstkPucahseFrom.get('adouId')?.value;
+    var tktNo = this.adstkPucahseFrom.get('adtktNo')?.value;
+    var adbilno = this.adstkPucahseFrom.get('advendBillno')?.value;
+    var txct = this.adstkPucahseFrom.get('adtaxCat')?.value;
+    var tottax = this.adstkPucahseFrom.get('totalTax')?.value;
+    var totamt = this.adstkPucahseFrom.get('totalAmt')?.value;
+    this.service.PoUpoadDocument1(formData, file, venId, addept, div, locId, buyer, adouid, tktNo, adbilno, txct, tottax, totamt).subscribe((res: any) => {
+      if (res.code === 200) {
         alert(res.message);
-         this.dataDisplay ='File Uploaded Successfully....'
-         this.closeResetButton=true;
-         this.adstkPucahseFrom.disable();
-         this.adstkPucahseFrom.patchValue({adheaderId:res.obj.adheaderId});
+        this.dataDisplay = 'File Uploaded Successfully....'
+        this.closeResetButton = true;
+        this.adstkPucahseFrom.disable();
+        this.adstkPucahseFrom.patchValue({ adheaderId: res.obj.adheaderId });
         this.adheaderIdFindFN(res.obj.adheaderId);
-    
-       } else {
-         if (res.code === 400) {
-           alert('Error In File : \n' + res.message+'---'+ res.obj);
-           this.dataDisplay ='File Uploading Failed....'
-           this.closeResetButton=true;
+
+      } else {
+        if (res.code === 400) {
+          alert('Error In File : \n' + res.message + '---' + res.obj);
+          this.dataDisplay = 'File Uploading Failed....'
+          this.closeResetButton = true;
           //  this.isDisabledUpload=false;
           //  this.displaySalesErrorList=false
-         }
-       }
-     });
+        }
+      }
+    });
   }
 
 
-  updateMast1(){
+  updateMast1() {
     this.closeResetButton = false;
-
     this.adstkPucahseFrom.enable();
     this.progress = 0;
     this.dataDisplay = 'Order Update in progress....Do not refresh the Page';
     var orderLines1 = this.adstkPucahseFrom.get('stkLines') as FormArray;
     var orderLines = orderLines1.getRawValue();
-    console.log(orderLines); 
+    console.log(orderLines);
     let jsonData = this.adstkPucahseFrom.getRawValue();
     this.service.updatePurchaseLinefn(JSON.stringify(jsonData)).subscribe((res: any) => {
       if (res.code === 200) {
@@ -929,43 +1061,40 @@ trxArr.controls[i].patchValue({ 'adstkTax': 0, 'adstkQty': 0, 'adunitRate': 0, '
         this.progress = 0;
         this.dataDisplay = res.messagse;
       }
-      else{
+      else {
         alert(res.message);
       }
     })
-    
+
   }
 
-  approvePod(){
-    var poId=this.adstkPucahseFrom.get('adheaderId')?.value;
+  approvePod() {
+    var poId = this.adstkPucahseFrom.get('adheaderId')?.value;
     // alert(poId)
     this.service.approvePodfn(poId).subscribe((res: any) => {
       if (res.code === 200) {
         alert(res.message);
         this.adstkPucahseFrom.disable();
         this.AdstkLinesGroup().disable();
-        this.isVisiblePoApprove=false;
-        this.isVisibleupdateMast1=false;
-        this.isVisiblePurchaseord=true;
+        this.isVisiblePoApprove = false;
+        this.isVisibleupdateMast1 = false;
+        this.isVisiblePurchaseord = true;
       }
     })
   }
-nonNegativeIntegerValidator(): ValidatorFn {
+
+  nonNegativeIntegerValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       const value = control.value;
-  
-      // If the value is null or empty, don't validate it (allow required validator to handle it)
       if (value === null || value === undefined || value === '') {
         return null;
       }
-  
+
       const num = Number(value);
-  
-      // Check if the number is an integer and non-negative
       if (!Number.isInteger(num) || num < 0) {
         return { nonNegativeInteger: true };
       }
-  
+
       return null;
     };
   }
@@ -976,10 +1105,10 @@ nonNegativeIntegerValidator(): ValidatorFn {
   }
 
 
-  RemoveRow(i:number){
+  RemoveRow(i: number) {
     var poLineArrray = this.adstkPucahseFrom.get('stkLines') as FormArray;
     var poLineArrrayDis = poLineArrray.getRawValue();
-    if (poLineArrrayDis.length === 1){
+    if (poLineArrrayDis.length === 1) {
       alert('Not Able to Delete This Line.!');
       return;
     }
@@ -995,172 +1124,169 @@ nonNegativeIntegerValidator(): ValidatorFn {
     lineGroup.get('adunitRate')?.enable();
     lineGroup.get('adsubTotal')?.enable();
     lineGroup.get('adtaxAmt')?.enable();
-}
-
-gstVerification(event: any) {
-  
-  var gstno = this.adstkPucahseFrom.get('gstNo')?.value
-  // alert(gstno+'gst');
-  // var sGstnoVal = this.customerMasterForm.get('sGstNo').value
-  if (gstno === '') {
-    this.adstkPucahseFrom.patchValue({ 'gstNo': 'GSTUNREGISTERED' });
-    return;
   }
-  else {
-    // var regex: string = "{2}[A-Z]{5}\d{4}[A-Z]{1}[A-Z\d]{1}[Z]{1}[A-Z\d]{1}";
-    var regex: string = "[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[0-9]{1}[A-Z]{1}[A-Z0-9]{1}";
-    var p = new PatternValidator();
-    var patt = new RegExp('[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[0-9]{1}[A-Z]{1}[A-Z0-9]{1}');
-    //  alert(gstno.length+'gstno.length');
-    var validgst = patt.test(gstno);
-    if (validgst === false && gstno.length == 15) {
-      alert('Please enter valid GST Number');
-    }
 
+  gstVerification(event: any) {
+
+    var gstno = this.adstkPucahseFrom.get('gstNo')?.value
+
+    if (gstno === '') {
+      this.adstkPucahseFrom.patchValue({ 'gstNo': 'GSTUNREGISTERED' });
+      return;
+    }
     else {
-      // alert('Please enter valid GST Number');
-      return ;
-    }
-    // return validgst;
 
-    const gstNo1 = gstno.substr(2, 10);
-    // this.panNo = gstNo1;
-    alert('Gst verificaition' + gstNo1);
-    this.adstkPucahseFrom.patchValue({ panNo: gstNo1 });
-    var res = gstno.substr(0, 2);
-    console.log(res);
-    // alert(res+'res');
-    const state = (this.adstkPucahseFrom.get('state')?.value).toUpperCase();
-    console.log(state);
-    console.log(this.state === 'MAHARASHTRA' && res === 27);
-    switch (state) {
-      case 'MAHARASHTRA':
-        if (res != 27) {
-          alert('Kindly entered correct GST No Start with 27');
-          this.adstkPucahseFrom.get('gstNo')?.reset();
-        }
-        break;
-      case 'GOA':
-        if (res != 30) {
-          alert('Kindly entered correct GST No Start with 30');
-          this.adstkPucahseFrom.get('gstNo')?.reset();
-        }
-        break;
-      case 'ANDHRA PRADESH':
-        if (res != 28) {
-          alert('Kindly entered correct GST No Start with 28');
-          this.adstkPucahseFrom.get('gstNo')?.reset();
-        }
-        break;
-      case 'KARNATAKA':
-        if (res != 29) {
-          alert('Kindly entered correct GST No Start with 29');
-          this.adstkPucahseFrom.get('gstNo')?.reset();
-        }
-        break;
-      case 'KERALA':
-        if (res != 32) {
-          alert('Kindly entered correct GST No Start with 32');
-          this.adstkPucahseFrom.get('gstNo')?.reset();
-        }
-        break;
-      case 'TELANGANA':
-        if (res != 36) {
-          alert('Kindly entered correct GST No Start with 36');
-          this.adstkPucahseFrom.get('gstNo')?.reset();
-        }
-        break;
+      var regex: string = "[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[0-9]{1}[A-Z]{1}[A-Z0-9]{1}";
+      var p = new PatternValidator();
+      var patt = new RegExp('[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[0-9]{1}[A-Z]{1}[A-Z0-9]{1}');
+
+      var validgst = patt.test(gstno);
+      if (validgst === false && gstno.length == 15) {
+        alert('Please enter valid GST Number');
+      }
+
+      else {
+
+        return;
+      }
+
+      const gstNo1 = gstno.substr(2, 10);
+      alert('Gst verificaition' + gstNo1);
+      this.adstkPucahseFrom.patchValue({ panNo: gstNo1 });
+      var res = gstno.substr(0, 2);
+      console.log(res);
+      // alert(res+'res');
+      const state = (this.adstkPucahseFrom.get('state')?.value).toUpperCase();
+      console.log(state);
+      console.log(this.state === 'MAHARASHTRA' && res === 27);
+      switch (state) {
+        case 'MAHARASHTRA':
+          if (res != 27) {
+            alert('Kindly entered correct GST No Start with 27');
+            this.adstkPucahseFrom.get('gstNo')?.reset();
+          }
+          break;
+        case 'GOA':
+          if (res != 30) {
+            alert('Kindly entered correct GST No Start with 30');
+            this.adstkPucahseFrom.get('gstNo')?.reset();
+          }
+          break;
+        case 'ANDHRA PRADESH':
+          if (res != 28) {
+            alert('Kindly entered correct GST No Start with 28');
+            this.adstkPucahseFrom.get('gstNo')?.reset();
+          }
+          break;
+        case 'KARNATAKA':
+          if (res != 29) {
+            alert('Kindly entered correct GST No Start with 29');
+            this.adstkPucahseFrom.get('gstNo')?.reset();
+          }
+          break;
+        case 'KERALA':
+          if (res != 32) {
+            alert('Kindly entered correct GST No Start with 32');
+            this.adstkPucahseFrom.get('gstNo')?.reset();
+          }
+          break;
+        case 'TELANGANA':
+          if (res != 36) {
+            alert('Kindly entered correct GST No Start with 36');
+            this.adstkPucahseFrom.get('gstNo')?.reset();
+          }
+          break;
+      }
+
     }
 
   }
 
-}
-
-gstVerification1(event: any) {
-  var gstno = this.adstkPucahseFrom.get('sGstNo')?.value
-  // var sGstnoVal = this.customerMasterForm.get('sGstNo').value
-  if (gstno === '') {
-    this.adstkPucahseFrom.patchValue({ 'sGstNo': 'GSTUNREGISTERED' });
-    return;
-  }
-  else {
-    // var regex: string = "{2}[A-Z]{5}\d{4}[A-Z]{1}[A-Z\d]{1}[Z]{1}[A-Z\d]{1}";
-    var regex: string = "[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[0-9]{1}[A-Z]{1}[A-Z0-9]{1}";
-    var p = new PatternValidator();
-    var patt = new RegExp('[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[0-9]{1}[A-Z]{1}[A-Z0-9]{1}');
-    //  alert(gstno.length+'gstno.length');
-    var validgst = patt.test(gstno);
-    if (validgst === false && gstno.length == 15) {
-      alert('Please enter valid GST Number');
+  gstVerification1(event: any) {
+    var gstno = this.adstkPucahseFrom.get('sGstNo')?.value
+    // var sGstnoVal = this.customerMasterForm.get('sGstNo').value
+    if (gstno === '') {
+      this.adstkPucahseFrom.patchValue({ 'sGstNo': 'GSTUNREGISTERED' });
+      return;
     }
-
     else {
-      // alert('Please enter valid GST Number');
-      return ;
-    }
-    // return validgst;
+      // var regex: string = "{2}[A-Z]{5}\d{4}[A-Z]{1}[A-Z\d]{1}[Z]{1}[A-Z\d]{1}";
+      var regex: string = "[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[0-9]{1}[A-Z]{1}[A-Z0-9]{1}";
+      var p = new PatternValidator();
+      var patt = new RegExp('[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[0-9]{1}[A-Z]{1}[A-Z0-9]{1}');
+      //  alert(gstno.length+'gstno.length');
+      var validgst = patt.test(gstno);
+      if (validgst === false && gstno.length == 15) {
+        alert('Please enter valid GST Number');
+      }
 
-    const gstNo1 = gstno.substr(2, 10);
-    // this.panNo = gstNo1;
-    // alert('Gst verificaition'+ gstNo1);
-    this.adstkPucahseFrom.patchValue({ 'spanNo': gstNo1 });
-    var res = gstno.substr(0, 2);
-    console.log(res);
-    // alert(res+'res');
-    const state = (this.adstkPucahseFrom.get('sstate')?.value).toUpperCase();
-    console.log(state);
-    console.log(this.state === 'MAHARASHTRA' && res === 27);
-    switch (state) {
-      case 'MAHARASHTRA':
-        if (res != 27) {
-          alert('Kindly entered correct GST No Start with 27');
-          this.adstkPucahseFrom.get('sGstNo')?.reset();
-        }
-        break;
-      case 'GOA':
-        if (res != 30) {
-          alert('Kindly entered correct GST No Start with 30');
-          this.adstkPucahseFrom.get('sGstNo')?.reset();
-        }
-        break;
-      case 'ANDHRA PRADESH':
-        if (res != 28) {
-          alert('Kindly entered correct GST No Start with 28');
-          this.adstkPucahseFrom.get('sGstNo')?.reset();
-        }
-        break;
-      case 'KARNATAKA':
-        if (res != 29) {
-          alert('Kindly entered correct GST No Start with 29');
-          this.adstkPucahseFrom.get('sGstNo')?.reset();
-        }
-        break;
-      case 'KERALA':
-        if (res != 32) {
-          alert('Kindly entered correct GST No Start with 32');
-          this.adstkPucahseFrom.get('sGstNo')?.reset();
-        }
-        break;
-      case 'TELANGANA':
-        if (res != 36) {
-          alert('Kindly entered correct GST No Start with 36');
-          this.adstkPucahseFrom.get('sGstNo')?.reset();
-        }
-        break;
+      else {
+        // alert('Please enter valid GST Number');
+        return;
+      }
+      // return validgst;
+
+      const gstNo1 = gstno.substr(2, 10);
+      // this.panNo = gstNo1;
+      // alert('Gst verificaition'+ gstNo1);
+      this.adstkPucahseFrom.patchValue({ 'spanNo': gstNo1 });
+      var res = gstno.substr(0, 2);
+      console.log(res);
+      // alert(res+'res');
+      const state = (this.adstkPucahseFrom.get('sstate')?.value).toUpperCase();
+      console.log(state);
+      console.log(this.state === 'MAHARASHTRA' && res === 27);
+      switch (state) {
+        case 'MAHARASHTRA':
+          if (res != 27) {
+            alert('Kindly entered correct GST No Start with 27');
+            this.adstkPucahseFrom.get('sGstNo')?.reset();
+          }
+          break;
+        case 'GOA':
+          if (res != 30) {
+            alert('Kindly entered correct GST No Start with 30');
+            this.adstkPucahseFrom.get('sGstNo')?.reset();
+          }
+          break;
+        case 'ANDHRA PRADESH':
+          if (res != 28) {
+            alert('Kindly entered correct GST No Start with 28');
+            this.adstkPucahseFrom.get('sGstNo')?.reset();
+          }
+          break;
+        case 'KARNATAKA':
+          if (res != 29) {
+            alert('Kindly entered correct GST No Start with 29');
+            this.adstkPucahseFrom.get('sGstNo')?.reset();
+          }
+          break;
+        case 'KERALA':
+          if (res != 32) {
+            alert('Kindly entered correct GST No Start with 32');
+            this.adstkPucahseFrom.get('sGstNo')?.reset();
+          }
+          break;
+        case 'TELANGANA':
+          if (res != 36) {
+            alert('Kindly entered correct GST No Start with 36');
+            this.adstkPucahseFrom.get('sGstNo')?.reset();
+          }
+          break;
+      }
+
     }
 
   }
 
-}
-  
 
-blockInvalidKeys(event: KeyboardEvent): void {
-  const invalidChars = ['-', '+', 'e', 'E', '!', '@', '?'];
+  blockInvalidKeys(event: KeyboardEvent): void {
+    const invalidChars = ['-', '+', 'e', 'E', '!', '@', '?'];
 
-  if (invalidChars.includes(event.key)) {
-    event.preventDefault();
+    if (invalidChars.includes(event.key)) {
+      event.preventDefault();
+    }
   }
-}
-  
-  
+
+
 }
