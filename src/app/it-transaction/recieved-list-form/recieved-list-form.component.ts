@@ -136,6 +136,7 @@ export class RecievedListFormComponent {
   dataDisplay:any;
   progress = 0;
   newLocId:number;
+  public ALLlocIdList:any=[];
   getAllOuLocationIdFn:any=[];
 
   constructor(private fb: FormBuilder, private router: Router, private service: ItTransService, private router1: ActivatedRoute ) {
@@ -227,6 +228,15 @@ closeMast() {
       console.log(this.AllligelentityList);
     }
   );
+
+   this.service.getALLLocationId()
+      .subscribe(
+        ( data:any) => {
+          this.ALLlocIdList = data.obj;
+          console.log(this.ALLlocIdList);
+        }
+      );
+
 
 
   this.service.AlldivisionitemList()

@@ -85,46 +85,101 @@ export class StockLdgerRepoComponent {
     
   //  }
 
-   onSelectItemType(event:any){
-    // this.CheckLineValidationstaxtyp();
-    var itemType=event.target.value;
-    var itemType1 = itemType.substr(itemType.indexOf(': ') + 1, itemType.length);
-    var itemType12=trim(itemType1);
-    var itemcat = this.AllreqItemCatagList.find((itemcat:any) => itemcat.category === itemType);
-    console.log(itemcat);
-    var codeType=itemcat.category;
+  //  onSelectItemType(event:any){
+  //   // this.CheckLineValidationstaxtyp();
+  //   var itemType=event.target.value;
+  //   var itemType1 = itemType.substr(itemType.indexOf(': ') + 1, itemType.length);
+  //   var itemType12=trim(itemType1);
+  //   var itemcat = this.AllreqItemCatagList.find((itemcat:any) => itemcat.category === itemType);
+  //   console.log(itemcat);
+  //   var codeType=itemcat.category;
+  //   const ouId = sessionStorage.getItem('ouId');
+  //   this.service.onSelectReqItemNameFn1(itemType)
+  // .subscribe(data => {
+  //   this.onSelectItemNameFnList = data.obj.filter((item:any) => {
+  //     return ['mumbai', 'pune', 'kolhapur', 'goa', 'cochin', 'hyderabad']
+  //       .some(city => item[city] === ouId);
+  //   });
 
-    // this.orderlineDetailsArray().controls[i].patchValue({adstkItem:codeType})  
-    // this.service.onSelectReqItemNameFn1(codeType,sessionStorage.getItem('ouId'))
-    // .subscribe(
-    //   data => {
-    //     this.onSelectItemNameFnList = data.obj;
-    //     console.log(this.onSelectItemNameFnList);
-        
-    //   }
-    // );
-    const ouId = sessionStorage.getItem('ouId');
-    this.service.onSelectReqItemNameFn1(itemType)
-  .subscribe(data => {
-    this.onSelectItemNameFnList = data.obj.filter((item:any) => {
-      return ['mumbai', 'pune', 'kolhapur', 'goa', 'cochin', 'hyderabad']
-        .some(city => item[city] === ouId);
-    });
+  //   console.log(this.onSelectItemNameFnList);
+  // });
 
-    console.log(this.onSelectItemNameFnList);
-  });
-
-    // if (codeType == 'OTHERS') {
-    //   this.displayDesc[i]=false;
-     
-    // }
-    // if (codeType !== 'OTHERS') {
-     
-    //   this.displayDesc[i]=true;
-     
-    // }
     
-   }
+  //  }
+
+  onSelectItemType(event: any) {
+      // this.CheckLineValidationstaxtyp();
+      var itemType = event.target.value;
+      var itemType1 = itemType.substr(itemType.indexOf(': ') + 1, itemType.length);
+      var itemType12 = trim(itemType1);
+      var itemcat = this.AllreqItemCatagList.find((itemcat: any) => itemcat.category === itemType);
+      console.log(itemcat);
+      var codeType = itemcat.category;
+      const ouId = sessionStorage.getItem('ouId');
+      this.service.onSelectReqItemNameFn1(codeType)
+        .subscribe(data => {
+          this.onSelectItemNameFnList = data.obj.filter((item: any) => {
+            return ['mumbai', 'pune', 'kolhapur', 'goa', 'cochin', 'hyderabad']
+              .some(city => item[city] === ouId);
+          });
+  
+          console.log(this.onSelectItemNameFnList);
+        });
+    }
+  
+  
+
+    onSearchItemName2(event: Event) {
+      const input = (event.target as HTMLInputElement).value;
+      console.log('User is typing:', input);
+  
+    }
+  
+  
+  
+    // onSelectItemName1(event: Event, index: number) {
+    //   const selectedValue = (event.target as HTMLInputElement).value;
+    //   console.log('Selected item:', selectedValue);
+  
+    // }
+  
+
+
+//   onSelectItemType(event: any) {
+//   const codeType = event.target.value;
+
+//   const ouId = (sessionStorage.getItem('ouId') || '').trim();  // example "104"
+
+//   const cities = ['mumbai', 'pune', 'kolhapur', 'goa', 'cochin', 'hyderabad'];
+
+//   this.service.onSelectReqItemNameFn1(codeType).subscribe((data: any) => {
+
+//     this.onSelectItemNameFnList = data.obj.filter((item: any) => {
+
+//       // check each city column value
+//       return cities.some(city => {
+//         return item[city] && item[city].toString().trim() === ouId;
+//       });
+
+//     });
+
+//     console.log("Filtered output:", this.onSelectItemNameFnList);
+//   });
+// }
+
+
+   onSearchItemName(event: Event) {
+    const input = (event.target as HTMLInputElement).value;
+    console.log('User is typing:', input);
+  
+  }
+  
+  onSelectItemName1(event: Event) {
+    const selectedValue = (event.target as HTMLInputElement).value;
+    console.log('Selected item:', selectedValue);
+   
+  }
+
 
   get f() { return this.StklLedegerRepoForm.controls; }
   StkLdgerReport(StklLedegerRepoForm: any) {

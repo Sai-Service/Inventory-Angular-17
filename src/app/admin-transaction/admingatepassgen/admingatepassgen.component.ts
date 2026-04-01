@@ -27,6 +27,7 @@ interface Manugatepass {
   regNo:string;
   itemorvehicleDetails:string;
   serialNo:string;
+  qty:number;
   name:string;
   contactNo:string;
   address:string;
@@ -63,6 +64,7 @@ export class AdmingatepassgenComponent {
   regNo:string;
   itemorvehicleDetails:string;
   serialNo:string;
+  qty:number;
   name:string;
   contactNo:string;
   address:string;
@@ -87,6 +89,7 @@ export class AdmingatepassgenComponent {
   AllreqItemCatagList:any[];
   displayItemame=true;
   displaygatePassType=true;
+   allpendinggateList:any[];
   
 
   
@@ -104,6 +107,7 @@ export class AdmingatepassgenComponent {
   regNo:[],
   itemorvehicleDetails:[],
   serialNo:[],
+  qty:[],
   name:[],
   contactNo:[],
   address:[],
@@ -114,6 +118,7 @@ export class AdmingatepassgenComponent {
   createdBy:[],
   creationDate:[],
   creationDate1:[],
+   returnDate: [{ value: '', disabled: true }],
     }) }
 
     transData(val:any) {
@@ -138,16 +143,34 @@ export class AdmingatepassgenComponent {
     $("#wrapper").toggleClass("toggled");
     var Date =this.pipe.transform(this.date, 'dd-MM-yyyy') 
     this.ManualGatepassform.patchValue({ userLogin:sessionStorage.getItem('tktNo'),userLoginLocation:sessionStorage.getItem('locName'),department:sessionStorage.getItem('deptName'),creationDate1:Date,
-      regNo:'NA',itemorvehicleDetails:'NA',serialNo:'NA',name:'NA',contactNo:'NA',authorisedBy:'NA',address:'NA'
+      regNo:'NA',itemorvehicleDetails:'NA',serialNo:'NA',name:'NA',contactNo:'NA',address:'NA',qty:'1'
     });    //////,city : Number(sessionStorage.getItem('ouId'))
     
 
-    this.adminSer.GatepassTypeList()
+
+    var locId=sessionStorage.getItem('locName')
+    this.adminSer.allpendinggateList(locId)
     .subscribe(
       data => {
-        this.GatepassTypeList = data.obj;
+        this.allpendinggateList = data.obj;
       }
     );
+
+
+    this.adminSer.GatepassTypeList()
+  .subscribe(data => {
+    this.GatepassTypeList = data.obj.map((item: any) => {
+      const value = item.codeDesc || '';
+
+      const parts = value.split(':');
+
+      return {
+        ...item,
+        codeDesc: parts.length > 1 ? parts[1].trim() : value
+      };
+    });
+  });
+
 
     this.adminSer.AllreqItemCatagList()
     .subscribe(
@@ -163,7 +186,7 @@ export class AdmingatepassgenComponent {
   disableFiled(){
     this.ManualGatepassform.get('userLogin')?.disable();
     this.ManualGatepassform.get('userLoginLocation')?.disable();
-    this.ManualGatepassform.get('gatePassId')?.disable();
+    // this.ManualGatepassform.get('gatePassId')?.disable();
     this.ManualGatepassform.get('creationDate1')?.disable();
     this.ManualGatepassform.get('department')?.disable();
   }
@@ -174,8 +197,16 @@ export class AdmingatepassgenComponent {
    var itemorvehicleDetails = this.ManualGatepassform.get('itemorvehicleDetails')?.value;
    var itemcat = this.ManualGatepassform.get('itemcat')?.value;
    var itemName = this.ManualGatepassform.get('itemName')?.value;
+   var authorisedBy = this.ManualGatepassform.get('authorisedBy')?.value;
+   const returnDate = this.ManualGatepassform.get('returnDate')?.value;
+   const remark = this.ManualGatepassform.get('remark')?.value;
+   
    if (gatType ==null || gatType ==undefined || gatType == ''){
     alert('Please Select the Gate Pass Type.!');
+    return;
+   }
+    if (gatType =='Asset Repair' && !returnDate){
+    alert('Please Select the Return date..!');
     return;
    }
    if ((regNo ==null || regNo ==undefined || regNo == '')||(itemorvehicleDetails ==null || itemorvehicleDetails ==undefined || itemorvehicleDetails == '')){
@@ -184,6 +215,15 @@ export class AdmingatepassgenComponent {
    }
    if ((itemcat ==null || itemcat ==undefined || itemcat == '')||(itemName ==null || itemName ==undefined || itemName == '')){
     alert('Please Enter Item Category And Item Name.!');
+    return;
+   }
+    if (authorisedBy ==null || authorisedBy ==undefined || authorisedBy == ''){
+    alert('Please Enter authorisedBy Name.!');
+    return;
+   }
+
+   if (remark ==null || remark ==undefined || remark == ''){
+    alert('Please Enter Remark...!');
     return;
    }
     const formValue: Manugatepass = this.ManualGatepassform.getRawValue();
@@ -227,7 +267,17 @@ GatepassidFind(gatePassId:any){
           }}
         )
   }
+onGatePassTypeChange(event: any) {
+  const value = event.target.value;
+  alert(value)
 
+  if (value === 'Asset Repair') {
+    this.ManualGatepassform.get('returnDate')?.enable();
+  } else {
+    this.ManualGatepassform.get('returnDate')?.disable();
+    this.ManualGatepassform.get('returnDate')?.reset();
+  }
+}
   
   onSelectItemType(event:any){
     var itemType=event.target.value;
@@ -263,5 +313,15 @@ GatepassidFind(gatePassId:any){
         // printWindow.open
       })
    }
+
+
+
+
+   pendingGateIdFind(itemId:any){
+
+
+
+   }
+
 
 }

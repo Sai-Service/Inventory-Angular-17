@@ -49,6 +49,7 @@ export class MiscellaneousTrascComponent {
   invType: string;
   pipe = new DatePipe('en-US');
   date = new Date()
+  isButtonDisabled=false;
 
   constructor(private fb: FormBuilder, private router: Router,private router1:ActivatedRoute, private adminServiceService: AdminTransactionService,private service: ItTransService) { 
     this.miscellaneousForm = fb.group({
@@ -353,6 +354,7 @@ this.adminServiceService.onSelectReqItemNameFn1(codeType).subscribe(data => {
    }
 
    receiptSave(){
+    this.isButtonDisabled=true;
      // this.closeResetButton = false;
     // this.progress = 0;
     // this.dataDisplay = 'Receipt Saving in progress....Do not refresh the Page';
@@ -374,6 +376,7 @@ this.adminServiceService.onSelectReqItemNameFn1(codeType).subscribe(data => {
       if (res.code === 200) {
         alert(res.message);
         var shipNo=res.obj;
+        this.isButtonDisabled=true;
         this.miscellaneousForm.patchValue({miscNumber:res.obj});
         alert(res.obj);
         this.miscellaFind(res.obj);

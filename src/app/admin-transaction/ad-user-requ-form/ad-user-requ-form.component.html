@@ -49,12 +49,15 @@
                 <td>
                     <select formControlName="admintktNo" id="admintktNo" class="form-control"
                         style="background-color: yellow;">
-                        <option value="--Select--">--Select--</option>
-                        <option *ngFor="let sc of  Asigntolocadmin" [ngValue]="sc.tktNo">
+                        <option *ngFor="let sc of  Asigntolocadmin" [ngValue]="sc.tktNo" (change)="onAdminChange($event)">
                             {{sc.empName}}
                         </option>
                     </select>
+                     <div *ngIf="requisisionForm.get('admintktNo')?.touched && requisisionForm.get('admintktNo')?.invalid"  style="color: red;" >
+  Admin Asign is required 
+</div>
                 </td>
+               
                 <td style="width: 15%" class="LabelFontStyle"> &nbsp;Remark&nbsp;: </td>
                 <td colspan="5">
                     <!-- <textarea id="reqRemarks" formControlName="reqRemarks" rows="2" style="width: 100%;resize: none; font-size: small;"></textarea> -->

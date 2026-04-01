@@ -138,6 +138,7 @@ export class PurchaseComponent {
   docapprovalNo: number
   lineValidation1 = false;
   lineValidation2 = false;
+  isSaving = false;
   docApprovalFilteredList: any[] = [];
   // selectedDocApprovalNo: string | null = null;
   selectedDocApprovalNo: string | null = null;
@@ -435,17 +436,6 @@ export class PurchaseComponent {
     var itemcat = this.AllreqItemCatagList.find((itemcat: any) => itemcat.category === itemType);
     console.log(itemcat);
     var codeType = itemcat.category;
-
-    // this.orderlineDetailsArray().controls[i].patchValue({adstkItem:codeType})  
-    // this.service.onSelectReqItemNameFn1(codeType,sessionStorage.getItem('ouId'))
-    // .subscribe(
-    //   data => {
-    //     this.onSelectItemNameFnList = data.obj;
-    //     console.log(this.onSelectItemNameFnList);
-
-    //   }
-    // );
-
     const ouId = sessionStorage.getItem('ouId');
     this.service.onSelectReqItemNameFn1(codeType)
       .subscribe(data => {
@@ -717,6 +707,7 @@ export class PurchaseComponent {
 
   newMast() {
     this.closeResetButton = true;
+    this.isSaving=true;
     this.progress = 0;
     this.dataDisplay = 'Bill Recorder Save is progress....Do not refresh the Page';
     var orderLines = this.adstkPucahseFrom.get('stkLines')?.value;

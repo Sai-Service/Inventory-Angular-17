@@ -16,6 +16,7 @@ import { ItinventoryDocumentryFormComponent } from './itinventory-documentry-for
 import { FaCommonRepoComponent } from './fa-common-repo/fa-common-repo.component';
 import { AssetHistoryFormComponent } from './asset-history-form/asset-history-form.component';
 import { PMReportComponent } from './pmreport/pmreport.component';
+import { PovExpMasterReporComponent } from './pov-exp-master-repor/pov-exp-master-repor.component';
 
 
 @NgModule({
@@ -32,7 +33,8 @@ import { PMReportComponent } from './pmreport/pmreport.component';
     ItinventoryDocumentryFormComponent,
     FaCommonRepoComponent,
     AssetHistoryFormComponent,
-    PMReportComponent
+    PMReportComponent,
+    PovExpMasterReporComponent
   ],
   imports: [
     CommonModule,

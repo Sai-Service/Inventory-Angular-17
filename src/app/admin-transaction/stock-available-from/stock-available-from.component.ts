@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { v4 as uuidv4 } from 'uuid';
 import { AdminTransactionService } from '../admin-transaction.service';
-
+import { data, trim } from 'jquery';
 import { Location } from "@angular/common";
 
 
@@ -15,8 +15,8 @@ import { Location } from "@angular/common";
 })
 export class StockAvailableFromComponent {
   availableQtyForm:FormGroup;
-  AllreqItemCatagList:any=[];
-  onSelectItemNameFnList:any=[];
+  AllreqItemCatagList:any;
+  onSelectItemNameFnList:any;
   quantityList:any=[];
   constructor(private fb: FormBuilder, private router: Router, private service: AdminTransactionService,private router1: ActivatedRoute,) {
       this.availableQtyForm = fb.group({
@@ -52,25 +52,91 @@ export class StockAvailableFromComponent {
   }
 
 
-  onSelectItemType(event:any){
-    var codeType=event.target.value;
-    // this.service.onSelectReqItemNameFn1(codeType,sessionStorage.getItem('ouId'))
-    // .subscribe(
-    //   data => {
-    //     this.onSelectItemNameFnList = data.obj;
-    //   }
-    // );
+  // onSelectItemType(event:any){
+  //   var codeType=event.target.value;
+  //   this.service.onSelectReqItemNameFn1(codeType)
+  //   .subscribe(
+  //     data => {
+  //       this.onSelectItemNameFnList = data.obj;
+  //     }
+  //   );
 
-    const ouId = sessionStorage.getItem('ouId');
-    this.service.onSelectReqItemNameFn1(codeType).subscribe(data => {
-      this.onSelectItemNameFnList = data.obj.filter((item: any) => {
-        return ['mumbai', 'pune', 'kolhapur', 'goa', 'cochin', 'hyderabad'].some(city => {
-          return item[city] === ouId;
-        });
+  //   const ouId = sessionStorage.getItem('ouId');
+  //   debugger
+  //   this.service.onSelectReqItemNameFn1(codeType).subscribe((data:any) => {
+  //     this.onSelectItemNameFnList = data.obj.filter((item: any) => {
+  //       return ['mumbai', 'pune', 'kolhapur', 'goa', 'cochin', 'hyderabad'].some(city => {
+  //         return item[city] === ouId;
+  //       });
         
-      });
-   });
-  }
+  //     });
+  //  });
+  //  console.log(this.onSelectItemNameFnList)
+  // }
+
+
+  
+  
+    onSelectItemType(event: any) {
+      // this.CheckLineValidationstaxtyp();
+      var itemType = event.target.value;
+      var itemType1 = itemType.substr(itemType.indexOf(': ') + 1, itemType.length);
+      var itemType12 = trim(itemType1);
+      var itemcat = this.AllreqItemCatagList.find((itemcat: any) => itemcat.category === itemType);
+      console.log(itemcat);
+      var codeType = itemcat.category;
+      const ouId = sessionStorage.getItem('ouId');
+      this.service.onSelectReqItemNameFn1(codeType)
+        .subscribe(data => {
+          this.onSelectItemNameFnList = data.obj.filter((item: any) => {
+            return ['mumbai', 'pune', 'kolhapur', 'goa', 'cochin', 'hyderabad']
+              .some(city => item[city] === ouId);
+          });
+  
+          console.log(this.onSelectItemNameFnList);
+        });
+    }
+  
+  
+
+    onSearchItemName2(event: Event) {
+      const input = (event.target as HTMLInputElement).value;
+      console.log('User is typing:', input);
+  
+    }
+  
+  
+  
+    // onSelectItemName1(event: Event, index: number) {
+    //   const selectedValue = (event.target as HTMLInputElement).value;
+    //   console.log('Selected item:', selectedValue);
+  
+    // }
+  
+
+
+//   onSelectItemType(event: any) {
+//   const codeType = event.target.value;
+
+//   const ouId = (sessionStorage.getItem('ouId') || '').trim();  // example "104"
+
+//   const cities = ['mumbai', 'pune', 'kolhapur', 'goa', 'cochin', 'hyderabad'];
+
+//   this.service.onSelectReqItemNameFn1(codeType).subscribe((data: any) => {
+
+//     this.onSelectItemNameFnList = data.obj.filter((item: any) => {
+
+//       // check each city column value
+//       return cities.some(city => {
+//         return item[city] && item[city].toString().trim() === ouId;
+//       });
+
+//     });
+
+//     console.log("Filtered output:", this.onSelectItemNameFnList);
+//   });
+// }
+
 
    onSearchItemName(event: Event) {
     const input = (event.target as HTMLInputElement).value;

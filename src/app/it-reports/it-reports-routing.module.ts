@@ -13,6 +13,7 @@ import { ItinventoryDocumentryFormComponent } from './itinventory-documentry-for
 import { FaCommonRepoComponent } from './fa-common-repo/fa-common-repo.component';
 import { AssetHistoryFormComponent } from './asset-history-form/asset-history-form.component';
 import { PMReportComponent } from './pmreport/pmreport.component';
+import { PovExpMasterReporComponent } from './pov-exp-master-repor/pov-exp-master-repor.component';
 
 const routes: Routes = [
   {path:'AssetInstallForm',component:AssetInstallFormComponent},
@@ -28,6 +29,7 @@ const routes: Routes = [
   {path:'FacomRepo',component:FaCommonRepoComponent},
   {path:'AssetHstFrm' , component:AssetHistoryFormComponent},
   {path:'PMReport' , component:PMReportComponent},
+  {path:'povexpRepo', component:PovExpMasterReporComponent},
   { path : '' ,redirectTo: 'Dashboard', pathMatch: 'full' }
 ];
 

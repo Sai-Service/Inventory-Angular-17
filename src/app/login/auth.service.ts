@@ -25,9 +25,9 @@ export class AuthService {
     let options = {
       headers: this.headers
     };
-    // const url = 'http://localhost:8080/EmpMst/loginpage';      //LOCAL
-    // const url ='https://inventrac.saihorizon.org:8080/ITInventory/EmpMst/loginpage'    /// PROD
-        const url= "http://saidev.horizon.org:6101/InventoryAdmin/EmpMst/loginpage";     /// CLONE
+    // const url = 'http://localhost:8080/EmpMst/loginpage';      /// LOCAL
+    const url ='https://inventrac.saihorizon.org:8080/ITInventory/EmpMst/loginpage'    /// PROD
+        // const url= "http://saidev.horizon.org:6101/InventoryAdmin/EmpMst/loginpage";     /// CLONE
 
 
     console.log(body);  

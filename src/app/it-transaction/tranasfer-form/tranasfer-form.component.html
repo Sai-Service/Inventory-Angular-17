@@ -251,7 +251,7 @@
                     <!-- <select  type='number' formControlName="newlocId" id="newlocId" class="form-control" style="background-color: yellow;" > -->
                     <select formControlName="newLocId" id="newLocId" class="form-control"
                         style="background-color: yellow;">
-                        <option *ngFor="let subType of getAllOuLocationIdFn" [ngValue]="subType.locId">
+                        <option *ngFor="let subType of ALLlocIdList" [ngValue]="subType.locId">
                             {{subType.locId}}-{{subType.locName}}
                         </option>
                     </select>

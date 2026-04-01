@@ -1,0 +1,61 @@
+
+<form [formGroup]="povExpreport" (ngSubmit)="itfacominventory(povExpreport.value)">
+    <table style="width: 100%;background-color: white;" class="center">
+        <tr>
+            <td class="PageHeader">
+                &nbsp;Provisional&nbsp;Expenses&nbsp;Billing&nbsp;Report
+            </td>
+        </tr>
+    </table>
+    <fieldset>
+        <table class="center">
+            <tr>
+                <div *ngIf="closeResetButton; then hList1; else hList2"></div>
+                <ng-template #hList2>
+                    <div class="d-flex justify-content-center">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only" id="loading"></span>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template #hList1> </ng-template>
+
+                <td class="LabelFontStyle" style="color: blue;width: fit-content;" colspan="4">
+                    &nbsp;{{dataDisplay}}&nbsp;
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+
+    <!-- <fieldset class="RFS">
+        <legend id="FormsPH_LGAadhaar" class="RFSL" style="font-size: 12px; color: black;font-weight: bold;">FA REPORT BATCH WISE
+        </legend>
+        <table> 
+        </table>
+        
+     </fieldset> -->
+    <table class="center">
+        <table class="center">
+            <tr style="width: fit-content;">
+                <td >
+                    <button class="btn-primary1" style="width: 100px; background-color: green;"
+                        (click)="FACommonRepo()">View Report</button>
+                </td>
+                <td>
+                    <button type="submit" class="btn btn-primary" id="register" (click)="refresh()"
+                        style="width:90PX">
+                        Clear
+                    </button>
+                </td>
+                <td>
+                    <button type="submit" (click)="close()" class="btn btn-primary"
+                        style="width:90PX">Close</button>
+                </td>
+            </tr>
+        </table>
+    </table>
+
+    </form>
+
+
+

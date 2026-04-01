@@ -3,8 +3,10 @@ import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@ang
 import { ActivatedRoute, Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { v4 as uuidv4 } from 'uuid';
+import { trim } from 'jquery';
 import { AdminTransactionService } from '../admin-transaction.service';
 import { Location } from "@angular/common";
+import { BlobOptions } from 'node:buffer';
 
 @Component({
   selector: 'app-ad-user-requ-form',
@@ -31,19 +33,26 @@ reqUsertktno:string;
 itemcat:string|null;
 itemName:string;
 reqhdNo1:number;
+adminDept:string;
 lineValidation = false;
 BilllineValidation=false;
 
 
 
 Asigntolocadmin:any=[];
+AsigntoDeptList:any=[];
+AsigntolocITHead:any=[];
 AllreqItemCatagList:any=[];
 onhandQtyList:any=[];
 onSelectItemNameFnList:any=[];
 attribute1:string;
 public itemMap:any = new Map<string, any[]>();
 public itemMap2 = new Map<number, any[]>();
+public itemMap3:any = new Map<string, any[]>();
+public itemMap4 = new Map<number, any[]>();
 invType: string;
+onSelectItemTypeFnList: any=[];
+  public AllproducttypeList: any=[];
 isVisibleUserRequitionSaveSave:boolean=true;
 isVisibleUserRequitionupdate:boolean=true;
 isVisibleAcceptAllLineBtn:boolean=true;
@@ -55,7 +64,11 @@ isButtonDisabled=true;
 isModalOpen=false;
 PendingReqList:any;
 public sub: any;
-
+displayAdminItCat:boolean;
+displayAdminItItem:boolean;
+displayAsignList:boolean;
+itemTypeId:Number;
+itemsubType:String;
 
   constructor(private fb: FormBuilder, private router: Router, private service: AdminTransactionService,private router1: ActivatedRoute,private adminServiceService: AdminTransactionService,private location1: Location) {
     this.requisisionForm = fb.group({
@@ -65,13 +78,14 @@ public sub: any;
       reqUsername:[],
       dept:[],
       loginArray:[],
-      admintktNo:[],
+      admintktNo:['', Validators.required],
       reqRemarks:[],
       location:[],
       city:[],
       reqhdNo1:[],
       reqUsertktno:[],
       attribute1:[],
+      adminDept:['15'],
       reqLines: this.fb.array([this.reqitemLinesGroup()]),
     })
    }
@@ -97,6 +111,9 @@ public sub: any;
       adminstatus:[],
       issuedQty:[{ value: '', disabled: true }],
       srlNo:[{ value: '', disabled: true }],
+
+      itemTypeId:[],
+      itemsubType:[],
       
     })
   }
@@ -140,6 +157,15 @@ public sub: any;
 //   }
 // });
 
+// if(sessionStorage.getItem('role')==='LOCALHOD'){
+//   this.displayAdminItCat=false;
+//   this.displayAdminItItem=false;
+// }else{
+// this.displayAdminItCat=true;
+//   this.displayAdminItItem=true
+//   ;
+  
+// }
 
   this.sub = this.router1.params.subscribe(params => {
     this.reqhdNo = params['reqhdNo'];
@@ -167,6 +193,14 @@ public sub: any;
         console.log(this.Asigntolocadmin);
       }
     );
+
+    this.service.AsigntoITHead(sessionStorage.getItem('ouId'))
+    .subscribe(
+      (data:any) => {
+        this.AsigntolocITHead = data.obj;
+        console.log(this.AsigntolocITHead);
+      }
+    );
     this.service.AllreqItemCatagList()
     .subscribe(
       data => {
@@ -175,6 +209,22 @@ public sub: any;
       }
     );
   
+    this.service.AsigntoDeptList()
+.subscribe(
+      data => {
+        this.AsigntoDeptList = data.obj;
+        console.log(this.AsigntoDeptList);
+      });
+
+    
+
+     this.service.AllproducttypeList()
+      .subscribe(
+        data => {
+          this.AllproducttypeList = data.obj;
+          console.log(this.AllproducttypeList);
+        }
+      );
 
 
     this.requisisionForm.get('loginArray1')?.disable();
@@ -190,7 +240,46 @@ public sub: any;
     
   }
 
-  
+  onAdminChange(event: any) {
+  const value = event.target.value;
+  console.log("Selected:", value);
+  alert(event)
+
+  // Your logic here
+  if (value === "15") {
+    alert("Admin selected");
+    this.displayAdminItCat=true;
+  this.displayAdminItItem=true
+
+  this.requisisionForm.patchValue({
+      admintktNo: '15'
+    });
+
+    return;
+  }
+
+   if (value === "18") {
+    alert("IT selected");
+    this.displayAdminItCat=false;
+  this.displayAdminItItem=false;
+
+    this.service.AsigntoITHead(sessionStorage.getItem('ouId'))
+      .subscribe(
+        (data: any) => {
+          // data.obj = [ { ... IT HEAD DETAILS ... } ]
+          this.AsigntolocITHead = data.obj[0];   // <-- pick first object
+
+          console.log(this.AsigntolocITHead);
+          alert(this.AsigntolocITHead.loginName);
+
+          // Set form value
+          this.requisisionForm.patchValue({
+            admintktNo: this.AsigntolocITHead.loginName
+          });
+        }
+      );
+  }
+}
 
 
 
@@ -249,51 +338,14 @@ public sub: any;
 
 
 
-  onSelectItemType(event:any,i:any){
-    var itemType:any=event.target.value;
-    this.invType = itemType;
-    if (this.itemMap.has(itemType)) {
-      var itemsList = this.itemMap.get(itemType);
-      this.itemMap2.set(i, this.itemMap.get(itemType));
-    } else {
-    }
-
-    this.onSelectItemNameFnList = this.itemMap.get(itemType);
-
-    var itemType1 = (itemType.substr(itemType.indexOf(': ') + 1, itemType.length)).trim();
-    var itemcat = this.AllreqItemCatagList.find((itemcat:any) => itemcat.category === itemType);
-    console.log(itemcat);
-    var codeType=itemcat.category
-    // this.requestlineDetailsArray().controls[i].patchValue({itemCategory:itemcat.category})
-    // this.service.onSelectReqItemNameFn1(codeType,sessionStorage.getItem('ouId'))
-    // .subscribe(
-    //   data => {
-    //       this.onSelectItemNameFnList = data.obj;
-    //     console.log(this.onSelectItemNameFnList);
-    //     this.itemMap.set(itemType, data.obj);
-    //       this.itemMap2.set(i, this.itemMap.get(itemType));
-    //    this.isButtonDisabled=false;
-    //   }
-    // );
-const ouId = sessionStorage.getItem('ouId');
-this.service.onSelectReqItemNameFn1(codeType).subscribe(data => {
-  this.onSelectItemNameFnList = data.obj.filter((item: any) => {
-    return ['mumbai', 'pune', 'kolhapur', 'goa', 'cochin', 'hyderabad'].some(city => {
-      return item[city] === ouId;
-    });
-    
-  });
-
-  console.log(this.onSelectItemNameFnList);
-  this.itemMap.set(itemType, this.onSelectItemNameFnList);
-  this.itemMap2.set(i, this.onSelectItemNameFnList);
-  this.isButtonDisabled = false;
-});
-    
-   }
 
 
    onSearchItemName(event: Event, index: number) {
+    const searchValue = (event.target as HTMLInputElement).value;
+    console.log('Search input for index', index, ':', searchValue);
+  }
+
+  onSearchItemName1(event: Event, index: number) {
     const searchValue = (event.target as HTMLInputElement).value;
     console.log('Search input for index', index, ':', searchValue);
   }
@@ -409,6 +461,7 @@ this.service.onSelectReqItemNameFn1(codeType).subscribe(data => {
       if (res.code === 200) {
         alert(res.message);
         var shipNo=res.obj;
+        this.isButtonDisabled = true;
         this.requisisionForm.patchValue({reqhdNo:res.obj.reqhdNo});
         alert(res.obj.reqhdNo)
       
@@ -508,6 +561,134 @@ openRequisition(reqhdNo: string) {
   // call your function
   this.ReqHedIdFindFN(reqhdNo);
   this.requisisionForm.get('reqhdNo')?.disable();
+}
+
+
+  onSelectItemType(event:any,i:any){
+    var itemType:any=event.target.value;
+  const locId = this.requisisionForm.get('admintktNo')?.value;
+
+  // 🔴 FORM VALIDATION
+  if (!locId) {
+    alert('Please select to assign admin first!');
+    this.requisisionForm.get('admintktNo')?.markAsTouched();
+    event.target.value = '';  
+    return;
+  }
+
+    this.invType = itemType;
+    if (this.itemMap.has(itemType)) {
+      var itemsList = this.itemMap.get(itemType);
+      this.itemMap2.set(i, this.itemMap.get(itemType));
+    } else {
+    }
+
+    this.onSelectItemNameFnList = this.itemMap.get(itemType);
+
+    var itemType1 = (itemType.substr(itemType.indexOf(': ') + 1, itemType.length)).trim();
+    var itemcat = this.AllreqItemCatagList.find((itemcat:any) => itemcat.category === itemType);
+    console.log(itemcat);
+    var codeType=itemcat.category
+const ouId = sessionStorage.getItem('ouId');
+this.service.onSelectReqItemNameFn1(codeType).subscribe(data => {
+  this.onSelectItemNameFnList = data.obj.filter((item: any) => {
+    return ['mumbai', 'pune', 'kolhapur', 'goa', 'cochin', 'hyderabad'].some(city => {
+      return item[city] === ouId;
+    });
+    
+  });
+
+  console.log(this.onSelectItemNameFnList);
+  this.itemMap.set(itemType, this.onSelectItemNameFnList);
+  this.itemMap2.set(i, this.onSelectItemNameFnList);
+  this.isButtonDisabled = false;
+});
+    
+   }
+
+
+
+  onSelectITItemType(event:any,i:any) {
+    var itemType = event.target.value;
+    var itemType3 = itemType.substr(itemType.indexOf(': ') + 1, itemType.length);
+    var itemType4 = trim(itemType3);
+    let sellocId = this.AllproducttypeList.find((d:any) => (d.codeDesc) ===itemType4);
+    console.log(sellocId);
+    
+     if (this.itemMap3.has(itemType)) {
+      var itemsList = this.itemMap.get(itemType);
+      this.itemMap4.set(i, this.itemMap3.get(itemType));
+    } else {
+    }
+    this.service.onSelectItemTypeFn(sellocId.cmntypeId)
+      .subscribe(
+        data => {
+          this.onSelectItemNameFnList = data.obj;
+          console.log(this.onSelectItemNameFnList);
+        }
+      );
+    
+    //  var itemType:any=event.target.value;
+    // this.invType = itemType;
+    // if (this.itemMap.has(itemType)) {
+    //   var itemsList = this.itemMap.get(itemType);
+    //   this.itemMap2.set(i, this.itemMap.get(itemType));
+    // } else {
+    // }
+
+    this.onSelectItemNameFnList = this.itemMap3.get(itemType);
+
+    // var itemType1 = (itemType.substr(itemType.indexOf(': ') + 1, itemType.length)).trim();
+    // var itemcat = this.AllreqItemCatagList.find((itemcat:any) => itemcat.category === itemType1);
+    // console.log(itemcat);
+    // var codeType=itemcat.category
+const ouId = sessionStorage.getItem('ouId');
+this.service.onSelectItemTypeFn(sellocId.cmntypeId).subscribe(data => {
+  this.onSelectItemTypeFnList = data.obj;
+
+  console.log(this.onSelectItemTypeFnList);
+  this.itemMap.set(itemType, this.onSelectItemTypeFnList);
+  this.itemMap4.set(i, this.onSelectItemTypeFnList);
+  this.isButtonDisabled = false;
+});
+    
+    
+    }
+
+// onSelectITItemType(event: any, i: any) {
+//   var itemType: any = event.target.value;
+//   this.invType = itemType;
+
+//   // Check if itemMap has value for selected itemType
+//   if (this.itemMap3.has(itemType)) {
+//     var itemsList = this.itemMap.get(itemType);
+//     this.itemMap2.set(i, this.itemMap.get(itemType));
+//   }
+
+//   // Assign list from map
+//   this.onSelectItemNameFnList = this.itemMap.get(itemType);
+
+//   // Extract category name
+//   var itemType1 = (itemType.substr(itemType.indexOf(': ') + 1, itemType.length)).trim();
+//   var itemcat = this.AllreqItemCatagList.find(
+//     (itemcat: any) => itemcat.category === itemType
+//   );
+
+//   console.log(itemcat);
+
+ 
+// // this.service.onSelectItemTypeFn(itemType12).subscribe(data => {
+// //   this.onSelectItemTypeFnList = data.obj;
+//   this.itemMap3.set(itemType, this.onSelectItemNameFnList);
+//   this.itemMap4.set(i, this.onSelectItemNameFnList);
+//   this.isButtonDisabled = false;
+// }
+
+
+
+open(){
+
+  
 }
 
 }

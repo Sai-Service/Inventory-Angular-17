@@ -201,8 +201,10 @@
       class="option"
       [class.selected]="selectedOptions.includes(option)"
       [class.disabled]="!canSelectCities"
+       [class.disabled]="option !== loginCity"
       (click)="selectOption(options.indexOf(option))"
     >
+    <!-- [class.disabled]="loginCity === 'Mumbai' && city !== 'Mumbai'" -->
       {{ option }}
       <span *ngIf="selectedOptions.includes(option)">✔</span>
     </div>
@@ -244,6 +246,11 @@
                             data-target="#confirmAlert" (click)="getMessage('Close')"
                             style="width: fit-content;">Close</button>
                     </td>
+                    <td>
+                        <button type="submit" class="btn btn-primary" id="closeMastBtn" 
+                           (click)="downloadMater()"
+                            style="width: fit-content;">Download Master</button>
+                    </td>
 
                 </ng-template>
                 <ng-template #elseButtonCondition>
@@ -261,6 +268,11 @@
                         <button type="submit" class="btn btn-primary" id="closeMastBtn" data-toggle="modal"
                             data-target="#confirmAlert" (click)="getMessage('Close')"
                             style="width: fit-content;">Close</button>
+                    </td>
+
+                     <td>
+                        <button type="submit" class="btn btn-primary" id="closeMastBtn" (click)="downloadMater()"
+                            style="width: fit-content;">Download Master</button>
                     </td>
 
                 </ng-template>

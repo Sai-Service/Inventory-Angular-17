@@ -250,8 +250,9 @@
                                   <div *ngIf="displayLoc[i]; then thenLoc; else elseLoc"> </div>
                                 <ng-template #thenLoc>
                                 <select formControlName="locId" id="locId" class="form-control"
-                                    style="width: 9rem; background-color: yellow;">
-                                    <option>--Select--</option>
+                                    style="width: 9rem; background-color: yellow;"  (change)="locationBugetvaldation($event)">
+                                    <!-- <option>--Select--</option> -->
+                                     <option>--Select--</option>
                                     <option *ngFor="let sc of  allcitylist" [ngValue]="sc.locId">
                                         {{sc.locName}}
                                     </option>

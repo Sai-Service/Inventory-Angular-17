@@ -7,6 +7,16 @@ import { AdminTransactionService } from '../admin-transaction.service';
 
 import { Location } from "@angular/common";
 
+import { saveAs } from 'file-saver';
+
+
+
+const MIME_TYPES :any= {
+  pdf: 'application/pdf',
+  xls: 'application/vnd.ms-excel',
+  xlsx: 'application/vnc.openxmlformats-officedocument.spreadsheetxml.sheet'
+};
+
 
 @Component({
   selector: 'app-ad-requsition',
@@ -67,6 +77,7 @@ progress = 0;
 closeResetButton = true;
 RejectreasonList:any=[];
 attribute5:number;
+isButtonDisabled=false;
 
 pipe = new DatePipe('en-US');
   now = new Date();
@@ -358,6 +369,7 @@ pipe = new DatePipe('en-US');
         }
 
         LineupdateMast() { 
+          this.isButtonDisabled=true;
           this.closeResetButton = false;
           this.progress = 0;
           this.dataDisplay = 'Order Line Save is progress....Do not refresh the Page';
@@ -370,6 +382,7 @@ pipe = new DatePipe('en-US');
           .subscribe((res: any) => {
               if (res.code === 200) {
                 alert(res.message);
+                this.isButtonDisabled=true;
                 this.dataDisplay=''
                 this.AdreqForm.disable();
                 this.displayButton=false;
@@ -381,6 +394,23 @@ pipe = new DatePipe('en-US');
               }
             });
           }
+
+
+openPrint(){
+  this.closeResetButton = false;
+      this.progress = 0;
+      this.dataDisplay = 'PDF in Running....Do not refresh the Page';
+      const fileName = 'Requisition_Print' + '.pdf';
+      const EXT = fileName.substr(fileName.lastIndexOf('.') + 1);
+      const ouId = sessionStorage.getItem('ouId');
+      const reqNo =this.AdreqForm.get('reqhdNo')?.value;
+      this.service.AdminReqPrint(ouId,reqNo)
+        .subscribe(data => {
+          saveAs(new Blob([data], { type: MIME_TYPES[EXT] }), fileName);
+          this.closeResetButton = true;
+          this.dataDisplay = 'Pdf downloaded successfully.....';
+        })
+}
 
       }
 

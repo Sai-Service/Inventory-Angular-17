@@ -143,7 +143,8 @@ dept:number;
   public AlllocationitemList: any=[];
 
   public AlloulocationitemList: any=[];
- getAllOuLocationIdFn:any=[];
+  getAllOuLocationIdFn:any=[];
+  public ALLlocIdList:any=[];
   isDisabletransebutton :  boolean = false;
   isDisablerecivedbutton: boolean = false;
   displayoldloc:any;
@@ -373,6 +374,15 @@ closeMast() {
     }
   );
  
+
+  this.service.getALLLocationId()
+      .subscribe(
+        ( data:any) => {
+          this.ALLlocIdList = data.obj;
+          console.log(this.ALLlocIdList);
+        }
+      );
+
 
   var deptId ; 
   this.service.receivedbymembers()

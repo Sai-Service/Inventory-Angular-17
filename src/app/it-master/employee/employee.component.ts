@@ -541,6 +541,115 @@ export class EmployeeComponent {
   }
 
 
+
+  
+  CheckDataValidationsUpdate() {
+
+    const formValue: IEmplMaster = this.employeesMasterForm.getRawValue();
+
+    var msg1;
+
+    if (formValue.divisionId === undefined || formValue.divisionId === null) {
+      this.checkValidation = false;
+      msg1 = "DIVISION: Should not be null....";
+      alert(msg1);
+      return;
+    }
+
+    if (formValue.locId === undefined || formValue.locId === null) {
+      this.checkValidation = false;
+      alert("LOCATION: Should not be null....");
+      return;
+    }
+
+    // alert ("Dept Id :" +formValue.deptId);
+    if (formValue.deptId === undefined || formValue.deptId === null) {
+      this.checkValidation = false;
+      alert("DEPT: Should not be null....");
+      return;
+    }
+
+
+
+    if (formValue.desgId === undefined || formValue.desgId === null) {
+      this.checkValidation = false;
+      alert("DESIGNATION : Should not be null....");
+      return;
+    }
+
+    if (formValue.title === undefined || formValue.title === null) {
+      this.checkValidation = false;
+      alert("TITLE: Should not be null....");
+      return;
+    }
+
+
+    if (formValue.fname == null || formValue.fname == undefined || formValue.fname.trim() == '') {
+      this.checkValidation = false;
+      alert("FIRST NAME: Should not be null....");
+      return;
+    }
+
+
+    // if (formValue.lname == null || formValue.lname == undefined || formValue.lname == '') {
+    //   this.checkValidation = false;
+    //   alert("LAST NAME: Shou ld not be null....");
+    //   return;
+    // }
+
+    if (formValue.empName == null || formValue.empName == undefined || formValue.empName.trim() == '') {
+      this.checkValidation = false;
+      alert("FULL NAME: Should not be null....");
+      return;
+    }
+
+
+    var cDate = new Date();
+
+
+    if (formValue.contactNo === undefined || formValue.contactNo === null) {
+      this.checkValidation = false;
+      alert("CONTACT NO1: Should not be null....");
+      return;
+    }
+
+
+
+    // if (formValue.emailId === undefined || formValue.emailId === null || formValue.emailId.trim() == '') {
+    //   this.checkValidation = false;
+    //   alert("EMAIL ID: Should not be null....");
+    //   return;
+    // } else {
+    //   if (formValue.emailId.includes('@') === false) { alert("EMAIL ID: Enter Valid Email Id...."); return; }
+    // }
+
+    
+
+    if (formValue.status === undefined || formValue.status === null) {
+      this.checkValidation = false;
+      alert("RECEIPT STATUS: Should not be null....");
+      return;
+    }
+
+
+    if (formValue.loginYN === 'Y') {
+
+
+
+      if (formValue.password === undefined || formValue.password === null || formValue.password.trim() === '') {
+        this.checkValidation = false;
+        alert("LOGIN PASSWORD  : Should not be null");
+        return;
+      }
+
+    }
+
+    this.checkValidation = true
+
+
+  }
+
+
   panCardValidation(event:any) {
     var validdata: boolean;
     var patt = new RegExp('[A-Z]{5}[0-9]{4}[A-Z]{1}');
@@ -580,7 +689,7 @@ export class EmployeeComponent {
 
   updateMast(){
     const formValue: IEmplMaster = this.employeesMasterForm.getRawValue();
-    this.CheckDataValidations();
+    this.CheckDataValidationsUpdate();
     if (this.checkValidation === true) {
     //   let select = this.lstcomments.find(d => d.divisionName === this.divisionName);
     //   console.log(select);

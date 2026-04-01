@@ -5,6 +5,15 @@ import { DatePipe } from '@angular/common';
 import { v4 as uuidv4 } from 'uuid';
 import { AdminMasterService } from '../admin-master.service';
 import { Location } from "@angular/common";
+import { saveAs } from 'file-saver';
+
+
+
+const MIME_TYPES :any= {
+  pdf: 'application/pdf',
+  xls: 'application/vnd.ms-excel',
+  xlsx: 'application/vnc.openxmlformats-officedocument.spreadsheetxml.sheet'
+};
 
 interface IItemMaster {
   segment: string;
@@ -132,13 +141,13 @@ export class ItemMasterComponent {
       goa:string;
       cochin:string;
       hyderabad:number;
-
+      loginCity:string | null;
       canSelectCities = true;
       // options: string[] = ['Mumbai', 'Pune', 'Kolhapur', 'Goa', 'Cochin', 'Hyderabad'];
       // selectedIndex: any= [];
 
       options: string[] = ['Mumbai', 'Pune', 'Kolhapur', 'Goa', 'Cochin', 'Hyderabad'];
-selectedOptions: string[] = [];
+      selectedOptions: string[] = [];
 
   constructor(private fb: FormBuilder, private router: Router,private router1:ActivatedRoute,private service: AdminMasterService, private location: Location,
     private AdminMasterService:AdminMasterService) {
@@ -196,6 +205,13 @@ selectedOptions: string[] = [];
     //   this.itemMasterForm.patchValue({hyderabad:sessionStorage.getItem('ouId')});
 
     // }
+
+
+ const cityFromSession = sessionStorage.getItem('ouCity');
+
+ this.loginCity = cityFromSession? cityFromSession.toLowerCase().replace(/\b\w/g, c => c.toUpperCase()): null;
+
+   alert(this.loginCity)
 
     this.service.AllreqItemCatagList()
     .subscribe(
@@ -309,6 +325,20 @@ selectedOptions: string[] = [];
     
    }
 
+
+downloadMater() {
+ this.closeResetButton = false;
+    this.progress = 0;
+    this.dataDisplay = 'Report in Running....Do not refresh the Page';
+    const fileName = 'ALL ITEM MASTER REPORT' + '.xlsx';
+    const EXT = fileName.substr(fileName.lastIndexOf('.') + 1);
+    this.service.ItemMasterReport()
+      .subscribe(data => {
+        saveAs(new Blob([data], { type: MIME_TYPES[EXT] }), fileName);
+        this.closeResetButton = true;
+        this.dataDisplay = 'Report downloaded successfully..... CHECK IN DIVISE DOWNLOAD FOLDER';
+      })
+}
 
    onSelectItemName(event:any){
     

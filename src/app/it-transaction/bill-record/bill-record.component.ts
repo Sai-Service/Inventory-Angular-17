@@ -19,6 +19,7 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 import { saveAs } from 'file-saver'
 import { ALL } from 'node:dns';
 import { Alert } from 'selenium-webdriver';
+import { combineLatest } from 'rxjs';
 
 const MIME_TYPES = {
   pdf: 'application/pdf',
@@ -197,6 +198,7 @@ export class BillRecordComponent {
 
   isModalOpen: boolean = false;
   selectedFile: File | null = null;
+  lineValidation1 = false;
 
   constructor(private fb: FormBuilder, private router: Router, private service: ItTransService, private router1: ActivatedRoute) {
     this.Date = formatDate(this.date, 'dd-MM-yyyy', 'en-US');
@@ -309,32 +311,92 @@ export class BillRecordComponent {
     console.log(this.locId);
     this.billLinesGroup();
  
-    var patch = this.billRecorderForm.get('billLines') as FormArray
-    this.billRecorderForm.get('expType')?.valueChanges.subscribe((expType) => {
-      console.log("expType changed:", expType);
+ 
 
-      if (!expType || expType === "--Select--") {
-          return;
-      }
 
-      // Define patch object based on expType
-      // const linePatch: any = {
-      //     srlNo: 1,
-      //     linestatus: 'BOOKED',
-      //     finYear: expType === 'IT' ? '2025-2026' : ''
-      // };
+// var patch = this.billRecorderForm.get('billLines') as FormArray;
 
-   (patch.controls[0]).patchValue(
-      {
-        srlNo: 1,
-        linestatus: 'BOOKED',
-        finYear: expType === 'IT' ? '2025-2026' : ''
-        
-        
-      }
-    );
+// this.billRecorderForm.get('expType')?.valueChanges.subscribe((expType) => {
+//   console.log("expType changed:", expType);
 
+//   if (!expType || expType === "--Select--") {
+//     // alert('Please select Exp Type...!')
+//     return;
+//   }
+
+//   const billDate = this.billRecorderForm.get('billDate')?.value;
+
+//   if (!billDate) {
+//     alert('Please select Bill Date first!');
+//     this.billRecorderForm.get('expType')?.setValue(null); 
+//     return;
+//   }
+
+//   let finYear = '';
+
+//   if (expType === 'IT') {
+//     const date = new Date(billDate);
+
+//     const start = new Date('2025-04-01');
+//     const end = new Date('2026-03-31');
+
+//     if (date >= start && date <= end) {
+//       finYear = '2025-2026';
+//     } else {
+//       finYear = '2026-2027';
+//     }
+//   }
+
+//   (patch.controls[0]).patchValue({
+//     srlNo: 1,
+//     linestatus: 'BOOKED',
+//     finYear: finYear
+//   });
+// });
+
+
+const patch = this.billRecorderForm.get('billLines') as FormArray;
+
+combineLatest([
+  this.billRecorderForm.get('expType')!.valueChanges,
+  this.billRecorderForm.get('billDate')!.valueChanges
+]).subscribe(([expType, billDate]) => {
+
+  console.log("expType:", expType);
+  console.log("billDate:", billDate);
+
+  if (!expType || expType === "--Select--") return;
+
+  if (!billDate) {
+    alert('Please select Bill Date first!');
+    return;
+  }
+
+  let finYear = '';
+
+  if (expType === 'IT') {
+    const date = new Date(billDate);
+
+    const start = new Date('2025-04-01');
+    const end = new Date('2026-03-31');
+
+    finYear = (date >= start && date <= end)
+      ? '2025-2026'
+      : '2026-2027';
+  }
+
+
+  patch.controls.forEach((control: any, index: number) => {
+    control.patchValue({
+      srlNo: 1,
+      linestatus: 'BOOKED',
+      finYear: finYear
+    });
   });
+
+});
+
+  //////////////////////////////////////////////////////////////////////////////////////////////
 
   const currentExpType = this.billRecorderForm.get('expType')?.value;
   if (currentExpType && currentExpType !== "--Select--") {
@@ -549,35 +611,17 @@ export class BillRecordComponent {
 
 
 
-      this.service.finYearFn(this.pipe.transform(this.date, 'yyyy'))            
-      .subscribe(
-        data => {
-          this.finYearFnList = data.obj;
-          this.currantYear = data.obj[0].code;
-          this.orderlineDetailsArray().controls[0].patchValue({finYear:this.currantYear})
+      // this.service.finYearFn(this.pipe.transform(this.date, 'yyyy'))            
+      // .subscribe(
+      //   data => {
+      //     this.finYearFnList = data.obj;
+      //     this.currantYear = data.obj[0].code;
+      //     this.orderlineDetailsArray().controls[0].patchValue({finYear:this.currantYear})
          
-        }
-      );
+      //   }
+      // );
 
-
-
-
-    //   const currentDate = new Date();
-    // const pastDate = new Date();
-    // pastDate.setDate(currentDate.getDate() - 15);
-
-    // // Format dates to 'YYYY-MM-DD'
-    // this.maxDate = this.formatDate(currentDate);
-    // this.minDate = this.formatDate(pastDate);
   }
-
-
-  // private formatDate(date: Date): string {
-  //   const year = date.getFullYear();
-  //   const month = (date.getMonth() + 1).toString().padStart(2, '0');
-  //   const day = date.getDate().toString().padStart(2, '0');
-  //   return `${year}-${month}-${day}`;
-  // }
 
 
   get f() { return this.billRecorderForm.controls; }
@@ -589,6 +633,58 @@ export class BillRecordComponent {
   }
 
 
+  locationBugetvaldation(event:any) {
+    const locId =event.target.value;
+    var locationId= locId.substr(locId.indexOf(': ') + 1, locId.length);
+    // alert(locationId)
+  this.service.validateLocation(locationId).subscribe({
+    next: (res) => {
+      if (res.code === 200) {
+        // alert('200')
+        console.log('Allowed'); 
+      }
+      if (res.code === 400) {
+        alert('Budget not available for selected location !! First create budget.');
+        this.resetMast();
+        this.lineValidation1 = false;
+      return;
+      }
+    }
+  });
+}
+
+
+
+// locationBugetvaldation() {
+
+//   const locationId = this.billRecorderForm.get('locId')?.value;
+
+//   if (!locationId) return;
+
+//   this.service.validateLocation(locationId).subscribe({
+//     next: (res) => {
+
+//       if (res.code === 200) {
+//         alert('Allowed');
+//       }
+
+//       if (res.code === 400) {
+//         alert('Budget not available for selected location');
+
+//         this.billRecorderForm.patchValue({ locId: null }); // ✅ refresh dropdown
+//       }
+//     },
+//     error: () => {
+//       this.billRecorderForm.patchValue({ locId: null });
+//     }
+//   });
+// }
+
+
+allowNextProcess() {
+  // your next step logic
+  console.log('Continue process...');
+}
   getFinancialYear(): string {
     const currentDate = new Date();
     const currentYear = currentDate.getFullYear();
@@ -816,76 +912,124 @@ export class BillRecordComponent {
     this.lineValidation = true;
   }
 
+  // addRow(i: number) {
+  //   this.CheckLineValidations(i)
+  //   if (this.lineValidation == true) {
+  //     this.displayGstper[i] = false;
+  //     this.isDisableqty[i] = true;
+  //     this.displayBillType[i] = false;
+  //       this.displayLoc[i]=true;
+  //     this.displayDept[i]=true;
+  //     this.displayitemdesc[i] = false;
+  //     this.displayLineflowStatusCode[i] = true;
+
+  //     this.orderlineDetailsArray().push(this.billLinesGroup());
+  //     var len = this.orderlineDetailsArray().length;
+
+  //     var patch = this.billRecorderForm.get('billLines') as FormArray;
+  //     this.billRecorderForm.get('expType')?.valueChanges.subscribe((expType) => {
+  //       console.log("expType changed:", expType);
+  
+  //       if (!expType || expType === "--Select--") {
+  //           return;
+  //       }
+  
+  //   (patch.controls[len - 1]).patchValue(
+        
+  //       {
+  //         srlNo: len,
+  //         linestatus: 'BOOKED',
+  //         finYear: expType === 'IT' ? '2025-2026' : ''
+  //       })
+  
+  //   });
+  
+  //   const currentExpType = this.billRecorderForm.get('expType')?.value;
+  //   if (currentExpType && currentExpType !== "--Select--") {
+  //       this.billRecorderForm.get('expType')?.setValue(currentExpType, { emitEvent: true });
+  //   }
+  //     // var expType = this.billRecorderForm.get('expType')?.value;
+  //     // if(expType==='IT'){ (patch.controls[len - 1]).patchValue(
+        
+  //     //   {
+  //     //     srlNo: len,
+  //     //     linestatus: 'BOOKED',
+  //     //     finYear:'2025-2026',
+  //     //   }
+  //     // );}
+  //     // else{(patch.controls[len - 1]).patchValue(
+        
+  //     //   {
+  //     //     srlNo: len,
+  //     //     linestatus: 'BOOKED',
+  //     //   }
+  //     // );}
+  //     this.displayBillType[len - 1] = true;
+  //     this.displayLoc[len - 1]=true;
+  //     this.displayDept[len - 1]=true;
+  //     this.displayitemdesc[len - 1] = true;
+  //     this.displayLineflowStatusCode[len - 1] = true;
+  //     this.displayBillType1[len - 1] = true;
+  //     this.displayGstper[len - 1] = true;
+  //     this.isDisableqty[len - 1] = true;
+  //   }
+  // }
+
+
+
   addRow(i: number) {
-    this.CheckLineValidations(i)
-    if (this.lineValidation == true) {
-      this.displayGstper[i] = false;
-      this.isDisableqty[i] = true;
-      this.displayBillType[i] = false;
-        this.displayLoc[i]=true;
-      this.displayDept[i]=true;
-      this.displayitemdesc[i] = false;
-      this.displayLineflowStatusCode[i] = true;
+  this.CheckLineValidations(i);
 
-      this.orderlineDetailsArray().push(this.billLinesGroup());
-      var len = this.orderlineDetailsArray().length;
+  if (this.lineValidation == true) {
 
-      var patch = this.billRecorderForm.get('billLines') as FormArray;
-      this.billRecorderForm.get('expType')?.valueChanges.subscribe((expType) => {
-        console.log("expType changed:", expType);
+    this.displayGstper[i] = false;
+    this.isDisableqty[i] = true;
+    this.displayBillType[i] = false;
+    this.displayLoc[i] = true;
+    this.displayDept[i] = true;
+    this.displayitemdesc[i] = false;
+    this.displayLineflowStatusCode[i] = true;
+
+    this.orderlineDetailsArray().push(this.billLinesGroup());
+    const len = this.orderlineDetailsArray().length;
+
+    const patch = this.billRecorderForm.get('billLines') as FormArray;
+
+
+    const expType = this.billRecorderForm.get('expType')?.value;
+    const billDate = this.billRecorderForm.get('billDate')?.value;
+
+    let finYear = '';
+
+    if (expType === 'IT' && billDate) {
+      const date = new Date(billDate);
+
+      const start = new Date('2025-04-01');
+      const end = new Date('2026-03-31');
+
+      finYear = (date >= start && date <= end)
+        ? '2025-2026'
+        : '2026-2027';
+    }
+
   
-        if (!expType || expType === "--Select--") {
-            return;
-        }
-    //  (patch.controls[0]).patchValue(
-    //     {
-    //       srlNo: 1,
-    //       linestatus: 'BOOKED',
-    //       finYear: expType === 'IT' ? '2025-2026' : ''
-          
-          
-    //     }
-    //   );
-    (patch.controls[len - 1]).patchValue(
-        
-        {
-          srlNo: len,
-          linestatus: 'BOOKED',
-          finYear: expType === 'IT' ? '2025-2026' : ''
-        })
-  
+    patch.controls[len - 1].patchValue({
+      srlNo: len,
+      linestatus: 'BOOKED',
+      finYear: finYear
     });
-  
-    const currentExpType = this.billRecorderForm.get('expType')?.value;
-    if (currentExpType && currentExpType !== "--Select--") {
-        this.billRecorderForm.get('expType')?.setValue(currentExpType, { emitEvent: true });
-    }
-      // var expType = this.billRecorderForm.get('expType')?.value;
-      // if(expType==='IT'){ (patch.controls[len - 1]).patchValue(
-        
-      //   {
-      //     srlNo: len,
-      //     linestatus: 'BOOKED',
-      //     finYear:'2025-2026',
-      //   }
-      // );}
-      // else{(patch.controls[len - 1]).patchValue(
-        
-      //   {
-      //     srlNo: len,
-      //     linestatus: 'BOOKED',
-      //   }
-      // );}
-      this.displayBillType[len - 1] = true;
-      this.displayLoc[len - 1]=true;
-      this.displayDept[len - 1]=true;
-      this.displayitemdesc[len - 1] = true;
-      this.displayLineflowStatusCode[len - 1] = true;
-      this.displayBillType1[len - 1] = true;
-      this.displayGstper[len - 1] = true;
-      this.isDisableqty[len - 1] = true;
-    }
+
+    // UI flags
+    this.displayBillType[len - 1] = true;
+    this.displayLoc[len - 1] = true;
+    this.displayDept[len - 1] = true;
+    this.displayitemdesc[len - 1] = true;
+    this.displayLineflowStatusCode[len - 1] = true;
+    this.displayBillType1[len - 1] = true;
+    this.displayGstper[len - 1] = true;
+    this.isDisableqty[len - 1] = true;
   }
+}
 
   validat(i: number, event: any) {
     var t = event.target.value;

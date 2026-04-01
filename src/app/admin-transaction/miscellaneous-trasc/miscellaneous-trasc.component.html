@@ -216,7 +216,7 @@
         <table class="center">
             <tr>
                 <td>
-                    <button type="submit" class="btn btn-primary" id="saveBtn" data-toggle="modal"  [style.display]="isVisibleReceiptSave ? 'block' : 'none'"
+                    <button type="submit" class="btn btn-primary" id="saveBtn" data-toggle="modal"  [disabled]="isButtonDisabled" [style.display]="isVisibleReceiptSave ? 'block' : 'none'"
                     data-target="#confirmAlert" (click)="getMessage('Save')" style="width: 80px;">Save</button>
                 </td>
                 <td>

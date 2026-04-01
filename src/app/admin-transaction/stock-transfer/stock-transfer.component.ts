@@ -68,6 +68,7 @@ export class StockTransferComponent {
   isVisibleReceiptSave:boolean=true;
   isVisibleReceiptview:boolean=false;
   printWindow:Window | null;
+  isButtonDisabled = false;
 
 
   constructor(private fb: FormBuilder, private router: Router,private router1:ActivatedRoute, private adminServiceService: AdminTransactionService,private service:AdminTransactionService) {
@@ -508,6 +509,7 @@ export class StockTransferComponent {
   //  }
 
   receiptSave(){
+   this.isButtonDisabled=true;
     // var isvaliddata1 = this.validation();
     // if (isvaliddata1 === false) {
     //   return;
@@ -531,6 +533,7 @@ export class StockTransferComponent {
       if (res.code === 200) {
         alert(res.message);
         var shipNo=res.obj;
+          this.isButtonDisabled=true;
         this.stockTranferForm.patchValue({stockTransNo:res.obj});
         alert(res.obj)
         this.shipmentNosearch(res.obj);

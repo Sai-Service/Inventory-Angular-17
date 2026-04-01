@@ -3,7 +3,7 @@
         <table style="width: 100%;background-color: white;">
             <tr>
                 <td class="PageHeader">
-                    Admin&nbsp;Requision&nbsp;Reports&nbsp;
+                &nbsp;Stock&nbsp;Ledger&nbsp;Reports&nbsp;
                 </td>
             </tr>
         </table>
@@ -33,8 +33,6 @@
                     <input type="date" class="form-control" formControlName="fromDate"  style="background-color: yellow;"
                         max="{{minDate | date:'yyyy-MM-dd'}}">
                 </td>
-               
-                
                 <td style="width: 20%" class="LabelFontStyle">
                     &nbsp;To&nbsp;Date&nbsp;:&nbsp;
                 </td>
@@ -42,7 +40,6 @@
                     <input type="date" class="form-control" formControlName="toDate"  style="background-color: yellow;"
                         max="{{maxDate | date:'yyyy-MM-dd'}}">
                 </td>
-
                 </tr>
                 <tr>
                     <td style="width: 15%" class="LabelFontStyle1">&nbsp;Location&nbsp;Name&nbsp;:&nbsp;</td>
@@ -53,16 +50,13 @@
                                 {{sc.locName}}
                             </option>
                         </select>
-                    </td>   
-
-
+                </td>   
                 <td style="width: 15%" class="LabelFontStyle">
                     &nbsp;Item&nbsp;Catagary&nbsp;:&nbsp;
                 </td>
-
-                <td>
+                    <td>
                     <select formControlName="itemcat" id="itemcat" class="form-control"
-                    style="background-color: yellow; "
+                    style="background-color: yellow; width: 14rem;"
                     (change)="onSelectItemType($event)">
                     <option value="--Select--">--Select--</option>
                     <option *ngFor="let sc of  AllreqItemCatagList" [value]="sc.category">
@@ -70,20 +64,24 @@
                     </option>
                 </select>
                 </td>
-
-
-                <td style="width: 15%" class="LabelFontStyle">
+                 <td style="width: 15%" class="LabelFontStyle">
                     &nbsp;Item&nbsp;Name&nbsp;:&nbsp;
                 </td>
                     <td>
-                        <select formControlName="itemName"  class="form-control"
-                        style="background-color: yellow; ">
-                        <option value="--Select--">--Select--</option>
-                        <option *ngFor="let item of  onSelectItemNameFnList" [value]="item.item">
-                            {{item.item}}
-                        </option>
-                    </select>
-                    </td>
+                        <input type="text"
+                        formControlName="itemName"
+                        style="background-color: yellow; height: 25px; width: 18rem; font-size: 10px;"
+                        id="itemListInput"
+                        list="dynamicItemList"
+                        class="form-control"
+                        placeholder="--Select--" />
+                 
+                 <datalist id="dynamicItemList">
+                   <option *ngFor="let itemN of onSelectItemNameFnList" [value]="itemN.item">
+                     {{ itemN.item }}
+                   </option>
+                 </datalist> 
+                 </td>
                 
             </tr>
         </table>
@@ -106,8 +104,4 @@
             </tr>
         </table>
     </fieldset> 
-
-
-
-
 </form>

@@ -387,4 +387,13 @@ onSelectReqItemNameFn1(codeType:any,ouId:any): Observable<any> {
 }
 
 
+ItemMasterReport(){
+   const REQUEST_URI = this.ServerUrl +`/ReqReports/ItemMaster`;
+  return this.http.get(REQUEST_URI, {
+    responseType: 'arraybuffer',
+    headers: this.headers,
+  });
+}
+
+
 }

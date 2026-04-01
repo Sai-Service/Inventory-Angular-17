@@ -194,10 +194,13 @@
                         </td>
                         <td> <button type="submit" class="btn btn-info" id="register" (click)="closeMast()">Close</button>
                         </td>
+
+                         <td> <button type="submit" class="btn btn-info" id="register" (click)="openPrint()">Print</button>
+                        </td>
                     </ng-template>
                     <ng-template #elseBlock1>
                         <!-- [style.display]="isVisibleLineupdateMast ? 'block' : 'none'" -->
-                        <td> <button type="submit" class="btn btn-info" id="register" style="width: fit-content;"  [style.display]="isVisibleLineupdateMast ? 'block' : 'none'"       
+                        <td> <button type="submit" class="btn btn-info" id="register" style="width: fit-content;"  [disabled]="isButtonDisabled" [style.display]="isVisibleLineupdateMast ? 'block' : 'none'"       
                                 (click)="LineupdateMast()">Update Requisision</button></td>
 
                                 <td> <button type="submit" class="btn btn-info" id="register" style="width: fit-content;"  [style.display]="isVisiblestatusClose ? 'block' : 'none'"       
@@ -205,6 +208,7 @@
                         <td> <button type="submit" class="btn btn-info" id="register" (click)="resetMast()">Reset</button>
                         </td>
                         <td> <button type="submit" class="btn btn-info" id="register" (click)="closeMast()">Close</button>
+                            
                         </td>
                     </ng-template>  
                 </tr>
